@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * FrontendPut.json
      */
     /**
@@ -21,7 +21,11 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().define("fe1").withRegion("NorthCentralUS")
-            .withExistingTrafficController("rg1", "tc1").withProperties(new FrontendProperties()).create();
+        manager.frontendsInterfaces()
+            .define("fe1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new FrontendProperties())
+            .create();
     }
 }

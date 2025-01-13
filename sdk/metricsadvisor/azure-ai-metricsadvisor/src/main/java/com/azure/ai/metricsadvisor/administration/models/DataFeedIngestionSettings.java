@@ -37,7 +37,6 @@ public final class DataFeedIngestionSettings {
         return this.ingestionStartTime;
     }
 
-
     /**
      * Get the max concurrency of data ingestion queries against user data source. 0 means
      * no limitation.

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageContaine
 public final class StorageContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageContainerProperties model =
-            BinaryData
-                .fromString("{\"lastModifiedTime\":\"2021-05-14T23:04:06Z\"}")
-                .toObject(StorageContainerProperties.class);
+        StorageContainerProperties model = BinaryData.fromString("{\"lastModifiedTime\":\"2021-04-08T09:35Z\"}")
+            .toObject(StorageContainerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

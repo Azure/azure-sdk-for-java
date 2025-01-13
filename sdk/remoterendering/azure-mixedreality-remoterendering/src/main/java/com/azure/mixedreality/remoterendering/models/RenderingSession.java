@@ -41,17 +41,9 @@ public final class RenderingSession {
      * @param error The error object containing details about the rendering session startup failure.
      * @param creationTime The time when the rendering session was created. Date and time in ISO 8601 format.
      */
-    public RenderingSession(String id,
-                            int arrInspectorPort,
-                            int handshakePort,
-                            Duration elapsedTime,
-                            String hostname,
-                            Duration maxLeaseTime,
-                            RenderingSessionSize sessionSize,
-                            RenderingSessionStatus sessionStatus,
-                            float teraflops,
-                            RemoteRenderingServiceError error,
-                            OffsetDateTime creationTime) {
+    public RenderingSession(String id, int arrInspectorPort, int handshakePort, Duration elapsedTime, String hostname,
+        Duration maxLeaseTime, RenderingSessionSize sessionSize, RenderingSessionStatus sessionStatus, float teraflops,
+        RemoteRenderingServiceError error, OffsetDateTime creationTime) {
         this.id = id;
         this.arrInspectorPort = arrInspectorPort;
         this.handshakePort = handshakePort;
@@ -64,7 +56,6 @@ public final class RenderingSession {
         this.error = error;
         this.creationTime = creationTime;
     }
-
 
     /**
      * Get the id property: The id of the session supplied when the conversion was created.

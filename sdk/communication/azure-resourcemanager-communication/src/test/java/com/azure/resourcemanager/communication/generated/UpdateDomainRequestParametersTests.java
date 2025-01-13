@@ -24,8 +24,9 @@ public final class UpdateDomainRequestParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateDomainRequestParameters model = new UpdateDomainRequestParameters()
-            .withTags(mapOf("zxibqeoj", "ocjjxhvpmouexh")).withUserEngagementTracking(UserEngagementTracking.ENABLED);
+        UpdateDomainRequestParameters model
+            = new UpdateDomainRequestParameters().withTags(mapOf("zxibqeoj", "ocjjxhvpmouexh"))
+                .withUserEngagementTracking(UserEngagementTracking.ENABLED);
         model = BinaryData.fromObject(model).toObject(UpdateDomainRequestParameters.class);
         Assertions.assertEquals("ocjjxhvpmouexh", model.tags().get("zxibqeoj"));
         Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());

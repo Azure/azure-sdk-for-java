@@ -7,6 +7,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobResourceAutoConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/storage/storage-compose.yaml",
     "spring.docker.compose.stop.command=down"
 })
+@EnabledOnOs(OS.LINUX)
 class StorageBlobDockerComposeConnectionDetailsFactoryTests {
 
     @Value("azure-blob://testcontainers/message.txt")

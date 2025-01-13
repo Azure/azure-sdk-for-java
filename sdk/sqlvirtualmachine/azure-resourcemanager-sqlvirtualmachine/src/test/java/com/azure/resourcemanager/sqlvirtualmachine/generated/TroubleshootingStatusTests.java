@@ -10,11 +10,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingStatus;
 public final class TroubleshootingStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TroubleshootingStatus model =
-            BinaryData
-                .fromString(
-                    "{\"rootCause\":\"iqzbq\",\"lastTriggerTimeUtc\":\"2021-04-12T04:02:19Z\",\"startTimeUtc\":\"2021-11-22T16:46:16Z\",\"endTimeUtc\":\"2021-03-01T06:44:22Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"pkwlhz\"}}}")
-                .toObject(TroubleshootingStatus.class);
+        TroubleshootingStatus model = BinaryData.fromString(
+            "{\"rootCause\":\"oczvy\",\"lastTriggerTimeUtc\":\"2021-06-24T07:32:51Z\",\"startTimeUtc\":\"2021-08-03T05:42:41Z\",\"endTimeUtc\":\"2021-03-20T01:04:20Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"rm\"}}}")
+            .toObject(TroubleshootingStatus.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,84 +5,82 @@
 package com.azure.resourcemanager.hanaonazure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstancePowerStateEnum;
 import com.azure.resourcemanager.hanaonazure.models.HanaProvisioningStatesEnum;
 import com.azure.resourcemanager.hanaonazure.models.HardwareProfile;
 import com.azure.resourcemanager.hanaonazure.models.NetworkProfile;
 import com.azure.resourcemanager.hanaonazure.models.OSProfile;
 import com.azure.resourcemanager.hanaonazure.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a HANA instance. */
+/**
+ * Describes the properties of a HANA instance.
+ */
 @Fluent
-public final class HanaInstanceProperties {
+public final class HanaInstanceProperties implements JsonSerializable<HanaInstanceProperties> {
     /*
      * Specifies the hardware settings for the HANA instance.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies the storage settings for the HANA instance disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * Specifies the operating system settings for the HANA instance.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Specifies the network settings for the HANA instance.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the HANA instance unique ID.
      */
-    @JsonProperty(value = "hanaInstanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String hanaInstanceId;
 
     /*
      * Resource power state
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private HanaInstancePowerStateEnum powerState;
 
     /*
      * Resource proximity placement group
      */
-    @JsonProperty(value = "proximityPlacementGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String proximityPlacementGroup;
 
     /*
      * Hardware revision of a HANA instance
      */
-    @JsonProperty(value = "hwRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String hwRevision;
 
     /*
      * ARM ID of another HanaInstance that will share a network with this HanaInstance
      */
-    @JsonProperty(value = "partnerNodeId")
     private String partnerNodeId;
 
     /*
      * State of provisioning of the HanaInstance
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private HanaProvisioningStatesEnum provisioningState;
 
-    /** Creates an instance of HanaInstanceProperties class. */
+    /**
+     * Creates an instance of HanaInstanceProperties class.
+     */
     public HanaInstanceProperties() {
     }
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the HANA instance.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -91,7 +89,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the HANA instance.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the HanaInstanceProperties object itself.
      */
@@ -102,7 +100,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the HANA instance disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -111,7 +109,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the HANA instance disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the HanaInstanceProperties object itself.
      */
@@ -122,7 +120,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the HANA instance.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -131,7 +129,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the HANA instance.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the HanaInstanceProperties object itself.
      */
@@ -142,7 +140,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the networkProfile property: Specifies the network settings for the HANA instance.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -151,7 +149,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Set the networkProfile property: Specifies the network settings for the HANA instance.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the HanaInstanceProperties object itself.
      */
@@ -162,7 +160,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the hanaInstanceId property: Specifies the HANA instance unique ID.
-     *
+     * 
      * @return the hanaInstanceId value.
      */
     public String hanaInstanceId() {
@@ -171,7 +169,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the powerState property: Resource power state.
-     *
+     * 
      * @return the powerState value.
      */
     public HanaInstancePowerStateEnum powerState() {
@@ -180,7 +178,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the proximityPlacementGroup property: Resource proximity placement group.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public String proximityPlacementGroup() {
@@ -189,7 +187,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the hwRevision property: Hardware revision of a HANA instance.
-     *
+     * 
      * @return the hwRevision value.
      */
     public String hwRevision() {
@@ -198,7 +196,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the partnerNodeId property: ARM ID of another HanaInstance that will share a network with this HanaInstance.
-     *
+     * 
      * @return the partnerNodeId value.
      */
     public String partnerNodeId() {
@@ -207,7 +205,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Set the partnerNodeId property: ARM ID of another HanaInstance that will share a network with this HanaInstance.
-     *
+     * 
      * @param partnerNodeId the partnerNodeId value to set.
      * @return the HanaInstanceProperties object itself.
      */
@@ -218,7 +216,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Get the provisioningState property: State of provisioning of the HanaInstance.
-     *
+     * 
      * @return the provisioningState value.
      */
     public HanaProvisioningStatesEnum provisioningState() {
@@ -227,7 +225,7 @@ public final class HanaInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -243,5 +241,65 @@ public final class HanaInstanceProperties {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeStringField("partnerNodeId", this.partnerNodeId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HanaInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HanaInstanceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HanaInstanceProperties.
+     */
+    public static HanaInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HanaInstanceProperties deserializedHanaInstanceProperties = new HanaInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.osProfile = OSProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("hanaInstanceId".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.hanaInstanceId = reader.getString();
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.powerState
+                        = HanaInstancePowerStateEnum.fromString(reader.getString());
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.proximityPlacementGroup = reader.getString();
+                } else if ("hwRevision".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.hwRevision = reader.getString();
+                } else if ("partnerNodeId".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.partnerNodeId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHanaInstanceProperties.provisioningState
+                        = HanaProvisioningStatesEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHanaInstanceProperties;
+        });
     }
 }

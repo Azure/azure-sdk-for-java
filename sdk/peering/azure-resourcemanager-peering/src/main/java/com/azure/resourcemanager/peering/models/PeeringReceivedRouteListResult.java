@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of received routes for the peering. */
+/**
+ * The paginated list of received routes for the peering.
+ */
 @Fluent
-public final class PeeringReceivedRouteListResult {
+public final class PeeringReceivedRouteListResult implements JsonSerializable<PeeringReceivedRouteListResult> {
     /*
      * The list of received routes for the peering.
      */
-    @JsonProperty(value = "value")
     private List<PeeringReceivedRouteInner> value;
 
     /*
      * The link to fetch the next page of received routes for the peering.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeeringReceivedRouteListResult class. */
+    /**
+     * Creates an instance of PeeringReceivedRouteListResult class.
+     */
     public PeeringReceivedRouteListResult() {
     }
 
     /**
      * Get the value property: The list of received routes for the peering.
-     *
+     * 
      * @return the value value.
      */
     public List<PeeringReceivedRouteInner> value() {
@@ -39,7 +45,7 @@ public final class PeeringReceivedRouteListResult {
 
     /**
      * Set the value property: The list of received routes for the peering.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeeringReceivedRouteListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringReceivedRouteListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of received routes for the peering.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeeringReceivedRouteListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of received routes for the peering.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeeringReceivedRouteListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class PeeringReceivedRouteListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringReceivedRouteListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringReceivedRouteListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringReceivedRouteListResult.
+     */
+    public static PeeringReceivedRouteListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringReceivedRouteListResult deserializedPeeringReceivedRouteListResult
+                = new PeeringReceivedRouteListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeeringReceivedRouteInner> value
+                        = reader.readArray(reader1 -> PeeringReceivedRouteInner.fromJson(reader1));
+                    deserializedPeeringReceivedRouteListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeeringReceivedRouteListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringReceivedRouteListResult;
+        });
     }
 }

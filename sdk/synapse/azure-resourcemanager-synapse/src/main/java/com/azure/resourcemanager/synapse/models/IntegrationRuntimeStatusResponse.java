@@ -6,25 +6,27 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
 
-/** An immutable client-side representation of IntegrationRuntimeStatusResponse. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeStatusResponse.
+ */
 public interface IntegrationRuntimeStatusResponse {
     /**
      * Gets the name property: The integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     IntegrationRuntimeStatus properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeStatusResponseInner innerModel();

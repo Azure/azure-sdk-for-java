@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output of the task that collects user tables for the given list of databases. */
+/**
+ * Output of the task that collects user tables for the given list of databases.
+ */
 @Immutable
-public final class GetUserTablesSqlSyncTaskOutput {
+public final class GetUserTablesSqlSyncTaskOutput implements JsonSerializable<GetUserTablesSqlSyncTaskOutput> {
     /*
      * Mapping from database name to list of source tables
      */
-    @JsonProperty(value = "databasesToSourceTables", access = JsonProperty.Access.WRITE_ONLY)
     private String databasesToSourceTables;
 
     /*
      * Mapping from database name to list of target tables
      */
-    @JsonProperty(value = "databasesToTargetTables", access = JsonProperty.Access.WRITE_ONLY)
     private String databasesToTargetTables;
 
     /*
      * Mapping from database name to list of validation errors
      */
-    @JsonProperty(value = "tableValidationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private String tableValidationErrors;
 
     /*
      * Validation errors
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of GetUserTablesSqlSyncTaskOutput class. */
+    /**
+     * Creates an instance of GetUserTablesSqlSyncTaskOutput class.
+     */
     public GetUserTablesSqlSyncTaskOutput() {
     }
 
     /**
      * Get the databasesToSourceTables property: Mapping from database name to list of source tables.
-     *
+     * 
      * @return the databasesToSourceTables value.
      */
     public String databasesToSourceTables() {
@@ -50,7 +54,7 @@ public final class GetUserTablesSqlSyncTaskOutput {
 
     /**
      * Get the databasesToTargetTables property: Mapping from database name to list of target tables.
-     *
+     * 
      * @return the databasesToTargetTables value.
      */
     public String databasesToTargetTables() {
@@ -59,7 +63,7 @@ public final class GetUserTablesSqlSyncTaskOutput {
 
     /**
      * Get the tableValidationErrors property: Mapping from database name to list of validation errors.
-     *
+     * 
      * @return the tableValidationErrors value.
      */
     public String tableValidationErrors() {
@@ -68,7 +72,7 @@ public final class GetUserTablesSqlSyncTaskOutput {
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -77,12 +81,56 @@ public final class GetUserTablesSqlSyncTaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetUserTablesSqlSyncTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetUserTablesSqlSyncTaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetUserTablesSqlSyncTaskOutput.
+     */
+    public static GetUserTablesSqlSyncTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetUserTablesSqlSyncTaskOutput deserializedGetUserTablesSqlSyncTaskOutput
+                = new GetUserTablesSqlSyncTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databasesToSourceTables".equals(fieldName)) {
+                    deserializedGetUserTablesSqlSyncTaskOutput.databasesToSourceTables = reader.getString();
+                } else if ("databasesToTargetTables".equals(fieldName)) {
+                    deserializedGetUserTablesSqlSyncTaskOutput.databasesToTargetTables = reader.getString();
+                } else if ("tableValidationErrors".equals(fieldName)) {
+                    deserializedGetUserTablesSqlSyncTaskOutput.tableValidationErrors = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedGetUserTablesSqlSyncTaskOutput.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetUserTablesSqlSyncTaskOutput;
+        });
     }
 }

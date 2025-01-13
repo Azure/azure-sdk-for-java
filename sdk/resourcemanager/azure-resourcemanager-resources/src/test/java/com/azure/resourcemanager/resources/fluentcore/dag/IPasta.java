@@ -11,6 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
  */
 interface IPasta extends Indexable, Creatable<IPasta> {
     IPasta withInstantPasta(Creatable<IPasta> anotherPasta);
+
     IPasta withDelayedPasta(Creatable<IPasta> anotherPasta);
 }
-

@@ -26,7 +26,7 @@ import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOr
 
 public class AnomalyTransforms {
     public static DetectionAnomalyFilterCondition toInnerFilter(ListAnomaliesDetectedFilter filter,
-                                                                ClientLogger logger) {
+        ClientLogger logger) {
         DetectionAnomalyFilterCondition innerFilter = new DetectionAnomalyFilterCondition();
         AnomalySeverity minSeverity = filter.getMinSeverity();
         AnomalySeverity maxSeverity = filter.getMaxSeverity();
@@ -35,20 +35,18 @@ public class AnomalyTransforms {
                 "Both min and max severity are required if anomalies needs to be filtered based on 'severity'"));
         }
         if (minSeverity != null) {
-            innerFilter.setSeverityFilter(new SeverityFilterCondition()
-                .setMin(Severity.fromString(minSeverity.toString())).
-                    setMax(Severity.fromString(maxSeverity.toString())));
+            innerFilter
+                .setSeverityFilter(new SeverityFilterCondition().setMin(Severity.fromString(minSeverity.toString()))
+                    .setMax(Severity.fromString(maxSeverity.toString())));
         }
         List<DimensionKey> seriesKeys = filter.getSeriesGroupKeys();
         if (seriesKeys != null && !seriesKeys.isEmpty()) {
-            innerFilter.setDimensionFilter(seriesKeys
-                .stream()
+            innerFilter.setDimensionFilter(seriesKeys.stream()
                 .map(key -> new DimensionGroupIdentity().setDimension(key.asMap()))
                 .collect(Collectors.toList()));
         }
 
-        if (innerFilter.getSeverityFilter() != null
-            || innerFilter.getDimensionFilter() != null) {
+        if (innerFilter.getSeverityFilter() != null || innerFilter.getDimensionFilter() != null) {
             return innerFilter;
         } else {
             return null;
@@ -61,20 +59,14 @@ public class AnomalyTransforms {
         if (innerAnomalyList == null || innerAnomalyList.isEmpty()) {
             dataPointAnomalyList = new ArrayList<>();
         } else {
-            dataPointAnomalyList = innerAnomalyList
-                .stream()
-                .map(innerAnomaly -> fromInner(innerAnomaly))
-                .collect(Collectors.toList());
+            dataPointAnomalyList
+                = innerAnomalyList.stream().map(innerAnomaly -> fromInner(innerAnomaly)).collect(Collectors.toList());
         }
 
-        final IterableStream<DataPointAnomaly> pageElements
-            = new IterableStream<>(dataPointAnomalyList);
+        final IterableStream<DataPointAnomaly> pageElements = new IterableStream<>(dataPointAnomalyList);
 
-        return new PagedResponseBase<Void, DataPointAnomaly>(innerResponse.getRequest(),
-            innerResponse.getStatusCode(),
-            innerResponse.getHeaders(),
-            new AnomalyPage(pageElements, innerResponse.getContinuationToken()),
-            null);
+        return new PagedResponseBase<Void, DataPointAnomaly>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+            innerResponse.getHeaders(), new AnomalyPage(pageElements, innerResponse.getContinuationToken()), null);
     }
 
     private static DataPointAnomaly fromInner(AnomalyResult innerAnomaly) {
@@ -93,7 +85,8 @@ public class AnomalyTransforms {
             AnomalyHelper.setSeriesKey(dataPointAnomaly, new DimensionKey(innerAnomaly.getDimension()));
         }
         if (innerAnomaly.getProperty() != null) {
-            AnomalyHelper.setSeverity(dataPointAnomaly, AnomalySeverity.fromString(toStringOrNull(innerAnomaly.getProperty().getAnomalySeverity())));
+            AnomalyHelper.setSeverity(dataPointAnomaly,
+                AnomalySeverity.fromString(toStringOrNull(innerAnomaly.getProperty().getAnomalySeverity())));
             AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
             AnomalyHelper.setValue(dataPointAnomaly, innerAnomaly.getProperty().getValue());
             AnomalyHelper.setExpectedValue(dataPointAnomaly, innerAnomaly.getProperty().getExpectedValue());

@@ -14,17 +14,21 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** Application security group. */
 @Fluent
-public interface ApplicationSecurityGroup
-    extends GroupableResource<NetworkManager, ApplicationSecurityGroupInner>,
-        Refreshable<ApplicationSecurityGroup>,
-        Updatable<ApplicationSecurityGroup.Update> {
+public interface ApplicationSecurityGroup extends GroupableResource<NetworkManager, ApplicationSecurityGroupInner>,
+    Refreshable<ApplicationSecurityGroup>, Updatable<ApplicationSecurityGroup.Update> {
     /**
+     * Gets the resource GUID property of the application security group resource.
+     *
      * @return the resource GUID property of the application security group resource. It uniquely identifies a resource,
      *     even if the user changes its name or migrate the resource across subscriptions or resource groups.
      */
     String resourceGuid();
 
-    /** @return the provisioning state of the application security group resource */
+    /**
+     * Gets the provisioning state of the application security group resource.
+     *
+     * @return the provisioning state of the application security group resource
+     */
     String provisioningState();
 
     // Fluent interfaces for creating Application Security Groups

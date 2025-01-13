@@ -23,8 +23,7 @@ public final class HierarchySettingsOperationsImpl implements HierarchySettingsO
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    public HierarchySettingsOperationsImpl(
-        HierarchySettingsOperationsClient innerClient,
+    public HierarchySettingsOperationsImpl(HierarchySettingsOperationsClient innerClient,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,10 +32,7 @@ public final class HierarchySettingsOperationsImpl implements HierarchySettingsO
     public Response<HierarchySettingsList> listWithResponse(String groupId, Context context) {
         Response<HierarchySettingsListInner> inner = this.serviceClient().listWithResponse(groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HierarchySettingsListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,10 +51,7 @@ public final class HierarchySettingsOperationsImpl implements HierarchySettingsO
     public Response<HierarchySettings> getWithResponse(String groupId, Context context) {
         Response<HierarchySettingsInner> inner = this.serviceClient().getWithResponse(groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HierarchySettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,15 +67,12 @@ public final class HierarchySettingsOperationsImpl implements HierarchySettingsO
         }
     }
 
-    public Response<HierarchySettings> createOrUpdateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
-        Response<HierarchySettingsInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(groupId, createTenantSettingsRequest, context);
+    public Response<HierarchySettings> createOrUpdateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+        Response<HierarchySettingsInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(groupId, createTenantSettingsRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HierarchySettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -98,15 +88,12 @@ public final class HierarchySettingsOperationsImpl implements HierarchySettingsO
         }
     }
 
-    public Response<HierarchySettings> updateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
-        Response<HierarchySettingsInner> inner =
-            this.serviceClient().updateWithResponse(groupId, createTenantSettingsRequest, context);
+    public Response<HierarchySettings> updateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+        Response<HierarchySettingsInner> inner
+            = this.serviceClient().updateWithResponse(groupId, createTenantSettingsRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HierarchySettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

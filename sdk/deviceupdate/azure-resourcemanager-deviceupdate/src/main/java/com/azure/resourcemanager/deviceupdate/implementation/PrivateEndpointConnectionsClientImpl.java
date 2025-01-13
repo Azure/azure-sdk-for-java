@@ -568,8 +568,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName,
-            privateEndpointConnection).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName,
+                privateEndpointConnection)
+            .getSyncPoller();
     }
 
     /**
@@ -590,8 +592,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName,
-            privateEndpointConnection, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName,
+                privateEndpointConnection, context)
+            .getSyncPoller();
     }
 
     /**

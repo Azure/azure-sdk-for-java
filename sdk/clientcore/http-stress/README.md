@@ -211,7 +211,7 @@ In addition to `test.run_duration`, we're also collecting:
     - Class stats
     - See [JVM metrics semantic conventions for the details](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md)
 
-You can also enable [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/main/docs/asciidoc/metrics.adoc) collection by installing `micrometer-core` and
+You can also enable [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/962aeb77a09088fa2a7bac6d814c2b35220b1d35/docs/modules/ROOT/pages/metrics.adoc) collection by installing `micrometer-core` and
 [OpenTelemetry micrometer bridge](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library).
 
 ### Stress test workbook

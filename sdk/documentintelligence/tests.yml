@@ -10,10 +10,5 @@ extends:
         groupId: com.azure
         safeName: azureaidocumentintelligence
     CloudConfig:
-      Preview:
-        ServiceConnection: azure-sdk-tests-preview
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePreviewMsft.json
+      Public:
         Location: 'eastus'
-    Clouds: 'Preview'
-    SupportedClouds: 'Preview'

@@ -50,15 +50,15 @@ public class ManagePrivateDns {
         final String password = Utils.password();
 
         try {
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_WEST)
-                .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             //============================================================
             // Creates a private DNS Zone
 
             System.out.println("Creating private DNS zone " + CUSTOM_DOMAIN_NAME + "...");
-            PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones().define(CUSTOM_DOMAIN_NAME)
+            PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones()
+                .define(CUSTOM_DOMAIN_NAME)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
@@ -69,7 +69,8 @@ public class ManagePrivateDns {
             // Creates a virtual network
 
             System.out.println("Creating virtual network " + vnetName + "...");
-            Network network = azureResourceManager.networks().define(vnetName)
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.2.0.0/16")
@@ -81,14 +82,14 @@ public class ManagePrivateDns {
             //============================================================
             // Links a virtual network
 
-            System.out.println("Creating virtual network link " + linkName
-                + " within private zone " + privateDnsZone.name() + " ...");
+            System.out.println(
+                "Creating virtual network link " + linkName + " within private zone " + privateDnsZone.name() + " ...");
             privateDnsZone.update()
                 .defineVirtualNetworkLink(linkName)
-                    .enableAutoRegistration()
-                    .withVirtualNetworkId(network.id())
-                    .withETagCheck()
-                    .attach()
+                .enableAutoRegistration()
+                .withVirtualNetworkId(network.id())
+                .withETagCheck()
+                .attach()
                 .apply();
             System.out.println("Linked a virtual network " + network.id());
 
@@ -96,7 +97,8 @@ public class ManagePrivateDns {
             // Creates test virtual machines
 
             System.out.println("Creating first virtual machine " + vm1Name + "...");
-            VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines().define(vm1Name)
+            VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines()
+                .define(vm1Name)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
@@ -115,7 +117,8 @@ public class ManagePrivateDns {
             System.out.println("Started first virtual machine " + virtualMachine1.name());
 
             System.out.println("Creating second virtual machine " + vm2Name + "...");
-            VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines().define(vm2Name)
+            VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines()
+                .define(vm2Name)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
@@ -138,8 +141,8 @@ public class ManagePrivateDns {
             System.out.println("Creating additional record set " + rsName + "...");
             privateDnsZone.update()
                 .defineARecordSet(rsName)
-                    .withIPv4Address(virtualMachine1.getPrimaryNetworkInterface().primaryPrivateIP())
-                    .attach()
+                .withIPv4Address(virtualMachine1.getPrimaryNetworkInterface().primaryPrivateIP())
+                .attach()
                 .apply();
             System.out.println("Created additional record set " + rsName);
             Utils.print(privateDnsZone);
@@ -157,7 +160,8 @@ public class ManagePrivateDns {
             System.out.println("Preparing third command: " + script3);
 
             System.out.println("Starting to run commands...");
-            RunCommandResult result = virtualMachine2.runPowerShellScript(Arrays.asList(script1, script2, script3), null);
+            RunCommandResult result
+                = virtualMachine2.runPowerShellScript(Arrays.asList(script1, script2, script3), null);
             for (InstanceViewStatus status : result.value()) {
                 System.out.println(status.message());
             }
@@ -189,8 +193,7 @@ public class ManagePrivateDns {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

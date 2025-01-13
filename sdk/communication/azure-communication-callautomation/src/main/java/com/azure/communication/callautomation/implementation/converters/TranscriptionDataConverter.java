@@ -3,8 +3,7 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
-import com.azure.communication.callautomation.models.streaming.transcription.Word;
+import com.azure.communication.callautomation.models.WordData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
@@ -36,16 +35,15 @@ public final class TranscriptionDataConverter {
      */
     private long offset;
 
-     /*
-     * Duration in ticks. 1 tick = 100 nanoseconds.
-     */
+    /*
+    * Duration in ticks. 1 tick = 100 nanoseconds.
+    */
     private long duration;
-
 
     /*
      * TThe result for each word of the phrase
      */
-    private List<Word> words;
+    private List<WordData> words;
 
     /*
      * The participantId.
@@ -92,7 +90,8 @@ public final class TranscriptionDataConverter {
     public long getDuration() {
         return duration;
     }
-  /**
+
+    /**
      * Get the offset property.
      *
      * @return the offset value.
@@ -106,7 +105,7 @@ public final class TranscriptionDataConverter {
      *
      * @return the words value.
      */
-    public List<Word> getWords() {
+    public List<WordData> getWords() {
         return words;
     }
 
@@ -118,7 +117,6 @@ public final class TranscriptionDataConverter {
     public String getParticipantRawID() {
         return participantRawID;
     }
-
 
     /**
      * Get the resultStatus property.
@@ -157,7 +155,7 @@ public final class TranscriptionDataConverter {
                 } else if ("duration".equals(fieldName)) {
                     converter.duration = reader.getLong();
                 } else if ("words".equals(fieldName)) {
-                    converter.words = reader.readArray(Word::fromJson);
+                    converter.words = reader.readArray(WordData::fromJson);
                 } else if ("participantRawID".equals(fieldName)) {
                     converter.participantRawID = reader.getString();
                 } else if ("resultStatus".equals(fieldName)) {

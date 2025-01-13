@@ -10,10 +10,6 @@ module com.azure.resourcemanager.batchai {
     exports com.azure.resourcemanager.batchai.fluent.models;
     exports com.azure.resourcemanager.batchai.models;
 
-    opens com.azure.resourcemanager.batchai.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.batchai.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.batchai.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.batchai.models to com.azure.core, com.fasterxml.jackson.databind;
 }

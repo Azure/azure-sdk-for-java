@@ -20,21 +20,18 @@ public final class WorkflowRunOperationsImpl implements WorkflowRunOperations {
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowRunOperationsImpl(
-        WorkflowRunOperationsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowRunOperationsImpl(WorkflowRunOperationsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<WorkflowRun> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context) {
-        Response<WorkflowRunInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, operationId, context);
+    public Response<WorkflowRun> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context) {
+        Response<WorkflowRunInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowRunImpl(inner.getValue(), this.manager()));
         } else {
             return null;

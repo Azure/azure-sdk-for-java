@@ -12,8 +12,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    VirtualNetworkImpl(
-        VirtualNetworkInner innerObject,
+    VirtualNetworkImpl(VirtualNetworkInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

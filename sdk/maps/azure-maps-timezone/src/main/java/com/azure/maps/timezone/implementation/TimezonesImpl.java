@@ -259,7 +259,7 @@ public final class TimezonesImpl {
         Integer daylightSavingsTimeLastingYears, Context context) {
         return getTimezoneByIDWithResponseAsync(format, timezoneId, acceptLanguage, options, timeStamp,
             daylightSavingsTimeFrom, daylightSavingsTimeLastingYears, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -486,7 +486,7 @@ public final class TimezonesImpl {
         OffsetDateTime daylightSavingsTimeFrom, Integer daylightSavingsTimeLastingYears, Context context) {
         return getTimezoneByCoordinatesWithResponseAsync(format, coordinates, acceptLanguage, options, timeStamp,
             daylightSavingsTimeFrom, daylightSavingsTimeLastingYears, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

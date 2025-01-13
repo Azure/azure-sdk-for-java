@@ -10,10 +10,6 @@ module com.azure.resourcemanager.attestation {
     exports com.azure.resourcemanager.attestation.fluent.models;
     exports com.azure.resourcemanager.attestation.models;
 
-    opens com.azure.resourcemanager.attestation.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.attestation.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.attestation.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.attestation.models to com.azure.core;
 }

@@ -8,28 +8,24 @@ import com.azure.resourcemanager.devtestlabs.models.Policy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies Update. */
+/**
+ * Samples for Policies Update.
+ */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Update.json
      */
     /**
      * Sample code: Policies_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Policy resource =
-            manager
-                .policies()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{policySetName}",
-                    "{policyName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Policy resource = manager.policies()
+            .getWithResponse("resourceGroupName", "{labName}", "{policySetName}", "{policyName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

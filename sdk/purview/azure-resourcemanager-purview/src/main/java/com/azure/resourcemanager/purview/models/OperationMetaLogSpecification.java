@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** log specifications for operation api. */
+/**
+ * log specifications for operation api.
+ */
 @Fluent
-public final class OperationMetaLogSpecification {
+public final class OperationMetaLogSpecification implements JsonSerializable<OperationMetaLogSpecification> {
     /*
      * blob duration of the log
      */
-    @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
     /*
      * localized name of the log category
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * name of the log category
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of OperationMetaLogSpecification class. */
+    /**
+     * Creates an instance of OperationMetaLogSpecification class.
+     */
     public OperationMetaLogSpecification() {
     }
 
     /**
      * Get the blobDuration property: blob duration of the log.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -43,7 +48,7 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Set the blobDuration property: blob duration of the log.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the OperationMetaLogSpecification object itself.
      */
@@ -54,7 +59,7 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Get the displayName property: localized name of the log category.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +68,7 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Set the displayName property: localized name of the log category.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationMetaLogSpecification object itself.
      */
@@ -74,7 +79,7 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Get the name property: name of the log category.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +88,7 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Set the name property: name of the log category.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetaLogSpecification object itself.
      */
@@ -94,9 +99,52 @@ public final class OperationMetaLogSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("blobDuration", this.blobDuration);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetaLogSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetaLogSpecification if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetaLogSpecification.
+     */
+    public static OperationMetaLogSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetaLogSpecification deserializedOperationMetaLogSpecification
+                = new OperationMetaLogSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobDuration".equals(fieldName)) {
+                    deserializedOperationMetaLogSpecification.blobDuration = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationMetaLogSpecification.displayName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationMetaLogSpecification.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetaLogSpecification;
+        });
     }
 }

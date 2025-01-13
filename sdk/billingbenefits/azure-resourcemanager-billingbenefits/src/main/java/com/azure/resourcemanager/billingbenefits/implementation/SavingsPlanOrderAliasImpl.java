@@ -20,8 +20,7 @@ public final class SavingsPlanOrderAliasImpl implements SavingsPlanOrderAlias {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    public SavingsPlanOrderAliasImpl(
-        SavingsPlanOrderAliasClient innerClient,
+    public SavingsPlanOrderAliasImpl(SavingsPlanOrderAliasClient innerClient,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,8 +35,8 @@ public final class SavingsPlanOrderAliasImpl implements SavingsPlanOrderAlias {
         }
     }
 
-    public SavingsPlanOrderAliasModel create(
-        String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body, Context context) {
+    public SavingsPlanOrderAliasModel create(String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body,
+        Context context) {
         SavingsPlanOrderAliasModelInner inner = this.serviceClient().create(savingsPlanOrderAliasName, body, context);
         if (inner != null) {
             return new SavingsPlanOrderAliasModelImpl(inner, this.manager());
@@ -47,13 +46,10 @@ public final class SavingsPlanOrderAliasImpl implements SavingsPlanOrderAlias {
     }
 
     public Response<SavingsPlanOrderAliasModel> getWithResponse(String savingsPlanOrderAliasName, Context context) {
-        Response<SavingsPlanOrderAliasModelInner> inner =
-            this.serviceClient().getWithResponse(savingsPlanOrderAliasName, context);
+        Response<SavingsPlanOrderAliasModelInner> inner
+            = this.serviceClient().getWithResponse(savingsPlanOrderAliasName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanOrderAliasModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;

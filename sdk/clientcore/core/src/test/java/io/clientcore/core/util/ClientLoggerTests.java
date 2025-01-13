@@ -5,9 +5,9 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.json.JsonOptions;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonOptions;
+import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.util.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -78,11 +78,11 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("logMaliciousErrorSupplier")
     public void logMaliciousMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse) {
-        String logMessage = "You have successfully authenticated, \r\n[INFO] User dummy was not"
-            + " successfully authenticated.";
+        String logMessage
+            = "You have successfully authenticated, \r\n[INFO] User dummy was not" + " successfully authenticated.";
 
-        String expectedMessage = "You have successfully authenticated, \\r\\n[INFO] User dummy was not"
-            + " successfully authenticated.";
+        String expectedMessage
+            = "You have successfully authenticated, \\r\\n[INFO] User dummy was not" + " successfully authenticated.";
 
         logMessage(setupLogLevelAndGetLogger(logLevelToConfigure), logLevelToUse, logMessage);
 
@@ -379,10 +379,7 @@ public class ClientLoggerTests {
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
 
-        logger.atInfo()
-            .addKeyValue("local", true)
-            .addKeyValue("connectionId", "conflict")
-            .log("hello world");
+        logger.atInfo().addKeyValue("local", true).addKeyValue("connectionId", "conflict").log("hello world");
 
         String fullLog = byteArraySteamToString(logCaptureStream);
 
@@ -591,6 +588,7 @@ public class ClientLoggerTests {
         expectedMessage.put("message", "Don't format strings when writing logs, please!");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
+        expectedMessage.put("exception.type", runtimeException.getClass().getCanonicalName());
         expectedMessage.put("exception.message", exceptionMessage);
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -620,6 +618,7 @@ public class ClientLoggerTests {
         expectedMessage.put("message", "hello world");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
+        expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
         expectedMessage.put("exception.message", exceptionMessage);
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -649,6 +648,7 @@ public class ClientLoggerTests {
         expectedMessage.put("message", "hello \"world\"");
         expectedMessage.put("connection\tId", "foo");
         expectedMessage.put("linkName", "\rbar");
+        expectedMessage.put("exception.type", runtimeException.getClass().getCanonicalName());
         expectedMessage.put("exception.message", exceptionMessage);
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -669,15 +669,17 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        assertSame(runtimeException, logger.atWarning()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log(null, runtimeException));
+        assertSame(runtimeException,
+            logger.atWarning()
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(null, runtimeException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
+        expectedMessage.put("exception.type", runtimeException.getClass().getCanonicalName());
         expectedMessage.put("exception.message", exceptionMessage);
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -698,15 +700,17 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertSame(ioException, logger.atWarning()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log(null, ioException));
+        assertSame(ioException,
+            logger.atWarning()
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(null, ioException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
+        expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
         expectedMessage.put("exception.message", exceptionMessage);
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -726,6 +730,7 @@ public class ClientLoggerTests {
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", message);
+        expectedMessage.put("exception.type", exception.getClass().getCanonicalName());
         expectedMessage.put("exception.message", null);
         expectedMessage.put("exception.stacktrace", expectedStackTrace);
 
@@ -758,8 +763,8 @@ public class ClientLoggerTests {
     }
 
     private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet, Map<String, Object> globalContext) {
-        DefaultLogger logger = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream),
-            logLevelToSet);
+        DefaultLogger logger
+            = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream), logLevelToSet);
 
         return new ClientLogger(logger, globalContext);
     }
@@ -770,22 +775,7 @@ public class ClientLoggerTests {
             return;
         }
 
-        switch (logLevel) {
-            case VERBOSE:
-                logger.atVerbose().log(logMessage, runtimeException);
-                break;
-            case INFORMATIONAL:
-                logger.atInfo().log(logMessage, runtimeException);
-                break;
-            case WARNING:
-                logger.atWarning().log(logMessage, runtimeException);
-                break;
-            case ERROR:
-                logger.atError().log(logMessage, runtimeException);
-                break;
-            default:
-                break;
-        }
+        logger.atLevel(logLevel).log(logMessage, runtimeException);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage) {
@@ -793,22 +783,7 @@ public class ClientLoggerTests {
             return;
         }
 
-        switch (logLevel) {
-            case VERBOSE:
-                logger.atVerbose().log(logMessage);
-                break;
-            case INFORMATIONAL:
-                logger.atInfo().log(logMessage);
-                break;
-            case WARNING:
-                logger.atWarning().log(logMessage);
-                break;
-            case ERROR:
-                logger.atError().log(logMessage);
-                break;
-            default:
-                break;
-        }
+        logger.atLevel(logLevel).log(logMessage);
     }
 
     private static IllegalStateException createIllegalStateException(String message) {
@@ -820,8 +795,8 @@ public class ClientLoggerTests {
     }
 
     private static <T extends Throwable> T fillInStackTrace(T throwable) {
-        StackTraceElement[] stackTraceElements = {
-            new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
+        StackTraceElement[] stackTraceElements
+            = { new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;
@@ -835,6 +810,7 @@ public class ClientLoggerTests {
         LogLevel loggedLevel) {
         if (loggedLevel.compareTo(configuredLevel) >= 0) {
             // remove date/time/level/etc from fullMessage
+
             String messageJson = fullLog.substring(fullLog.indexOf(" - ") + 3);
             System.out.println(messageJson);
             Map<String, Object> message = fromJson(messageJson);

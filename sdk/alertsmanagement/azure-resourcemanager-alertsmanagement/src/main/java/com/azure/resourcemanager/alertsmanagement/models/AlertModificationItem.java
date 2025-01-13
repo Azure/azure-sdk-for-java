@@ -5,56 +5,61 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Alert modification item. */
+/**
+ * Alert modification item.
+ */
 @Fluent
-public final class AlertModificationItem {
+public final class AlertModificationItem implements JsonSerializable<AlertModificationItem> {
     /*
      * Reason for the modification
      */
-    @JsonProperty(value = "modificationEvent")
     private AlertModificationEvent modificationEvent;
 
     /*
      * Old value
      */
-    @JsonProperty(value = "oldValue")
     private String oldValue;
 
     /*
      * New value
      */
-    @JsonProperty(value = "newValue")
     private String newValue;
 
     /*
      * Modified date and time
      */
-    @JsonProperty(value = "modifiedAt")
     private String modifiedAt;
 
     /*
      * Modified user details (Principal client name)
      */
-    @JsonProperty(value = "modifiedBy")
     private String modifiedBy;
 
     /*
      * Modification comments
      */
-    @JsonProperty(value = "comments")
     private String comments;
 
     /*
      * Description of the modification
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of AlertModificationItem class.
+     */
+    public AlertModificationItem() {
+    }
+
+    /**
      * Get the modificationEvent property: Reason for the modification.
-     *
+     * 
      * @return the modificationEvent value.
      */
     public AlertModificationEvent modificationEvent() {
@@ -63,7 +68,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the modificationEvent property: Reason for the modification.
-     *
+     * 
      * @param modificationEvent the modificationEvent value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -74,7 +79,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the oldValue property: Old value.
-     *
+     * 
      * @return the oldValue value.
      */
     public String oldValue() {
@@ -83,7 +88,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the oldValue property: Old value.
-     *
+     * 
      * @param oldValue the oldValue value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -94,7 +99,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the newValue property: New value.
-     *
+     * 
      * @return the newValue value.
      */
     public String newValue() {
@@ -103,7 +108,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the newValue property: New value.
-     *
+     * 
      * @param newValue the newValue value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -114,7 +119,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the modifiedAt property: Modified date and time.
-     *
+     * 
      * @return the modifiedAt value.
      */
     public String modifiedAt() {
@@ -123,7 +128,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the modifiedAt property: Modified date and time.
-     *
+     * 
      * @param modifiedAt the modifiedAt value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -134,7 +139,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the modifiedBy property: Modified user details (Principal client name).
-     *
+     * 
      * @return the modifiedBy value.
      */
     public String modifiedBy() {
@@ -143,7 +148,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the modifiedBy property: Modified user details (Principal client name).
-     *
+     * 
      * @param modifiedBy the modifiedBy value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -154,7 +159,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the comments property: Modification comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -163,7 +168,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the comments property: Modification comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -174,7 +179,7 @@ public final class AlertModificationItem {
 
     /**
      * Get the description property: Description of the modification.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -183,7 +188,7 @@ public final class AlertModificationItem {
 
     /**
      * Set the description property: Description of the modification.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertModificationItem object itself.
      */
@@ -194,9 +199,65 @@ public final class AlertModificationItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modificationEvent",
+            this.modificationEvent == null ? null : this.modificationEvent.toString());
+        jsonWriter.writeStringField("oldValue", this.oldValue);
+        jsonWriter.writeStringField("newValue", this.newValue);
+        jsonWriter.writeStringField("modifiedAt", this.modifiedAt);
+        jsonWriter.writeStringField("modifiedBy", this.modifiedBy);
+        jsonWriter.writeStringField("comments", this.comments);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertModificationItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertModificationItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertModificationItem.
+     */
+    public static AlertModificationItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertModificationItem deserializedAlertModificationItem = new AlertModificationItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modificationEvent".equals(fieldName)) {
+                    deserializedAlertModificationItem.modificationEvent
+                        = AlertModificationEvent.fromString(reader.getString());
+                } else if ("oldValue".equals(fieldName)) {
+                    deserializedAlertModificationItem.oldValue = reader.getString();
+                } else if ("newValue".equals(fieldName)) {
+                    deserializedAlertModificationItem.newValue = reader.getString();
+                } else if ("modifiedAt".equals(fieldName)) {
+                    deserializedAlertModificationItem.modifiedAt = reader.getString();
+                } else if ("modifiedBy".equals(fieldName)) {
+                    deserializedAlertModificationItem.modifiedBy = reader.getString();
+                } else if ("comments".equals(fieldName)) {
+                    deserializedAlertModificationItem.comments = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertModificationItem.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertModificationItem;
+        });
     }
 }

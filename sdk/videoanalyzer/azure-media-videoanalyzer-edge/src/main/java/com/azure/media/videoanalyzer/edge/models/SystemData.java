@@ -5,30 +5,42 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Read-only system metadata associated with a resource. */
+/**
+ * Read-only system metadata associated with a resource.
+ */
 @Fluent
-public final class SystemData {
+public final class SystemData implements JsonSerializable<SystemData> {
     /*
-     * Date and time when this resource was first created. Value is represented
-     * in UTC according to the ISO8601 date format.
+     * Date and time when this resource was first created. Value is represented in UTC according to the ISO8601 date
+     * format.
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
-     * Date and time when this resource was last modified. Value is represented
-     * in UTC according to the ISO8601 date format.
+     * Date and time when this resource was last modified. Value is represented in UTC according to the ISO8601 date
+     * format.
      */
-    @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
+
+    /**
+     * Creates an instance of SystemData class.
+     */
+    public SystemData() {
+    }
 
     /**
      * Get the createdAt property: Date and time when this resource was first created. Value is represented in UTC
      * according to the ISO8601 date format.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime getCreatedAt() {
@@ -38,7 +50,7 @@ public final class SystemData {
     /**
      * Set the createdAt property: Date and time when this resource was first created. Value is represented in UTC
      * according to the ISO8601 date format.
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the SystemData object itself.
      */
@@ -50,7 +62,7 @@ public final class SystemData {
     /**
      * Get the lastModifiedAt property: Date and time when this resource was last modified. Value is represented in UTC
      * according to the ISO8601 date format.
-     *
+     * 
      * @return the lastModifiedAt value.
      */
     public OffsetDateTime getLastModifiedAt() {
@@ -60,12 +72,55 @@ public final class SystemData {
     /**
      * Set the lastModifiedAt property: Date and time when this resource was last modified. Value is represented in UTC
      * according to the ISO8601 date format.
-     *
+     * 
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the SystemData object itself.
      */
     public SystemData setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("lastModifiedAt",
+            this.lastModifiedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemData if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SystemData.
+     */
+    public static SystemData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemData deserializedSystemData = new SystemData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdAt".equals(fieldName)) {
+                    deserializedSystemData.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedSystemData.lastModifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemData;
+        });
     }
 }

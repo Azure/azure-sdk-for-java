@@ -6,31 +6,37 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Rules for the InternetGateways. */
+/**
+ * Rules for the InternetGateways.
+ */
 @Fluent
-public final class RuleProperties {
+public final class RuleProperties implements JsonSerializable<RuleProperties> {
     /*
      * Specify action.
      */
-    @JsonProperty(value = "action", required = true)
     private Action action;
 
     /*
      * List of Addresses to be allowed or denied.
      */
-    @JsonProperty(value = "addressList", required = true)
     private List<String> addressList;
 
-    /** Creates an instance of RuleProperties class. */
+    /**
+     * Creates an instance of RuleProperties class.
+     */
     public RuleProperties() {
     }
 
     /**
      * Get the action property: Specify action.
-     *
+     * 
      * @return the action value.
      */
     public Action action() {
@@ -39,7 +45,7 @@ public final class RuleProperties {
 
     /**
      * Set the action property: Specify action.
-     *
+     * 
      * @param action the action value to set.
      * @return the RuleProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class RuleProperties {
 
     /**
      * Get the addressList property: List of Addresses to be allowed or denied.
-     *
+     * 
      * @return the addressList value.
      */
     public List<String> addressList() {
@@ -59,7 +65,7 @@ public final class RuleProperties {
 
     /**
      * Set the addressList property: List of Addresses to be allowed or denied.
-     *
+     * 
      * @param addressList the addressList value to set.
      * @return the RuleProperties object itself.
      */
@@ -70,21 +76,60 @@ public final class RuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model RuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model RuleProperties"));
         }
         if (addressList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property addressList in model RuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property addressList in model RuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeArrayField("addressList", this.addressList, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RuleProperties.
+     */
+    public static RuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleProperties deserializedRuleProperties = new RuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedRuleProperties.action = Action.fromString(reader.getString());
+                } else if ("addressList".equals(fieldName)) {
+                    List<String> addressList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRuleProperties.addressList = addressList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleProperties;
+        });
+    }
 }

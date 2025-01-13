@@ -30,22 +30,28 @@ import com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorEx
 import com.azure.resourcemanager.storageimportexport.models.GetBitLockerKeysResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BitLockerKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BitLockerKeysClient.
+ */
 public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BitLockerKeysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageImportExportImpl client;
 
     /**
      * Initializes an instance of BitLockerKeysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BitLockerKeysClientImpl(StorageImportExportImpl client) {
-        this.service =
-            RestProxy.create(BitLockerKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BitLockerKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,29 +62,23 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageImportExportB")
     public interface BitLockerKeysService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
-                + "/{jobName}/listBitLockerKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
-        Mono<Response<GetBitLockerKeysResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("jobName") String jobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept-Language") String acceptLanguage,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<GetBitLockerKeysResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("jobName") String jobName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept-Language") String acceptLanguage, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,19 +87,15 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DriveBitLockerKeyInner>> listSinglePageAsync(String jobName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -107,31 +103,19 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getAcceptLanguage(),
-                            accept,
-                            context))
-            .<PagedResponse<DriveBitLockerKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), jobName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), this.client.getAcceptLanguage(), accept, context))
+            .<PagedResponse<DriveBitLockerKeyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.
@@ -139,22 +123,18 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      * @return getBitLockerKeys response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DriveBitLockerKeyInner>> listSinglePageAsync(
-        String jobName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DriveBitLockerKeyInner>> listSinglePageAsync(String jobName, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -163,27 +143,18 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                jobName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getAcceptLanguage(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), jobName, this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getAcceptLanguage(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,10 +167,10 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.
@@ -213,10 +184,10 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,10 +200,10 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
 
     /**
      * Returns the BitLocker Keys for all drives in the specified job.
-     *
+     * 
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseErrorException thrown if the request is rejected by server.

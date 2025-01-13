@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the VMwareCloudSimpleImpl type. */
-@ServiceClientBuilder(serviceClients = {VMwareCloudSimpleImpl.class})
+/**
+ * A builder for creating a new instance of the VMwareCloudSimpleImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { VMwareCloudSimpleImpl.class })
 public final class VMwareCloudSimpleBuilder {
     /*
      * The subscription ID.
@@ -24,7 +26,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets The subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -40,7 +42,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -56,7 +58,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -72,7 +74,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -88,7 +90,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -104,7 +106,7 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the VMwareCloudSimpleBuilder.
      */
@@ -115,30 +117,22 @@ public final class VMwareCloudSimpleBuilder {
 
     /**
      * Builds an instance of VMwareCloudSimpleImpl with the provided parameters.
-     *
+     * 
      * @return an instance of VMwareCloudSimpleImpl.
      */
     public VMwareCloudSimpleImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        VMwareCloudSimpleImpl client =
-            new VMwareCloudSimpleImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        VMwareCloudSimpleImpl client = new VMwareCloudSimpleImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -22,11 +22,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomImageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"vm\":{\"sourceVmId\":\"rgzdwmsweyp\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"cnxqhuexmkttlst\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"emhzrncsdtc\",\"author\":\"siypbs\",\"creationDate\":\"2021-03-20T23:23:02Z\",\"managedImageId\":\"gusl\",\"managedSnapshotId\":\"adcy\",\"dataDiskStorageInfo\":[{\"lun\":\"yhejhzisxgfp\",\"storageType\":\"Premium\"},{\"lun\":\"p\",\"storageType\":\"Premium\"},{\"lun\":\"r\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"zraehtwd\",\"publisher\":\"ftswibyrcdlbhsh\",\"offer\":\"p\"},\"isPlanAuthorized\":false,\"provisioningState\":\"twitykhev\",\"uniqueIdentifier\":\"cedcpnmdy\"}")
-                .toObject(CustomImageProperties.class);
+        CustomImageProperties model = BinaryData.fromString(
+            "{\"vm\":{\"sourceVmId\":\"rgzdwmsweyp\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"cnxqhuexmkttlst\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"emhzrncsdtc\",\"author\":\"siypbs\",\"creationDate\":\"2021-03-20T23:23:02Z\",\"managedImageId\":\"gusl\",\"managedSnapshotId\":\"adcy\",\"dataDiskStorageInfo\":[{\"lun\":\"yhejhzisxgfp\",\"storageType\":\"Premium\"},{\"lun\":\"p\",\"storageType\":\"Premium\"},{\"lun\":\"r\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"zraehtwd\",\"publisher\":\"ftswibyrcdlbhsh\",\"offer\":\"p\"},\"isPlanAuthorized\":false,\"provisioningState\":\"twitykhev\",\"uniqueIdentifier\":\"cedcpnmdy\"}")
+            .toObject(CustomImageProperties.class);
         Assertions.assertEquals("rgzdwmsweyp", model.vm().sourceVmId());
         Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, model.vm().windowsOsInfo().windowsOsState());
         Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.vm().linuxOsInfo().linuxOsState());
@@ -47,34 +45,24 @@ public final class CustomImagePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImageProperties model =
-            new CustomImageProperties()
-                .withVm(
-                    new CustomImagePropertiesFromVm()
-                        .withSourceVmId("rgzdwmsweyp")
-                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
-                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
-                .withVhd(
-                    new CustomImagePropertiesCustom()
-                        .withImageName("cnxqhuexmkttlst")
-                        .withSysPrep(true)
-                        .withOsType(CustomImageOsType.NONE))
-                .withDescription("emhzrncsdtc")
-                .withAuthor("siypbs")
-                .withManagedImageId("gusl")
-                .withManagedSnapshotId("adcy")
-                .withDataDiskStorageInfo(
-                    Arrays
-                        .asList(
-                            new DataDiskStorageTypeInfo().withLun("yhejhzisxgfp").withStorageType(StorageType.PREMIUM),
-                            new DataDiskStorageTypeInfo().withLun("p").withStorageType(StorageType.PREMIUM),
-                            new DataDiskStorageTypeInfo().withLun("r").withStorageType(StorageType.STANDARD)))
-                .withCustomImagePlan(
-                    new CustomImagePropertiesFromPlan()
-                        .withId("zraehtwd")
-                        .withPublisher("ftswibyrcdlbhsh")
-                        .withOffer("p"))
-                .withIsPlanAuthorized(false);
+        CustomImageProperties model = new CustomImageProperties()
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("rgzdwmsweyp")
+                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
+            .withVhd(new CustomImagePropertiesCustom().withImageName("cnxqhuexmkttlst")
+                .withSysPrep(true)
+                .withOsType(CustomImageOsType.NONE))
+            .withDescription("emhzrncsdtc")
+            .withAuthor("siypbs")
+            .withManagedImageId("gusl")
+            .withManagedSnapshotId("adcy")
+            .withDataDiskStorageInfo(Arrays.asList(
+                new DataDiskStorageTypeInfo().withLun("yhejhzisxgfp").withStorageType(StorageType.PREMIUM),
+                new DataDiskStorageTypeInfo().withLun("p").withStorageType(StorageType.PREMIUM),
+                new DataDiskStorageTypeInfo().withLun("r").withStorageType(StorageType.STANDARD)))
+            .withCustomImagePlan(
+                new CustomImagePropertiesFromPlan().withId("zraehtwd").withPublisher("ftswibyrcdlbhsh").withOffer("p"))
+            .withIsPlanAuthorized(false);
         model = BinaryData.fromObject(model).toObject(CustomImageProperties.class);
         Assertions.assertEquals("rgzdwmsweyp", model.vm().sourceVmId());
         Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, model.vm().windowsOsInfo().windowsOsState());

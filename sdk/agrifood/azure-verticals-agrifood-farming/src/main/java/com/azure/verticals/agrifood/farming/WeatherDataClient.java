@@ -19,7 +19,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = WeatherDataClientBuilder.class)
 public final class WeatherDataClient {
-    @Generated private final WeatherDataAsyncClient client;
+    @Generated
+    private final WeatherDataAsyncClient client;
 
     /**
      * Initializes an instance of WeatherDataClient class.

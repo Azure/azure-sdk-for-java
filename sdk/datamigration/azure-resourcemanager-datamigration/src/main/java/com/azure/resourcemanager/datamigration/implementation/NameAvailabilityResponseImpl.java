@@ -13,8 +13,7 @@ public final class NameAvailabilityResponseImpl implements NameAvailabilityRespo
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    NameAvailabilityResponseImpl(
-        NameAvailabilityResponseInner innerObject,
+    NameAvailabilityResponseImpl(NameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

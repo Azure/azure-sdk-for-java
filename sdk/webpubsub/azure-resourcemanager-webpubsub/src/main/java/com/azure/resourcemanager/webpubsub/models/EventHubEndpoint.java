@@ -6,38 +6,53 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An Event Hub endpoint. The managed identity of Web PubSub service must be enabled, and the identity should have the
- * "Azure Event Hubs Data sender" role to access Event Hub.
+ * An Event Hub endpoint.
+ * The managed identity of Web PubSub service must be enabled, and the identity should have the "Azure Event Hubs Data
+ * sender" role to access Event Hub.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EventHub")
 @Fluent
 public final class EventHubEndpoint extends EventListenerEndpoint {
     /*
+     * The type property.
+     */
+    private EventListenerEndpointDiscriminator type = EventListenerEndpointDiscriminator.EVENT_HUB;
+
+    /*
      * The fully qualified namespace name of the Event Hub resource. For example, "example.servicebus.windows.net".
      */
-    @JsonProperty(value = "fullyQualifiedNamespace", required = true)
     private String fullyQualifiedNamespace;
 
     /*
      * The name of the Event Hub.
      */
-    @JsonProperty(value = "eventHubName", required = true)
     private String eventHubName;
 
-    /** Creates an instance of EventHubEndpoint class. */
+    /**
+     * Creates an instance of EventHubEndpoint class.
+     */
     public EventHubEndpoint() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public EventListenerEndpointDiscriminator type() {
+        return this.type;
     }
 
     /**
      * Get the fullyQualifiedNamespace property: The fully qualified namespace name of the Event Hub resource. For
      * example, "example.servicebus.windows.net".
-     *
+     * 
      * @return the fullyQualifiedNamespace value.
      */
     public String fullyQualifiedNamespace() {
@@ -47,7 +62,7 @@ public final class EventHubEndpoint extends EventListenerEndpoint {
     /**
      * Set the fullyQualifiedNamespace property: The fully qualified namespace name of the Event Hub resource. For
      * example, "example.servicebus.windows.net".
-     *
+     * 
      * @param fullyQualifiedNamespace the fullyQualifiedNamespace value to set.
      * @return the EventHubEndpoint object itself.
      */
@@ -58,7 +73,7 @@ public final class EventHubEndpoint extends EventListenerEndpoint {
 
     /**
      * Get the eventHubName property: The name of the Event Hub.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -67,7 +82,7 @@ public final class EventHubEndpoint extends EventListenerEndpoint {
 
     /**
      * Set the eventHubName property: The name of the Event Hub.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the EventHubEndpoint object itself.
      */
@@ -78,24 +93,65 @@ public final class EventHubEndpoint extends EventListenerEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (fullyQualifiedNamespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fullyQualifiedNamespace in model EventHubEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fullyQualifiedNamespace in model EventHubEndpoint"));
         }
         if (eventHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventHubName in model EventHubEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eventHubName in model EventHubEndpoint"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubEndpoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fullyQualifiedNamespace", this.fullyQualifiedNamespace);
+        jsonWriter.writeStringField("eventHubName", this.eventHubName);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHubEndpoint.
+     */
+    public static EventHubEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEndpoint deserializedEventHubEndpoint = new EventHubEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fullyQualifiedNamespace".equals(fieldName)) {
+                    deserializedEventHubEndpoint.fullyQualifiedNamespace = reader.getString();
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubEndpoint.eventHubName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventHubEndpoint.type
+                        = EventListenerEndpointDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEndpoint;
+        });
+    }
 }

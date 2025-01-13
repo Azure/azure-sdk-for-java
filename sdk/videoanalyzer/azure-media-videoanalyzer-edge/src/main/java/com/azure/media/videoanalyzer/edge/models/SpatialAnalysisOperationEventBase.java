@@ -5,26 +5,36 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the Azure Cognitive Services Spatial Analysis operation eventing configuration. */
+/**
+ * Defines the Azure Cognitive Services Spatial Analysis operation eventing configuration.
+ */
 @Fluent
-public class SpatialAnalysisOperationEventBase {
+public class SpatialAnalysisOperationEventBase implements JsonSerializable<SpatialAnalysisOperationEventBase> {
     /*
      * The event threshold.
      */
-    @JsonProperty(value = "threshold")
     private String threshold;
 
     /*
      * The operation focus type.
      */
-    @JsonProperty(value = "focus")
     private SpatialAnalysisOperationFocus focus;
 
     /**
+     * Creates an instance of SpatialAnalysisOperationEventBase class.
+     */
+    public SpatialAnalysisOperationEventBase() {
+    }
+
+    /**
      * Get the threshold property: The event threshold.
-     *
+     * 
      * @return the threshold value.
      */
     public String getThreshold() {
@@ -33,7 +43,7 @@ public class SpatialAnalysisOperationEventBase {
 
     /**
      * Set the threshold property: The event threshold.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the SpatialAnalysisOperationEventBase object itself.
      */
@@ -44,7 +54,7 @@ public class SpatialAnalysisOperationEventBase {
 
     /**
      * Get the focus property: The operation focus type.
-     *
+     * 
      * @return the focus value.
      */
     public SpatialAnalysisOperationFocus getFocus() {
@@ -53,12 +63,53 @@ public class SpatialAnalysisOperationEventBase {
 
     /**
      * Set the focus property: The operation focus type.
-     *
+     * 
      * @param focus the focus value to set.
      * @return the SpatialAnalysisOperationEventBase object itself.
      */
     public SpatialAnalysisOperationEventBase setFocus(SpatialAnalysisOperationFocus focus) {
         this.focus = focus;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("threshold", this.threshold);
+        jsonWriter.writeStringField("focus", this.focus == null ? null : this.focus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisOperationEventBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisOperationEventBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisOperationEventBase.
+     */
+    public static SpatialAnalysisOperationEventBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialAnalysisOperationEventBase deserializedSpatialAnalysisOperationEventBase
+                = new SpatialAnalysisOperationEventBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisOperationEventBase.threshold = reader.getString();
+                } else if ("focus".equals(fieldName)) {
+                    deserializedSpatialAnalysisOperationEventBase.focus
+                        = SpatialAnalysisOperationFocus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialAnalysisOperationEventBase;
+        });
     }
 }

@@ -5,60 +5,43 @@
 package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourcePatchRequestBodyProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourceUpdateProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** LoadTest resource patch request body. */
+/**
+ * The type used for update operations of the LoadTestResource.
+ */
 @Fluent
-public final class LoadTestResourcePatchRequestBody {
+public final class LoadTestResourcePatchRequestBody implements JsonSerializable<LoadTestResourcePatchRequestBody> {
     /*
-     * Resource tags.
+     * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
-    /*
-     * The type of identity used for the resource.
-     */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
-     * Load Test resource properties
+     * Resource tags.
      */
-    @JsonProperty(value = "properties")
-    private LoadTestResourcePatchRequestBodyProperties innerProperties;
+    private Map<String, String> tags;
 
-    /** Creates an instance of LoadTestResourcePatchRequestBody class. */
+    /*
+     * The resource-specific properties for this resource.
+     */
+    private LoadTestResourceUpdateProperties innerProperties;
+
+    /**
+     * Creates an instance of LoadTestResourcePatchRequestBody class.
+     */
     public LoadTestResourcePatchRequestBody() {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the LoadTestResourcePatchRequestBody object itself.
-     */
-    public LoadTestResourcePatchRequestBody withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the identity property: The type of identity used for the resource.
-     *
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -66,8 +49,8 @@ public final class LoadTestResourcePatchRequestBody {
     }
 
     /**
-     * Set the identity property: The type of identity used for the resource.
-     *
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
      * @param identity the identity value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
@@ -77,17 +60,37 @@ public final class LoadTestResourcePatchRequestBody {
     }
 
     /**
-     * Get the innerProperties property: Load Test resource properties.
-     *
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the LoadTestResourcePatchRequestBody object itself.
+     */
+    public LoadTestResourcePatchRequestBody withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
-    private LoadTestResourcePatchRequestBodyProperties innerProperties() {
+    private LoadTestResourceUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
      * Get the description property: Description of the resource.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -96,13 +99,13 @@ public final class LoadTestResourcePatchRequestBody {
 
     /**
      * Set the description property: Description of the resource.
-     *
+     * 
      * @param description the description value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
     public LoadTestResourcePatchRequestBody withDescription(String description) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new LoadTestResourcePatchRequestBodyProperties();
+            this.innerProperties = new LoadTestResourceUpdateProperties();
         }
         this.innerProperties().withDescription(description);
         return this;
@@ -110,7 +113,7 @@ public final class LoadTestResourcePatchRequestBody {
 
     /**
      * Get the encryption property: CMK Encryption property.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -119,13 +122,13 @@ public final class LoadTestResourcePatchRequestBody {
 
     /**
      * Set the encryption property: CMK Encryption property.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
     public LoadTestResourcePatchRequestBody withEncryption(EncryptionProperties encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new LoadTestResourcePatchRequestBodyProperties();
+            this.innerProperties = new LoadTestResourceUpdateProperties();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
@@ -133,7 +136,7 @@ public final class LoadTestResourcePatchRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -143,5 +146,50 @@ public final class LoadTestResourcePatchRequestBody {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadTestResourcePatchRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadTestResourcePatchRequestBody if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadTestResourcePatchRequestBody.
+     */
+    public static LoadTestResourcePatchRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadTestResourcePatchRequestBody deserializedLoadTestResourcePatchRequestBody
+                = new LoadTestResourcePatchRequestBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedLoadTestResourcePatchRequestBody.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLoadTestResourcePatchRequestBody.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLoadTestResourcePatchRequestBody.innerProperties
+                        = LoadTestResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadTestResourcePatchRequestBody;
+        });
     }
 }

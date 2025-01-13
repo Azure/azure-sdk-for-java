@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties that define a direct peering location. */
+/**
+ * The properties that define a direct peering location.
+ */
 @Fluent
-public final class PeeringLocationPropertiesDirect {
+public final class PeeringLocationPropertiesDirect implements JsonSerializable<PeeringLocationPropertiesDirect> {
     /*
      * The list of direct peering facilities at the peering location.
      */
-    @JsonProperty(value = "peeringFacilities")
     private List<DirectPeeringFacility> peeringFacilities;
 
     /*
      * The list of bandwidth offers available at the peering location.
      */
-    @JsonProperty(value = "bandwidthOffers")
     private List<PeeringBandwidthOffer> bandwidthOffers;
 
-    /** Creates an instance of PeeringLocationPropertiesDirect class. */
+    /**
+     * Creates an instance of PeeringLocationPropertiesDirect class.
+     */
     public PeeringLocationPropertiesDirect() {
     }
 
     /**
      * Get the peeringFacilities property: The list of direct peering facilities at the peering location.
-     *
+     * 
      * @return the peeringFacilities value.
      */
     public List<DirectPeeringFacility> peeringFacilities() {
@@ -38,7 +44,7 @@ public final class PeeringLocationPropertiesDirect {
 
     /**
      * Set the peeringFacilities property: The list of direct peering facilities at the peering location.
-     *
+     * 
      * @param peeringFacilities the peeringFacilities value to set.
      * @return the PeeringLocationPropertiesDirect object itself.
      */
@@ -49,7 +55,7 @@ public final class PeeringLocationPropertiesDirect {
 
     /**
      * Get the bandwidthOffers property: The list of bandwidth offers available at the peering location.
-     *
+     * 
      * @return the bandwidthOffers value.
      */
     public List<PeeringBandwidthOffer> bandwidthOffers() {
@@ -58,7 +64,7 @@ public final class PeeringLocationPropertiesDirect {
 
     /**
      * Set the bandwidthOffers property: The list of bandwidth offers available at the peering location.
-     *
+     * 
      * @param bandwidthOffers the bandwidthOffers value to set.
      * @return the PeeringLocationPropertiesDirect object itself.
      */
@@ -69,7 +75,7 @@ public final class PeeringLocationPropertiesDirect {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,51 @@ public final class PeeringLocationPropertiesDirect {
         if (bandwidthOffers() != null) {
             bandwidthOffers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("peeringFacilities", this.peeringFacilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("bandwidthOffers", this.bandwidthOffers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringLocationPropertiesDirect from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringLocationPropertiesDirect if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringLocationPropertiesDirect.
+     */
+    public static PeeringLocationPropertiesDirect fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringLocationPropertiesDirect deserializedPeeringLocationPropertiesDirect
+                = new PeeringLocationPropertiesDirect();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringFacilities".equals(fieldName)) {
+                    List<DirectPeeringFacility> peeringFacilities
+                        = reader.readArray(reader1 -> DirectPeeringFacility.fromJson(reader1));
+                    deserializedPeeringLocationPropertiesDirect.peeringFacilities = peeringFacilities;
+                } else if ("bandwidthOffers".equals(fieldName)) {
+                    List<PeeringBandwidthOffer> bandwidthOffers
+                        = reader.readArray(reader1 -> PeeringBandwidthOffer.fromJson(reader1));
+                    deserializedPeeringLocationPropertiesDirect.bandwidthOffers = bandwidthOffers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringLocationPropertiesDirect;
+        });
     }
 }

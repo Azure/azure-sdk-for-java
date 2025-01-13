@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for OperationsResultsLocation Get. */
+/**
+ * Samples for OperationsResultsLocation Get.
+ */
 public final class OperationsResultsLocationGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOperationResultsOperationResultResponseTypeGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoOperationResultsOperationResultResponseTypeGet.json
      */
     /**
      * Sample code: KustoOperationsResultsLocationGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoOperationsResultsLocationGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .operationsResultsLocations()
+        manager.operationsResultsLocations()
             .getWithResponse("westus", "30972f1b-b61d-4fd8-bd34-3dcfa24670f3", com.azure.core.util.Context.NONE);
     }
 }

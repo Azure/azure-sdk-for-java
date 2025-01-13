@@ -5,11 +5,14 @@ package com.azure.spring.cloud.autoconfigure.implementation.resourcemanager;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.EventHubsProvisioner;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -83,5 +86,26 @@ class AzureEventHubsResourceManagerAutoConfigurationTests {
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
             .run(context -> assertThat(context).hasSingleBean(EventHubsProvisioner.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "spring.cloud.azure.eventhubs.connection-string=Endpoint=sb://eventhub-test-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ByyyxxxUw=",
+        "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
+        "spring.cloud.azure.eventhubs.token-credential-bean-name=my-token-credential"
+    })
+    void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
+        this.contextRunner
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class)
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
+            .withPropertyValues(
+                "spring.cloud.azure.profile.tenant-id=test-tenant",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id",
+                missingProperty
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureResourceManager.class);
+                assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
+            });
     }
 }

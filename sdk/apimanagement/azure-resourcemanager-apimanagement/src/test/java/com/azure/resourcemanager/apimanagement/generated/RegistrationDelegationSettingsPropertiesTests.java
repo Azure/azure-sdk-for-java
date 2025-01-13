@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistrationDelegationSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistrationDelegationSettingsProperties model =
-            BinaryData.fromString("{\"enabled\":false}").toObject(RegistrationDelegationSettingsProperties.class);
+        RegistrationDelegationSettingsProperties model
+            = BinaryData.fromString("{\"enabled\":false}").toObject(RegistrationDelegationSettingsProperties.class);
         Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistrationDelegationSettingsProperties model =
-            new RegistrationDelegationSettingsProperties().withEnabled(false);
+        RegistrationDelegationSettingsProperties model
+            = new RegistrationDelegationSettingsProperties().withEnabled(false);
         model = BinaryData.fromObject(model).toObject(RegistrationDelegationSettingsProperties.class);
         Assertions.assertEquals(false, model.enabled());
     }

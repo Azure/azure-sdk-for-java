@@ -7,31 +7,56 @@ package com.azure.resourcemanager.billing.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
 import com.azure.resourcemanager.billing.models.AzurePlan;
+import com.azure.resourcemanager.billing.models.CustomerProperties;
 import com.azure.resourcemanager.billing.models.Reseller;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class CustomerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"billingProfileId\":\"l\",\"billingProfileDisplayName\":\"kx\",\"displayName\":\"skpbhenbtkcxywn\",\"enabledAzurePlans\":[{\"skuId\":\"synlqidybyxczfc\",\"skuDescription\":\"aaxdbabphlwrq\"}],\"resellers\":[{\"resellerId\":\"sthsu\",\"description\":\"cmnyyazttb\"},{\"resellerId\":\"wrqpue\",\"description\":\"kzywbiex\"},{\"resellerId\":\"eyueaxibxujwb\",\"description\":\"walm\"},{\"resellerId\":\"yoxa\",\"description\":\"dkzjancuxrh\"}]},\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"}")
-                .toObject(CustomerInner.class);
-        Assertions.assertEquals("skpbhenbtkcxywn", model.displayName());
-        Assertions.assertEquals("synlqidybyxczfc", model.enabledAzurePlans().get(0).skuId());
+        CustomerInner model = BinaryData.fromString(
+            "{\"properties\":{\"billingProfileDisplayName\":\"ma\",\"billingProfileId\":\"pdwwexymzvlazi\",\"displayName\":\"hpwvqsgnyyuu\",\"systemId\":\"vensrpm\",\"status\":\"Active\",\"enabledAzurePlans\":[{\"productId\":\"patlbijp\",\"skuId\":\"sksrfhfvolmknbn\",\"skuDescription\":\"cdommpvfqaw\"},{\"productId\":\"gbrt\",\"skuId\":\"iac\",\"skuDescription\":\"iexhajl\"},{\"productId\":\"t\",\"skuId\":\"qfyuttd\",\"skuDescription\":\"gbpvnwswmtxkyct\"},{\"productId\":\"gzwx\",\"skuId\":\"mecvogygzyvneeza\",\"skuDescription\":\"gh\"}],\"resellers\":[{\"resellerId\":\"qtlffhzbk\",\"description\":\"jjjavfqnvhnq\"},{\"resellerId\":\"wdogiyetesyp\",\"description\":\"dbztjhqtfbov\"}],\"tags\":{\"hpsprkzyaupiac\":\"kbwetnj\"}},\"tags\":{\"urjtumghi\":\"afbwqroohtuovmao\"},\"id\":\"ve\",\"name\":\"mslclblyjxlt\",\"type\":\"sjuscvsfxigctmg\"}")
+            .toObject(CustomerInner.class);
+        Assertions.assertEquals("afbwqroohtuovmao", model.tags().get("urjtumghi"));
+        Assertions.assertEquals("patlbijp", model.properties().enabledAzurePlans().get(0).productId());
+        Assertions.assertEquals("sksrfhfvolmknbn", model.properties().enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("cdommpvfqaw", model.properties().enabledAzurePlans().get(0).skuDescription());
+        Assertions.assertEquals("kbwetnj", model.properties().tags().get("hpsprkzyaupiac"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomerInner model =
-            new CustomerInner()
-                .withDisplayName("skpbhenbtkcxywn")
-                .withEnabledAzurePlans(Arrays.asList(new AzurePlan().withSkuId("synlqidybyxczfc")))
-                .withResellers(Arrays.asList(new Reseller(), new Reseller(), new Reseller(), new Reseller()));
+        CustomerInner model = new CustomerInner().withTags(mapOf("urjtumghi", "afbwqroohtuovmao"))
+            .withProperties(new CustomerProperties()
+                .withEnabledAzurePlans(Arrays.asList(
+                    new AzurePlan().withProductId("patlbijp")
+                        .withSkuId("sksrfhfvolmknbn")
+                        .withSkuDescription("cdommpvfqaw"),
+                    new AzurePlan().withProductId("gbrt").withSkuId("iac").withSkuDescription("iexhajl"),
+                    new AzurePlan().withProductId("t").withSkuId("qfyuttd").withSkuDescription("gbpvnwswmtxkyct"),
+                    new AzurePlan().withProductId("gzwx").withSkuId("mecvogygzyvneeza").withSkuDescription("gh")))
+                .withResellers(Arrays.asList(new Reseller(), new Reseller()))
+                .withTags(mapOf("hpsprkzyaupiac", "kbwetnj")));
         model = BinaryData.fromObject(model).toObject(CustomerInner.class);
-        Assertions.assertEquals("skpbhenbtkcxywn", model.displayName());
-        Assertions.assertEquals("synlqidybyxczfc", model.enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("afbwqroohtuovmao", model.tags().get("urjtumghi"));
+        Assertions.assertEquals("patlbijp", model.properties().enabledAzurePlans().get(0).productId());
+        Assertions.assertEquals("sksrfhfvolmknbn", model.properties().enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("cdommpvfqaw", model.properties().enabledAzurePlans().get(0).skuDescription());
+        Assertions.assertEquals("kbwetnj", model.properties().tags().get("hpsprkzyaupiac"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

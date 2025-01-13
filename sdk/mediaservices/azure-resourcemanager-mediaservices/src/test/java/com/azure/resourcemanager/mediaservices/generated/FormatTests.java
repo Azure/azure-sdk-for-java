@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Format model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"cvlerchpqbmfpjba\"}")
-                .toObject(Format.class);
-        Assertions.assertEquals("cvlerchpqbmfpjba", model.filenamePattern());
+        Format model
+            = BinaryData.fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"vvmu\"}").toObject(Format.class);
+        Assertions.assertEquals("vvmu", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Format model = new Format().withFilenamePattern("cvlerchpqbmfpjba");
+        Format model = new Format().withFilenamePattern("vvmu");
         model = BinaryData.fromObject(model).toObject(Format.class);
-        Assertions.assertEquals("cvlerchpqbmfpjba", model.filenamePattern());
+        Assertions.assertEquals("vvmu", model.filenamePattern());
     }
 }

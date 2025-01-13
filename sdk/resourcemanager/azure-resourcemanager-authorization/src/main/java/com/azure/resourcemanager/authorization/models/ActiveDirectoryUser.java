@@ -15,16 +15,32 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface ActiveDirectoryUser
     extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphUserInner>, Updatable<ActiveDirectoryUser.Update> {
-    /** @return user principal name */
+    /**
+     * Gets user principal name.
+     *
+     * @return user principal name
+     */
     String userPrincipalName();
 
-    /** @return user mail */
+    /**
+     * Gets user mail.
+     *
+     * @return user mail
+     */
     String mail();
 
-    /** @return the mail alias for the user */
+    /**
+     * Gets the mail alias for the user.
+     *
+     * @return the mail alias for the user
+     */
     String mailNickname();
 
-    /** @return the usage location of the user */
+    /**
+     * Gets the usage location of the user.
+     *
+     * @return the usage location of the user
+     */
     CountryIsoCode usageLocation();
 
     /**************************************************************
@@ -32,11 +48,8 @@ public interface ActiveDirectoryUser
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithUserPrincipalName,
-            DefinitionStages.WithPassword,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithUserPrincipalName,
+        DefinitionStages.WithPassword, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the user definition stages. */
@@ -114,11 +127,8 @@ public interface ActiveDirectoryUser
          * An AD user definition with sufficient inputs to create a new user in the cloud, but exposing additional
          * optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<ActiveDirectoryUser>,
-                DefinitionStages.WithAccontEnabled,
-                DefinitionStages.WithPromptToChangePasswordOnLogin,
-                DefinitionStages.WithUsageLocation {
+        interface WithCreate extends Creatable<ActiveDirectoryUser>, DefinitionStages.WithAccontEnabled,
+            DefinitionStages.WithPromptToChangePasswordOnLogin, DefinitionStages.WithUsageLocation {
         }
     }
 
@@ -171,11 +181,7 @@ public interface ActiveDirectoryUser
     }
 
     /** The template for a user update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ActiveDirectoryUser>,
-            UpdateStages.WithAccontEnabled,
-            UpdateStages.WithPassword,
-            UpdateStages.WithPromptToChangePasswordOnLogin,
-            UpdateStages.WithUsageLocation {
+    interface Update extends Appliable<ActiveDirectoryUser>, UpdateStages.WithAccontEnabled, UpdateStages.WithPassword,
+        UpdateStages.WithPromptToChangePasswordOnLogin, UpdateStages.WithUsageLocation {
     }
 }

@@ -13,25 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeSeriesDatabaseConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeSeriesDatabaseConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Canceled\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"yq\"}}")
-                .toObject(TimeSeriesDatabaseConnectionProperties.class);
+        TimeSeriesDatabaseConnectionProperties model = BinaryData.fromString(
+            "{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Restoring\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"j\"}}")
+            .toObject(TimeSeriesDatabaseConnectionProperties.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("yq", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("j", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeSeriesDatabaseConnectionProperties model =
-            new TimeSeriesDatabaseConnectionProperties()
-                .withIdentity(
-                    new ManagedIdentityReference()
-                        .withType(IdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("yq"));
+        TimeSeriesDatabaseConnectionProperties model = new TimeSeriesDatabaseConnectionProperties().withIdentity(
+            new ManagedIdentityReference().withType(IdentityType.SYSTEM_ASSIGNED).withUserAssignedIdentity("j"));
         model = BinaryData.fromObject(model).toObject(TimeSeriesDatabaseConnectionProperties.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("yq", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("j", model.identity().userAssignedIdentity());
     }
 }

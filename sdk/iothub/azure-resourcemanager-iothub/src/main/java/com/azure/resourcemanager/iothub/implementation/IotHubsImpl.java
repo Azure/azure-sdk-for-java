@@ -26,8 +26,8 @@ public final class IotHubsImpl implements IotHubs {
         this.serviceClient().manualFailover(iotHubName, resourceGroupName, failoverInput);
     }
 
-    public void manualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
+    public void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput,
+        Context context) {
         this.serviceClient().manualFailover(iotHubName, resourceGroupName, failoverInput, context);
     }
 

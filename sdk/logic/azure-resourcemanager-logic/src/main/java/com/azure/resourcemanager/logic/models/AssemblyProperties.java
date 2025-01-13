@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The assembly properties definition. */
+/**
+ * The assembly properties definition.
+ */
 @Fluent
 public final class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     /*
      * The assembly name.
      */
-    @JsonProperty(value = "assemblyName", required = true)
     private String assemblyName;
 
     /*
      * The assembly version.
      */
-    @JsonProperty(value = "assemblyVersion")
     private String assemblyVersion;
 
     /*
      * The assembly culture.
      */
-    @JsonProperty(value = "assemblyCulture")
     private String assemblyCulture;
 
     /*
      * The assembly public key token.
      */
-    @JsonProperty(value = "assemblyPublicKeyToken")
     private String assemblyPublicKeyToken;
 
-    /** Creates an instance of AssemblyProperties class. */
+    /**
+     * Creates an instance of AssemblyProperties class.
+     */
     public AssemblyProperties() {
     }
 
     /**
      * Get the assemblyName property: The assembly name.
-     *
+     * 
      * @return the assemblyName value.
      */
     public String assemblyName() {
@@ -51,7 +56,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Set the assemblyName property: The assembly name.
-     *
+     * 
      * @param assemblyName the assemblyName value to set.
      * @return the AssemblyProperties object itself.
      */
@@ -62,7 +67,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Get the assemblyVersion property: The assembly version.
-     *
+     * 
      * @return the assemblyVersion value.
      */
     public String assemblyVersion() {
@@ -71,7 +76,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Set the assemblyVersion property: The assembly version.
-     *
+     * 
      * @param assemblyVersion the assemblyVersion value to set.
      * @return the AssemblyProperties object itself.
      */
@@ -82,7 +87,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Get the assemblyCulture property: The assembly culture.
-     *
+     * 
      * @return the assemblyCulture value.
      */
     public String assemblyCulture() {
@@ -91,7 +96,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Set the assemblyCulture property: The assembly culture.
-     *
+     * 
      * @param assemblyCulture the assemblyCulture value to set.
      * @return the AssemblyProperties object itself.
      */
@@ -102,7 +107,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Get the assemblyPublicKeyToken property: The assembly public key token.
-     *
+     * 
      * @return the assemblyPublicKeyToken value.
      */
     public String assemblyPublicKeyToken() {
@@ -111,7 +116,7 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Set the assemblyPublicKeyToken property: The assembly public key token.
-     *
+     * 
      * @param assemblyPublicKeyToken the assemblyPublicKeyToken value to set.
      * @return the AssemblyProperties object itself.
      */
@@ -120,42 +125,54 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withContent(Object content) {
         super.withContent(content);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withContentType(String contentType) {
         super.withContentType(contentType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withContentLink(ContentLink contentLink) {
         super.withContentLink(contentLink);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withCreatedTime(OffsetDateTime createdTime) {
         super.withCreatedTime(createdTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withChangedTime(OffsetDateTime changedTime) {
         super.withChangedTime(changedTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssemblyProperties withMetadata(Object metadata) {
         super.withMetadata(metadata);
@@ -164,18 +181,88 @@ public final class AssemblyProperties extends ArtifactContentPropertiesDefinitio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (assemblyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property assemblyName in model AssemblyProperties"));
+        }
+        if (contentLink() != null) {
+            contentLink().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssemblyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdTime",
+            createdTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdTime()));
+        jsonWriter.writeStringField("changedTime",
+            changedTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(changedTime()));
+        jsonWriter.writeUntypedField("metadata", metadata());
+        jsonWriter.writeUntypedField("content", content());
+        jsonWriter.writeStringField("contentType", contentType());
+        jsonWriter.writeJsonField("contentLink", contentLink());
+        jsonWriter.writeStringField("assemblyName", this.assemblyName);
+        jsonWriter.writeStringField("assemblyVersion", this.assemblyVersion);
+        jsonWriter.writeStringField("assemblyCulture", this.assemblyCulture);
+        jsonWriter.writeStringField("assemblyPublicKeyToken", this.assemblyPublicKeyToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssemblyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssemblyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssemblyProperties.
+     */
+    public static AssemblyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssemblyProperties deserializedAssemblyProperties = new AssemblyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedAssemblyProperties.withCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedAssemblyProperties.withChangedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAssemblyProperties.withMetadata(reader.readUntyped());
+                } else if ("content".equals(fieldName)) {
+                    deserializedAssemblyProperties.withContent(reader.readUntyped());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedAssemblyProperties.withContentType(reader.getString());
+                } else if ("contentLink".equals(fieldName)) {
+                    deserializedAssemblyProperties.withContentLink(ContentLink.fromJson(reader));
+                } else if ("assemblyName".equals(fieldName)) {
+                    deserializedAssemblyProperties.assemblyName = reader.getString();
+                } else if ("assemblyVersion".equals(fieldName)) {
+                    deserializedAssemblyProperties.assemblyVersion = reader.getString();
+                } else if ("assemblyCulture".equals(fieldName)) {
+                    deserializedAssemblyProperties.assemblyCulture = reader.getString();
+                } else if ("assemblyPublicKeyToken".equals(fieldName)) {
+                    deserializedAssemblyProperties.assemblyPublicKeyToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssemblyProperties;
+        });
+    }
 }

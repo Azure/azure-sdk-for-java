@@ -5,40 +5,41 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Quota properties for the resource. */
+/**
+ * Quota properties for the resource.
+ */
 @Fluent
-public final class QuotaProperties {
+public final class QuotaProperties implements JsonSerializable<QuotaProperties> {
     /*
      * Quota properties.
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * Current usage value for the resource.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentValue;
 
     /*
      * The limit units, such as **count** and **bytes**. Use the unit field provided in the response of the GET quota
      * operation.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Name of the resource provide by the resource provider. Use this property for quotaRequests resource operations.
      */
-    @JsonProperty(value = "name")
     private ResourceName name;
 
     /*
      * The name of the resource type.
      */
-    @JsonProperty(value = "resourceType")
     private ResourceType resourceType;
 
     /*
@@ -46,22 +47,22 @@ public final class QuotaProperties {
      * minute), and PT1S (per one second). This parameter is optional because, for some resources such as compute, the
      * time period is irrelevant.
      */
-    @JsonProperty(value = "quotaPeriod", access = JsonProperty.Access.WRITE_ONLY)
     private String quotaPeriod;
 
     /*
      * Additional properties for the specified resource provider.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of QuotaProperties class. */
+    /**
+     * Creates an instance of QuotaProperties class.
+     */
     public QuotaProperties() {
     }
 
     /**
      * Get the limit property: Quota properties.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -70,7 +71,7 @@ public final class QuotaProperties {
 
     /**
      * Set the limit property: Quota properties.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaProperties object itself.
      */
@@ -81,7 +82,7 @@ public final class QuotaProperties {
 
     /**
      * Get the currentValue property: Current usage value for the resource.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -91,7 +92,7 @@ public final class QuotaProperties {
     /**
      * Get the unit property: The limit units, such as **count** and **bytes**. Use the unit field provided in the
      * response of the GET quota operation.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -101,7 +102,7 @@ public final class QuotaProperties {
     /**
      * Set the unit property: The limit units, such as **count** and **bytes**. Use the unit field provided in the
      * response of the GET quota operation.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaProperties object itself.
      */
@@ -113,7 +114,7 @@ public final class QuotaProperties {
     /**
      * Get the name property: Name of the resource provide by the resource provider. Use this property for quotaRequests
      * resource operations.
-     *
+     * 
      * @return the name value.
      */
     public ResourceName name() {
@@ -123,7 +124,7 @@ public final class QuotaProperties {
     /**
      * Set the name property: Name of the resource provide by the resource provider. Use this property for quotaRequests
      * resource operations.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaProperties object itself.
      */
@@ -134,7 +135,7 @@ public final class QuotaProperties {
 
     /**
      * Get the resourceType property: The name of the resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public ResourceType resourceType() {
@@ -143,7 +144,7 @@ public final class QuotaProperties {
 
     /**
      * Set the resourceType property: The name of the resource type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the QuotaProperties object itself.
      */
@@ -156,7 +157,7 @@ public final class QuotaProperties {
      * Get the quotaPeriod property: The time period over which the quota usage values are summarized. For example, P1D
      * (per one day), PT1M (per one minute), and PT1S (per one second). This parameter is optional because, for some
      * resources such as compute, the time period is irrelevant.
-     *
+     * 
      * @return the quotaPeriod value.
      */
     public String quotaPeriod() {
@@ -165,7 +166,7 @@ public final class QuotaProperties {
 
     /**
      * Get the properties property: Additional properties for the specified resource provider.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -174,7 +175,7 @@ public final class QuotaProperties {
 
     /**
      * Set the properties property: Additional properties for the specified resource provider.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the QuotaProperties object itself.
      */
@@ -185,12 +186,64 @@ public final class QuotaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaProperties.
+     */
+    public static QuotaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaProperties deserializedQuotaProperties = new QuotaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedQuotaProperties.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaProperties.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaProperties.unit = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaProperties.name = ResourceName.fromJson(reader);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedQuotaProperties.resourceType = ResourceType.fromString(reader.getString());
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedQuotaProperties.quotaPeriod = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQuotaProperties.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaProperties;
+        });
     }
 }

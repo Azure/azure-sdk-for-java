@@ -51,76 +51,81 @@ public final class GlobalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GlobalRulestackResourceListResult model
-            = new GlobalRulestackResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GlobalRulestackResourceInner()
-                                .withLocation(
-                                    "izntocipao")
-                                .withIdentity(
-                                    new AzureResourceManagerManagedIdentityProperties()
-                                        .withType(ManagedIdentityType.NONE).withUserAssignedIdentities(
-                                            mapOf("hs",
-                                                new AzureResourceManagerUserAssignedIdentity()
-                                                    .withClientId("upewnwreitjzy").withPrincipalId("usarhmofc"),
-                                                "arcryuanzwuxzdxt",
-                                                new AzureResourceManagerUserAssignedIdentity()
-                                                    .withClientId("urkdtmlx").withPrincipalId("kuksjtxukcdm"),
-                                                "rqobmtuk",
-                                                new AzureResourceManagerUserAssignedIdentity().withClientId("rlhm")
-                                                    .withPrincipalId("fp"))))
-                                .withPanEtag("hq").withPanLocation("gjxpybczmehmt").withScope(ScopeType.GLOBAL)
-                                .withAssociatedSubscriptions(
-                                    Arrays.asList("phrupidgsybbejhp", "oycmsxaobhdxbmt", "ioq"))
-                                .withDescription("ehtbm").withDefaultMode(
-                                    DefaultMode.NONE)
-                                .withMinAppIdVersion("wnoi")
-                                .withSecurityServices(new SecurityServices()
-                                    .withVulnerabilityProfile("xybqsoqij").withAntiSpywareProfile("dmbpazlobcufpdz")
-                                    .withAntiVirusProfile("btcqq").withUrlFilteringProfile("qglhq")
-                                    .withFileBlockingProfile("ufo").withDnsSubscription("jywif")
-                                    .withOutboundUnTrustCertificate("esaagdfm").withOutboundTrustCertificate(
-                                        "zlhjxrifkwmrvkt")),
-                            new GlobalRulestackResourceInner().withLocation("uuvmkjozkrwfnd")
-                                .withIdentity(new AzureResourceManagerManagedIdentityProperties()
-                                    .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                                    .withUserAssignedIdentities(mapOf("xpaojakhmsbz",
-                                        new AzureResourceManagerUserAssignedIdentity().withClientId("ljlahbcryf")
-                                            .withPrincipalId("fdosyg"))))
-                                .withPanEtag("nufhf").withPanLocation("jysagith").withScope(ScopeType.LOCAL)
-                                .withAssociatedSubscriptions(
-                                    Arrays.asList("ifpikxwczby", "cnpqxuhivyqniwby", "rkxvdum"))
-                                .withDescription("rtfw").withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("gaudcc")
-                                .withSecurityServices(
-                                    new SecurityServices()
-                                        .withVulnerabilityProfile("cnyejhkryhtnapcz").withAntiSpywareProfile("okjye")
-                                        .withAntiVirusProfile("kvnipjoxz").withUrlFilteringProfile("chgejspodm")
-                                        .withFileBlockingProfile("lzydehojwyahux").withDnsSubscription("pmqnja")
-                                        .withOutboundUnTrustCertificate(
-                                            "ixjsprozvcputeg")
-                                        .withOutboundTrustCertificate("wmfdatscmdvpjhul")),
-                            new GlobalRulestackResourceInner().withLocation("douskcqvkocrcjdk")
-                                .withIdentity(new AzureResourceManagerManagedIdentityProperties()
-                                    .withType(ManagedIdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("yqduujit",
-                                        new AzureResourceManagerUserAssignedIdentity().withClientId("pee")
-                                            .withPrincipalId("mgxsab"),
-                                        "pdappds",
-                                        new AzureResourceManagerUserAssignedIdentity().withClientId("czdzev")
-                                            .withPrincipalId("hkr"),
-                                        "tmrldhugjzzdatq",
-                                        new AzureResourceManagerUserAssignedIdentity().withClientId("kvwrwjfeu")
-                                            .withPrincipalId("hutje"))))
-                                .withPanEtag("rwzoxxjtfelluwf").withPanLocation("tonpe").withScope(ScopeType.GLOBAL)
-                                .withAssociatedSubscriptions(Arrays.asList("jlxofpdvhpfxxyp", "ninmayhuyb", "kpode"))
-                                .withDescription("oginuvamiheognar").withDefaultMode(DefaultMode.NONE)
-                                .withMinAppIdVersion("heotusiv")
-                                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("iqihn")
-                                    .withAntiSpywareProfile("ngbwjz").withAntiVirusProfile("fygxgispemvtzfk")
-                                    .withUrlFilteringProfile("ubljofxqe").withFileBlockingProfile("jaeq")
-                                    .withDnsSubscription("qjbasvms").withOutboundUnTrustCertificate("qulngsntnbybkzgc")
-                                    .withOutboundTrustCertificate("wclxxwrl"))))
+            = new GlobalRulestackResourceListResult().withValue(Arrays.asList(
+                new GlobalRulestackResourceInner().withLocation("izntocipao")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("hs",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("upewnwreitjzy")
+                                .withPrincipalId("usarhmofc"),
+                            "arcryuanzwuxzdxt",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("urkdtmlx")
+                                .withPrincipalId("kuksjtxukcdm"),
+                            "rqobmtuk",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("rlhm").withPrincipalId("fp"))))
+                    .withPanEtag("hq")
+                    .withPanLocation("gjxpybczmehmt")
+                    .withScope(ScopeType.GLOBAL)
+                    .withAssociatedSubscriptions(Arrays.asList("phrupidgsybbejhp", "oycmsxaobhdxbmt", "ioq"))
+                    .withDescription("ehtbm")
+                    .withDefaultMode(DefaultMode.NONE)
+                    .withMinAppIdVersion("wnoi")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("xybqsoqij")
+                        .withAntiSpywareProfile("dmbpazlobcufpdz")
+                        .withAntiVirusProfile("btcqq")
+                        .withUrlFilteringProfile("qglhq")
+                        .withFileBlockingProfile("ufo")
+                        .withDnsSubscription("jywif")
+                        .withOutboundUnTrustCertificate("esaagdfm")
+                        .withOutboundTrustCertificate("zlhjxrifkwmrvkt")),
+                new GlobalRulestackResourceInner().withLocation("uuvmkjozkrwfnd")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties()
+                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("xpaojakhmsbz",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("ljlahbcryf")
+                                .withPrincipalId("fdosyg"))))
+                    .withPanEtag("nufhf")
+                    .withPanLocation("jysagith")
+                    .withScope(ScopeType.LOCAL)
+                    .withAssociatedSubscriptions(Arrays.asList("ifpikxwczby", "cnpqxuhivyqniwby", "rkxvdum"))
+                    .withDescription("rtfw")
+                    .withDefaultMode(DefaultMode.IPS)
+                    .withMinAppIdVersion("gaudcc")
+                    .withSecurityServices(new SecurityServices()
+                        .withVulnerabilityProfile("cnyejhkryhtnapcz")
+                        .withAntiSpywareProfile("okjye")
+                        .withAntiVirusProfile("kvnipjoxz")
+                        .withUrlFilteringProfile("chgejspodm")
+                        .withFileBlockingProfile("lzydehojwyahux")
+                        .withDnsSubscription("pmqnja")
+                        .withOutboundUnTrustCertificate("ixjsprozvcputeg")
+                        .withOutboundTrustCertificate("wmfdatscmdvpjhul")),
+                new GlobalRulestackResourceInner().withLocation("douskcqvkocrcjdk")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties()
+                        .withType(ManagedIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("yqduujit",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("pee")
+                                .withPrincipalId("mgxsab"),
+                            "pdappds",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("czdzev")
+                                .withPrincipalId("hkr"),
+                            "tmrldhugjzzdatq",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("kvwrwjfeu")
+                                .withPrincipalId("hutje"))))
+                    .withPanEtag("rwzoxxjtfelluwf")
+                    .withPanLocation("tonpe")
+                    .withScope(ScopeType.GLOBAL)
+                    .withAssociatedSubscriptions(Arrays.asList("jlxofpdvhpfxxyp", "ninmayhuyb", "kpode"))
+                    .withDescription("oginuvamiheognar")
+                    .withDefaultMode(DefaultMode.NONE)
+                    .withMinAppIdVersion("heotusiv")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("iqihn")
+                        .withAntiSpywareProfile("ngbwjz")
+                        .withAntiVirusProfile("fygxgispemvtzfk")
+                        .withUrlFilteringProfile("ubljofxqe")
+                        .withFileBlockingProfile("jaeq")
+                        .withDnsSubscription("qjbasvms")
+                        .withOutboundUnTrustCertificate("qulngsntnbybkzgc")
+                        .withOutboundTrustCertificate("wclxxwrl"))))
                 .withNextLink("tyxolniwpwc");
         model = BinaryData.fromObject(model).toObject(GlobalRulestackResourceListResult.class);
         Assertions.assertEquals("izntocipao", model.value().get(0).location());

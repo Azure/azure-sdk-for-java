@@ -65,4 +65,10 @@ public final class OnYourDataVectorizationSourceType extends ExpandableStringEnu
     public static Collection<OnYourDataVectorizationSourceType> values() {
         return values(OnYourDataVectorizationSourceType.class);
     }
+
+    /**
+     * Represents the integrated vectorizer defined within the search resource.
+     */
+    @Generated
+    public static final OnYourDataVectorizationSourceType INTEGRATED = fromString("integrated");
 }

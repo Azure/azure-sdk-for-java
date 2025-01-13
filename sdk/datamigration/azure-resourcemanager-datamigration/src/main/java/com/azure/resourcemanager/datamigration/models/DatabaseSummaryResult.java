@@ -5,24 +5,77 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Summary of database results in the migration. */
+/**
+ * Summary of database results in the migration.
+ */
 @Immutable
 public final class DatabaseSummaryResult extends DataItemMigrationSummaryResult {
     /*
      * Size of the database in megabytes
      */
-    @JsonProperty(value = "sizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double sizeMB;
 
-    /** Creates an instance of DatabaseSummaryResult class. */
+    /*
+     * Wildcard string prefix to use for querying all sub-tem results of the item
+     */
+    private String resultPrefix;
+
+    /*
+     * Wildcard string prefix to use for querying all errors of the item
+     */
+    private String errorPrefix;
+
+    /*
+     * Number of successfully completed items
+     */
+    private Long itemsCompletedCount;
+
+    /*
+     * Number of items
+     */
+    private Long itemsCount;
+
+    /*
+     * Status message
+     */
+    private String statusMessage;
+
+    /*
+     * Current state of migration
+     */
+    private MigrationState state;
+
+    /*
+     * Migration end time
+     */
+    private OffsetDateTime endedOn;
+
+    /*
+     * Migration start time
+     */
+    private OffsetDateTime startedOn;
+
+    /*
+     * Name of the item
+     */
+    private String name;
+
+    /**
+     * Creates an instance of DatabaseSummaryResult class.
+     */
     public DatabaseSummaryResult() {
     }
 
     /**
      * Get the sizeMB property: Size of the database in megabytes.
-     *
+     * 
      * @return the sizeMB value.
      */
     public Double sizeMB() {
@@ -30,12 +83,156 @@ public final class DatabaseSummaryResult extends DataItemMigrationSummaryResult 
     }
 
     /**
+     * Get the resultPrefix property: Wildcard string prefix to use for querying all sub-tem results of the item.
+     * 
+     * @return the resultPrefix value.
+     */
+    @Override
+    public String resultPrefix() {
+        return this.resultPrefix;
+    }
+
+    /**
+     * Get the errorPrefix property: Wildcard string prefix to use for querying all errors of the item.
+     * 
+     * @return the errorPrefix value.
+     */
+    @Override
+    public String errorPrefix() {
+        return this.errorPrefix;
+    }
+
+    /**
+     * Get the itemsCompletedCount property: Number of successfully completed items.
+     * 
+     * @return the itemsCompletedCount value.
+     */
+    @Override
+    public Long itemsCompletedCount() {
+        return this.itemsCompletedCount;
+    }
+
+    /**
+     * Get the itemsCount property: Number of items.
+     * 
+     * @return the itemsCount value.
+     */
+    @Override
+    public Long itemsCount() {
+        return this.itemsCount;
+    }
+
+    /**
+     * Get the statusMessage property: Status message.
+     * 
+     * @return the statusMessage value.
+     */
+    @Override
+    public String statusMessage() {
+        return this.statusMessage;
+    }
+
+    /**
+     * Get the state property: Current state of migration.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public MigrationState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the endedOn property: Migration end time.
+     * 
+     * @return the endedOn value.
+     */
+    @Override
+    public OffsetDateTime endedOn() {
+        return this.endedOn;
+    }
+
+    /**
+     * Get the startedOn property: Migration start time.
+     * 
+     * @return the startedOn value.
+     */
+    @Override
+    public OffsetDateTime startedOn() {
+        return this.startedOn;
+    }
+
+    /**
+     * Get the name property: Name of the item.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseSummaryResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseSummaryResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseSummaryResult.
+     */
+    public static DatabaseSummaryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseSummaryResult deserializedDatabaseSummaryResult = new DatabaseSummaryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.name = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.state = MigrationState.fromString(reader.getString());
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.statusMessage = reader.getString();
+                } else if ("itemsCount".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.itemsCount = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsCompletedCount".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.itemsCompletedCount = reader.getNullable(JsonReader::getLong);
+                } else if ("errorPrefix".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.errorPrefix = reader.getString();
+                } else if ("resultPrefix".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.resultPrefix = reader.getString();
+                } else if ("sizeMB".equals(fieldName)) {
+                    deserializedDatabaseSummaryResult.sizeMB = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseSummaryResult;
+        });
     }
 }

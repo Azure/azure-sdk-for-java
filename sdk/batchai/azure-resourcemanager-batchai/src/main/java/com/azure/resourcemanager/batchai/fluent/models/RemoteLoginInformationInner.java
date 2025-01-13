@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Login details to SSH to a compute node in cluster. */
 @Immutable
 public final class RemoteLoginInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteLoginInformationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RemoteLoginInformationInner.class);
 
     /*
      * ID of the compute node.

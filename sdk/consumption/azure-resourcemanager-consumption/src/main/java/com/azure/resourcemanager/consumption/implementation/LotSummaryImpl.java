@@ -18,8 +18,8 @@ public final class LotSummaryImpl implements LotSummary {
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    LotSummaryImpl(
-        LotSummaryInner innerObject, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    LotSummaryImpl(LotSummaryInner innerObject,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -184,20 +184,16 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Lab create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
         return this;
     }
 
@@ -213,51 +209,43 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .updateWithResponse(resourceGroupName, name, updateLab, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .updateWithResponse(resourceGroupName, name, updateLab, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Lab apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .updateWithResponse(resourceGroupName, name, updateLab, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .updateWithResponse(resourceGroupName, name, updateLab, context)
+            .getValue();
         return this;
     }
 
     LabImpl(LabInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "labs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
     }
 
     public Lab refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Lab refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, context)
+            .getValue();
         return this;
     }
 
@@ -273,8 +261,8 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
         serviceManager.labs().createEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter);
     }
 
-    public void createEnvironment(
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context) {
+    public void createEnvironment(LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
+        Context context) {
         serviceManager.labs().createEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, context);
     }
 
@@ -286,10 +274,9 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
         serviceManager.labs().exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context);
     }
 
-    public Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        GenerateUploadUriParameter generateUploadUriParameter, Context context) {
-        return serviceManager
-            .labs()
+    public Response<GenerateUploadUriResponse>
+        generateUploadUriWithResponse(GenerateUploadUriParameter generateUploadUriParameter, Context context) {
+        return serviceManager.labs()
             .generateUploadUriWithResponse(resourceGroupName, name, generateUploadUriParameter, context);
     }
 

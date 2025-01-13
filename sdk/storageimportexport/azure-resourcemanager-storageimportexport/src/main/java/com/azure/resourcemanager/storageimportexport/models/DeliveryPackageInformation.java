@@ -6,42 +6,46 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains information about the delivery package being shipped by the customer to the Microsoft data center. */
+/**
+ * Contains information about the delivery package being shipped by the customer to the Microsoft data center.
+ */
 @Fluent
-public final class DeliveryPackageInformation {
+public final class DeliveryPackageInformation implements JsonSerializable<DeliveryPackageInformation> {
     /*
      * The name of the carrier that is used to ship the import or export drives.
      */
-    @JsonProperty(value = "carrierName", required = true)
     private String carrierName;
 
     /*
      * The tracking number of the package.
      */
-    @JsonProperty(value = "trackingNumber", required = true)
     private String trackingNumber;
 
     /*
      * The number of drives included in the package.
      */
-    @JsonProperty(value = "driveCount")
     private Long driveCount;
 
     /*
      * The date when the package is shipped.
      */
-    @JsonProperty(value = "shipDate")
     private String shipDate;
 
-    /** Creates an instance of DeliveryPackageInformation class. */
+    /**
+     * Creates an instance of DeliveryPackageInformation class.
+     */
     public DeliveryPackageInformation() {
     }
 
     /**
      * Get the carrierName property: The name of the carrier that is used to ship the import or export drives.
-     *
+     * 
      * @return the carrierName value.
      */
     public String carrierName() {
@@ -50,7 +54,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Set the carrierName property: The name of the carrier that is used to ship the import or export drives.
-     *
+     * 
      * @param carrierName the carrierName value to set.
      * @return the DeliveryPackageInformation object itself.
      */
@@ -61,7 +65,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Get the trackingNumber property: The tracking number of the package.
-     *
+     * 
      * @return the trackingNumber value.
      */
     public String trackingNumber() {
@@ -70,7 +74,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Set the trackingNumber property: The tracking number of the package.
-     *
+     * 
      * @param trackingNumber the trackingNumber value to set.
      * @return the DeliveryPackageInformation object itself.
      */
@@ -81,7 +85,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Get the driveCount property: The number of drives included in the package.
-     *
+     * 
      * @return the driveCount value.
      */
     public Long driveCount() {
@@ -90,7 +94,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Set the driveCount property: The number of drives included in the package.
-     *
+     * 
      * @param driveCount the driveCount value to set.
      * @return the DeliveryPackageInformation object itself.
      */
@@ -101,7 +105,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Get the shipDate property: The date when the package is shipped.
-     *
+     * 
      * @return the shipDate value.
      */
     public String shipDate() {
@@ -110,7 +114,7 @@ public final class DeliveryPackageInformation {
 
     /**
      * Set the shipDate property: The date when the package is shipped.
-     *
+     * 
      * @param shipDate the shipDate value to set.
      * @return the DeliveryPackageInformation object itself.
      */
@@ -121,23 +125,67 @@ public final class DeliveryPackageInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (carrierName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property carrierName in model DeliveryPackageInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property carrierName in model DeliveryPackageInformation"));
         }
         if (trackingNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trackingNumber in model DeliveryPackageInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trackingNumber in model DeliveryPackageInformation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeliveryPackageInformation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("carrierName", this.carrierName);
+        jsonWriter.writeStringField("trackingNumber", this.trackingNumber);
+        jsonWriter.writeNumberField("driveCount", this.driveCount);
+        jsonWriter.writeStringField("shipDate", this.shipDate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryPackageInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryPackageInformation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeliveryPackageInformation.
+     */
+    public static DeliveryPackageInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryPackageInformation deserializedDeliveryPackageInformation = new DeliveryPackageInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("carrierName".equals(fieldName)) {
+                    deserializedDeliveryPackageInformation.carrierName = reader.getString();
+                } else if ("trackingNumber".equals(fieldName)) {
+                    deserializedDeliveryPackageInformation.trackingNumber = reader.getString();
+                } else if ("driveCount".equals(fieldName)) {
+                    deserializedDeliveryPackageInformation.driveCount = reader.getNullable(JsonReader::getLong);
+                } else if ("shipDate".equals(fieldName)) {
+                    deserializedDeliveryPackageInformation.shipDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryPackageInformation;
+        });
+    }
 }

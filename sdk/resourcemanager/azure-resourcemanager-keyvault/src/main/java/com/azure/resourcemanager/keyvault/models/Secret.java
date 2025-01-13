@@ -20,39 +20,75 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure Key Vault secret. */
 @Fluent
 public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasId, HasName, Updatable<Secret.Update> {
-    /** @return the secret value when the secret is enabled */
+    /**
+     * Gets the secret value when the secret is enabled.
+     *
+     * @return the secret value when the secret is enabled
+     */
     String getValue();
 
-    /** @return the secret value when the secret is enabled */
+    /**
+     * Gets the secret value when the secret is enabled.
+     *
+     * @return the secret value when the secret is enabled
+     */
     Mono<String> getValueAsync();
 
-    /** @return the secret management attributes */
+    /**
+     * Gets the secret management attributes.
+     *
+     * @return the secret management attributes
+     */
     SecretProperties attributes();
 
-    /** @return application specific metadata in the form of key-value pairs */
+    /**
+     * Gets application specific metadata in the form of key-value pairs.
+     *
+     * @return application specific metadata in the form of key-value pairs
+     */
     Map<String, String> tags();
 
-    /** @return type of the secret value such as a password */
+    /**
+     * Gets type of the secret value such as a password.
+     *
+     * @return type of the secret value such as a password
+     */
     String contentType();
 
-    /** @return the corresponding key backing the KV certificate if this is a secret backing a KV certificate */
+    /**
+     * Gets the corresponding key backing the KV certificate if this is a secret backing a KV certificate.
+     *
+     * @return the corresponding key backing the KV certificate if this is a secret backing a KV certificate
+     */
     String kid();
 
     /**
+     * Checks whether the secret's lifetime is managed by key vault.
+     *
      * @return true if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then
      *     managed will be true
      */
     boolean managed();
 
     /**
+     * Checks whether secret is enabled.
+     *
      * @return whether secret is enabled.
      */
     boolean enabled();
 
-    /** @return a list of individual secret versions with the same secret name */
+    /**
+     * Gets a list of individual secret versions with the same secret name.
+     *
+     * @return a list of individual secret versions with the same secret name
+     */
     PagedIterable<Secret> listVersions();
 
-    /** @return a list of individual secret versions with the same secret name */
+    /**
+     * Gets a list of individual secret versions with the same secret name.
+     *
+     * @return a list of individual secret versions with the same secret name
+     */
     PagedFlux<Secret> listVersionsAsync();
 
     /** Container interface for all the definitions. */
@@ -165,11 +201,7 @@ public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasI
     }
 
     /** The template for a secret update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Secret>,
-            UpdateStages.WithValue,
-            UpdateStages.WithAttributes,
-            UpdateStages.WithContentType,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<Secret>, UpdateStages.WithValue, UpdateStages.WithAttributes,
+        UpdateStages.WithContentType, UpdateStages.WithTags {
     }
 }

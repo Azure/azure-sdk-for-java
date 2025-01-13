@@ -76,8 +76,8 @@ public final class WorkspaceOperationsImpl implements WorkspaceOperations {
 
     public Response<Void> regenerateKeysWithResponse(String resourceGroupName, String workspaceName,
         ApiKeys keySpecification, Context context) {
-        return this.serviceClient().regenerateKeysWithResponse(resourceGroupName, workspaceName, keySpecification,
-            context);
+        return this.serviceClient()
+            .regenerateKeysWithResponse(resourceGroupName, workspaceName, keySpecification, context);
     }
 
     public void regenerateKeys(String resourceGroupName, String workspaceName, ApiKeys keySpecification) {

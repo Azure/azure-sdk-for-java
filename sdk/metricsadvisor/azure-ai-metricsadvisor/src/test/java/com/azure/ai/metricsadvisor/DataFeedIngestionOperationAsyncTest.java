@@ -26,19 +26,15 @@ public final class DataFeedIngestionOperationAsyncTest extends DataFeedIngestion
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
-        PagedFlux<DataFeedIngestionStatus> ingestionStatusFlux
-            = client.listDataFeedIngestionStatus(ListIngestionStatusInput.INSTANCE.dataFeedId,
-            ListIngestionStatusInput.INSTANCE.options);
+        PagedFlux<DataFeedIngestionStatus> ingestionStatusFlux = client.listDataFeedIngestionStatus(
+            ListIngestionStatusInput.INSTANCE.dataFeedId, ListIngestionStatusInput.INSTANCE.options);
 
         Assertions.assertNotNull(ingestionStatusFlux);
 
-        StepVerifier.create(ingestionStatusFlux)
-            .thenConsumeWhile(ingestionStatus -> {
-                assertListIngestionStatusOutput(ingestionStatus);
-                return true;
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(ingestionStatusFlux).thenConsumeWhile(ingestionStatus -> {
+            assertListIngestionStatusOutput(ingestionStatus);
+            return true;
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -66,10 +62,9 @@ public final class DataFeedIngestionOperationAsyncTest extends DataFeedIngestion
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
-        Mono<Response<Void>> refreshIngestionMono = client.refreshDataFeedIngestionWithResponse(
-            RefreshIngestionInput.INSTANCE.dataFeedId,
-            RefreshIngestionInput.INSTANCE.startTime,
-            RefreshIngestionInput.INSTANCE.endTime);
+        Mono<Response<Void>> refreshIngestionMono
+            = client.refreshDataFeedIngestionWithResponse(RefreshIngestionInput.INSTANCE.dataFeedId,
+                RefreshIngestionInput.INSTANCE.startTime, RefreshIngestionInput.INSTANCE.endTime);
 
         Assertions.assertNotNull(refreshIngestionMono);
 

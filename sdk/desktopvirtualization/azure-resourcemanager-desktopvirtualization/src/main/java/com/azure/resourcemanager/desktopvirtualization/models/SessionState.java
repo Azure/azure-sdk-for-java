@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of user session. */
+/**
+ * State of user session.
+ */
 public final class SessionState extends ExpandableStringEnum<SessionState> {
-    /** Static value Unknown for SessionState. */
+    /**
+     * Static value Unknown for SessionState.
+     */
     public static final SessionState UNKNOWN = fromString("Unknown");
 
-    /** Static value Active for SessionState. */
+    /**
+     * Static value Active for SessionState.
+     */
     public static final SessionState ACTIVE = fromString("Active");
 
-    /** Static value Disconnected for SessionState. */
+    /**
+     * Static value Disconnected for SessionState.
+     */
     public static final SessionState DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Pending for SessionState. */
+    /**
+     * Static value Pending for SessionState.
+     */
     public static final SessionState PENDING = fromString("Pending");
 
-    /** Static value LogOff for SessionState. */
+    /**
+     * Static value LogOff for SessionState.
+     */
     public static final SessionState LOG_OFF = fromString("LogOff");
 
-    /** Static value UserProfileDiskMounted for SessionState. */
+    /**
+     * Static value UserProfileDiskMounted for SessionState.
+     */
     public static final SessionState USER_PROFILE_DISK_MOUNTED = fromString("UserProfileDiskMounted");
 
     /**
      * Creates a new instance of SessionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class SessionState extends ExpandableStringEnum<SessionState> {
 
     /**
      * Creates or finds a SessionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SessionState.
      */
-    @JsonCreator
     public static SessionState fromString(String name) {
         return fromString(name, SessionState.class);
     }
 
     /**
      * Gets known SessionState values.
-     *
+     * 
      * @return known SessionState values.
      */
     public static Collection<SessionState> values() {

@@ -15,22 +15,22 @@ import java.util.Collection;
  */
 public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<DomainNameLabelScopeTypes> {
     /**
-     * Static value TenantReuse for DomainNameLabelScopeTypes.
+     * TenantReuse type.
      */
     public static final DomainNameLabelScopeTypes TENANT_REUSE = fromString("TenantReuse");
 
     /**
-     * Static value SubscriptionReuse for DomainNameLabelScopeTypes.
+     * SubscriptionReuse type.
      */
     public static final DomainNameLabelScopeTypes SUBSCRIPTION_REUSE = fromString("SubscriptionReuse");
 
     /**
-     * Static value ResourceGroupReuse for DomainNameLabelScopeTypes.
+     * ResourceGroupReuse type.
      */
     public static final DomainNameLabelScopeTypes RESOURCE_GROUP_REUSE = fromString("ResourceGroupReuse");
 
     /**
-     * Static value NoReuse for DomainNameLabelScopeTypes.
+     * NoReuse type.
      */
     public static final DomainNameLabelScopeTypes NO_REUSE = fromString("NoReuse");
 

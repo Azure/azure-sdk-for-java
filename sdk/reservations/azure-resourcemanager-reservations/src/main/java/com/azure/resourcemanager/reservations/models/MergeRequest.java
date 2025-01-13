@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.MergeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The request for reservation merge. */
+/**
+ * The request for reservation merge.
+ */
 @Fluent
-public final class MergeRequest {
+public final class MergeRequest implements JsonSerializable<MergeRequest> {
     /*
      * Properties for reservation merge
      */
-    @JsonProperty(value = "properties")
     private MergeProperties innerProperties;
 
-    /** Creates an instance of MergeRequest class. */
+    /**
+     * Creates an instance of MergeRequest class.
+     */
     public MergeRequest() {
     }
 
     /**
      * Get the innerProperties property: Properties for reservation merge.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MergeProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class MergeRequest {
     /**
      * Get the sources property: Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @return the sources value.
      */
     public List<String> sources() {
@@ -44,7 +51,7 @@ public final class MergeRequest {
     /**
      * Set the sources property: Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the MergeRequest object itself.
      */
@@ -58,12 +65,48 @@ public final class MergeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MergeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MergeRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MergeRequest.
+     */
+    public static MergeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MergeRequest deserializedMergeRequest = new MergeRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedMergeRequest.innerProperties = MergeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMergeRequest;
+        });
     }
 }

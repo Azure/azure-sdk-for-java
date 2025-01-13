@@ -50,18 +50,28 @@ public final class StatelessServicePropertiesTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
                     .withServiceName("mzkwpjg")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("pughftqsxh").withWeight(ServiceLoadMetricWeight.MEDIUM)
-                    .withPrimaryDefaultLoad(318834407).withSecondaryDefaultLoad(649615996).withDefaultLoad(1485711526),
-                new ServiceLoadMetricDescription().withName("xdigrjg").withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(1159016951).withSecondaryDefaultLoad(1563611736)
+                new ServiceLoadMetricDescription().withName("pughftqsxh")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(318834407)
+                    .withSecondaryDefaultLoad(649615996)
+                    .withDefaultLoad(1485711526),
+                new ServiceLoadMetricDescription().withName("xdigrjg")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(1159016951)
+                    .withSecondaryDefaultLoad(1563611736)
                     .withDefaultLoad(1621102365),
-                new ServiceLoadMetricDescription().withName("tfih").withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(720488968).withSecondaryDefaultLoad(1701702807).withDefaultLoad(867678631)))
+                new ServiceLoadMetricDescription().withName("tfih")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(720488968)
+                    .withSecondaryDefaultLoad(1701702807)
+                    .withDefaultLoad(867678631)))
             .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.ZERO).withServiceTypeName("vfbgofeljagrqmqh")
+            .withDefaultMoveCost(MoveCost.ZERO)
+            .withServiceTypeName("vfbgofeljagrqmqh")
             .withPartitionDescription(new PartitionSchemeDescription())
             .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
-            .withServiceDnsName("iiojnal").withInstanceCount(1656770527)
+            .withServiceDnsName("iiojnal")
+            .withInstanceCount(1656770527)
             .withInstanceCloseDelayDuration("zszrnwoiindfpw");
         model = BinaryData.fromObject(model).toObject(StatelessServiceProperties.class);
         Assertions.assertEquals("fk", model.placementConstraints());

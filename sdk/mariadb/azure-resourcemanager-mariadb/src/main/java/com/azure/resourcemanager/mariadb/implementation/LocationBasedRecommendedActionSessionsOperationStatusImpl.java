@@ -15,8 +15,8 @@ import com.azure.resourcemanager.mariadb.models.RecommendedActionSessionsOperati
 
 public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
     implements LocationBasedRecommendedActionSessionsOperationStatus {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
 
     private final LocationBasedRecommendedActionSessionsOperationStatusClient innerClient;
 
@@ -29,15 +29,12 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
         this.serviceManager = serviceManager;
     }
 
-    public Response<RecommendedActionSessionsOperationStatus> getWithResponse(
-        String locationName, String operationId, Context context) {
-        Response<RecommendedActionSessionsOperationStatusInner> inner =
-            this.serviceClient().getWithResponse(locationName, operationId, context);
+    public Response<RecommendedActionSessionsOperationStatus> getWithResponse(String locationName, String operationId,
+        Context context) {
+        Response<RecommendedActionSessionsOperationStatusInner> inner
+            = this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecommendedActionSessionsOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

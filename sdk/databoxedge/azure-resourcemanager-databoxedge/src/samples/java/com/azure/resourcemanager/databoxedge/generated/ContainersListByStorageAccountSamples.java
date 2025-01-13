@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Containers ListByStorageAccount. */
+/**
+ * Samples for Containers ListByStorageAccount.
+ */
 public final class ContainersListByStorageAccountSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ContainerListAllInDevice.json
+     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
+     * ContainerListAllInDevice.json
      */
     /**
      * Sample code: ContainerListAllInDevice.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void containerListAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager
-            .containers()
-            .listByStorageAccount(
-                "testedgedevice", "storageaccount1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.containers()
+            .listByStorageAccount("testedgedevice", "storageaccount1", "GroupForEdgeAutomation",
+                com.azure.core.util.Context.NONE);
     }
 }

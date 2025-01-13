@@ -50,6 +50,7 @@ import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -62,7 +63,6 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.storage.file.share.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Files.
@@ -197,6 +197,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -209,6 +210,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -221,6 +223,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -233,6 +236,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -425,6 +429,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -440,6 +446,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -455,6 +463,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -470,6 +480,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -485,6 +497,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -500,6 +514,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -895,6 +911,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -917,6 +934,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -939,6 +957,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -961,6 +980,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -1259,46 +1279,10 @@ public final class FilesImpl {
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
         ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return FluxUtil
-            .withContext(
-                context -> service.create(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                    timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, contentType,
-                    contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata,
-                    filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-                    fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes,
+                timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1425,8 +1409,8 @@ public final class FilesImpl {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1471,8 +1455,8 @@ public final class FilesImpl {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1514,44 +1498,10 @@ public final class FilesImpl {
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
         ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-            this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
-            contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, fileName, fileContentLength,
+                fileAttributes, timeout, metadata, filePermission, filePermissionFormat, filePermissionKey,
+                fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1677,40 +1627,40 @@ public final class FilesImpl {
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String fileTypeConstant = "file";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.createSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
@@ -1803,40 +1753,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String fileTypeConstant = "file";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength,
                 fileTypeConstant, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted,
@@ -1859,6 +1809,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1867,12 +1819,11 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String shareName,
-        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId) {
-        final String accept = "application/xml";
+        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType,
+        String leaseId) {
         return FluxUtil
-            .withContext(context -> service.download(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5,
+                structuredBodyType, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1887,6 +1838,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1896,119 +1849,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String shareName,
-        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
+        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType,
+        String leaseId, Context context) {
         final String accept = "application/xml";
         return service
             .download(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
-                this.client.getVersion(), range, rangeGetContentMD5, leaseId, this.client.getFileRequestIntent(),
-                accept, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId) {
-        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId, Context context) {
-        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
-        return service
-            .downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
+                this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -2024,6 +1870,123 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
+        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+            leaseId).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId, Context context) {
+        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+            leaseId, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
+        return FluxUtil
+            .withContext(context -> downloadNoCustomHeadersWithResponseAsync(shareName, fileName, timeout, range,
+                rangeGetContentMD5, structuredBodyType, leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId,
+        Context context) {
+        final String accept = "application/xml";
+        return service
+            .downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
+                timeout, this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2033,11 +1996,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesDownloadHeaders, InputStream> downloadWithResponse(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId,
+        Context context) {
         try {
+            final String accept = "application/xml";
             return service.downloadSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
+                timeout, this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
@@ -2055,6 +2019,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -2063,10 +2029,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream download(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId) {
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
         try {
-            return downloadWithResponse(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId, Context.NONE)
-                .getValue();
+            return downloadWithResponse(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+                leaseId, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -2083,6 +2049,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2092,12 +2060,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> downloadNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
-        String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
+        String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId, Context context) {
         try {
+            final String accept = "application/xml";
             return service.downloadNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5,
+                structuredBodyType, leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -2123,11 +2091,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, Integer timeout, String leaseId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(
+            context -> getPropertiesWithResponseAsync(shareName, fileName, sharesnapshot, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2230,11 +2195,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String sharesnapshot, Integer timeout, String leaseId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(shareName, fileName, sharesnapshot,
+                timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2288,8 +2251,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesGetPropertiesHeaders, Void> getPropertiesWithResponse(String shareName, String fileName,
         String sharesnapshot, Integer timeout, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2341,8 +2304,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, Integer timeout, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2368,11 +2331,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesDeleteHeaders, Void>> deleteWithResponseAsync(String shareName, String fileName,
         Integer timeout, String leaseId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                    timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(shareName, fileName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2461,11 +2420,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         Integer timeout, String leaseId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> deleteNoCustomHeadersWithResponseAsync(shareName, fileName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2512,8 +2469,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesDeleteHeaders, Void> deleteWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -2557,8 +2514,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2605,45 +2562,10 @@ public final class FilesImpl {
         String fileName, String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return FluxUtil
-            .withContext(context -> service.setHttpHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
-                this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
-                cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
-                filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout,
+                fileContentLength, filePermission, filePermissionFormat, filePermissionKey, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2770,8 +2692,8 @@ public final class FilesImpl {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2816,8 +2738,8 @@ public final class FilesImpl {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2858,46 +2780,10 @@ public final class FilesImpl {
         String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return FluxUtil
-            .withContext(
-                context -> service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                    timeout, this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
-                    cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
-                    filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-                    this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> setHttpHeadersNoCustomHeadersWithResponseAsync(shareName, fileName, fileAttributes,
+                timeout, fileContentLength, filePermission, filePermissionFormat, filePermissionKey, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3023,40 +2909,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.setHttpHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
                 cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
@@ -3149,40 +3035,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
                 cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
@@ -3218,6 +3104,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3227,15 +3117,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody) {
         return FluxUtil
-            .withContext(context -> service.uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range,
-                fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+            .withContext(context -> uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite,
+                contentLength, timeout, contentMD5, leaseId, fileLastWrittenMode, structuredBodyType,
+                structuredContentLength, optionalbody, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3264,6 +3151,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3274,15 +3165,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody,
-        Context context) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite, contentLength,
                 contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3311,6 +3203,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3320,11 +3216,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        Flux<ByteBuffer> optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3352,6 +3249,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3362,11 +3263,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody, Context context) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        Flux<ByteBuffer> optionalbody, Context context) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3394,6 +3296,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3403,15 +3309,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody) {
         return FluxUtil
-            .withContext(context -> service.uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+            .withContext(context -> uploadRangeNoCustomHeadersWithResponseAsync(shareName, fileName, range,
+                fileRangeWrite, contentLength, timeout, contentMD5, leaseId, fileLastWrittenMode, structuredBodyType,
+                structuredContentLength, optionalbody, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3440,6 +3343,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3450,14 +3357,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody, Context context) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite,
                 contentLength, contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3486,6 +3395,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3495,15 +3408,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody) {
         return FluxUtil
-            .withContext(context -> service.uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range,
-                fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+            .withContext(context -> uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite,
+                contentLength, timeout, contentMD5, leaseId, fileLastWrittenMode, structuredBodyType,
+                structuredContentLength, optionalbody, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3532,6 +3442,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3542,15 +3456,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody,
-        Context context) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite, contentLength,
                 contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3579,6 +3494,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3588,11 +3507,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3620,6 +3540,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3630,11 +3554,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody, Context context) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3662,6 +3587,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3671,15 +3600,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody) {
         return FluxUtil
-            .withContext(context -> service.uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+            .withContext(context -> uploadRangeNoCustomHeadersWithResponseAsync(shareName, fileName, range,
+                fileRangeWrite, contentLength, timeout, contentMD5, leaseId, fileLastWrittenMode, structuredBodyType,
+                structuredContentLength, optionalbody, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3708,6 +3634,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3718,14 +3648,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite,
                 contentLength, contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3754,6 +3686,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3764,15 +3700,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesUploadRangeHeaders, Void> uploadRangeWithResponse(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         try {
+            final String comp = "range";
+            final String accept = "application/xml";
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.uploadRangeSync(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context);
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3803,6 +3740,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3811,9 +3752,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadRange(String shareName, String fileName, String range, ShareFileRangeWriteType fileRangeWrite,
         long contentLength, Integer timeout, byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode,
-        BinaryData optionalbody) {
+        String structuredBodyType, Long structuredContentLength, BinaryData optionalbody) {
         uploadRangeWithResponse(shareName, fileName, range, fileRangeWrite, contentLength, timeout, contentMD5, leaseId,
-            fileLastWrittenMode, optionalbody, Context.NONE);
+            fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody, Context.NONE);
     }
 
     /**
@@ -3841,6 +3782,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3851,15 +3796,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadRangeNoCustomHeadersWithResponse(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody, Context context) {
         try {
+            final String comp = "range";
+            final String accept = "application/xml";
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.uploadRangeNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context);
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3883,12 +3829,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(String shareName,
         String fileName, Integer timeout, Map<String, String> metadata, String leaseId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setMetadata(this.client.getUrl(), shareName, fileName, comp, timeout,
-                metadata, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> setMetadataWithResponseAsync(shareName, fileName, timeout, metadata, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3984,12 +3927,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         Integer timeout, Map<String, String> metadata, String leaseId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                timeout, metadata, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> setMetadataNoCustomHeadersWithResponseAsync(shareName, fileName, timeout, metadata,
+                leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4040,9 +3980,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesSetMetadataHeaders, Void> setMetadataWithResponse(String shareName, String fileName,
         Integer timeout, Map<String, String> metadata, String leaseId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), shareName, fileName, comp, timeout, metadata,
                 this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 accept, context);
@@ -4090,9 +4030,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         Map<String, String> metadata, String leaseId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 metadata, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4125,13 +4065,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesAcquireLeaseHeaders, Void>> acquireLeaseWithResponseAsync(String shareName,
         String fileName, Integer timeout, Integer duration, String proposedLeaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.acquireLease(this.client.getUrl(), shareName, fileName, comp, action,
-                timeout, duration, proposedLeaseId, this.client.getVersion(), requestId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> acquireLeaseWithResponseAsync(shareName, fileName, timeout, duration,
+                proposedLeaseId, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4226,7 +4162,7 @@ public final class FilesImpl {
         String proposedLeaseId, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(shareName, fileName, timeout, duration, proposedLeaseId, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4253,13 +4189,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> acquireLeaseNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         Integer timeout, Integer duration, String proposedLeaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.acquireLeaseNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                action, timeout, duration, proposedLeaseId, this.client.getVersion(), requestId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> acquireLeaseNoCustomHeadersWithResponseAsync(shareName, fileName, timeout, duration,
+                proposedLeaseId, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4323,10 +4255,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesAcquireLeaseHeaders, Void> acquireLeaseWithResponse(String shareName, String fileName,
         Integer timeout, Integer duration, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
             return service.acquireLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, duration,
                 proposedLeaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4386,10 +4318,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> acquireLeaseNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         Integer duration, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
             return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, duration, proposedLeaseId, this.client.getVersion(), requestId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -4417,13 +4349,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesReleaseLeaseHeaders, Void>> releaseLeaseWithResponseAsync(String shareName,
         String fileName, String leaseId, Integer timeout, String requestId) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.releaseLease(this.client.getUrl(), shareName, fileName, comp, action,
-                timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> releaseLeaseWithResponseAsync(shareName, fileName, leaseId, timeout, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4525,13 +4453,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String leaseId, Integer timeout, String requestId) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                action, timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> releaseLeaseNoCustomHeadersWithResponseAsync(shareName, fileName, leaseId, timeout,
+                requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4585,10 +4509,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesReleaseLeaseHeaders, Void> releaseLeaseWithResponse(String shareName, String fileName,
         String leaseId, Integer timeout, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
             return service.releaseLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4637,10 +4561,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseNoCustomHeadersWithResponse(String shareName, String fileName, String leaseId,
         Integer timeout, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
             return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4671,13 +4595,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesChangeLeaseHeaders, Void>> changeLeaseWithResponseAsync(String shareName,
         String fileName, String leaseId, Integer timeout, String proposedLeaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.changeLease(this.client.getUrl(), shareName, fileName, comp, action,
-                timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> changeLeaseWithResponseAsync(shareName, fileName, leaseId, timeout, proposedLeaseId,
+                requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4791,13 +4711,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> changeLeaseNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String leaseId, Integer timeout, String proposedLeaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.changeLeaseNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                action, timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> changeLeaseNoCustomHeadersWithResponseAsync(shareName, fileName, leaseId, timeout,
+                proposedLeaseId, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4857,10 +4773,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesChangeLeaseHeaders, Void> changeLeaseWithResponse(String shareName, String fileName,
         String leaseId, Integer timeout, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
             return service.changeLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 proposedLeaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4916,10 +4832,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> changeLeaseNoCustomHeadersWithResponse(String shareName, String fileName, String leaseId,
         Integer timeout, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
             return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -4947,13 +4863,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesBreakLeaseHeaders, Void>> breakLeaseWithResponseAsync(String shareName,
         String fileName, Integer timeout, String leaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.breakLease(this.client.getUrl(), shareName, fileName, comp, action, timeout,
-                leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> breakLeaseWithResponseAsync(shareName, fileName, timeout, leaseId, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5055,13 +4967,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         Integer timeout, String leaseId, String requestId) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                action, timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> breakLeaseNoCustomHeadersWithResponseAsync(shareName, fileName, timeout, leaseId,
+                requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5115,10 +5023,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesBreakLeaseHeaders, Void> breakLeaseWithResponse(String shareName, String fileName,
         Integer timeout, String leaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
             return service.breakLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -5167,10 +5075,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
             return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -5214,28 +5122,10 @@ public final class FilesImpl {
         String shareName, String fileName, String range, String copySource, long contentLength, Integer timeout,
         String sourceRange, byte[] sourceContentCrc64, String leaseId, String copySourceAuthorization,
         FileLastWrittenMode fileLastWrittenMode, SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         return FluxUtil
-            .withContext(context -> service.uploadRangeFromURL(this.client.getUrl(), shareName, fileName, comp, timeout,
-                range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted,
-                sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, this.client.getVersion(), leaseId,
-                copySourceAuthorization, fileLastWrittenMode, this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> uploadRangeFromURLWithResponseAsync(shareName, fileName, range, copySource,
+                contentLength, timeout, sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization,
+                fileLastWrittenMode, sourceModifiedAccessConditions, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5339,8 +5229,8 @@ public final class FilesImpl {
         return uploadRangeFromURLWithResponseAsync(shareName, fileName, range, copySource, contentLength, timeout,
             sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization, fileLastWrittenMode,
             sourceModifiedAccessConditions)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5382,8 +5272,8 @@ public final class FilesImpl {
         return uploadRangeFromURLWithResponseAsync(shareName, fileName, range, copySource, contentLength, timeout,
             sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization, fileLastWrittenMode,
             sourceModifiedAccessConditions, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5421,29 +5311,10 @@ public final class FilesImpl {
         String range, String copySource, long contentLength, Integer timeout, String sourceRange,
         byte[] sourceContentCrc64, String leaseId, String copySourceAuthorization,
         FileLastWrittenMode fileLastWrittenMode, SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         return FluxUtil
-            .withContext(context -> service.uploadRangeFromURLNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                comp, timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength,
-                sourceContentCrc64Converted, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted,
-                this.client.getVersion(), leaseId, copySourceAuthorization, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> uploadRangeFromURLNoCustomHeadersWithResponseAsync(shareName, fileName, range,
+                copySource, contentLength, timeout, sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization,
+                fileLastWrittenMode, sourceModifiedAccessConditions, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5546,23 +5417,23 @@ public final class FilesImpl {
         byte[] sourceContentCrc64, String leaseId, String copySourceAuthorization,
         FileLastWrittenMode fileLastWrittenMode, SourceModifiedAccessConditions sourceModifiedAccessConditions,
         Context context) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         try {
+            final String comp = "range";
+            final String fileRangeWriteFromUrl = "update";
+            final String accept = "application/xml";
+            byte[] sourceIfMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
+            }
+            byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
+            byte[] sourceIfNoneMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
+            }
+            byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
+            String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+            String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+            String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
             return service.uploadRangeFromURLSync(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted,
                 sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, this.client.getVersion(), leaseId,
@@ -5648,23 +5519,23 @@ public final class FilesImpl {
         String copySource, long contentLength, Integer timeout, String sourceRange, byte[] sourceContentCrc64,
         String leaseId, String copySourceAuthorization, FileLastWrittenMode fileLastWrittenMode,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         try {
+            final String comp = "range";
+            final String fileRangeWriteFromUrl = "update";
+            final String accept = "application/xml";
+            byte[] sourceIfMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
+            }
+            byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
+            byte[] sourceIfNoneMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
+            }
+            byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
+            String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+            String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+            String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
             return service.uploadRangeFromURLNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength,
                 sourceContentCrc64Converted, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted,
@@ -5704,12 +5575,9 @@ public final class FilesImpl {
     public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
         String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
         String range, String leaseId, Boolean supportRename) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getRangeList(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
-                prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context))
+            .withContext(context -> getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
+                timeout, range, leaseId, supportRename, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5780,8 +5648,8 @@ public final class FilesImpl {
         String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
             leaseId, supportRename)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5815,8 +5683,8 @@ public final class FilesImpl {
         Context context) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
             leaseId, supportRename, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5847,12 +5715,9 @@ public final class FilesImpl {
     public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getRangeListNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context))
+            .withContext(context -> getRangeListNoCustomHeadersWithResponseAsync(shareName, fileName, sharesnapshot,
+                prevsharesnapshot, timeout, range, leaseId, supportRename, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5923,9 +5788,9 @@ public final class FilesImpl {
     public ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, Context context) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
             return service.getRangeListSync(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), supportRename, accept, context);
@@ -5998,9 +5863,9 @@ public final class FilesImpl {
     public Response<ShareFileRangeList> getRangeListNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, Context context) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
             return service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context);
@@ -6028,6 +5893,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6040,49 +5910,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopyWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo) {
         return FluxUtil
-            .withContext(context -> service.startCopy(this.client.getUrl(), shareName, fileName, timeout,
-                this.client.getVersion(), metadata, copySource, filePermission, filePermissionKey,
-                filePermissionCopyMode, ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata,
+                filePermission, filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6105,6 +5937,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6118,7 +5955,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopyWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
         final String accept = "application/xml";
         PermissionCopyModeType filePermissionCopyModeInternal = null;
         if (copyFileSmbInfo != null) {
@@ -6157,9 +5995,9 @@ public final class FilesImpl {
         Boolean setArchiveAttribute = setArchiveAttributeInternal;
         return service
             .startCopy(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(), metadata,
-                copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly, fileAttributes,
-                fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -6183,6 +6021,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6194,12 +6037,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startCopyAsync(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo) {
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
-            filePermissionKey, leaseId, copyFileSmbInfo)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6221,6 +6064,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6233,12 +6081,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startCopyAsync(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
-            filePermissionKey, leaseId, copyFileSmbInfo, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+            filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6260,6 +6108,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6272,49 +6125,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startCopyNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo) {
         return FluxUtil
-            .withContext(context -> service.startCopyNoCustomHeaders(this.client.getUrl(), shareName, fileName, timeout,
-                this.client.getVersion(), metadata, copySource, filePermission, filePermissionKey,
-                filePermissionCopyMode, ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> startCopyNoCustomHeadersWithResponseAsync(shareName, fileName, copySource, timeout,
+                metadata, filePermission, filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6337,6 +6152,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6350,7 +6170,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startCopyNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
         final String accept = "application/xml";
         PermissionCopyModeType filePermissionCopyModeInternal = null;
         if (copyFileSmbInfo != null) {
@@ -6389,9 +6210,9 @@ public final class FilesImpl {
         Boolean setArchiveAttribute = setArchiveAttributeInternal;
         return service
             .startCopyNoCustomHeaders(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
-                metadata, copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly,
-                fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                metadata, copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -6415,6 +6236,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6428,48 +6254,49 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesStartCopyHeaders, Void> startCopyWithResponse(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
         try {
+            final String accept = "application/xml";
+            PermissionCopyModeType filePermissionCopyModeInternal = null;
+            if (copyFileSmbInfo != null) {
+                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+            }
+            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+            Boolean ignoreReadOnlyInternal = null;
+            if (copyFileSmbInfo != null) {
+                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+            }
+            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            Boolean setArchiveAttributeInternal = null;
+            if (copyFileSmbInfo != null) {
+                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+            }
+            Boolean setArchiveAttribute = setArchiveAttributeInternal;
             return service.startCopySync(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
-                metadata, copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly,
-                fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                metadata, copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
@@ -6495,6 +6322,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6505,10 +6337,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startCopy(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo) {
-        startCopyWithResponse(shareName, fileName, copySource, timeout, metadata, filePermission, filePermissionKey,
-            leaseId, copyFileSmbInfo, Context.NONE);
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
+        startCopyWithResponse(shareName, fileName, copySource, timeout, metadata, filePermission, filePermissionFormat,
+            filePermissionKey, leaseId, copyFileSmbInfo, Context.NONE);
     }
 
     /**
@@ -6530,6 +6362,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6542,47 +6379,47 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copySource,
-        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo, Context context) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
         try {
+            final String accept = "application/xml";
+            PermissionCopyModeType filePermissionCopyModeInternal = null;
+            if (copyFileSmbInfo != null) {
+                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+            }
+            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+            Boolean ignoreReadOnlyInternal = null;
+            if (copyFileSmbInfo != null) {
+                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+            }
+            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            Boolean setArchiveAttributeInternal = null;
+            if (copyFileSmbInfo != null) {
+                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+            }
+            Boolean setArchiveAttribute = setArchiveAttributeInternal;
             return service.startCopyNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, timeout,
-                this.client.getVersion(), metadata, copySource, filePermission, filePermissionKey,
+                this.client.getVersion(), metadata, copySource, filePermission, filePermissionFormat, filePermissionKey,
                 filePermissionCopyMode, ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -6609,13 +6446,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesAbortCopyHeaders, Void>> abortCopyWithResponseAsync(String shareName, String fileName,
         String copyId, Integer timeout, String leaseId) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.abortCopy(this.client.getUrl(), shareName, fileName, comp, copyId, timeout,
-                copyActionAbortConstant, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> abortCopyWithResponseAsync(shareName, fileName, copyId, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6713,13 +6545,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> abortCopyNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String copyId, Integer timeout, String leaseId) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.abortCopyNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                copyId, timeout, copyActionAbortConstant, this.client.getVersion(), leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> abortCopyNoCustomHeadersWithResponseAsync(shareName, fileName, copyId, timeout,
+                leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6771,10 +6599,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesAbortCopyHeaders, Void> abortCopyWithResponse(String shareName, String fileName,
         String copyId, Integer timeout, String leaseId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopySync(this.client.getUrl(), shareName, fileName, comp, copyId, timeout,
                 copyActionAbortConstant, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -6821,10 +6649,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copyId,
         Integer timeout, String leaseId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopyNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, copyId,
                 timeout, copyActionAbortConstant, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -6857,12 +6685,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> listHandlesWithResponseAsync(
         String shareName, String fileName, String marker, Integer maxresults, Integer timeout, String sharesnapshot) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.listHandles(this.client.getUrl(), shareName, fileName, comp, marker,
-                maxresults, timeout, sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> listHandlesWithResponseAsync(shareName, fileName, marker, maxresults, timeout,
+                sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6984,12 +6809,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListHandlesResponse>> listHandlesNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String marker, Integer maxresults, Integer timeout, String sharesnapshot) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.listHandlesNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                marker, maxresults, timeout, sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> listHandlesNoCustomHeadersWithResponseAsync(shareName, fileName, marker, maxresults,
+                timeout, sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -7052,9 +6874,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesListHandlesHeaders, ListHandlesResponse> listHandlesWithResponse(String shareName,
         String fileName, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "listhandles";
+            final String accept = "application/xml";
             return service.listHandlesSync(this.client.getUrl(), shareName, fileName, comp, marker, maxresults, timeout,
                 sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7120,9 +6942,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListHandlesResponse> listHandlesNoCustomHeadersWithResponse(String shareName, String fileName,
         String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "listhandles";
+            final String accept = "application/xml";
             return service.listHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, marker,
                 maxresults, timeout, sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7155,12 +6977,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesForceCloseHandlesHeaders, Void>> forceCloseHandlesWithResponseAsync(String shareName,
         String fileName, String handleId, Integer timeout, String marker, String sharesnapshot) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.forceCloseHandles(this.client.getUrl(), shareName, fileName, comp, timeout,
-                marker, sharesnapshot, handleId, this.client.getVersion(), this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> forceCloseHandlesWithResponseAsync(shareName, fileName, handleId, timeout, marker,
+                sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -7254,7 +7073,7 @@ public final class FilesImpl {
         String marker, String sharesnapshot, Context context) {
         return forceCloseHandlesWithResponseAsync(shareName, fileName, handleId, timeout, marker, sharesnapshot,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7281,12 +7100,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> forceCloseHandlesNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String handleId, Integer timeout, String marker, String sharesnapshot) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.forceCloseHandlesNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                comp, timeout, marker, sharesnapshot, handleId, this.client.getVersion(),
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> forceCloseHandlesNoCustomHeadersWithResponseAsync(shareName, fileName, handleId,
+                timeout, marker, sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -7349,9 +7165,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesForceCloseHandlesHeaders, Void> forceCloseHandlesWithResponse(String shareName,
         String fileName, String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "forceclosehandles";
+            final String accept = "application/xml";
             return service.forceCloseHandlesSync(this.client.getUrl(), shareName, fileName, comp, timeout, marker,
                 sharesnapshot, handleId, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7411,9 +7227,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> forceCloseHandlesNoCustomHeadersWithResponse(String shareName, String fileName,
         String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "forceclosehandles";
+            final String accept = "application/xml";
             return service.forceCloseHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 timeout, marker, sharesnapshot, handleId, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7467,50 +7283,10 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        return FluxUtil
-            .withContext(context -> service.rename(this.client.getUrl(), shareName, fileName, comp, timeout,
-                this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
-                destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
-                filePermissionFormat, filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+        return FluxUtil.withContext(context -> renameWithResponseAsync(shareName, fileName, renameSource, timeout,
+            replaceIfExists, ignoreReadOnly, filePermission, filePermissionFormat, filePermissionKey, metadata,
+            sourceLeaseAccessConditions, destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders,
+            context)).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -7653,8 +7429,8 @@ public final class FilesImpl {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7706,8 +7482,8 @@ public final class FilesImpl {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7755,50 +7531,10 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        return FluxUtil
-            .withContext(context -> service.renameNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
-                timeout, this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
-                destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
-                filePermissionFormat, filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+        return FluxUtil.withContext(context -> renameNoCustomHeadersWithResponseAsync(shareName, fileName, renameSource,
+            timeout, replaceIfExists, ignoreReadOnly, filePermission, filePermissionFormat, filePermissionKey, metadata,
+            sourceLeaseAccessConditions, destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders,
+            context)).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -7939,44 +7675,44 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
         try {
+            final String comp = "rename";
+            final String accept = "application/xml";
+            String sourceLeaseIdInternal = null;
+            if (sourceLeaseAccessConditions != null) {
+                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+            }
+            String sourceLeaseId = sourceLeaseIdInternal;
+            String destinationLeaseIdInternal = null;
+            if (destinationLeaseAccessConditions != null) {
+                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+            }
+            String destinationLeaseId = destinationLeaseIdInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
             return service.renameSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
@@ -8081,44 +7817,44 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
         try {
+            final String comp = "rename";
+            final String accept = "application/xml";
+            String sourceLeaseIdInternal = null;
+            if (sourceLeaseAccessConditions != null) {
+                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+            }
+            String sourceLeaseId = sourceLeaseIdInternal;
+            String destinationLeaseIdInternal = null;
+            if (destinationLeaseAccessConditions != null) {
+                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+            }
+            String destinationLeaseId = destinationLeaseIdInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
             return service.renameNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,

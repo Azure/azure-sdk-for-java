@@ -45,8 +45,7 @@ public class OAuthCopySourceTests extends FileShareTestBase {
     }
 
     private BlobContainerClient getBlobContainer() {
-        return instrument(new BlobServiceClientBuilder())
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+        return instrument(new BlobServiceClientBuilder()).endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .buildClient()
             .createBlobContainer(shareName);
@@ -95,9 +94,11 @@ public class OAuthCopySourceTests extends FileShareTestBase {
         String oauthHeader = "garbage";
         primaryFileClient.create(DATA.getDefaultDataSizeLong());
 
-        assertThrows(ShareStorageException.class, () -> primaryFileClient.uploadRangeFromUrlWithResponse(
-            new ShareFileUploadRangeFromUrlOptions(DATA.getDefaultDataSize(), blob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE));
+        assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.uploadRangeFromUrlWithResponse(
+                new ShareFileUploadRangeFromUrlOptions(DATA.getDefaultDataSize(), blob.getBlobUrl())
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
+                null, Context.NONE));
     }
 
 }

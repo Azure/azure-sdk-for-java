@@ -19,14 +19,10 @@ import java.util.TreeMap;
 
 /** Implementation for LoadBalancerTcpProbe and its create and update interfaces. */
 class LoadBalancerProbeImpl extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancerTcpProbe,
-        LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
-        LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerTcpProbe.Update,
-        LoadBalancerHttpProbe,
-        LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
-        LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerHttpProbe.Update {
+    implements LoadBalancerTcpProbe, LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+    LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>, LoadBalancerTcpProbe.Update, LoadBalancerHttpProbe,
+    LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+    LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>, LoadBalancerHttpProbe.Update {
 
     LoadBalancerProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
         super(inner, parent);

@@ -29,17 +29,20 @@ public final class PrivateEndpointConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResult model
-            = new PrivateEndpointConnectionListResult().withValue(Arrays.asList(
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED).withDescription("blgphuticn")
-                        .withActionsRequired("kao"))
-                    .withGroupIds(Arrays.asList("i", "tyhxhurokft", "xolniwpwcukjfk")),
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("ulzndlikwyqk")
-                        .withActionsRequired("gibma"))
-                    .withGroupIds(Arrays.asList("keqsrxybzqqedq", "tbciqfouflmm"))));
+            = new PrivateEndpointConnectionListResult()
+                .withValue(Arrays.asList(
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                            .withDescription("blgphuticn")
+                            .withActionsRequired("kao"))
+                        .withGroupIds(Arrays.asList("i", "tyhxhurokft", "xolniwpwcukjfk")),
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                            .withDescription("ulzndlikwyqk")
+                            .withActionsRequired("gibma"))
+                        .withGroupIds(Arrays.asList("keqsrxybzqqedq", "tbciqfouflmm"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).privateLinkServiceConnectionState().status());

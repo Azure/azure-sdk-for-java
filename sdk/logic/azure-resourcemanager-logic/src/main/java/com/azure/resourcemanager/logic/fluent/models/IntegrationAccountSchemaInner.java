@@ -7,42 +7,97 @@ package com.azure.resourcemanager.logic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account schema. */
+/**
+ * The integration account schema.
+ */
 @Fluent
 public final class IntegrationAccountSchemaInner extends Resource {
     /*
      * The integration account schema properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationAccountSchemaProperties innerProperties = new IntegrationAccountSchemaProperties();
 
-    /** Creates an instance of IntegrationAccountSchemaInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IntegrationAccountSchemaInner class.
+     */
     public IntegrationAccountSchemaInner() {
     }
 
     /**
      * Get the innerProperties property: The integration account schema properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IntegrationAccountSchemaProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountSchemaInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountSchemaInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +106,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the schemaType property: The schema type.
-     *
+     * 
      * @return the schemaType value.
      */
     public SchemaType schemaType() {
@@ -60,7 +115,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the schemaType property: The schema type.
-     *
+     * 
      * @param schemaType the schemaType value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -74,7 +129,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the targetNamespace property: The target namespace of the schema.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -83,7 +138,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the targetNamespace property: The target namespace of the schema.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -97,7 +152,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the documentName property: The document name.
-     *
+     * 
      * @return the documentName value.
      */
     public String documentName() {
@@ -106,7 +161,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the documentName property: The document name.
-     *
+     * 
      * @param documentName the documentName value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -120,7 +175,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the fileName property: The file name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -129,7 +184,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the fileName property: The file name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -143,7 +198,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -152,7 +207,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -161,7 +216,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -170,7 +225,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -184,7 +239,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the content property: The content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -193,7 +248,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the content property: The content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -207,7 +262,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the contentType property: The content type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -216,7 +271,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Set the contentType property: The content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the IntegrationAccountSchemaInner object itself.
      */
@@ -230,7 +285,7 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Get the contentLink property: The content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -239,19 +294,70 @@ public final class IntegrationAccountSchemaInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IntegrationAccountSchemaInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountSchemaInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSchemaInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountSchemaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountSchemaInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountSchemaInner.
+     */
+    public static IntegrationAccountSchemaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountSchemaInner deserializedIntegrationAccountSchemaInner
+                = new IntegrationAccountSchemaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountSchemaInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountSchemaInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountSchemaInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountSchemaInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountSchemaInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountSchemaInner.innerProperties
+                        = IntegrationAccountSchemaProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountSchemaInner;
+        });
+    }
 }

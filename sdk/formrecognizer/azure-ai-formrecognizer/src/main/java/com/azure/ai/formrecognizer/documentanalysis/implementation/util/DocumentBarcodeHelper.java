@@ -30,6 +30,7 @@ public final class DocumentBarcodeHelper {
         void setValue(DocumentBarcode documentBarcode, String value);
 
         void setBoundingPolygon(DocumentBarcode documentBarcode, List<Point> polygon);
+
         void setConfidence(DocumentBarcode documentBarcode, float confidence);
     }
 
@@ -57,6 +58,7 @@ public final class DocumentBarcodeHelper {
     static void setBoundingPolygon(DocumentBarcode documentBarcode, List<Point> polygon) {
         accessor.setBoundingPolygon(documentBarcode, polygon);
     }
+
     static void setValue(DocumentBarcode documentBarcode, String value) {
         accessor.setValue(documentBarcode, value);
     }

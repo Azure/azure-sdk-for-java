@@ -5,39 +5,56 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Databox Heavy Device Job Details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobDetailsType")
-@JsonTypeName("DataBoxHeavy")
+/**
+ * Databox Heavy Device Job Details.
+ */
 @Fluent
 public final class DataBoxHeavyJobDetails extends JobDetails {
     /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator jobDetailsType = ClassDiscriminator.DATA_BOX_HEAVY;
+
+    /*
      * Copy progress per account.
      */
-    @JsonProperty(value = "copyProgress", access = JsonProperty.Access.WRITE_ONLY)
     private List<CopyProgress> copyProgress;
 
     /*
      * Set Device password for unlocking Databox Heavy. Should not be passed for TransferType:ExportFromAzure jobs. If
      * this is not passed, the service will generate password itself. This will not be returned in Get Call. Password
-     * Requirements :  Password must be minimum of 12 and maximum of 64 characters. Password must have at least one
-     * uppercase alphabet, one number and one special character. Password cannot have the following characters :
-     * IilLoO0 Password can have only alphabets, numbers and these characters : @#\-$%^!+=;:_()]+
+     * Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least one
+     * uppercase alphabet, one number and one special character. Password cannot have the following characters : IilLoO0
+     * Password can have only alphabets, numbers and these characters : @#\-$%^!+=;:_()]+
      */
-    @JsonProperty(value = "devicePassword")
     private String devicePassword;
 
-    /** Creates an instance of DataBoxHeavyJobDetails class. */
+    /**
+     * Creates an instance of DataBoxHeavyJobDetails class.
+     */
     public DataBoxHeavyJobDetails() {
     }
 
     /**
+     * Get the jobDetailsType property: Indicates the type of job details.
+     * 
+     * @return the jobDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator jobDetailsType() {
+        return this.jobDetailsType;
+    }
+
+    /**
      * Get the copyProgress property: Copy progress per account.
-     *
+     * 
      * @return the copyProgress value.
      */
     public List<CopyProgress> copyProgress() {
@@ -49,9 +66,9 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
      * TransferType:ExportFromAzure jobs. If this is not passed, the service will generate password itself. This will
      * not be returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters.
      * Password must have at least one uppercase alphabet, one number and one special character. Password cannot have
-     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
-     * : @#\-$%^!+=;:_()]+.
-     *
+     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters :
+     * &#064;#\-$%^!+=;:_()]+.
+     * 
      * @return the devicePassword value.
      */
     public String devicePassword() {
@@ -63,9 +80,9 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
      * TransferType:ExportFromAzure jobs. If this is not passed, the service will generate password itself. This will
      * not be returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters.
      * Password must have at least one uppercase alphabet, one number and one special character. Password cannot have
-     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
-     * : @#\-$%^!+=;:_()]+.
-     *
+     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters :
+     * &#064;#\-$%^!+=;:_()]+.
+     * 
      * @param devicePassword the devicePassword value to set.
      * @return the DataBoxHeavyJobDetails object itself.
      */
@@ -74,56 +91,72 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withContactDetails(ContactDetails contactDetails) {
         super.withContactDetails(contactDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withShippingAddress(ShippingAddress shippingAddress) {
         super.withShippingAddress(shippingAddress);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withDataImportDetails(List<DataImportDetails> dataImportDetails) {
         super.withDataImportDetails(dataImportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withDataExportDetails(List<DataExportDetails> dataExportDetails) {
         super.withDataExportDetails(dataExportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withPreferences(Preferences preferences) {
         super.withPreferences(preferences);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
         super.withReverseShippingDetails(reverseShippingDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withKeyEncryptionKey(KeyEncryptionKey keyEncryptionKey) {
         super.withKeyEncryptionKey(keyEncryptionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withExpectedDataSizeInTeraBytes(Integer expectedDataSizeInTeraBytes) {
         super.withExpectedDataSizeInTeraBytes(expectedDataSizeInTeraBytes);
@@ -132,14 +165,167 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
         }
+        if (jobStages() != null) {
+            jobStages().forEach(e -> e.validate());
+        }
+        if (contactDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model DataBoxHeavyJobDetails"));
+        } else {
+            contactDetails().validate();
+        }
+        if (shippingAddress() != null) {
+            shippingAddress().validate();
+        }
+        if (deliveryPackage() != null) {
+            deliveryPackage().validate();
+        }
+        if (returnPackage() != null) {
+            returnPackage().validate();
+        }
+        if (dataImportDetails() != null) {
+            dataImportDetails().forEach(e -> e.validate());
+        }
+        if (dataExportDetails() != null) {
+            dataExportDetails().forEach(e -> e.validate());
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (copyLogDetails() != null) {
+            copyLogDetails().forEach(e -> e.validate());
+        }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
+        if (lastMitigationActionOnJob() != null) {
+            lastMitigationActionOnJob().validate();
+        }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxHeavyJobDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", contactDetails());
+        jsonWriter.writeJsonField("shippingAddress", shippingAddress());
+        jsonWriter.writeArrayField("dataImportDetails", dataImportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataExportDetails", dataExportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preferences", preferences());
+        jsonWriter.writeJsonField("reverseShippingDetails", reverseShippingDetails());
+        jsonWriter.writeJsonField("keyEncryptionKey", keyEncryptionKey());
+        jsonWriter.writeNumberField("expectedDataSizeInTeraBytes", expectedDataSizeInTeraBytes());
+        jsonWriter.writeStringField("jobDetailsType",
+            this.jobDetailsType == null ? null : this.jobDetailsType.toString());
+        jsonWriter.writeStringField("devicePassword", this.devicePassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxHeavyJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxHeavyJobDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxHeavyJobDetails.
+     */
+    public static DataBoxHeavyJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxHeavyJobDetails deserializedDataBoxHeavyJobDetails = new DataBoxHeavyJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withContactDetails(ContactDetails.fromJson(reader));
+                } else if ("jobStages".equals(fieldName)) {
+                    List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withJobStages(jobStages);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withShippingAddress(ShippingAddress.fromJson(reader));
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withDeliveryPackage(PackageShippingDetails.fromJson(reader));
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withReturnPackage(PackageShippingDetails.fromJson(reader));
+                } else if ("dataImportDetails".equals(fieldName)) {
+                    List<DataImportDetails> dataImportDetails
+                        = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withDataImportDetails(dataImportDetails);
+                } else if ("dataExportDetails".equals(fieldName)) {
+                    List<DataExportDetails> dataExportDetails
+                        = reader.readArray(reader1 -> DataExportDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withDataExportDetails(dataExportDetails);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withPreferences(Preferences.fromJson(reader));
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withReverseShippingDetails(ReverseShippingDetails.fromJson(reader));
+                } else if ("copyLogDetails".equals(fieldName)) {
+                    List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withCopyLogDetails(copyLogDetails);
+                } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withReverseShipmentLabelSasKey(reader.getString());
+                } else if ("chainOfCustodySasKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withChainOfCustodySasKey(reader.getString());
+                } else if ("deviceErasureDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withDeviceErasureDetails(DeviceErasureDetails.fromJson(reader));
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withKeyEncryptionKey(KeyEncryptionKey.fromJson(reader));
+                } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withExpectedDataSizeInTeraBytes(reader.getNullable(JsonReader::getInt));
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxHeavyJobDetails.withActions(actions);
+                } else if ("lastMitigationActionOnJob".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withLastMitigationActionOnJob(LastMitigationActionOnJob.fromJson(reader));
+                } else if ("datacenterAddress".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withDatacenterAddress(DatacenterAddressResponse.fromJson(reader));
+                } else if ("dataCenterCode".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withDataCenterCode(DataCenterCode.fromString(reader.getString()));
+                } else if ("jobDetailsType".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.jobDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("copyProgress".equals(fieldName)) {
+                    List<CopyProgress> copyProgress = reader.readArray(reader1 -> CopyProgress.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.copyProgress = copyProgress;
+                } else if ("devicePassword".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.devicePassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxHeavyJobDetails;
+        });
     }
 }

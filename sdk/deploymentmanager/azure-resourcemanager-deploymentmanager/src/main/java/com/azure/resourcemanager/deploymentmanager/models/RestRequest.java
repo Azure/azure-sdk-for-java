@@ -100,19 +100,16 @@ public final class RestRequest {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property method in model RestRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property method in model RestRequest"));
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model RestRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uri in model RestRequest"));
         }
         if (authentication() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property authentication in model RestRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property authentication in model RestRequest"));
         } else {
             authentication().validate();
         }

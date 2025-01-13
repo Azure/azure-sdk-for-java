@@ -55,8 +55,8 @@ public interface VideoAnalyzers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
-    Response<VideoAnalyzer> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<VideoAnalyzer> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Delete the specified Video Analyzer account.

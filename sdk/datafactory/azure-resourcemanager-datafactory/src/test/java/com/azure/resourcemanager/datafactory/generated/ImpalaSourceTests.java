@@ -11,19 +11,19 @@ public final class ImpalaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpalaSource model = BinaryData.fromString(
-            "{\"type\":\"ImpalaSource\",\"query\":\"dataqaptqyrnlyuyopww\",\"queryTimeout\":\"dataoubwbssvfzjjf\",\"additionalColumns\":\"dataxeosyl\",\"sourceRetryCount\":\"datappqjujbqrfw\",\"sourceRetryWait\":\"datawvpnbgyxo\",\"maxConcurrentConnections\":\"datakzeaiaycauvlfsc\",\"disableMetricsCollection\":\"dataqpzqivfgemvuicxw\",\"\":{\"atjm\":\"dataydlvfnucgwflj\"}}")
+            "{\"type\":\"ImpalaSource\",\"query\":\"dataht\",\"queryTimeout\":\"datauiptudw\",\"additionalColumns\":\"datasrpsjkqfabju\",\"sourceRetryCount\":\"datats\",\"sourceRetryWait\":\"dataupcio\",\"maxConcurrentConnections\":\"datarjdeyfnqanbadkzp\",\"disableMetricsCollection\":\"datatuplpkjexq\",\"\":{\"goeftrbxomaa\":\"datazlal\",\"gvjmllzykalbaumm\":\"datavarfqverxelquqze\",\"r\":\"datadwqiucpj\",\"ftt\":\"databssjtjwzelx\"}}")
             .toObject(ImpalaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaSource model = new ImpalaSource().withSourceRetryCount("datappqjujbqrfw")
-            .withSourceRetryWait("datawvpnbgyxo")
-            .withMaxConcurrentConnections("datakzeaiaycauvlfsc")
-            .withDisableMetricsCollection("dataqpzqivfgemvuicxw")
-            .withQueryTimeout("dataoubwbssvfzjjf")
-            .withAdditionalColumns("dataxeosyl")
-            .withQuery("dataqaptqyrnlyuyopww");
+        ImpalaSource model = new ImpalaSource().withSourceRetryCount("datats")
+            .withSourceRetryWait("dataupcio")
+            .withMaxConcurrentConnections("datarjdeyfnqanbadkzp")
+            .withDisableMetricsCollection("datatuplpkjexq")
+            .withQueryTimeout("datauiptudw")
+            .withAdditionalColumns("datasrpsjkqfabju")
+            .withQuery("dataht");
         model = BinaryData.fromObject(model).toObject(ImpalaSource.class);
     }
 }

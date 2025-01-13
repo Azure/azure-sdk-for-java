@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ManagementZonesClientBuilder.class, isAsync = true)
 public final class ManagementZonesAsyncClient {
-    @Generated private final ManagementZonesImpl serviceClient;
+    @Generated
+    private final ManagementZonesImpl serviceClient;
 
     /**
      * Initializes an instance of ManagementZonesAsyncClient class.
@@ -136,8 +137,8 @@ public final class ManagementZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -175,8 +176,8 @@ public final class ManagementZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String managementZoneId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String managementZoneId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, managementZoneId, requestOptions);
     }
 
@@ -289,8 +290,8 @@ public final class ManagementZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String managementZoneId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String managementZoneId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, managementZoneId, requestOptions);
     }
 
@@ -359,10 +360,10 @@ public final class ManagementZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String managementZoneId, BinaryData managementZone, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, managementZoneId, managementZone, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String managementZoneId,
+        BinaryData managementZone, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, managementZoneId, managementZone,
+            requestOptions);
     }
 
     /**
@@ -379,8 +380,8 @@ public final class ManagementZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String managementZoneId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String managementZoneId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, managementZoneId, requestOptions);
     }
 }

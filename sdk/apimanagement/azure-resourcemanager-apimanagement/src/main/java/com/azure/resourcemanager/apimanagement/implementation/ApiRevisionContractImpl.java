@@ -13,8 +13,7 @@ public final class ApiRevisionContractImpl implements ApiRevisionContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ApiRevisionContractImpl(
-        ApiRevisionContractInner innerObject,
+    ApiRevisionContractImpl(ApiRevisionContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Describes Batch AI Resource Usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageInner.class);
 
     /*
      * An enum describing the unit of usage measurement.

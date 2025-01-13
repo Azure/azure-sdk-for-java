@@ -10,9 +10,7 @@ import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrinc
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
-import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
-import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,57 +20,51 @@ public final class ConfidentialLedgerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfidentialLedgerInner model = BinaryData.fromString(
-            "{\"properties\":{\"ledgerName\":\"lzufcyzkohdbi\",\"ledgerUri\":\"nufhf\",\"identityServiceUri\":\"jysagith\",\"ledgerInternalNamespace\":\"hab\",\"runningState\":\"Pausing\",\"ledgerType\":\"Private\",\"provisioningState\":\"Updating\",\"ledgerSku\":\"Basic\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"cnpqxuhivyqniwby\",\"tenantId\":\"k\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"mjgr\",\"tenantId\":\"wvukx\",\"ledgerRoleName\":\"Administrator\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"snhsjcnyejhkryh\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"czwlokjyem\",\"ledgerRoleName\":\"Administrator\"}]},\"location\":\"ipjoxzjnchgejs\",\"tags\":{\"ahuxinpm\":\"mailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\",\"vwryoqpso\":\"odjpslwejd\"},\"id\":\"cctazakljlahbc\",\"name\":\"yffdfdos\",\"type\":\"gexpaojakhmsbz\"}")
+            "{\"properties\":{\"ledgerName\":\"lzufcyzkohdbi\",\"ledgerUri\":\"nufhf\",\"identityServiceUri\":\"jysagith\",\"ledgerInternalNamespace\":\"hab\",\"ledgerType\":\"Private\",\"provisioningState\":\"Canceled\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"zb\",\"tenantId\":\"cnpqxuhivyqniwby\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"vd\",\"tenantId\":\"jgrtfwvukxga\",\"ledgerRoleName\":\"Contributor\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"h\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"yejhk\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"napczwlokjy\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"vnipjox\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"gejspodmailzyde\",\"tags\":{\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\",\"zkrwfn\":\"pjhulsuuvmkj\",\"lwejdpv\":\"iodjp\"},\"id\":\"ryo\",\"name\":\"psoacctazakljl\",\"type\":\"hbcryffdfdosyge\"}")
             .toObject(ConfidentialLedgerInner.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.location());
-        Assertions.assertEquals("mailzydehojw", model.tags().get("ahuxinpm"));
-        Assertions.assertEquals(RunningState.PAUSING, model.properties().runningState());
         Assertions.assertEquals(LedgerType.PRIVATE, model.properties().ledgerType());
-        Assertions.assertEquals(LedgerSku.BASIC, model.properties().ledgerSku());
-        Assertions.assertEquals("cnpqxuhivyqniwby",
-            model.properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("k", model.properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals("zb", model.properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("cnpqxuhivyqniwby", model.properties().aadBasedSecurityPrincipals().get(0).tenantId());
         Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
             model.properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("snhsjcnyejhkryh", model.properties().certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.READER,
+        Assertions.assertEquals("h", model.properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
             model.properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("gejspodmailzyde", model.location());
+        Assertions.assertEquals("wyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfidentialLedgerInner model = new ConfidentialLedgerInner().withLocation("ipjoxzjnchgejs")
-            .withTags(mapOf("ahuxinpm", "mailzydehojw", "vcputegj", "njaqwixjspro", "uuvmkjozkrwfnd",
-                "wmfdatscmdvpjhul", "vwryoqpso", "odjpslwejd"))
-            .withProperties(new LedgerProperties().withRunningState(RunningState.PAUSING)
-                .withLedgerType(LedgerType.PRIVATE)
-                .withLedgerSku(LedgerSku.BASIC)
+        ConfidentialLedgerInner model = new ConfidentialLedgerInner()
+            .withProperties(new LedgerProperties().withLedgerType(LedgerType.PRIVATE)
                 .withAadBasedSecurityPrincipals(Arrays.asList(
-                    new AadBasedSecurityPrincipal().withPrincipalId("cnpqxuhivyqniwby")
-                        .withTenantId("k")
+                    new AadBasedSecurityPrincipal().withPrincipalId("zb")
+                        .withTenantId("cnpqxuhivyqniwby")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                    new AadBasedSecurityPrincipal().withPrincipalId("mjgr")
-                        .withTenantId("wvukx")
-                        .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)))
+                    new AadBasedSecurityPrincipal().withPrincipalId("vd")
+                        .withTenantId("jgrtfwvukxga")
+                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
                 .withCertBasedSecurityPrincipals(Arrays.asList(
-                    new CertBasedSecurityPrincipal().withCert("snhsjcnyejhkryh")
-                        .withLedgerRoleName(LedgerRoleName.READER),
-                    new CertBasedSecurityPrincipal().withCert("czwlokjyem")
-                        .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR))));
+                    new CertBasedSecurityPrincipal().withCert("h").withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
+                    new CertBasedSecurityPrincipal().withCert("yejhk").withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                    new CertBasedSecurityPrincipal().withCert("napczwlokjy")
+                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                    new CertBasedSecurityPrincipal().withCert("vnipjox").withLedgerRoleName(LedgerRoleName.READER))))
+            .withLocation("gejspodmailzyde")
+            .withTags(mapOf("wixjsprozvcp", "wyahuxinpmqnja", "atscmd", "tegjvwmf", "zkrwfn", "pjhulsuuvmkj", "lwejdpv",
+                "iodjp"));
         model = BinaryData.fromObject(model).toObject(ConfidentialLedgerInner.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.location());
-        Assertions.assertEquals("mailzydehojw", model.tags().get("ahuxinpm"));
-        Assertions.assertEquals(RunningState.PAUSING, model.properties().runningState());
         Assertions.assertEquals(LedgerType.PRIVATE, model.properties().ledgerType());
-        Assertions.assertEquals(LedgerSku.BASIC, model.properties().ledgerSku());
-        Assertions.assertEquals("cnpqxuhivyqniwby",
-            model.properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("k", model.properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals("zb", model.properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("cnpqxuhivyqniwby", model.properties().aadBasedSecurityPrincipals().get(0).tenantId());
         Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
             model.properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("snhsjcnyejhkryh", model.properties().certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.READER,
+        Assertions.assertEquals("h", model.properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
             model.properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("gejspodmailzyde", model.location());
+        Assertions.assertEquals("wyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
     }
 
     // Use "Map.of" if available

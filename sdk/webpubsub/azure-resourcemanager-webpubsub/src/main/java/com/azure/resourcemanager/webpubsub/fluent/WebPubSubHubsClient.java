@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubHubsClient.
+ */
 public interface WebPubSubHubsClient {
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface WebPubSubHubsClient {
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface WebPubSubHubsClient {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -55,12 +57,12 @@ public interface WebPubSubHubsClient {
      * @return a hub setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebPubSubHubInner> getWithResponse(
-        String hubName, String resourceGroupName, String resourceName, Context context);
+    Response<WebPubSubHubInner> getWithResponse(String hubName, String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -74,7 +76,7 @@ public interface WebPubSubHubsClient {
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -85,12 +87,12 @@ public interface WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters);
+    SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters);
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -102,12 +104,12 @@ public interface WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context);
+    SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context);
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -118,12 +120,12 @@ public interface WebPubSubHubsClient {
      * @return a hub setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebPubSubHubInner createOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters);
+    WebPubSubHubInner createOrUpdate(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters);
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -135,12 +137,12 @@ public interface WebPubSubHubsClient {
      * @return a hub setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebPubSubHubInner createOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context);
+    WebPubSubHubInner createOrUpdate(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters, Context context);
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -154,7 +156,7 @@ public interface WebPubSubHubsClient {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -165,12 +167,12 @@ public interface WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String hubName, String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String hubName, String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -183,7 +185,7 @@ public interface WebPubSubHubsClient {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.

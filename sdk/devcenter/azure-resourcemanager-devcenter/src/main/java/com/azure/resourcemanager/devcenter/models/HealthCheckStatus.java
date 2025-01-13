@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckSta
      * @param name a name to look for.
      * @return the corresponding HealthCheckStatus.
      */
-    @JsonCreator
     public static HealthCheckStatus fromString(String name) {
         return fromString(name, HealthCheckStatus.class);
     }

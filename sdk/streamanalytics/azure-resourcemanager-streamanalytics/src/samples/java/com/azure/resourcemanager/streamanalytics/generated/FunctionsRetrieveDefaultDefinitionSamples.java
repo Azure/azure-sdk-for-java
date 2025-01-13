@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
 
 /**
@@ -13,7 +13,7 @@ import com.azure.resourcemanager.streamanalytics.models.UdfType;
 public final class FunctionsRetrieveDefaultDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_RetrieveDefaultDefinition_AzureML.json
      */
     /**
@@ -23,9 +23,11 @@ public final class FunctionsRetrieveDefaultDefinitionSamples {
      */
     public static void retrieveTheDefaultDefinitionForAnAzureMLFunction(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().retrieveDefaultDefinitionWithResponse("sjrg7", "sj9093", "function588",
-            new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
-                .withExecuteEndpoint("someAzureMLExecuteEndpointUrl").withUdfType(UdfType.SCALAR),
-            com.azure.core.util.Context.NONE);
+        manager.functions()
+            .retrieveDefaultDefinitionWithResponse("sjrg7", "sj9093", "function588",
+                new AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters()
+                    .withExecuteEndpoint("someAzureMLExecuteEndpointUrl")
+                    .withUdfType(UdfType.SCALAR),
+                com.azure.core.util.Context.NONE);
     }
 }

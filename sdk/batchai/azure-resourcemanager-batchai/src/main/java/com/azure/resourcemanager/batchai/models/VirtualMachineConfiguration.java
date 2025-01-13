@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** VM configuration. */
 @Fluent
 public final class VirtualMachineConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineConfiguration.class);
 
     /*
      * OS image reference for cluster nodes.

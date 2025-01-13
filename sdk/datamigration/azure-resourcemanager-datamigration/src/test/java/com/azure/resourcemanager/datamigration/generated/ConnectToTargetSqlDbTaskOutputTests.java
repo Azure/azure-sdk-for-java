@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskOu
 public final class ConnectToTargetSqlDbTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToTargetSqlDbTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"orppxebmnzbtb\",\"databases\":\"pglkf\",\"targetServerVersion\":\"hdneuelfph\",\"targetServerBrandVersion\":\"yhtozfikdowwqu\"}")
-                .toObject(ConnectToTargetSqlDbTaskOutput.class);
+        ConnectToTargetSqlDbTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"grcfb\",\"databases\":\"rmfqjhhkxbpvj\",\"targetServerVersion\":\"jhxxjyn\",\"targetServerBrandVersion\":\"divkrt\"}")
+            .toObject(ConnectToTargetSqlDbTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

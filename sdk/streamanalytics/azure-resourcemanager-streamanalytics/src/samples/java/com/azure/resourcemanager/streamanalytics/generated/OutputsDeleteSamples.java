@@ -10,8 +10,8 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class OutputsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Delete.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Delete
+     * .json
      */
     /**
      * Sample code: Delete an output.

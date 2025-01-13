@@ -11,13 +11,15 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfigu
 public final class AnomalyDetectionConfigurationHelper {
     private static AnomalyDetectionConfigurationAccessor accessor;
 
-    private AnomalyDetectionConfigurationHelper() { }
+    private AnomalyDetectionConfigurationHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnomalyDetectionConfiguration} instance.
      */
     public interface AnomalyDetectionConfigurationAccessor {
         void setId(AnomalyDetectionConfiguration configuration, String id);
+
         void setMetricId(AnomalyDetectionConfiguration configuration, String metricId);
     }
 
@@ -38,4 +40,3 @@ public final class AnomalyDetectionConfigurationHelper {
         accessor.setMetricId(configuration, metricId);
     }
 }
-

@@ -89,7 +89,6 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

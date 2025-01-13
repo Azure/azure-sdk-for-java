@@ -21,17 +21,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Redis Cache management API. */
 @Fluent
-public interface RedisCaches
-    extends SupportsCreating<RedisCache.DefinitionStages.Blank>,
-        SupportsListing<RedisCache>,
-        SupportsListingByResourceGroup<RedisCache>,
-        SupportsGettingByResourceGroup<RedisCache>,
-        SupportsGettingById<RedisCache>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<RedisCache>,
-        SupportsBatchDeletion,
-        HasManager<RedisManager> {
+public interface RedisCaches extends SupportsCreating<RedisCache.DefinitionStages.Blank>, SupportsListing<RedisCache>,
+    SupportsListingByResourceGroup<RedisCache>, SupportsGettingByResourceGroup<RedisCache>,
+    SupportsGettingById<RedisCache>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<RedisCache>, SupportsBatchDeletion, HasManager<RedisManager> {
 
     /**
      * Lists all of the available Redis REST API operations.

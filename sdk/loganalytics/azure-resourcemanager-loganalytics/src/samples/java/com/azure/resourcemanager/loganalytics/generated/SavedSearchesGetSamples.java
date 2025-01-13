@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for SavedSearches Get. */
+/**
+ * Samples for SavedSearches Get.
+ */
 public final class SavedSearchesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesSavedSearchesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesSavedSearchesGet.json
      */
     /**
      * Sample code: SavedSearchesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
-            .getWithResponse(
-                "TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", com.azure.core.util.Context.NONE);
+        manager.savedSearches()
+            .getWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

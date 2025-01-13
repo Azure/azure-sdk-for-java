@@ -13,7 +13,8 @@ import java.util.List;
 /** An error response from the Batch AI service. */
 @Immutable
 public final class BatchAIError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAIError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BatchAIError.class);
 
     /*
      * An identifier of the error. Codes are invariant and are intended to be

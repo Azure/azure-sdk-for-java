@@ -13,19 +13,19 @@ import com.azure.core.util.Context;
  */
 public interface Databases {
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -33,12 +33,12 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -47,13 +47,13 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
      */
     Response<Database> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
         Context context);
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -61,7 +61,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster.
+     * @return information about a database in a Redis Enterprise cluster.
      */
     Database get(String resourceGroupName, String clusterName, String databaseName);
 
@@ -91,7 +91,7 @@ public interface Databases {
     void delete(String resourceGroupName, String clusterName, String databaseName, Context context);
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -106,7 +106,7 @@ public interface Databases {
         Context context);
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -119,7 +119,7 @@ public interface Databases {
     AccessKeys listKeys(String resourceGroupName, String clusterName, String databaseName);
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -134,7 +134,7 @@ public interface Databases {
         RegenerateKeyParameters parameters);
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -322,25 +322,25 @@ public interface Databases {
     void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName, Context context);
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
      */
     Database getById(String id);
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
      */
     Response<Database> getByIdWithResponse(String id, Context context);
 

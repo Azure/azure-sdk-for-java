@@ -13,10 +13,7 @@ import com.azure.resourcemanager.resources.models.RegionType;
 /**
  * The implementation of {@link Location}.
  */
-final class LocationImpl extends
-        IndexableWrapperImpl<LocationInner>
-        implements
-        Location {
+final class LocationImpl extends IndexableWrapperImpl<LocationInner> implements Location {
     LocationImpl(LocationInner innerModel) {
         super(innerModel);
     }

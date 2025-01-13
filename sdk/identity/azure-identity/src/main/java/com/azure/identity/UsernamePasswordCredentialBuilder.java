@@ -32,11 +32,8 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
  * <pre>
- * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
- *     .clientId&#40;&quot;&lt;your app client ID&gt;&quot;&#41;
- *     .username&#40;&quot;&lt;your username&gt;&quot;&#41;
- *     .password&#40;&quot;&lt;your password&gt;&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;.clientId&#40;
+ *     &quot;&lt;your app client ID&gt;&quot;&#41;.username&#40;&quot;&lt;your username&gt;&quot;&#41;.password&#40;&quot;&lt;your password&gt;&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
  *
@@ -84,8 +81,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public UsernamePasswordCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public UsernamePasswordCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -124,8 +121,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -140,7 +137,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

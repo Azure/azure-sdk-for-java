@@ -220,8 +220,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         return implClient != null
             ? implClient.signAsync(algorithm, digest, context)
-            : Mono.error(new UnsupportedOperationException(
-                "The sign operation on local RSA key is not currently supported."));
+            : Mono.error(
+                new UnsupportedOperationException("The sign operation on local RSA key is not currently supported."));
     }
 
     @Override
@@ -235,7 +235,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-                                          Context context) {
+        Context context) {
         return implClient != null
             ? implClient.verifyAsync(algorithm, digest, signature, context)
             : Mono.error(new UnsupportedOperationException(
@@ -426,7 +426,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-                                              Context context) {
+        Context context) {
         try {
             return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {

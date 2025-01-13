@@ -36,6 +36,7 @@ import com.azure.resourcemanager.alertsmanagement.models.AlertState;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsList;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsSortByFields;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsSummaryGroupByFields;
+import com.azure.resourcemanager.alertsmanagement.models.Comments;
 import com.azure.resourcemanager.alertsmanagement.models.Identifier;
 import com.azure.resourcemanager.alertsmanagement.models.MonitorCondition;
 import com.azure.resourcemanager.alertsmanagement.models.MonitorService;
@@ -44,17 +45,23 @@ import com.azure.resourcemanager.alertsmanagement.models.SortOrder;
 import com.azure.resourcemanager.alertsmanagement.models.TimeRange;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AlertsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AlertsClient.
+ */
 public final class AlertsClientImpl implements AlertsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AlertsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AlertsManagementClientImpl client;
 
     /**
      * Initializes an instance of AlertsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AlertsClientImpl(AlertsManagementClientImpl client) {
@@ -68,90 +75,64 @@ public final class AlertsClientImpl implements AlertsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AlertsManagementClie")
-    private interface AlertsService {
-        @Headers({"Content-Type: application/json"})
+    public interface AlertsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AlertsManagement/alertsMetaData")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsMetadataInner>> metadata(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("identifier") Identifier identifier,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertsMetadataInner>> metadata(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("identifier") Identifier identifier,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("targetResource") String targetResource,
+        Mono<Response<AlertsList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("targetResource") String targetResource,
             @QueryParam("targetResourceType") String targetResourceType,
             @QueryParam("targetResourceGroup") String targetResourceGroup,
             @QueryParam("monitorService") MonitorService monitorService,
             @QueryParam("monitorCondition") MonitorCondition monitorCondition,
-            @QueryParam("severity") Severity severity,
-            @QueryParam("alertState") AlertState alertState,
-            @QueryParam("alertRule") String alertRule,
-            @QueryParam("smartGroupId") String smartGroupId,
+            @QueryParam("severity") Severity severity, @QueryParam("alertState") AlertState alertState,
+            @QueryParam("alertRule") String alertRule, @QueryParam("smartGroupId") String smartGroupId,
             @QueryParam("includeContext") Boolean includeContext,
-            @QueryParam("includeEgressConfig") Boolean includeEgressConfig,
-            @QueryParam("pageCount") Long pageCount,
-            @QueryParam("sortBy") AlertsSortByFields sortBy,
-            @QueryParam("sortOrder") SortOrder sortOrder,
-            @QueryParam("select") String select,
-            @QueryParam("timeRange") TimeRange timeRange,
-            @QueryParam("customTimeRange") String customTimeRange,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeEgressConfig") Boolean includeEgressConfig, @QueryParam("pageCount") Long pageCount,
+            @QueryParam("sortBy") AlertsSortByFields sortBy, @QueryParam("sortOrder") SortOrder sortOrder,
+            @QueryParam("select") String select, @QueryParam("timeRange") TimeRange timeRange,
+            @QueryParam("customTimeRange") String customTimeRange, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts/{alertId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertInner>> getById(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("alertId") String alertId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertInner>> getById(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("alertId") String alertId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts/{alertId}/changestate")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertInner>> changeState(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("alertId") String alertId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("newState") AlertState newState,
-            @BodyParam("application/json") String comment,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertInner>> changeState(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("alertId") String alertId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("newState") AlertState newState,
+            @BodyParam("application/json") Comments comment, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertModificationInner>> getHistory(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("alertId") String alertId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertModificationInner>> getHistory(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("alertId") String alertId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alertsSummary")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsSummaryInner>> getSummary(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AlertsSummaryInner>> getSummary(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("groupby") AlertsSummaryGroupByFields groupby,
             @QueryParam("includeSmartGroupsCount") Boolean includeSmartGroupsCount,
@@ -160,29 +141,22 @@ public final class AlertsClientImpl implements AlertsClient {
             @QueryParam("targetResourceGroup") String targetResourceGroup,
             @QueryParam("monitorService") MonitorService monitorService,
             @QueryParam("monitorCondition") MonitorCondition monitorCondition,
-            @QueryParam("severity") Severity severity,
-            @QueryParam("alertState") AlertState alertState,
-            @QueryParam("alertRule") String alertRule,
-            @QueryParam("timeRange") TimeRange timeRange,
-            @QueryParam("customTimeRange") String customTimeRange,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("severity") Severity severity, @QueryParam("alertState") AlertState alertState,
+            @QueryParam("alertRule") String alertRule, @QueryParam("timeRange") TimeRange timeRange,
+            @QueryParam("customTimeRange") String customTimeRange, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsList>> getAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertsList>> getAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List alerts meta data information based on value of identifier parameter.
-     *
+     * 
      * @param identifier Identification of the information to be retrieved by API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -192,10 +166,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsMetadataInner>> metadataWithResponseAsync(Identifier identifier) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (identifier == null) {
             return Mono.error(new IllegalArgumentException("Parameter identifier is required and cannot be null."));
@@ -210,7 +182,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
     /**
      * List alerts meta data information based on value of identifier parameter.
-     *
+     * 
      * @param identifier Identification of the information to be retrieved by API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,10 +193,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsMetadataInner>> metadataWithResponseAsync(Identifier identifier, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (identifier == null) {
             return Mono.error(new IllegalArgumentException("Parameter identifier is required and cannot be null."));
@@ -237,7 +207,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
     /**
      * List alerts meta data information based on value of identifier parameter.
-     *
+     * 
      * @param identifier Identification of the information to be retrieved by API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,21 +221,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
     /**
      * List alerts meta data information based on value of identifier parameter.
-     *
-     * @param identifier Identification of the information to be retrieved by API call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert meta data information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertsMetadataInner metadata(Identifier identifier) {
-        return metadataAsync(identifier).block();
-    }
-
-    /**
-     * List alerts meta data information based on value of identifier parameter.
-     *
+     * 
      * @param identifier Identification of the information to be retrieved by API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,142 +235,110 @@ public final class AlertsClientImpl implements AlertsClient {
     }
 
     /**
+     * List alerts meta data information based on value of identifier parameter.
+     * 
+     * @param identifier Identification of the information to be retrieved by API call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alert meta data information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertsMetadataInner metadata(Identifier identifier) {
+        return metadataWithResponse(identifier, Context.NONE).getValue();
+    }
+
+    /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param smartGroupId Filter the alerts list by the Smart Group Id. Default value is none.
      * @param includeContext Include context which has contextual data specific to the monitor service. Default value is
-     *     false'.
+     * false'.
      * @param includeEgressConfig Include egress config which would be used for displaying the content in portal.
-     *     Default value is 'false'.
+     * Default value is 'false'.
      * @param pageCount Determines number of alerts returned per page in response. Permissible value is between 1 to
-     *     250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
+     * 250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
      * @param sortBy Sort the query results by input field, Default value is 'lastModifiedDateTime'.
      * @param sortOrder Sort the query results order in either ascending or descending. Default value is 'desc' for time
-     *     fields and 'asc' for others.
+     * fields and 'asc' for others.
      * @param select This filter allows to selection of the fields(comma separated) which would be part of the essential
-     *     section. This would allow to project only the required fields rather than getting entire content. Default is
-     *     to fetch all the fields in the essentials section.
+     * section. This would allow to project only the required fields rather than getting entire content. Default is to
+     * fetch all the fields in the essentials section.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list the alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AlertInner>> listSinglePageAsync(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange) {
+    private Mono<PagedResponse<AlertInner>> listSinglePageAsync(String targetResource, String targetResourceType,
+        String targetResourceGroup, MonitorService monitorService, MonitorCondition monitorCondition, Severity severity,
+        AlertState alertState, String alertRule, String smartGroupId, Boolean includeContext,
+        Boolean includeEgressConfig, Long pageCount, AlertsSortByFields sortBy, SortOrder sortOrder, String select,
+        TimeRange timeRange, String customTimeRange) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            targetResource,
-                            targetResourceType,
-                            targetResourceGroup,
-                            monitorService,
-                            monitorCondition,
-                            severity,
-                            alertState,
-                            alertRule,
-                            smartGroupId,
-                            includeContext,
-                            includeEgressConfig,
-                            pageCount,
-                            sortBy,
-                            sortOrder,
-                            select,
-                            timeRange,
-                            customTimeRange,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<AlertInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                targetResource, targetResourceType, targetResourceGroup, monitorService, monitorCondition, severity,
+                alertState, alertRule, smartGroupId, includeContext, includeEgressConfig, pageCount, sortBy, sortOrder,
+                select, timeRange, customTimeRange, apiVersion, accept, context))
+            .<PagedResponse<AlertInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param smartGroupId Filter the alerts list by the Smart Group Id. Default value is none.
      * @param includeContext Include context which has contextual data specific to the monitor service. Default value is
-     *     false'.
+     * false'.
      * @param includeEgressConfig Include egress config which would be used for displaying the content in portal.
-     *     Default value is 'false'.
+     * Default value is 'false'.
      * @param pageCount Determines number of alerts returned per page in response. Permissible value is between 1 to
-     *     250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
+     * 250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
      * @param sortBy Sort the query results by input field, Default value is 'lastModifiedDateTime'.
      * @param sortOrder Sort the query results order in either ascending or descending. Default value is 'desc' for time
-     *     fields and 'asc' for others.
+     * fields and 'asc' for others.
      * @param select This filter allows to selection of the fields(comma separated) which would be part of the essential
-     *     section. This would allow to project only the required fields rather than getting entire content. Default is
-     *     to fetch all the fields in the essentials section.
+     * section. This would allow to project only the required fields rather than getting entire content. Default is to
+     * fetch all the fields in the essentials section.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,156 +346,83 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list the alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AlertInner>> listSinglePageAsync(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
+    private Mono<PagedResponse<AlertInner>> listSinglePageAsync(String targetResource, String targetResourceType,
+        String targetResourceGroup, MonitorService monitorService, MonitorCondition monitorCondition, Severity severity,
+        AlertState alertState, String alertRule, String smartGroupId, Boolean includeContext,
+        Boolean includeEgressConfig, Long pageCount, AlertsSortByFields sortBy, SortOrder sortOrder, String select,
+        TimeRange timeRange, String customTimeRange, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                smartGroupId,
-                includeContext,
-                includeEgressConfig,
-                pageCount,
-                sortBy,
-                sortOrder,
-                select,
-                timeRange,
-                customTimeRange,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), targetResource, targetResourceType,
+                targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, smartGroupId,
+                includeContext, includeEgressConfig, pageCount, sortBy, sortOrder, select, timeRange, customTimeRange,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param smartGroupId Filter the alerts list by the Smart Group Id. Default value is none.
      * @param includeContext Include context which has contextual data specific to the monitor service. Default value is
-     *     false'.
+     * false'.
      * @param includeEgressConfig Include egress config which would be used for displaying the content in portal.
-     *     Default value is 'false'.
+     * Default value is 'false'.
      * @param pageCount Determines number of alerts returned per page in response. Permissible value is between 1 to
-     *     250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
+     * 250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
      * @param sortBy Sort the query results by input field, Default value is 'lastModifiedDateTime'.
      * @param sortOrder Sort the query results order in either ascending or descending. Default value is 'desc' for time
-     *     fields and 'asc' for others.
+     * fields and 'asc' for others.
      * @param select This filter allows to selection of the fields(comma separated) which would be part of the essential
-     *     section. This would allow to project only the required fields rather than getting entire content. Default is
-     *     to fetch all the fields in the essentials section.
+     * section. This would allow to project only the required fields rather than getting entire content. Default is to
+     * fetch all the fields in the essentials section.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list the alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AlertInner> listAsync(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange) {
+    private PagedFlux<AlertInner> listAsync(String targetResource, String targetResourceType,
+        String targetResourceGroup, MonitorService monitorService, MonitorCondition monitorCondition, Severity severity,
+        AlertState alertState, String alertRule, String smartGroupId, Boolean includeContext,
+        Boolean includeEgressConfig, Long pageCount, AlertsSortByFields sortBy, SortOrder sortOrder, String select,
+        TimeRange timeRange, String customTimeRange) {
         return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    targetResource,
-                    targetResourceType,
-                    targetResourceGroup,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    alertState,
-                    alertRule,
-                    smartGroupId,
-                    includeContext,
-                    includeEgressConfig,
-                    pageCount,
-                    sortBy,
-                    sortOrder,
-                    select,
-                    timeRange,
-                    customTimeRange),
+            () -> listSinglePageAsync(targetResource, targetResourceType, targetResourceGroup, monitorService,
+                monitorCondition, severity, alertState, alertRule, smartGroupId, includeContext, includeEgressConfig,
+                pageCount, sortBy, sortOrder, select, timeRange, customTimeRange),
             nextLink -> getAllNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list the alerts as paginated response with {@link PagedFlux}.
@@ -596,58 +447,42 @@ public final class AlertsClientImpl implements AlertsClient {
         final TimeRange timeRange = null;
         final String customTimeRange = null;
         return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    targetResource,
-                    targetResourceType,
-                    targetResourceGroup,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    alertState,
-                    alertRule,
-                    smartGroupId,
-                    includeContext,
-                    includeEgressConfig,
-                    pageCount,
-                    sortBy,
-                    sortOrder,
-                    select,
-                    timeRange,
-                    customTimeRange),
+            () -> listSinglePageAsync(targetResource, targetResourceType, targetResourceGroup, monitorService,
+                monitorCondition, severity, alertState, alertRule, smartGroupId, includeContext, includeEgressConfig,
+                pageCount, sortBy, sortOrder, select, timeRange, customTimeRange),
             nextLink -> getAllNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param smartGroupId Filter the alerts list by the Smart Group Id. Default value is none.
      * @param includeContext Include context which has contextual data specific to the monitor service. Default value is
-     *     false'.
+     * false'.
      * @param includeEgressConfig Include egress config which would be used for displaying the content in portal.
-     *     Default value is 'false'.
+     * Default value is 'false'.
      * @param pageCount Determines number of alerts returned per page in response. Permissible value is between 1 to
-     *     250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
+     * 250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
      * @param sortBy Sort the query results by input field, Default value is 'lastModifiedDateTime'.
      * @param sortOrder Sort the query results order in either ascending or descending. Default value is 'desc' for time
-     *     fields and 'asc' for others.
+     * fields and 'asc' for others.
      * @param select This filter allows to selection of the fields(comma separated) which would be part of the essential
-     *     section. This would allow to project only the required fields rather than getting entire content. Default is
-     *     to fetch all the fields in the essentials section.
+     * section. This would allow to project only the required fields rather than getting entire content. Default is to
+     * fetch all the fields in the essentials section.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -655,53 +490,22 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list the alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AlertInner> listAsync(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
+    private PagedFlux<AlertInner> listAsync(String targetResource, String targetResourceType,
+        String targetResourceGroup, MonitorService monitorService, MonitorCondition monitorCondition, Severity severity,
+        AlertState alertState, String alertRule, String smartGroupId, Boolean includeContext,
+        Boolean includeEgressConfig, Long pageCount, AlertsSortByFields sortBy, SortOrder sortOrder, String select,
+        TimeRange timeRange, String customTimeRange, Context context) {
         return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    targetResource,
-                    targetResourceType,
-                    targetResourceGroup,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    alertState,
-                    alertRule,
-                    smartGroupId,
-                    includeContext,
-                    includeEgressConfig,
-                    pageCount,
-                    sortBy,
-                    sortOrder,
-                    select,
-                    timeRange,
-                    customTimeRange,
-                    context),
+            () -> listSinglePageAsync(targetResource, targetResourceType, targetResourceGroup, monitorService,
+                monitorCondition, severity, alertState, alertRule, smartGroupId, includeContext, includeEgressConfig,
+                pageCount, sortBy, sortOrder, select, timeRange, customTimeRange, context),
             nextLink -> getAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list the alerts as paginated response with {@link PagedIterable}.
@@ -725,57 +529,41 @@ public final class AlertsClientImpl implements AlertsClient {
         final String select = null;
         final TimeRange timeRange = null;
         final String customTimeRange = null;
-        return new PagedIterable<>(
-            listAsync(
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                smartGroupId,
-                includeContext,
-                includeEgressConfig,
-                pageCount,
-                sortBy,
-                sortOrder,
-                select,
-                timeRange,
-                customTimeRange));
+        return new PagedIterable<>(listAsync(targetResource, targetResourceType, targetResourceGroup, monitorService,
+            monitorCondition, severity, alertState, alertRule, smartGroupId, includeContext, includeEgressConfig,
+            pageCount, sortBy, sortOrder, select, timeRange, customTimeRange));
     }
 
     /**
      * List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
      * range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-     *
+     * 
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param smartGroupId Filter the alerts list by the Smart Group Id. Default value is none.
      * @param includeContext Include context which has contextual data specific to the monitor service. Default value is
-     *     false'.
+     * false'.
      * @param includeEgressConfig Include egress config which would be used for displaying the content in portal.
-     *     Default value is 'false'.
+     * Default value is 'false'.
      * @param pageCount Determines number of alerts returned per page in response. Permissible value is between 1 to
-     *     250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
+     * 250. When the "includeContent" filter is selected, maximum value allowed is 25. Default value is 25.
      * @param sortBy Sort the query results by input field, Default value is 'lastModifiedDateTime'.
      * @param sortOrder Sort the query results order in either ascending or descending. Default value is 'desc' for time
-     *     fields and 'asc' for others.
+     * fields and 'asc' for others.
      * @param select This filter allows to selection of the fields(comma separated) which would be part of the essential
-     *     section. This would allow to project only the required fields rather than getting entire content. Default is
-     *     to fetch all the fields in the essentials section.
+     * section. This would allow to project only the required fields rather than getting entire content. Default is to
+     * fetch all the fields in the essentials section.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -783,72 +571,37 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return list the alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AlertInner> list(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange,
+    public PagedIterable<AlertInner> list(String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, String smartGroupId, Boolean includeContext, Boolean includeEgressConfig, Long pageCount,
+        AlertsSortByFields sortBy, SortOrder sortOrder, String select, TimeRange timeRange, String customTimeRange,
         Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                smartGroupId,
-                includeContext,
-                includeEgressConfig,
-                pageCount,
-                sortBy,
-                sortOrder,
-                select,
-                timeRange,
-                customTimeRange,
-                context));
+        return new PagedIterable<>(listAsync(targetResource, targetResourceType, targetResourceGroup, monitorService,
+            monitorCondition, severity, alertState, alertRule, smartGroupId, includeContext, includeEgressConfig,
+            pageCount, sortBy, sortOrder, select, timeRange, customTimeRange, context));
     }
 
     /**
      * Get a specific alert.
-     *
-     * <p>Get information related to a specific alert.
-     *
+     * 
+     * Get information related to a specific alert.
+     * 
      * @param alertId Unique ID of an alert instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information related to a specific alert along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information related to a specific alert along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getByIdWithResponseAsync(String alertId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -856,45 +609,33 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getById(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            alertId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getById(this.client.getEndpoint(), this.client.getSubscriptionId(), alertId,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a specific alert.
-     *
-     * <p>Get information related to a specific alert.
-     *
+     * 
+     * Get information related to a specific alert.
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information related to a specific alert along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information related to a specific alert along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getByIdWithResponseAsync(String alertId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -902,15 +643,15 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getById(this.client.getEndpoint(), this.client.getSubscriptionId(), alertId, apiVersion, accept, context);
+        return service.getById(this.client.getEndpoint(), this.client.getSubscriptionId(), alertId, apiVersion, accept,
+            context);
     }
 
     /**
      * Get a specific alert.
-     *
-     * <p>Get information related to a specific alert.
-     *
+     * 
+     * Get information related to a specific alert.
+     * 
      * @param alertId Unique ID of an alert instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -924,25 +665,9 @@ public final class AlertsClientImpl implements AlertsClient {
 
     /**
      * Get a specific alert.
-     *
-     * <p>Get information related to a specific alert.
-     *
-     * @param alertId Unique ID of an alert instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information related to a specific alert.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertInner getById(String alertId) {
-        return getByIdAsync(alertId).block();
-    }
-
-    /**
-     * Get a specific alert.
-     *
-     * <p>Get information related to a specific alert.
-     *
+     * 
+     * Get information related to a specific alert.
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,8 +681,24 @@ public final class AlertsClientImpl implements AlertsClient {
     }
 
     /**
+     * Get a specific alert.
+     * 
+     * Get information related to a specific alert.
+     * 
+     * @param alertId Unique ID of an alert instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information related to a specific alert.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertInner getById(String alertId) {
+        return getByIdWithResponse(alertId, Context.NONE).getValue();
+    }
+
+    /**
      * Change the state of an alert.
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param newState New state of the alert.
      * @param comment reason of change alert state.
@@ -965,22 +706,18 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an alert created in alert management service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertInner>> changeStateWithResponseAsync(
-        String alertId, AlertState newState, String comment) {
+    private Mono<Response<AlertInner>> changeStateWithResponseAsync(String alertId, AlertState newState,
+        Comments comment) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -988,27 +725,20 @@ public final class AlertsClientImpl implements AlertsClient {
         if (newState == null) {
             return Mono.error(new IllegalArgumentException("Parameter newState is required and cannot be null."));
         }
+        if (comment != null) {
+            comment.validate();
+        }
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .changeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            alertId,
-                            apiVersion,
-                            newState,
-                            comment,
-                            accept,
-                            context))
+            .withContext(context -> service.changeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                alertId, apiVersion, newState, comment, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Change the state of an alert.
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param newState New state of the alert.
      * @param comment reason of change alert state.
@@ -1017,22 +747,18 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an alert created in alert management service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertInner>> changeStateWithResponseAsync(
-        String alertId, AlertState newState, String comment, Context context) {
+    private Mono<Response<AlertInner>> changeStateWithResponseAsync(String alertId, AlertState newState,
+        Comments comment, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -1040,41 +766,19 @@ public final class AlertsClientImpl implements AlertsClient {
         if (newState == null) {
             return Mono.error(new IllegalArgumentException("Parameter newState is required and cannot be null."));
         }
+        if (comment != null) {
+            comment.validate();
+        }
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .changeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                alertId,
-                apiVersion,
-                newState,
-                comment,
-                accept,
-                context);
+        return service.changeState(this.client.getEndpoint(), this.client.getSubscriptionId(), alertId, apiVersion,
+            newState, comment, accept, context);
     }
 
     /**
      * Change the state of an alert.
-     *
-     * @param alertId Unique ID of an alert instance.
-     * @param newState New state of the alert.
-     * @param comment reason of change alert state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert created in alert management service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AlertInner> changeStateAsync(String alertId, AlertState newState, String comment) {
-        return changeStateWithResponseAsync(alertId, newState, comment)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Change the state of an alert.
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param newState New state of the alert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1084,30 +788,14 @@ public final class AlertsClientImpl implements AlertsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertInner> changeStateAsync(String alertId, AlertState newState) {
-        final String comment = null;
+        final Comments comment = null;
         return changeStateWithResponseAsync(alertId, newState, comment)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Change the state of an alert.
-     *
-     * @param alertId Unique ID of an alert instance.
-     * @param newState New state of the alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert created in alert management service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertInner changeState(String alertId, AlertState newState) {
-        final String comment = null;
-        return changeStateAsync(alertId, newState, comment).block();
-    }
-
-    /**
-     * Change the state of an alert.
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param newState New state of the alert.
      * @param comment reason of change alert state.
@@ -1118,35 +806,47 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return an alert created in alert management service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertInner> changeStateWithResponse(
-        String alertId, AlertState newState, String comment, Context context) {
+    public Response<AlertInner> changeStateWithResponse(String alertId, AlertState newState, Comments comment,
+        Context context) {
         return changeStateWithResponseAsync(alertId, newState, comment, context).block();
+    }
+
+    /**
+     * Change the state of an alert.
+     * 
+     * @param alertId Unique ID of an alert instance.
+     * @param newState New state of the alert.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert created in alert management service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertInner changeState(String alertId, AlertState newState) {
+        final Comments comment = null;
+        return changeStateWithResponse(alertId, newState, comment, Context.NONE).getValue();
     }
 
     /**
      * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
      * changes (New/Acknowledged/Closed).
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     *     changes (New/Acknowledged/Closed) along with {@link Response} on successful completion of {@link Mono}.
+     * changes (New/Acknowledged/Closed) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertModificationInner>> getHistoryWithResponseAsync(String alertId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -1154,44 +854,32 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getHistory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            alertId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getHistory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                alertId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
      * changes (New/Acknowledged/Closed).
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     *     changes (New/Acknowledged/Closed) along with {@link Response} on successful completion of {@link Mono}.
+     * changes (New/Acknowledged/Closed) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertModificationInner>> getHistoryWithResponseAsync(String alertId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
@@ -1199,21 +887,20 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getHistory(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), alertId, apiVersion, accept, context);
+        return service.getHistory(this.client.getEndpoint(), this.client.getSubscriptionId(), alertId, apiVersion,
+            accept, context);
     }
 
     /**
      * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
      * changes (New/Acknowledged/Closed).
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     *     changes (New/Acknowledged/Closed) on successful completion of {@link Mono}.
+     * changes (New/Acknowledged/Closed) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertModificationInner> getHistoryAsync(String alertId) {
@@ -1223,30 +910,14 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
      * changes (New/Acknowledged/Closed).
-     *
-     * @param alertId Unique ID of an alert instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     *     changes (New/Acknowledged/Closed).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertModificationInner getHistory(String alertId) {
-        return getHistoryAsync(alertId).block();
-    }
-
-    /**
-     * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     * changes (New/Acknowledged/Closed).
-     *
+     * 
      * @param alertId Unique ID of an alert instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
-     *     changes (New/Acknowledged/Closed) along with {@link Response}.
+     * changes (New/Acknowledged/Closed) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertModificationInner> getHistoryWithResponse(String alertId, Context context) {
@@ -1254,56 +925,59 @@ public final class AlertsClientImpl implements AlertsClient {
     }
 
     /**
+     * Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
+     * changes (New/Acknowledged/Closed).
+     * 
+     * @param alertId Unique ID of an alert instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
+     * changes (New/Acknowledged/Closed).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertModificationInner getHistory(String alertId) {
+        return getHistoryWithResponse(alertId, Context.NONE).getValue();
+    }
+
+    /**
      * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
      * count of alerts for each severity).
-     *
+     * 
      * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
+     * fields supported). For example, groupby=severity or groupby=severity,alertstate.
      * @param includeSmartGroupsCount Include count of the SmartGroups as part of the summary. Default value is 'false'.
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a summarized count of your alerts grouped by various parameters (e.g along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertsSummaryInner>> getSummaryWithResponseAsync(
-        AlertsSummaryGroupByFields groupby,
-        Boolean includeSmartGroupsCount,
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        TimeRange timeRange,
-        String customTimeRange) {
+    private Mono<Response<AlertsSummaryInner>> getSummaryWithResponseAsync(AlertsSummaryGroupByFields groupby,
+        Boolean includeSmartGroupsCount, String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, TimeRange timeRange, String customTimeRange) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupby == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupby is required and cannot be null."));
@@ -1311,83 +985,52 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSummary(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupby,
-                            includeSmartGroupsCount,
-                            targetResource,
-                            targetResourceType,
-                            targetResourceGroup,
-                            monitorService,
-                            monitorCondition,
-                            severity,
-                            alertState,
-                            alertRule,
-                            timeRange,
-                            customTimeRange,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getSummary(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                groupby, includeSmartGroupsCount, targetResource, targetResourceType, targetResourceGroup,
+                monitorService, monitorCondition, severity, alertState, alertRule, timeRange, customTimeRange,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
      * count of alerts for each severity).
-     *
+     * 
      * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
+     * fields supported). For example, groupby=severity or groupby=severity,alertstate.
      * @param includeSmartGroupsCount Include count of the SmartGroups as part of the summary. Default value is 'false'.
      * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
      * @param targetResourceType Filter by target resource type. Default value is select all.
      * @param targetResourceGroup Filter by target resource group name. Default value is select all.
      * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
      * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
+     * select all.
      * @param severity Filter by severity. Default value is select all.
      * @param alertState Filter by state of the alert instance. Default value is to select all.
      * @param alertRule Filter by specific alert rule. Default value is to select all.
      * @param timeRange Filter by time range by below listed values. Default value is 1 day.
      * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a summarized count of your alerts grouped by various parameters (e.g along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertsSummaryInner>> getSummaryWithResponseAsync(
-        AlertsSummaryGroupByFields groupby,
-        Boolean includeSmartGroupsCount,
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
+    private Mono<Response<AlertsSummaryInner>> getSummaryWithResponseAsync(AlertsSummaryGroupByFields groupby,
+        Boolean includeSmartGroupsCount, String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, TimeRange timeRange, String customTimeRange, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupby == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupby is required and cannot be null."));
@@ -1395,94 +1038,22 @@ public final class AlertsClientImpl implements AlertsClient {
         final String apiVersion = "2019-05-05-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSummary(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupby,
-                includeSmartGroupsCount,
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                timeRange,
-                customTimeRange,
-                apiVersion,
-                accept,
-                context);
+        return service.getSummary(this.client.getEndpoint(), this.client.getSubscriptionId(), groupby,
+            includeSmartGroupsCount, targetResource, targetResourceType, targetResourceGroup, monitorService,
+            monitorCondition, severity, alertState, alertRule, timeRange, customTimeRange, apiVersion, accept, context);
     }
 
     /**
      * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
      * count of alerts for each severity).
-     *
+     * 
      * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
-     * @param includeSmartGroupsCount Include count of the SmartGroups as part of the summary. Default value is 'false'.
-     * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
-     * @param targetResourceType Filter by target resource type. Default value is select all.
-     * @param targetResourceGroup Filter by target resource group name. Default value is select all.
-     * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
-     * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
-     * @param severity Filter by severity. Default value is select all.
-     * @param alertState Filter by state of the alert instance. Default value is to select all.
-     * @param alertRule Filter by specific alert rule. Default value is to select all.
-     * @param timeRange Filter by time range by below listed values. Default value is 1 day.
-     * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
+     * fields supported). For example, groupby=severity or groupby=severity,alertstate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a summarized count of your alerts grouped by various parameters (e.g on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AlertsSummaryInner> getSummaryAsync(
-        AlertsSummaryGroupByFields groupby,
-        Boolean includeSmartGroupsCount,
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        TimeRange timeRange,
-        String customTimeRange) {
-        return getSummaryWithResponseAsync(
-                groupby,
-                includeSmartGroupsCount,
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                timeRange,
-                customTimeRange)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
-     * count of alerts for each severity).
-     *
-     * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a summarized count of your alerts grouped by various parameters (e.g on successful completion of {@link
-     *     Mono}.
+     * @return a summarized count of your alerts grouped by various parameters (e.g on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertsSummaryInner> getSummaryAsync(AlertsSummaryGroupByFields groupby) {
@@ -1497,28 +1068,53 @@ public final class AlertsClientImpl implements AlertsClient {
         final String alertRule = null;
         final TimeRange timeRange = null;
         final String customTimeRange = null;
-        return getSummaryWithResponseAsync(
-                groupby,
-                includeSmartGroupsCount,
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                timeRange,
-                customTimeRange)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getSummaryWithResponseAsync(groupby, includeSmartGroupsCount, targetResource, targetResourceType,
+            targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, timeRange,
+            customTimeRange).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
      * count of alerts for each severity).
-     *
+     * 
      * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
+     * fields supported). For example, groupby=severity or groupby=severity,alertstate.
+     * @param includeSmartGroupsCount Include count of the SmartGroups as part of the summary. Default value is 'false'.
+     * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
+     * @param targetResourceType Filter by target resource type. Default value is select all.
+     * @param targetResourceGroup Filter by target resource group name. Default value is select all.
+     * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
+     * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
+     * select all.
+     * @param severity Filter by severity. Default value is select all.
+     * @param alertState Filter by state of the alert instance. Default value is to select all.
+     * @param alertRule Filter by specific alert rule. Default value is to select all.
+     * @param timeRange Filter by time range by below listed values. Default value is 1 day.
+     * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
+     * is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
+     * customTimeRange could be used but not both. Default is none.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a summarized count of your alerts grouped by various parameters (e.g along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AlertsSummaryInner> getSummaryWithResponse(AlertsSummaryGroupByFields groupby,
+        Boolean includeSmartGroupsCount, String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, TimeRange timeRange, String customTimeRange, Context context) {
+        return getSummaryWithResponseAsync(groupby, includeSmartGroupsCount, targetResource, targetResourceType,
+            targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, timeRange,
+            customTimeRange, context).block();
+    }
+
+    /**
+     * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
+     * count of alerts for each severity).
+     * 
+     * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
+     * fields supported). For example, groupby=severity or groupby=severity,alertstate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1537,85 +1133,15 @@ public final class AlertsClientImpl implements AlertsClient {
         final String alertRule = null;
         final TimeRange timeRange = null;
         final String customTimeRange = null;
-        return getSummaryAsync(
-                groupby,
-                includeSmartGroupsCount,
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                timeRange,
-                customTimeRange)
-            .block();
-    }
-
-    /**
-     * Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
-     * count of alerts for each severity).
-     *
-     * @param groupby This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
-     *     fields supported). For example, groupby=severity or groupby=severity,alertstate.
-     * @param includeSmartGroupsCount Include count of the SmartGroups as part of the summary. Default value is 'false'.
-     * @param targetResource Filter by target resource( which is full ARM ID) Default value is select all.
-     * @param targetResourceType Filter by target resource type. Default value is select all.
-     * @param targetResourceGroup Filter by target resource group name. Default value is select all.
-     * @param monitorService Filter by monitor service which generates the alert instance. Default value is select all.
-     * @param monitorCondition Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
-     *     select all.
-     * @param severity Filter by severity. Default value is select all.
-     * @param alertState Filter by state of the alert instance. Default value is to select all.
-     * @param alertRule Filter by specific alert rule. Default value is to select all.
-     * @param timeRange Filter by time range by below listed values. Default value is 1 day.
-     * @param customTimeRange Filter by custom time range in the format &lt;start-time&gt;/&lt;end-time&gt; where time
-     *     is in (ISO-8601 format)'. Permissible values is within 30 days from query time. Either timeRange or
-     *     customTimeRange could be used but not both. Default is none.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a summarized count of your alerts grouped by various parameters (e.g along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertsSummaryInner> getSummaryWithResponse(
-        AlertsSummaryGroupByFields groupby,
-        Boolean includeSmartGroupsCount,
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
-        return getSummaryWithResponseAsync(
-                groupby,
-                includeSmartGroupsCount,
-                targetResource,
-                targetResourceType,
-                targetResourceGroup,
-                monitorService,
-                monitorCondition,
-                severity,
-                alertState,
-                alertRule,
-                timeRange,
-                customTimeRange,
-                context)
-            .block();
+        return getSummaryWithResponse(groupby, includeSmartGroupsCount, targetResource, targetResourceType,
+            targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, timeRange,
+            customTimeRange, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1627,31 +1153,20 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AlertInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.getAllNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AlertInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1664,23 +1179,13 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

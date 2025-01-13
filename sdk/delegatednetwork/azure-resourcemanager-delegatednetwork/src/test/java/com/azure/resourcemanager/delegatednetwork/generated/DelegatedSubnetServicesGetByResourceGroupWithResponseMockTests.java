@@ -6,68 +6,37 @@ package com.azure.resourcemanager.delegatednetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnet;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DelegatedSubnetServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceGuid\":\"huaoppp\",\"provisioningState\":\"Deleting\",\"subnetDetails\":{\"id\":\"ol\"},\"controllerDetails\":{\"id\":\"hzxct\"}},\"location\":\"bgbkdmoizpost\",\"tags\":{\"rmfqjhhkxbpvj\":\"cfbu\",\"xjyngudivk\":\"mjh\"},\"id\":\"tswb\",\"name\":\"qzvszjf\",\"type\":\"uvjfdxxive\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceGuid\":\"yjsflhhcaalnji\",\"provisioningState\":\"Failed\",\"subnetDetails\":{\"id\":\"awjoyaqcslyjp\"},\"controllerDetails\":{\"id\":\"dzyexznelixh\"}},\"location\":\"rzt\",\"tags\":{\"xknalaulppg\":\"hb\",\"gvpgy\":\"dtpnapnyiropuhp\"},\"id\":\"gqgitxmedjvcsl\",\"name\":\"n\",\"type\":\"wwncwzzhxgk\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DelegatedNetworkManager manager = DelegatedNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DelegatedSubnet response = manager.delegatedSubnetServices()
+            .getByResourceGroupWithResponse("llwptfdy", "pfqbuaceopzf", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DelegatedNetworkManager manager =
-            DelegatedNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DelegatedSubnet response =
-            manager
-                .delegatedSubnetServices()
-                .getByResourceGroupWithResponse("ttouwaboekqvkel", "smv", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("rzt", response.location());
-        Assertions.assertEquals("hb", response.tags().get("xknalaulppg"));
-        Assertions.assertEquals("awjoyaqcslyjp", response.subnetDetails().id());
-        Assertions.assertEquals("dzyexznelixh", response.controllerDetails().id());
+        Assertions.assertEquals("bgbkdmoizpost", response.location());
+        Assertions.assertEquals("cfbu", response.tags().get("rmfqjhhkxbpvj"));
+        Assertions.assertEquals("ol", response.subnetDetails().id());
+        Assertions.assertEquals("hzxct", response.controllerDetails().id());
     }
 }

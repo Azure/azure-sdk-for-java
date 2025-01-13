@@ -15,11 +15,13 @@ import com.azure.resourcemanager.customerinsights.fluent.models.PredictionModelS
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionTrainingResultsInner;
 
-/** An instance of this class provides access to all the operations defined in PredictionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PredictionsClient.
+ */
 public interface PredictionsClient {
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -35,7 +37,7 @@ public interface PredictionsClient {
 
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -48,15 +50,12 @@ public interface PredictionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionResourceFormatInner parameters,
+        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters,
         Context context);
 
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -67,12 +66,12 @@ public interface PredictionsClient {
      * @return the prediction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PredictionResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters);
+    PredictionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String predictionName,
+        PredictionResourceFormatInner parameters);
 
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -84,16 +83,12 @@ public interface PredictionsClient {
      * @return the prediction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PredictionResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionResourceFormatInner parameters,
-        Context context);
+    PredictionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String predictionName,
+        PredictionResourceFormatInner parameters, Context context);
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -104,12 +99,12 @@ public interface PredictionsClient {
      * @return a Prediction in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -123,7 +118,7 @@ public interface PredictionsClient {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -137,7 +132,7 @@ public interface PredictionsClient {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -148,12 +143,12 @@ public interface PredictionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String predictionName,
+        Context context);
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -166,7 +161,7 @@ public interface PredictionsClient {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -180,7 +175,7 @@ public interface PredictionsClient {
 
     /**
      * Gets training results.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -191,12 +186,12 @@ public interface PredictionsClient {
      * @return training results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets training results.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -210,7 +205,7 @@ public interface PredictionsClient {
 
     /**
      * Gets model status of the prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -221,12 +216,12 @@ public interface PredictionsClient {
      * @return model status of the prediction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionModelStatusInner> getModelStatusWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionModelStatusInner> getModelStatusWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets model status of the prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -240,7 +235,7 @@ public interface PredictionsClient {
 
     /**
      * Creates or updates the model status of prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -252,16 +247,12 @@ public interface PredictionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> modelStatusWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionModelStatusInner parameters,
-        Context context);
+    Response<Void> modelStatusWithResponse(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters, Context context);
 
     /**
      * Creates or updates the model status of prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -271,12 +262,12 @@ public interface PredictionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void modelStatus(
-        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters);
+    void modelStatus(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters);
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +280,7 @@ public interface PredictionsClient {
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.

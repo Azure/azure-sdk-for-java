@@ -13,25 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkAttachmentConfiguration model =
-            BinaryData
-                .fromString("{\"ipamEnabled\":\"True\",\"networkId\":\"xhnrztfolhb\",\"pluginType\":\"SRIOV\"}")
+        L3NetworkAttachmentConfiguration model
+            = BinaryData.fromString("{\"ipamEnabled\":\"True\",\"networkId\":\"khly\",\"pluginType\":\"IPVLAN\"}")
                 .toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("xhnrztfolhb", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
+        Assertions.assertEquals("khly", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkAttachmentConfiguration model =
-            new L3NetworkAttachmentConfiguration()
-                .withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
-                .withNetworkId("xhnrztfolhb")
-                .withPluginType(KubernetesPluginType.SRIOV);
+        L3NetworkAttachmentConfiguration model
+            = new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
+                .withNetworkId("khly")
+                .withPluginType(KubernetesPluginType.IPVLAN);
         model = BinaryData.fromObject(model).toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("xhnrztfolhb", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
+        Assertions.assertEquals("khly", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 }

@@ -26,24 +26,20 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
     /** Error while user's code is running for a message.*/
-    public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK",
-        ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK", ServiceBusErrorSource.class);
 
     /** Error while session is accepted.*/
-    public static final ServiceBusErrorSource ACCEPT_SESSION = fromString("ACCEPT_SESSION",
-        ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource ACCEPT_SESSION
+        = fromString("ACCEPT_SESSION", ServiceBusErrorSource.class);
 
     /** Error while session is closed.*/
-    public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION",
-        ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION", ServiceBusErrorSource.class);
 
     /** Error while sending a message.*/
-    public static final ServiceBusErrorSource SEND = fromString("SEND",
-            ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource SEND = fromString("SEND", ServiceBusErrorSource.class);
 
     /** Error while trying to do an operation on the management link. */
-    public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT",
-            ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT", ServiceBusErrorSource.class);
 
     /**
      * Creates a new instance of the error source.  Use the existing error sources and create a new error source using

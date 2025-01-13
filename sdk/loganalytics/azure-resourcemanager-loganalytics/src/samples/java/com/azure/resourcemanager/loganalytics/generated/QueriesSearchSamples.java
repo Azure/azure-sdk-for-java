@@ -10,31 +10,28 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Queries Search. */
+/**
+ * Samples for Queries Search.
+ */
 public final class QueriesSearchSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesSearch.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesSearch.json
      */
     /**
      * Sample code: QuerySearch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void querySearch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queries()
-            .search(
-                "my-resource-group",
-                "my-querypack",
+        manager.queries()
+            .search("my-resource-group", "my-querypack",
                 new LogAnalyticsQueryPackQuerySearchProperties()
-                    .withRelated(
-                        new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                            .withCategories(Arrays.asList("other", "analytics")))
+                    .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
+                        .withCategories(Arrays.asList("other", "analytics")))
                     .withTags(mapOf("my-label", Arrays.asList("label1"))),
-                3L,
-                true,
-                null,
-                com.azure.core.util.Context.NONE);
+                3L, true, null, com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

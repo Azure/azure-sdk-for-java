@@ -9,29 +9,27 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.alertsmanagement.fluent.models.SmartGroupInner;
 
-/** Contains all response data for the changeState operation. */
+/**
+ * Contains all response data for the changeState operation.
+ */
 public final class SmartGroupsChangeStateResponse extends ResponseBase<SmartGroupsChangeStateHeaders, SmartGroupInner> {
     /**
      * Creates an instance of SmartGroupsChangeStateResponse.
-     *
+     * 
      * @param request the request which resulted in this SmartGroupsChangeStateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SmartGroupsChangeStateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        SmartGroupInner value,
-        SmartGroupsChangeStateHeaders headers) {
+    public SmartGroupsChangeStateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SmartGroupInner value, SmartGroupsChangeStateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

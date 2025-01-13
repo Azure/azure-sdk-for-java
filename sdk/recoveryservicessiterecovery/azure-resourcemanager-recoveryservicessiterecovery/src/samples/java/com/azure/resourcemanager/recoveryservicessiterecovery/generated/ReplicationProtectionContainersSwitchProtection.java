@@ -24,11 +24,11 @@ public final class ReplicationProtectionContainersSwitchProtection {
      */
     public static void switchesProtectionFromOneContainerToAnotherOrOneReplicationProviderToAnother(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().switchProtection("priyanponeboxvault", "priyanprg",
-            "CentralUSCanSite", "CentralUSCancloud",
-            new SwitchProtectionInput()
-                .withProperties(new SwitchProtectionInputProperties().withReplicationProtectedItemName("a2aSwapOsVm")
-                    .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainers()
+            .switchProtection("priyanponeboxvault", "priyanprg", "CentralUSCanSite", "CentralUSCancloud",
+                new SwitchProtectionInput().withProperties(
+                    new SwitchProtectionInputProperties().withReplicationProtectedItemName("a2aSwapOsVm")
+                        .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
+                com.azure.core.util.Context.NONE);
     }
 }

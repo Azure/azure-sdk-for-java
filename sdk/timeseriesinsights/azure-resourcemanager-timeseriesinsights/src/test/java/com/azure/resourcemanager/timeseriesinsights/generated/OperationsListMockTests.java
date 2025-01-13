@@ -6,62 +6,56 @@ package com.azure.resourcemanager.timeseriesinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager;
 import com.azure.resourcemanager.timeseriesinsights.models.Operation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"rcfbunrm\",\"display\":{\"provider\":\"hhkxbp\",\"resource\":\"ymjhxxjyngudivkr\",\"operation\":\"wbxqzvszjfau\",\"description\":\"fdxxivetvtcqaqtd\"},\"origin\":\"mcbxvwvxysl\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"obl\",\"displayName\":\"k\",\"displayDescription\":\"mpew\",\"unit\":\"fbkrvrnsvs\",\"dimensions\":[{},{}],\"aggregationType\":\"hxcr\",\"availabilities\":[{},{}],\"category\":\"vasrruvwb\",\"resourceIdDimensionNameOverride\":\"qfsubcgjbirx\"},{\"name\":\"ybsrfbjfdtwss\",\"displayName\":\"ftpvjzbexil\",\"displayDescription\":\"nfqqnvwp\",\"unit\":\"taruoujmkcj\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"tjrybnwjewgdr\",\"availabilities\":[{},{},{}],\"category\":\"naenqpehindo\",\"resourceIdDimensionNameOverride\":\"mifthnzdnd\"},{\"name\":\"gnayqigynduh\",\"displayName\":\"hqlkthumaqo\",\"displayDescription\":\"gycdu\",\"unit\":\"r\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"y\",\"availabilities\":[{},{}],\"category\":\"l\",\"resourceIdDimensionNameOverride\":\"slqlfmmdn\"}],\"logSpecifications\":[{\"name\":\"zpswiydmc\",\"displayName\":\"hzdxssadbzm\"},{\"name\":\"dfznudaodv\",\"displayName\":\"bncblylpstdbhhx\"},{\"name\":\"zdzucerscdntnevf\",\"displayName\":\"jmygtdsslswtmwer\"}]}}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"liourqhak\",\"display\":{\"provider\":\"ashsfwxos\",\"resource\":\"z\",\"operation\":\"ugicjooxdjebw\",\"description\":\"cwwfvovbvme\"},\"origin\":\"civyhzceuo\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("civyhzceuo", response.iterator().next().origin());
+        Assertions.assertEquals("mcbxvwvxysl", response.iterator().next().origin());
+        Assertions.assertEquals("obl",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("k",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("mpew",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("fbkrvrnsvs",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions.assertEquals("hxcr",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("vasrruvwb",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).category());
+        Assertions.assertEquals("qfsubcgjbirx",
+            response.iterator()
+                .next()
+                .serviceSpecification()
+                .metricSpecifications()
+                .get(0)
+                .resourceIdDimensionNameOverride());
+        Assertions.assertEquals("zpswiydmc",
+            response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("hzdxssadbzm",
+            response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

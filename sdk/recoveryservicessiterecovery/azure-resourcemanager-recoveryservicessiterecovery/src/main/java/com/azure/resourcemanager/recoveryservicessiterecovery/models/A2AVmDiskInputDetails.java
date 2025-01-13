@@ -6,29 +6,30 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A2A disk input details.
  */
 @Fluent
-public final class A2AVmDiskInputDetails {
+public final class A2AVmDiskInputDetails implements JsonSerializable<A2AVmDiskInputDetails> {
     /*
      * The disk Uri.
      */
-    @JsonProperty(value = "diskUri", required = true)
     private String diskUri;
 
     /*
      * The recovery VHD storage account Id.
      */
-    @JsonProperty(value = "recoveryAzureStorageAccountId", required = true)
     private String recoveryAzureStorageAccountId;
 
     /*
      * The primary staging storage account Id.
      */
-    @JsonProperty(value = "primaryStagingAzureStorageAccountId", required = true)
     private String primaryStagingAzureStorageAccountId;
 
     /**
@@ -104,18 +105,63 @@ public final class A2AVmDiskInputDetails {
      */
     public void validate() {
         if (diskUri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskUri in model A2AVmDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskUri in model A2AVmDiskInputDetails"));
         }
         if (recoveryAzureStorageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryAzureStorageAccountId in model A2AVmDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryAzureStorageAccountId in model A2AVmDiskInputDetails"));
         }
         if (primaryStagingAzureStorageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property primaryStagingAzureStorageAccountId in model A2AVmDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryStagingAzureStorageAccountId in model A2AVmDiskInputDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AVmDiskInputDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskUri", this.diskUri);
+        jsonWriter.writeStringField("recoveryAzureStorageAccountId", this.recoveryAzureStorageAccountId);
+        jsonWriter.writeStringField("primaryStagingAzureStorageAccountId", this.primaryStagingAzureStorageAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AVmDiskInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AVmDiskInputDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AVmDiskInputDetails.
+     */
+    public static A2AVmDiskInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AVmDiskInputDetails deserializedA2AVmDiskInputDetails = new A2AVmDiskInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskUri".equals(fieldName)) {
+                    deserializedA2AVmDiskInputDetails.diskUri = reader.getString();
+                } else if ("recoveryAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AVmDiskInputDetails.recoveryAzureStorageAccountId = reader.getString();
+                } else if ("primaryStagingAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AVmDiskInputDetails.primaryStagingAzureStorageAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AVmDiskInputDetails;
+        });
+    }
 }

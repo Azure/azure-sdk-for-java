@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Client supplied parameters used to create a new attestation provider. */
+/**
+ * Client supplied parameters used to create a new attestation provider.
+ */
 @Fluent
-public final class AttestationServiceCreationSpecificParams {
+public final class AttestationServiceCreationSpecificParams
+    implements JsonSerializable<AttestationServiceCreationSpecificParams> {
     /*
      * JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing
      * certificate used for policy operations
      */
-    @JsonProperty(value = "policySigningCertificates")
     private JsonWebKeySet policySigningCertificates;
 
-    /** Creates an instance of AttestationServiceCreationSpecificParams class. */
+    /**
+     * Creates an instance of AttestationServiceCreationSpecificParams class.
+     */
     public AttestationServiceCreationSpecificParams() {
     }
 
     /**
      * Get the policySigningCertificates property: JSON Web Key Set defining a set of X.509 Certificates that will
      * represent the parent certificate for the signing certificate used for policy operations.
-     *
+     * 
      * @return the policySigningCertificates value.
      */
     public JsonWebKeySet policySigningCertificates() {
@@ -34,24 +42,62 @@ public final class AttestationServiceCreationSpecificParams {
     /**
      * Set the policySigningCertificates property: JSON Web Key Set defining a set of X.509 Certificates that will
      * represent the parent certificate for the signing certificate used for policy operations.
-     *
+     * 
      * @param policySigningCertificates the policySigningCertificates value to set.
      * @return the AttestationServiceCreationSpecificParams object itself.
      */
-    public AttestationServiceCreationSpecificParams withPolicySigningCertificates(
-        JsonWebKeySet policySigningCertificates) {
+    public AttestationServiceCreationSpecificParams
+        withPolicySigningCertificates(JsonWebKeySet policySigningCertificates) {
         this.policySigningCertificates = policySigningCertificates;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policySigningCertificates() != null) {
             policySigningCertificates().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("policySigningCertificates", this.policySigningCertificates);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttestationServiceCreationSpecificParams from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttestationServiceCreationSpecificParams if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AttestationServiceCreationSpecificParams.
+     */
+    public static AttestationServiceCreationSpecificParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationServiceCreationSpecificParams deserializedAttestationServiceCreationSpecificParams
+                = new AttestationServiceCreationSpecificParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policySigningCertificates".equals(fieldName)) {
+                    deserializedAttestationServiceCreationSpecificParams.policySigningCertificates
+                        = JsonWebKeySet.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttestationServiceCreationSpecificParams;
+        });
     }
 }

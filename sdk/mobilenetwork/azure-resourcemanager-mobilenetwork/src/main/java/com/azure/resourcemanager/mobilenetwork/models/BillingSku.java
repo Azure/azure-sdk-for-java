@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class BillingSku extends ExpandableStringEnum<BillingSku> {
      * @param name a name to look for.
      * @return the corresponding BillingSku.
      */
-    @JsonCreator
     public static BillingSku fromString(String name) {
         return fromString(name, BillingSku.class);
     }

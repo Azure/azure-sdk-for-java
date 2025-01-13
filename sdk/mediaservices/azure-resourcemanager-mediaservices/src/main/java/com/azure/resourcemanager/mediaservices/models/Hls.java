@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HTTP Live Streaming (HLS) packing setting for the live output. */
+/**
+ * HTTP Live Streaming (HLS) packing setting for the live output.
+ */
 @Fluent
-public final class Hls {
+public final class Hls implements JsonSerializable<Hls> {
     /*
      * The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value
      * does not affect the packing ratio for HLS CMAF output.
      */
-    @JsonProperty(value = "fragmentsPerTsSegment")
     private Integer fragmentsPerTsSegment;
 
-    /** Creates an instance of Hls class. */
+    /**
+     * Creates an instance of Hls class.
+     */
     public Hls() {
     }
 
     /**
      * Get the fragmentsPerTsSegment property: The number of fragments in an HTTP Live Streaming (HLS) TS segment in the
      * output of the live event. This value does not affect the packing ratio for HLS CMAF output.
-     *
+     * 
      * @return the fragmentsPerTsSegment value.
      */
     public Integer fragmentsPerTsSegment() {
@@ -34,7 +41,7 @@ public final class Hls {
     /**
      * Set the fragmentsPerTsSegment property: The number of fragments in an HTTP Live Streaming (HLS) TS segment in the
      * output of the live event. This value does not affect the packing ratio for HLS CMAF output.
-     *
+     * 
      * @param fragmentsPerTsSegment the fragmentsPerTsSegment value to set.
      * @return the Hls object itself.
      */
@@ -45,9 +52,45 @@ public final class Hls {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("fragmentsPerTsSegment", this.fragmentsPerTsSegment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Hls from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Hls if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Hls.
+     */
+    public static Hls fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Hls deserializedHls = new Hls();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fragmentsPerTsSegment".equals(fieldName)) {
+                    deserializedHls.fragmentsPerTsSegment = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHls;
+        });
     }
 }

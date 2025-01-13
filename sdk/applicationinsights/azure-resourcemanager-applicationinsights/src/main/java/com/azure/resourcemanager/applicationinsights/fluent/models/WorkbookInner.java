@@ -6,36 +6,56 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResource;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A workbook definition. */
+/**
+ * A workbook definition.
+ */
 @Fluent
 public final class WorkbookInner extends WorkbookResource {
     /*
      * Metadata describing a workbook for an Azure resource.
      */
-    @JsonProperty(value = "properties")
     private WorkbookProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WorkbookInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkbookInner class.
+     */
     public WorkbookInner() {
     }
 
     /**
      * Get the innerProperties property: Metadata describing a workbook for an Azure resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkbookProperties innerProperties() {
@@ -44,42 +64,82 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookInner withIdentity(WorkbookResourceIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookInner withKind(WorkbookSharedTypeKind kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookInner withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -88,7 +148,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -97,7 +157,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkbookInner object itself.
      */
@@ -112,7 +172,7 @@ public final class WorkbookInner extends WorkbookResource {
     /**
      * Get the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @return the serializedData value.
      */
     public String serializedData() {
@@ -122,7 +182,7 @@ public final class WorkbookInner extends WorkbookResource {
     /**
      * Set the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @param serializedData the serializedData value to set.
      * @return the WorkbookInner object itself.
      */
@@ -137,7 +197,7 @@ public final class WorkbookInner extends WorkbookResource {
     /**
      * Get the version property: Workbook schema version format, like 'Notebook/1.0', which should match the workbook in
      * serializedData.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -147,7 +207,7 @@ public final class WorkbookInner extends WorkbookResource {
     /**
      * Set the version property: Workbook schema version format, like 'Notebook/1.0', which should match the workbook in
      * serializedData.
-     *
+     * 
      * @param version the version value to set.
      * @return the WorkbookInner object itself.
      */
@@ -162,7 +222,7 @@ public final class WorkbookInner extends WorkbookResource {
     /**
      * Get the timeModified property: Date and time in UTC of the last modification that was made to this workbook
      * definition.
-     *
+     * 
      * @return the timeModified value.
      */
     public OffsetDateTime timeModified() {
@@ -171,7 +231,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -180,7 +240,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @param category the category value to set.
      * @return the WorkbookInner object itself.
      */
@@ -194,7 +254,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the tags property: Being deprecated, please use the other tags field.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tagsPropertiesTags() {
@@ -203,7 +263,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the tags property: Being deprecated, please use the other tags field.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkbookInner object itself.
      */
@@ -217,7 +277,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the userId property: Unique user id of the specific user that owns this workbook.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -226,7 +286,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the sourceId property: ResourceId for a source resource.
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -235,7 +295,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the sourceId property: ResourceId for a source resource.
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the WorkbookInner object itself.
      */
@@ -249,7 +309,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the storageUri property: The resourceId to the storage account when bring your own storage is used.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -258,7 +318,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the storageUri property: The resourceId to the storage account when bring your own storage is used.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the WorkbookInner object itself.
      */
@@ -272,7 +332,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the description property: The description of the workbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -281,7 +341,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Set the description property: The description of the workbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkbookInner object itself.
      */
@@ -295,7 +355,7 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Get the revision property: The unique revision id for this workbook definition.
-     *
+     * 
      * @return the revision value.
      */
     public String revision() {
@@ -304,14 +364,77 @@ public final class WorkbookInner extends WorkbookResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkbookInner.
+     */
+    public static WorkbookInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookInner deserializedWorkbookInner = new WorkbookInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkbookInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkbookInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkbookInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkbookInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkbookInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkbookInner.withIdentity(WorkbookResourceIdentity.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWorkbookInner.withKind(WorkbookSharedTypeKind.fromString(reader.getString()));
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWorkbookInner.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkbookInner.innerProperties = WorkbookProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkbookInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookInner;
+        });
     }
 }

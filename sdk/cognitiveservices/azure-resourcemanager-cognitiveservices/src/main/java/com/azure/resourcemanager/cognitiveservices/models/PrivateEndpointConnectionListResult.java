@@ -7,11 +7,13 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateEndpointConnectionListResult. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnectionListResult.
+ */
 public interface PrivateEndpointConnectionListResult {
     /**
      * Gets the value property: Array of private endpoint connections.
-     *
+     * 
      * @return the value value.
      */
     List<PrivateEndpointConnection> value();
@@ -19,7 +21,7 @@ public interface PrivateEndpointConnectionListResult {
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionListResultInner innerModel();

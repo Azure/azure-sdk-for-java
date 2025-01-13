@@ -13,7 +13,8 @@ public final class ManifestMediaType extends ExpandableStringEnum<ManifestMediaT
     /**
      * Docker v2 manifest content type.
      */
-    public static final ManifestMediaType DOCKER_MANIFEST = fromString("application/vnd.docker.distribution.manifest.v2+json");
+    public static final ManifestMediaType DOCKER_MANIFEST
+        = fromString("application/vnd.docker.distribution.manifest.v2+json");
 
     /**
      * OCI manifest content type.

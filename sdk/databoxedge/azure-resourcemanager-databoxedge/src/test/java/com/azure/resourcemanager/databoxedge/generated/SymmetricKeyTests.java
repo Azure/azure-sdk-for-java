@@ -13,28 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SymmetricKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SymmetricKey model =
-            BinaryData
-                .fromString(
-                    "{\"connectionString\":{\"value\":\"qdpfuvglsbjjca\",\"encryptionCertThumbprint\":\"xbvtvudu\",\"encryptionAlgorithm\":\"AES256\"}}")
-                .toObject(SymmetricKey.class);
-        Assertions.assertEquals("qdpfuvglsbjjca", model.connectionString().value());
-        Assertions.assertEquals("xbvtvudu", model.connectionString().encryptionCertThumbprint());
-        Assertions.assertEquals(EncryptionAlgorithm.AES256, model.connectionString().encryptionAlgorithm());
+        SymmetricKey model = BinaryData.fromString(
+            "{\"connectionString\":{\"value\":\"srp\",\"encryptionCertThumbprint\":\"ujzra\",\"encryptionAlgorithm\":\"RSAES_PKCS1_v_1_5\"}}")
+            .toObject(SymmetricKey.class);
+        Assertions.assertEquals("srp", model.connectionString().value());
+        Assertions.assertEquals("ujzra", model.connectionString().encryptionCertThumbprint());
+        Assertions.assertEquals(EncryptionAlgorithm.RSAES_PKCS1_V_1_5, model.connectionString().encryptionAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SymmetricKey model =
-            new SymmetricKey()
-                .withConnectionString(
-                    new AsymmetricEncryptedSecret()
-                        .withValue("qdpfuvglsbjjca")
-                        .withEncryptionCertThumbprint("xbvtvudu")
-                        .withEncryptionAlgorithm(EncryptionAlgorithm.AES256));
+        SymmetricKey model = new SymmetricKey().withConnectionString(new AsymmetricEncryptedSecret().withValue("srp")
+            .withEncryptionCertThumbprint("ujzra")
+            .withEncryptionAlgorithm(EncryptionAlgorithm.RSAES_PKCS1_V_1_5));
         model = BinaryData.fromObject(model).toObject(SymmetricKey.class);
-        Assertions.assertEquals("qdpfuvglsbjjca", model.connectionString().value());
-        Assertions.assertEquals("xbvtvudu", model.connectionString().encryptionCertThumbprint());
-        Assertions.assertEquals(EncryptionAlgorithm.AES256, model.connectionString().encryptionAlgorithm());
+        Assertions.assertEquals("srp", model.connectionString().value());
+        Assertions.assertEquals("ujzra", model.connectionString().encryptionCertThumbprint());
+        Assertions.assertEquals(EncryptionAlgorithm.RSAES_PKCS1_V_1_5, model.connectionString().encryptionAlgorithm());
     }
 }

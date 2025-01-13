@@ -44,22 +44,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiskPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiskPoolsClient.
+ */
 public final class DiskPoolsClientImpl implements DiskPoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DiskPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StoragePoolManagementImpl client;
 
     /**
      * Initializes an instance of DiskPoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DiskPoolsClientImpl(StoragePoolManagementImpl client) {
-        this.service =
-            RestProxy.create(DiskPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DiskPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,289 +76,196 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "StoragePoolManagemen")
     public interface DiskPoolsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/diskPools")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskPoolListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskPoolListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DiskPoolListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DiskPoolCreate diskPoolCreatePayload, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskPoolListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DiskPoolUpdate diskPoolUpdatePayload, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskPoolCreate diskPoolCreatePayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskPoolInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskPoolUpdate diskPoolUpdatePayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskPoolInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointList>> listOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/start")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/start")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/deallocate")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/deallocate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deallocate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> deallocate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/upgrade")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/upgrade")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> upgrade(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiskPoolListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiskPoolListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointList>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Disk Pools in a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskPoolInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DiskPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DiskPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Disk Pools in a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskPoolInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Disk Pools in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskPoolInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,13 +274,13 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskPoolInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Disk Pools in a subscription as paginated response with {@link PagedIterable}.
@@ -379,7 +292,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,27 +306,23 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DiskPools in a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskPoolInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -421,53 +330,34 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DiskPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DiskPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DiskPools in a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskPoolInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DiskPoolInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -476,27 +366,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -505,14 +383,13 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskPoolInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,14 +399,13 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskPoolInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -543,7 +419,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,7 +435,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -569,19 +445,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -598,25 +470,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            diskPoolCreatePayload,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), diskPoolCreatePayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -627,19 +489,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -656,22 +514,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                diskPoolCreatePayload,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), diskPoolCreatePayload, accept, context);
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -681,24 +531,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload);
-        return this
-            .client
-            .<DiskPoolInner, DiskPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiskPoolInner.class,
-                DiskPoolInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload);
+        return this.client.<DiskPoolInner, DiskPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DiskPoolInner.class, DiskPoolInner.class, this.client.getContext());
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -709,21 +553,19 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
+    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context);
-        return this
-            .client
-            .<DiskPoolInner, DiskPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskPoolInner.class, DiskPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context);
+        return this.client.<DiskPoolInner, DiskPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DiskPoolInner.class, DiskPoolInner.class, context);
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -733,15 +575,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
+    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload).getSyncPoller();
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -752,17 +594,16 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context)
+    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context)
             .getSyncPoller();
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -772,17 +613,16 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload)
-            .last()
+    private Mono<DiskPoolInner> createOrUpdateAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolCreate diskPoolCreatePayload) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -793,17 +633,16 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context)
-            .last()
+    private Mono<DiskPoolInner> createOrUpdateAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolCreate diskPoolCreatePayload, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -813,15 +652,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskPoolInner createOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload) {
+    public DiskPoolInner createOrUpdate(String resourceGroupName, String diskPoolName,
+        DiskPoolCreate diskPoolCreatePayload) {
         return createOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload).block();
     }
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -832,14 +671,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskPoolInner createOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context) {
+    public DiskPoolInner createOrUpdate(String resourceGroupName, String diskPoolName,
+        DiskPoolCreate diskPoolCreatePayload, Context context) {
         return createOrUpdateAsync(resourceGroupName, diskPoolName, diskPoolCreatePayload, context).block();
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -849,19 +688,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -878,24 +713,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            diskPoolUpdatePayload,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), diskPoolUpdatePayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -906,19 +731,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -935,21 +756,13 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                diskPoolUpdatePayload,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), diskPoolUpdatePayload, accept, context);
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -959,23 +772,17 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload);
-        return this
-            .client
-            .<DiskPoolInner, DiskPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiskPoolInner.class,
-                DiskPoolInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdateAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload);
+        return this.client.<DiskPoolInner, DiskPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DiskPoolInner.class, DiskPoolInner.class, this.client.getContext());
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -986,20 +793,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
+    private PollerFlux<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdateAsync(String resourceGroupName,
+        String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context);
-        return this
-            .client
-            .<DiskPoolInner, DiskPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskPoolInner.class, DiskPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context);
+        return this.client.<DiskPoolInner, DiskPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DiskPoolInner.class, DiskPoolInner.class, context);
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1009,14 +814,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
+    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
         return this.beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload).getSyncPoller();
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1027,14 +832,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
+    public SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
         return this.beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context).getSyncPoller();
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1044,16 +849,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskPoolInner> updateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload)
-            .last()
+    private Mono<DiskPoolInner> updateAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload) {
+        return beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1064,16 +868,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskPoolInner> updateAsync(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context)
-            .last()
+    private Mono<DiskPoolInner> updateAsync(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload, Context context) {
+        return beginUpdateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1089,7 +892,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -1100,15 +903,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskPoolInner update(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context) {
+    public DiskPoolInner update(String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload,
+        Context context) {
         return updateAsync(resourceGroupName, diskPoolName, diskPoolUpdatePayload, context).block();
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,16 +922,12 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1139,24 +938,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1166,19 +956,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1189,21 +975,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1214,16 +993,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskPoolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1233,19 +1010,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskPoolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,7 +1037,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1271,15 +1047,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskPoolName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, diskPoolName, context).getSyncPoller();
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1295,7 +1071,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1306,15 +1082,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String diskPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, diskPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,7 +1104,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1344,7 +1119,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1353,19 +1128,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return a Disk pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskPoolInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String diskPoolName) {
+    private Mono<Response<DiskPoolInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1377,22 +1148,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1402,19 +1165,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return a Disk pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskPoolInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<Response<DiskPoolInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String diskPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1425,20 +1184,13 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1454,7 +1206,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1464,14 +1216,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return a Disk pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiskPoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public Response<DiskPoolInner> getByResourceGroupWithResponse(String resourceGroupName, String diskPoolName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, diskPoolName, context).block();
     }
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1486,29 +1238,25 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a Disk Pool along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
         listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1519,32 +1267,17 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, diskPoolName, this.client.getApiVersion(), accept,
+                context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1552,23 +1285,19 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a Disk Pool along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String diskPoolName, Context context) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String diskPoolName,
+            Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1580,39 +1309,26 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedFlux}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String diskPoolName) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String diskPoolName) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, diskPoolName),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
@@ -1620,19 +1336,19 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedFlux}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String diskPoolName, Context context) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, diskPoolName, context),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
@@ -1640,36 +1356,36 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String diskPoolName) {
         return new PagedIterable<>(listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, diskPoolName));
     }
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String diskPoolName, Context context) {
         return new PagedIterable<>(
             listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, diskPoolName, context));
     }
@@ -1677,7 +1393,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1688,16 +1404,12 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1708,24 +1420,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1735,19 +1438,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1758,21 +1457,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1783,16 +1475,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String diskPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, diskPoolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1802,19 +1492,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, diskPoolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1830,7 +1519,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1840,15 +1529,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String diskPoolName,
+        Context context) {
         return this.beginStartAsync(resourceGroupName, diskPoolName, context).getSyncPoller();
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1864,7 +1553,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1875,15 +1564,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String diskPoolName, Context context) {
-        return beginStartAsync(resourceGroupName, diskPoolName, context)
-            .last()
+        return beginStartAsync(resourceGroupName, diskPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1898,7 +1586,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1914,7 +1602,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1923,19 +1611,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
-        String resourceGroupName, String diskPoolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName,
+        String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1946,24 +1630,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deallocate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.deallocate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -1973,19 +1648,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1996,21 +1667,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deallocate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deallocate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2021,16 +1685,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String diskPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, diskPoolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2040,19 +1702,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, diskPoolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2068,7 +1729,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2078,15 +1739,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeallocate(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String diskPoolName,
+        Context context) {
         return this.beginDeallocateAsync(resourceGroupName, diskPoolName, context).getSyncPoller();
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2096,15 +1757,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deallocateAsync(String resourceGroupName, String diskPoolName) {
-        return beginDeallocateAsync(resourceGroupName, diskPoolName)
-            .last()
+        return beginDeallocateAsync(resourceGroupName, diskPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2115,15 +1775,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deallocateAsync(String resourceGroupName, String diskPoolName, Context context) {
-        return beginDeallocateAsync(resourceGroupName, diskPoolName, context)
-            .last()
+        return beginDeallocateAsync(resourceGroupName, diskPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2138,7 +1797,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2154,7 +1813,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2165,16 +1824,12 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2185,24 +1840,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .upgrade(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2212,19 +1858,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2235,21 +1877,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .upgrade(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2260,16 +1895,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String diskPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, diskPoolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2279,19 +1912,18 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, diskPoolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2307,7 +1939,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2317,15 +1949,15 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgrade(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String diskPoolName,
+        Context context) {
         return this.beginUpgradeAsync(resourceGroupName, diskPoolName, context).getSyncPoller();
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2341,7 +1973,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2352,15 +1984,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeAsync(String resourceGroupName, String diskPoolName, Context context) {
-        return beginUpgradeAsync(resourceGroupName, diskPoolName, context)
-            .last()
+        return beginUpgradeAsync(resourceGroupName, diskPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2375,7 +2006,7 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -2390,9 +2021,8 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2404,32 +2034,22 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DiskPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DiskPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2442,31 +2062,20 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2478,32 +2087,22 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DiskPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DiskPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2511,42 +2110,31 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
      * @return list of Disk Pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskPoolInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DiskPoolInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -2555,41 +2143,28 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpointsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -2598,23 +2173,14 @@ public final class DiskPoolsClientImpl implements DiskPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

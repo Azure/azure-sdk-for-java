@@ -6,75 +6,47 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessControlListsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-06-02T04:48:35Z\",\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"configurationType\":\"File\",\"aclsUrl\":\"gt\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"wvplksdksutacuc\",\"sequenceNumber\":7440105137289779135,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"hxvpmqququxlp\",\"sequenceNumber\":9014005016063545013,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"orocrqicgym\",\"sequenceNumber\":8021729751205463698,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"vijvwmrgcnzhr\",\"sequenceNumber\":7600565246090759969,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{}]}],\"annotation\":\"mbky\"},\"location\":\"xjdqosxzmdzlybq\",\"tags\":{\"ki\":\"kekz\"},\"id\":\"xh\",\"name\":\"evmnk\",\"type\":\"ghvsryjokv\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-07-17T20:34:59Z\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"olngsfmhwdxqupy\",\"matchConfigurations\":[{\"matchConfigurationName\":\"lmnjqzm\",\"sequenceNumber\":6179342709153587202,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"q\",\"sequenceNumber\":6471796079746395246,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"jo\",\"sequenceNumber\":3660511499393161300,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"qeiaddp\",\"sequenceNumber\":6395873061735067904,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]}],\"annotation\":\"nzbqvioynctfq\"},\"location\":\"vvwzprjaaaiaib\",\"tags\":{\"wmefzvzuz\":\"vlyaqtloc\",\"zgyhen\":\"crlkorv\",\"nozf\":\"sfyqncowm\",\"agwaakktbjort\":\"ywjiaaosla\"},\"id\":\"tkajqhsnsej\",\"name\":\"lislxyljzbkd\",\"type\":\"lfjwxgvtkjctv\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AccessControlList> response = manager.accessControlLists().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vvwzprjaaaiaib", response.iterator().next().location());
-        Assertions.assertEquals("vlyaqtloc", response.iterator().next().tags().get("wmefzvzuz"));
-        Assertions.assertEquals(ConfigurationType.INLINE, response.iterator().next().configurationType());
-        Assertions.assertEquals("olngsfmhwdxqupy", response.iterator().next().aclsUrl());
-        Assertions
-            .assertEquals("lmnjqzm", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
-        Assertions
-            .assertEquals(
-                6179342709153587202L, response.iterator().next().matchConfigurations().get(0).sequenceNumber());
-        Assertions
-            .assertEquals(IpAddressType.IPV6, response.iterator().next().matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("nzbqvioynctfq", response.iterator().next().annotation());
+        Assertions.assertEquals("xjdqosxzmdzlybq", response.iterator().next().location());
+        Assertions.assertEquals("kekz", response.iterator().next().tags().get("ki"));
+        Assertions.assertEquals(ConfigurationType.FILE, response.iterator().next().configurationType());
+        Assertions.assertEquals("gt", response.iterator().next().aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.iterator().next().defaultAction());
+        Assertions.assertEquals("wvplksdksutacuc",
+            response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(7440105137289779135L,
+            response.iterator().next().matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4,
+            response.iterator().next().matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("mbky", response.iterator().next().annotation());
     }
 }

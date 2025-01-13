@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class to specify configurations of PlayReady in Streaming Policy. */
+/**
+ * Class to specify configurations of PlayReady in Streaming Policy.
+ */
 @Fluent
-public final class StreamingPolicyPlayReadyConfiguration {
+public final class StreamingPolicyPlayReadyConfiguration
+    implements JsonSerializable<StreamingPolicyPlayReadyConfiguration> {
     /*
-     * Template for the URL of the custom service delivering licenses to end user players.  Not required when using
-     * Azure Media Services for issuing licenses.  The template supports replaceable tokens that the service will
-     * update at runtime with the value specific to the request.  The currently supported token values are
-     * {AlternativeMediaId}, which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and
-     * {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
+     * Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure
+     * Media Services for issuing licenses. The template supports replaceable tokens that the service will update at
+     * runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
+     * which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced
+     * with the value of identifier of the key being requested.
      */
-    @JsonProperty(value = "customLicenseAcquisitionUrlTemplate")
     private String customLicenseAcquisitionUrlTemplate;
 
     /*
      * Custom attributes for PlayReady
      */
-    @JsonProperty(value = "playReadyCustomAttributes")
     private String playReadyCustomAttributes;
 
-    /** Creates an instance of StreamingPolicyPlayReadyConfiguration class. */
+    /**
+     * Creates an instance of StreamingPolicyPlayReadyConfiguration class.
+     */
     public StreamingPolicyPlayReadyConfiguration() {
     }
 
@@ -37,7 +44,7 @@ public final class StreamingPolicyPlayReadyConfiguration {
      * currently supported token values are {AlternativeMediaId}, which is replaced with the value of
      * StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the
      * key being requested.
-     *
+     * 
      * @return the customLicenseAcquisitionUrlTemplate value.
      */
     public String customLicenseAcquisitionUrlTemplate() {
@@ -51,19 +58,19 @@ public final class StreamingPolicyPlayReadyConfiguration {
      * currently supported token values are {AlternativeMediaId}, which is replaced with the value of
      * StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the
      * key being requested.
-     *
+     * 
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set.
      * @return the StreamingPolicyPlayReadyConfiguration object itself.
      */
-    public StreamingPolicyPlayReadyConfiguration withCustomLicenseAcquisitionUrlTemplate(
-        String customLicenseAcquisitionUrlTemplate) {
+    public StreamingPolicyPlayReadyConfiguration
+        withCustomLicenseAcquisitionUrlTemplate(String customLicenseAcquisitionUrlTemplate) {
         this.customLicenseAcquisitionUrlTemplate = customLicenseAcquisitionUrlTemplate;
         return this;
     }
 
     /**
      * Get the playReadyCustomAttributes property: Custom attributes for PlayReady.
-     *
+     * 
      * @return the playReadyCustomAttributes value.
      */
     public String playReadyCustomAttributes() {
@@ -72,7 +79,7 @@ public final class StreamingPolicyPlayReadyConfiguration {
 
     /**
      * Set the playReadyCustomAttributes property: Custom attributes for PlayReady.
-     *
+     * 
      * @param playReadyCustomAttributes the playReadyCustomAttributes value to set.
      * @return the StreamingPolicyPlayReadyConfiguration object itself.
      */
@@ -83,9 +90,50 @@ public final class StreamingPolicyPlayReadyConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customLicenseAcquisitionUrlTemplate", this.customLicenseAcquisitionUrlTemplate);
+        jsonWriter.writeStringField("playReadyCustomAttributes", this.playReadyCustomAttributes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingPolicyPlayReadyConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingPolicyPlayReadyConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StreamingPolicyPlayReadyConfiguration.
+     */
+    public static StreamingPolicyPlayReadyConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingPolicyPlayReadyConfiguration deserializedStreamingPolicyPlayReadyConfiguration
+                = new StreamingPolicyPlayReadyConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customLicenseAcquisitionUrlTemplate".equals(fieldName)) {
+                    deserializedStreamingPolicyPlayReadyConfiguration.customLicenseAcquisitionUrlTemplate
+                        = reader.getString();
+                } else if ("playReadyCustomAttributes".equals(fieldName)) {
+                    deserializedStreamingPolicyPlayReadyConfiguration.playReadyCustomAttributes = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingPolicyPlayReadyConfiguration;
+        });
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a resource type that has been onboarded to private link service. */
+/**
+ * Describes a resource type that has been onboarded to private link service.
+ */
 @Fluent
-public final class ShareablePrivateLinkResourceType {
+public final class ShareablePrivateLinkResourceType implements JsonSerializable<ShareablePrivateLinkResourceType> {
     /*
      * The name of the resource type that has been onboarded to private link service
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes the properties of a resource type that has been onboarded to private link service
      */
-    @JsonProperty(value = "properties")
     private ShareablePrivateLinkResourceProperties properties;
 
-    /** Creates an instance of ShareablePrivateLinkResourceType class. */
+    /**
+     * Creates an instance of ShareablePrivateLinkResourceType class.
+     */
     public ShareablePrivateLinkResourceType() {
     }
 
     /**
      * Get the name property: The name of the resource type that has been onboarded to private link service.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ShareablePrivateLinkResourceType {
 
     /**
      * Set the name property: The name of the resource type that has been onboarded to private link service.
-     *
+     * 
      * @param name the name value to set.
      * @return the ShareablePrivateLinkResourceType object itself.
      */
@@ -49,7 +55,7 @@ public final class ShareablePrivateLinkResourceType {
     /**
      * Get the properties property: Describes the properties of a resource type that has been onboarded to private link
      * service.
-     *
+     * 
      * @return the properties value.
      */
     public ShareablePrivateLinkResourceProperties properties() {
@@ -59,7 +65,7 @@ public final class ShareablePrivateLinkResourceType {
     /**
      * Set the properties property: Describes the properties of a resource type that has been onboarded to private link
      * service.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ShareablePrivateLinkResourceType object itself.
      */
@@ -70,12 +76,53 @@ public final class ShareablePrivateLinkResourceType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShareablePrivateLinkResourceType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShareablePrivateLinkResourceType if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ShareablePrivateLinkResourceType.
+     */
+    public static ShareablePrivateLinkResourceType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShareablePrivateLinkResourceType deserializedShareablePrivateLinkResourceType
+                = new ShareablePrivateLinkResourceType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedShareablePrivateLinkResourceType.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedShareablePrivateLinkResourceType.properties
+                        = ShareablePrivateLinkResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShareablePrivateLinkResourceType;
+        });
     }
 }

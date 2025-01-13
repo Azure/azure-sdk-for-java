@@ -6,12 +6,6 @@ extends:
     ServiceDirectory: servicebus
     TestResourceDirectories:
       - servicebus
-    SupportedClouds: 'Public'
-    CloudConfig:
-      Public:
-        ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
     EnvVars:
       AZURE_LOG_LEVEL: 1
     AdditionalMatrixConfigs:

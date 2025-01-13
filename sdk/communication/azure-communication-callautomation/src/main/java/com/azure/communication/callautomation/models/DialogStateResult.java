@@ -39,8 +39,8 @@ public class DialogStateResult implements JsonSerializable<DialogStateResult> {
     private String operationContext;
 
     static {
-        DialogStateResponseConstructorProxy.setAccessor(
-            new DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor() {
+        DialogStateResponseConstructorProxy
+            .setAccessor(new DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor() {
                 @Override
                 public DialogStateResult create(DialogStateResponse internalHeaders) {
                     return new DialogStateResult(internalHeaders);
@@ -68,7 +68,6 @@ public class DialogStateResult implements JsonSerializable<DialogStateResult> {
         this.dialogId = dialogStateResponse.getDialogId();
         this.operationContext = dialogStateResponse.getOperationContext();
     }
-
 
     /**
      * Get the dialogId property: The dialog ID.

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityRespon
 import com.azure.resourcemanager.mongocluster.models.ListConnectionStringsResult;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusters;
+import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
 
 public final class MongoClustersImpl implements MongoClusters {
     private static final ClientLogger LOGGER = new ClientLogger(MongoClustersImpl.class);
@@ -122,6 +123,15 @@ public final class MongoClustersImpl implements MongoClusters {
         } else {
             return null;
         }
+    }
+
+    public void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body) {
+        this.serviceClient().promote(resourceGroupName, mongoClusterName, body);
+    }
+
+    public void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body,
+        Context context) {
+        this.serviceClient().promote(resourceGroupName, mongoClusterName, body, context);
     }
 
     public MongoCluster getById(String id) {

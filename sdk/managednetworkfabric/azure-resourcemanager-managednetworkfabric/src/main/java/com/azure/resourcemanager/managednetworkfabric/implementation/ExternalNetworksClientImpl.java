@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExternalNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExternalNetworksClient.
+ */
 public final class ExternalNetworksClientImpl implements ExternalNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExternalNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of ExternalNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExternalNetworksClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(ExternalNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExternalNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,130 +75,100 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface ExternalNetworksService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
             @PathParam("externalNetworkName") String externalNetworkName,
-            @BodyParam("application/json") ExternalNetworkInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExternalNetworkInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExternalNetworkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExternalNetworkInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
+            @PathParam("externalNetworkName") String externalNetworkName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
             @PathParam("externalNetworkName") String externalNetworkName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExternalNetworkPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
+            @PathParam("externalNetworkName") String externalNetworkName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ExternalNetworksList>> listByL3IsolationDomain(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l3IsolationDomainName") String l3IsolationDomainName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateAdministrativeState")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
             @PathParam("externalNetworkName") String externalNetworkName,
-            @BodyParam("application/json") ExternalNetworkPatch body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateStaticRouteBfdAdministrativeState")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeState(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
             @PathParam("externalNetworkName") String externalNetworkName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExternalNetworksList>> listByL3IsolationDomain(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateAdministrativeState")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @PathParam("externalNetworkName") String externalNetworkName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateStaticRouteBfdAdministrativeState")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeState(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @PathParam("externalNetworkName") String externalNetworkName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExternalNetworksList>> listByL3IsolationDomainNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -200,23 +176,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -238,26 +210,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            body,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -266,27 +228,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -307,24 +261,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, body, accept, context);
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -337,23 +282,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreateAsync(
         String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        return this
-            .client
-            .<ExternalNetworkInner, ExternalNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExternalNetworkInner.class,
-                ExternalNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        return this.client.<ExternalNetworkInner, ExternalNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExternalNetworkInner.class, ExternalNetworkInner.class, this.client.getContext());
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -366,25 +305,20 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-        return this
-            .client
-            .<ExternalNetworkInner, ExternalNetworkInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExternalNetworkInner.class, ExternalNetworkInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        return this.client.<ExternalNetworkInner, ExternalNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExternalNetworkInner.class, ExternalNetworkInner.class, context);
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -395,18 +329,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
-        return this
-            .beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
+    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
+        return this.beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
             .getSyncPoller();
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -418,22 +351,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
+    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body, Context context) {
+        return this.beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -444,18 +372,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExternalNetworkInner> createAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
-        return beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
-            .last()
+    private Mono<ExternalNetworkInner> createAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkInner body) {
+        return beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -467,22 +394,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExternalNetworkInner> createAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .last()
+    private Mono<ExternalNetworkInner> createAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -493,16 +415,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalNetworkInner create(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body) {
+    public ExternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkInner body) {
         return createAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body).block();
     }
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -514,43 +436,35 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalNetworkInner create(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context) {
+    public ExternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkInner body, Context context) {
         return createAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context).block();
     }
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
+    private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -567,25 +481,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -593,23 +498,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
+    private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -625,23 +526,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, accept, context);
     }
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -651,17 +544,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExternalNetworkInner> getAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
+    private Mono<ExternalNetworkInner> getAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName) {
         return getWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -672,16 +565,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExternalNetworkInner> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
+    public Response<ExternalNetworkInner> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context) {
         return getWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context).block();
     }
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -691,16 +584,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalNetworkInner get(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
+    public ExternalNetworkInner get(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName) {
         return getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE).getValue();
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -708,23 +601,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,26 +635,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            body,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -774,27 +653,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -815,24 +686,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, body, accept, context);
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -845,23 +707,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdateAsync(
         String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        return this
-            .client
-            .<ExternalNetworkInner, ExternalNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExternalNetworkInner.class,
-                ExternalNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        return this.client.<ExternalNetworkInner, ExternalNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExternalNetworkInner.class, ExternalNetworkInner.class, this.client.getContext());
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -874,25 +730,20 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-        return this
-            .client
-            .<ExternalNetworkInner, ExternalNetworkInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExternalNetworkInner.class, ExternalNetworkInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        return this.client.<ExternalNetworkInner, ExternalNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExternalNetworkInner.class, ExternalNetworkInner.class, context);
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -903,18 +754,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
-        return this
-            .beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
+    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
+        return this.beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
             .getSyncPoller();
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -926,22 +776,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
+    public SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -952,18 +797,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExternalNetworkInner> updateAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
-        return beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
-            .last()
+    private Mono<ExternalNetworkInner> updateAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkPatch body) {
+        return beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -975,22 +819,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExternalNetworkInner> updateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .last()
+    private Mono<ExternalNetworkInner> updateAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1001,16 +840,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalNetworkInner update(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body) {
+    public ExternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkPatch body) {
         return updateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body).block();
     }
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1022,20 +861,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalNetworkInner update(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context) {
+    public ExternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, ExternalNetworkPatch body, Context context) {
         return updateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context).block();
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1045,19 +880,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1074,25 +905,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1103,19 +925,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1131,23 +949,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, accept, context);
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1157,21 +967,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1182,21 +990,20 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1206,16 +1013,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName).getSyncPoller();
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1226,18 +1033,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1248,16 +1054,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName) {
-        return beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1268,18 +1073,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1294,9 +1098,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1306,16 +1110,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context) {
+    public void delete(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        Context context) {
         deleteAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, context).block();
     }
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1324,19 +1128,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainSinglePageAsync(
-        String resourceGroupName, String l3IsolationDomainName) {
+    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainSinglePageAsync(String resourceGroupName,
+        String l3IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1349,33 +1149,18 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByL3IsolationDomain(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            accept,
-                            context))
-            .<PagedResponse<ExternalNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByL3IsolationDomain(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), l3IsolationDomainName, accept, context))
+            .<PagedResponse<ExternalNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1385,19 +1170,15 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainSinglePageAsync(
-        String resourceGroupName, String l3IsolationDomainName, Context context) {
+    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainSinglePageAsync(String resourceGroupName,
+        String l3IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1410,30 +1191,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByL3IsolationDomain(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByL3IsolationDomain(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), l3IsolationDomainName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1442,18 +1210,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExternalNetworkInner> listByL3IsolationDomainAsync(
-        String resourceGroupName, String l3IsolationDomainName) {
-        return new PagedFlux<>(
-            () -> listByL3IsolationDomainSinglePageAsync(resourceGroupName, l3IsolationDomainName),
+    private PagedFlux<ExternalNetworkInner> listByL3IsolationDomainAsync(String resourceGroupName,
+        String l3IsolationDomainName) {
+        return new PagedFlux<>(() -> listByL3IsolationDomainSinglePageAsync(resourceGroupName, l3IsolationDomainName),
             nextLink -> listByL3IsolationDomainNextSinglePageAsync(nextLink));
     }
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1463,8 +1230,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExternalNetworkInner> listByL3IsolationDomainAsync(
-        String resourceGroupName, String l3IsolationDomainName, Context context) {
+    private PagedFlux<ExternalNetworkInner> listByL3IsolationDomainAsync(String resourceGroupName,
+        String l3IsolationDomainName, Context context) {
         return new PagedFlux<>(
             () -> listByL3IsolationDomainSinglePageAsync(resourceGroupName, l3IsolationDomainName, context),
             nextLink -> listByL3IsolationDomainNextSinglePageAsync(nextLink, context));
@@ -1472,9 +1239,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1483,16 +1250,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName) {
+    public PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(String resourceGroupName,
+        String l3IsolationDomainName) {
         return new PagedIterable<>(listByL3IsolationDomainAsync(resourceGroupName, l3IsolationDomainName));
     }
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1502,16 +1269,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context) {
+    public PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(String resourceGroupName,
+        String l3IsolationDomainName, Context context) {
         return new PagedIterable<>(listByL3IsolationDomainAsync(resourceGroupName, l3IsolationDomainName, context));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1519,26 +1286,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1559,27 +1319,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateAdministrativeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.updateAdministrativeState(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), l3IsolationDomainName,
+                externalNetworkName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1588,27 +1338,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1629,24 +1371,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAdministrativeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                body,
-                accept,
-                context);
+        return service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), l3IsolationDomainName, externalNetworkName, body, accept,
+            context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1657,31 +1391,23 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateAdministrativeStateWithResponseAsync(resourceGroupName,
+            l3IsolationDomainName, externalNetworkName, body);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1693,33 +1419,24 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = updateAdministrativeStateWithResponseAsync(resourceGroupName,
+            l3IsolationDomainName, externalNetworkName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1730,13 +1447,10 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body) {
         return this
             .beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
             .getSyncPoller();
@@ -1744,9 +1458,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1758,25 +1472,21 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context) {
         return this
-            .beginUpdateAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
+            .beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1787,11 +1497,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body) {
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
         return beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1799,9 +1506,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1813,23 +1520,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
-        return beginUpdateAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1840,20 +1541,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body) {
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
         return updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
             .block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1865,22 +1563,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
-        return updateAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .block();
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context) {
+        return updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, externalNetworkName, body,
+            context).block();
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1888,26 +1581,20 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeStateWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
         UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1928,27 +1615,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateStaticRouteBfdAdministrativeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            externalNetworkName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.updateStaticRouteBfdAdministrativeState(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), l3IsolationDomainName,
+                externalNetworkName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1957,27 +1634,20 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeStateWithResponseAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1998,24 +1668,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateStaticRouteBfdAdministrativeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                externalNetworkName,
-                body,
-                accept,
-                context);
+        return service.updateStaticRouteBfdAdministrativeState(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), l3IsolationDomainName,
+            externalNetworkName, body, accept, context);
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2026,31 +1688,23 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeStateAsync(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateStaticRouteBfdAdministrativeStateWithResponseAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeStateAsync(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateStaticRouteBfdAdministrativeStateWithResponseAsync(
+            resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2062,33 +1716,24 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeStateAsync(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeStateAsync(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateStaticRouteBfdAdministrativeStateWithResponseAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = updateStaticRouteBfdAdministrativeStateWithResponseAsync(
+            resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2099,24 +1744,21 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body) {
         return this
-            .beginUpdateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
+            .beginUpdateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+                externalNetworkName, body)
             .getSyncPoller();
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2128,25 +1770,21 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context) {
         return this
-            .beginUpdateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
+            .beginUpdateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+                externalNetworkName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2158,21 +1796,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> updateStaticRouteBfdAdministrativeStateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
         UpdateAdministrativeState body) {
-        return beginUpdateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+            externalNetworkName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2185,22 +1819,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> updateStaticRouteBfdAdministrativeStateAsync(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
-        return beginUpdateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        UpdateAdministrativeState body, Context context) {
+        return beginUpdateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+            externalNetworkName, body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2211,21 +1840,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body) {
-        return updateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body)
-            .block();
+    public CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body) {
+        return updateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+            externalNetworkName, body).block();
     }
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -2237,22 +1862,16 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
-        return updateStaticRouteBfdAdministrativeStateAsync(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context)
-            .block();
+    public CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context) {
+        return updateStaticRouteBfdAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName,
+            externalNetworkName, body, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2264,32 +1883,22 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByL3IsolationDomainNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExternalNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ExternalNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2297,29 +1906,19 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @return list of External Networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ExternalNetworkInner>> listByL3IsolationDomainNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByL3IsolationDomainNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByL3IsolationDomainNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

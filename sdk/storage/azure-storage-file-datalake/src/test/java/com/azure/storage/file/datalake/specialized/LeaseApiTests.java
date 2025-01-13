@@ -58,8 +58,7 @@ public class LeaseApiTests extends DataLakeTestBase {
             // proposedId | leaseTime | leaseStateType | leaseDurationType
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
-        );
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE));
     }
 
     @Test
@@ -71,8 +70,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     @ParameterizedTest
     @ValueSource(ints = { -10, 10, 70 })
     public void acquireFileLeaseDurationFail(int duration) {
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(createPathClient()).acquireLease(duration));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(createPathClient()).acquireLease(duration));
     }
 
     @ParameterizedTest
@@ -80,8 +79,7 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void acquireFileLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch) {
         DataLakeFileClient fc = createPathClient();
         match = setupPathMatchCondition(fc, match);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
@@ -92,12 +90,9 @@ public class LeaseApiTests extends DataLakeTestBase {
     private static Stream<Arguments> validLeaseConditions() {
         return Stream.of(
             // modified | unmodified | match | noneMatch
-            Arguments.of(null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG)
-        );
+            Arguments.of(null, null, null, null), Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null), Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG));
     }
 
     @ParameterizedTest
@@ -106,23 +101,20 @@ public class LeaseApiTests extends DataLakeTestBase {
         String noneMatch) {
         DataLakeFileClient fc = createPathClient();
         noneMatch = setupPathMatchCondition(fc, noneMatch);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(fc).acquireLeaseWithResponse(-1, mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(fc).acquireLeaseWithResponse(-1, mac, null, null));
     }
 
     private static Stream<Arguments> invalidLeaseConditions() {
         return Stream.of(
             // modified | unmodified | match | noneMatch
-            Arguments.of(NEW_DATE, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG));
+            Arguments.of(NEW_DATE, null, null, null), Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
     @Test
@@ -159,8 +151,7 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         match = setupPathMatchCondition(fc, match);
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
@@ -175,14 +166,13 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
         noneMatch = setupPathMatchCondition(fc, noneMatch);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(fc, leaseId).renewLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(fc, leaseId).renewLeaseWithResponse(mac, null, null));
     }
 
     @Test
@@ -210,15 +200,13 @@ public class LeaseApiTests extends DataLakeTestBase {
         assertEquals(200, createLeaseClient(fc, leaseId).releaseLeaseWithResponse(null, null, null).getStatusCode());
     }
 
-
     @ParameterizedTest
     @MethodSource("validLeaseConditions")
     public void releaseFileLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch) {
         DataLakeFileClient fc = createPathClient();
         match = setupPathMatchCondition(fc, match);
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
@@ -233,14 +221,13 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
         noneMatch = setupPathMatchCondition(fc, noneMatch);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(fc, leaseId).releaseLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(fc, leaseId).releaseLeaseWithResponse(mac, null, null));
     }
 
     @Test
@@ -251,7 +238,7 @@ public class LeaseApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"-1,null,0", "-1,20,25", "20,15,16"}, nullValues = "null")
+    @CsvSource(value = { "-1,null,0", "-1,20,25", "20,15,16" }, nullValues = "null")
     public void breakFileLease(int leaseTime, Integer breakPeriod, int remainingTime) {
         DataLakeFileClient fc = createPathClient();
         DataLakeLeaseClient leaseClient = createLeaseClient(fc, testResourceNamer.randomUuid());
@@ -279,8 +266,7 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         match = setupPathMatchCondition(fc, match);
         setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
@@ -295,14 +281,13 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
         noneMatch = setupPathMatchCondition(fc, noneMatch);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(fc).breakLeaseWithResponse(null, mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(fc).breakLeaseWithResponse(null, mac, null, null));
     }
 
     @Test
@@ -324,8 +309,9 @@ public class LeaseApiTests extends DataLakeTestBase {
         validateBasicHeaders(changeLeaseResponse.getHeaders());
         assertEquals(leaseClient.getLeaseId(), changeLeaseResponse.getValue());
 
-        assertEquals(200, createLeaseClient(fc, changeLeaseResponse.getValue())
-            .releaseLeaseWithResponse(null, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(fc, changeLeaseResponse.getValue()).releaseLeaseWithResponse(null, null, null)
+                .getStatusCode());
     }
 
     @Test
@@ -333,8 +319,9 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         String leaseID = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
 
-        assertEquals(200, createLeaseClient(fc, leaseID)
-            .changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(fc, leaseID).changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -343,14 +330,14 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         match = setupPathMatchCondition(fc, match);
         String leaseID = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertEquals(200, createLeaseClient(fc, leaseID)
-            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(fc, leaseID).changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -360,8 +347,7 @@ public class LeaseApiTests extends DataLakeTestBase {
         DataLakeFileClient fc = createPathClient();
         noneMatch = setupPathMatchCondition(fc, noneMatch);
         setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
@@ -394,8 +380,8 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     @Test
     public void acquireFileSystemLeaseMin() {
-        assertEquals(201, createLeaseClient(dataLakeFileSystemClient)
-            .acquireLeaseWithResponse(-1, null, null, null).getStatusCode());
+        assertEquals(201,
+            createLeaseClient(dataLakeFileSystemClient).acquireLeaseWithResponse(-1, null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -410,14 +396,13 @@ public class LeaseApiTests extends DataLakeTestBase {
     @MethodSource("validLeaseConditions")
     public void acquireFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch) {
-        RequestConditions mac = new RequestConditions()
-            .setIfModifiedSince(modified)
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertEquals(201, createLeaseClient(dataLakeFileSystemClient).acquireLeaseWithResponse(-1, mac, null, null)
-            .getStatusCode());
+        assertEquals(201,
+            createLeaseClient(dataLakeFileSystemClient).acquireLeaseWithResponse(-1, mac, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -425,16 +410,14 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void acquireFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
-            .acquireLeaseWithResponse(-1, mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient).acquireLeaseWithResponse(-1, mac, null, null));
     }
 
     private static Stream<Arguments> invalidModifiedConditions() {
         return Stream.of(
             // modified | unmodified
-            Arguments.of(NEW_DATE, null),
-            Arguments.of(null, OLD_DATE)
-        );
+            Arguments.of(NEW_DATE, null), Arguments.of(null, OLD_DATE));
     }
 
     @Test
@@ -460,8 +443,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void renewFileSystemLeaseMin() {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .renewLeaseWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID).renewLeaseWithResponse(null, null, null)
+            .getStatusCode());
     }
 
     @ParameterizedTest
@@ -470,17 +453,14 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .renewLeaseWithResponse(mac, null, null).getStatusCode());
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID).renewLeaseWithResponse(mac, null, null)
+            .getStatusCode());
     }
 
     private static Stream<Arguments> validModifiedConditions() {
         return Stream.of(
             // modified | unmodified
-            Arguments.of(null, null),
-            Arguments.of(OLD_DATE, null),
-            Arguments.of(null, NEW_DATE)
-        );
+            Arguments.of(null, null), Arguments.of(OLD_DATE, null), Arguments.of(null, NEW_DATE));
     }
 
     @ParameterizedTest
@@ -489,8 +469,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .renewLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient, leaseID).renewLeaseWithResponse(mac, null, null));
     }
 
     @ParameterizedTest
@@ -498,16 +478,14 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void renewFileSystemLeaseACIllegal(String match, String noneMatch) {
         RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG)
-            .renewLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG).renewLeaseWithResponse(mac, null, null));
     }
 
     private static Stream<Arguments> invalidMatchConditions() {
         return Stream.of(
             // match | noneMatch
-            Arguments.of(RECEIVED_ETAG, null),
-            Arguments.of(null, GARBAGE_ETAG)
-        );
+            Arguments.of(RECEIVED_ETAG, null), Arguments.of(null, GARBAGE_ETAG));
     }
 
     @Test
@@ -521,8 +499,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void releaseFileSystemLease() {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        Response<Void> releaseLeaseResponse = createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .releaseLeaseWithResponse(null, null, null);
+        Response<Void> releaseLeaseResponse
+            = createLeaseClient(dataLakeFileSystemClient, leaseID).releaseLeaseWithResponse(null, null, null);
 
         assertEquals(LeaseStateType.AVAILABLE, dataLakeFileSystemClient.getProperties().getLeaseState());
         validateBasicHeaders(releaseLeaseResponse.getHeaders());
@@ -532,8 +510,9 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void releaseFileSystemLeaseMin() {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .releaseLeaseWithResponse(null, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(dataLakeFileSystemClient, leaseID).releaseLeaseWithResponse(null, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -542,8 +521,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .releaseLeaseWithResponse(mac, null, null).getStatusCode());
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID).releaseLeaseWithResponse(mac, null, null)
+            .getStatusCode());
     }
 
     @ParameterizedTest
@@ -552,8 +531,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .releaseLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient, leaseID).releaseLeaseWithResponse(mac, null, null));
     }
 
     @ParameterizedTest
@@ -561,8 +540,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void releaseFileSystemLeaseACIllegal(String match, String noneMatch) {
         RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG)
-            .releaseLeaseWithResponse(mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG).releaseLeaseWithResponse(mac, null, null));
     }
 
     @Test
@@ -573,7 +552,7 @@ public class LeaseApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"-1,null,0", "-1,20,25", "20,15,16"}, nullValues = "null")
+    @CsvSource(value = { "-1,null,0", "-1,20,25", "20,15,16" }, nullValues = "null")
     public void breakFileSystemLease(int leaseTime, Integer breakPeriod, int remainingTime) {
         DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, testResourceNamer.randomUuid());
         leaseClient.acquireLease(leaseTime);
@@ -593,8 +572,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void breakFileSystemLeaseMin() {
         setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        assertEquals(202, createLeaseClient(dataLakeFileSystemClient)
-            .breakLeaseWithResponse(null, null, null, null).getStatusCode());
+        assertEquals(202,
+            createLeaseClient(dataLakeFileSystemClient).breakLeaseWithResponse(null, null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -603,8 +582,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertEquals(202, createLeaseClient(dataLakeFileSystemClient)
-            .breakLeaseWithResponse(null, mac, null, null).getStatusCode());
+        assertEquals(202,
+            createLeaseClient(dataLakeFileSystemClient).breakLeaseWithResponse(null, mac, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -613,8 +592,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
-            .breakLeaseWithResponse(null, mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient).breakLeaseWithResponse(null, mac, null, null));
     }
 
     @ParameterizedTest
@@ -622,8 +601,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void breakFileSystemLeaseACIllegal(String match, String noneMatch) {
         RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
-            .breakLeaseWithResponse(null, mac, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient).breakLeaseWithResponse(null, mac, null, null));
     }
 
     @Test
@@ -638,23 +617,26 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, leaseID);
 
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(testResourceNamer.randomUuid(), null,
-            null, null);
+        Response<String> changeLeaseResponse
+            = leaseClient.changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null);
         String newLeaseId = changeLeaseResponse.getValue();
 
         validateBasicHeaders(changeLeaseResponse.getHeaders());
         assertEquals(leaseClient.getLeaseId(), newLeaseId);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, newLeaseId).releaseLeaseWithResponse(null, null,
-            null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(dataLakeFileSystemClient, newLeaseId).releaseLeaseWithResponse(null, null, null)
+                .getStatusCode());
     }
 
     @Test
     public void changeFileSystemLeaseMin() {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(dataLakeFileSystemClient, leaseID)
+                .changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -663,8 +645,10 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
-            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null).getStatusCode());
+        assertEquals(200,
+            createLeaseClient(dataLakeFileSystemClient, leaseID)
+                .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -682,8 +666,8 @@ public class LeaseApiTests extends DataLakeTestBase {
     public void changeFileSystemLeaseACIllegal(String match, String noneMatch) {
         RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            createLeaseClient(dataLakeFileSystemClient, RECEIVED_LEASE_ID)
+        assertThrows(DataLakeStorageException.class,
+            () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_LEASE_ID)
                 .changeLeaseWithResponse(GARBAGE_LEASE_ID, mac, null, null));
     }
 

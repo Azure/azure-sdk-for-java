@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 public final class IPVersion extends ExpandableStringEnum<IPVersion> {
     /**
-     * Static value IPv4 for IPVersion.
+     * IPv4 version.
      */
     public static final IPVersion IPV4 = fromString("IPv4");
 
     /**
-     * Static value IPv6 for IPVersion.
+     * IPv6 version.
      */
     public static final IPVersion IPV6 = fromString("IPv6");
 

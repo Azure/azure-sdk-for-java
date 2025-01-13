@@ -13,23 +13,23 @@ import com.azure.resourcemanager.reservations.models.ReservationTerm;
 import com.azure.resourcemanager.reservations.models.ReservedResourceType;
 import com.azure.resourcemanager.reservations.models.SkuName;
 
-/** Samples for ReservationOrder Purchase. */
+/**
+ * Samples for ReservationOrder Purchase.
+ */
 public final class ReservationOrderPurchaseSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/PurchaseReservationOrder.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
+     * PurchaseReservationOrder.json
      */
     /**
      * Sample code: Purchase.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void purchase(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .reservationOrders()
-            .purchase(
-                "a075419f-44cc-497f-b68a-14ee811d48b9",
-                new PurchaseRequest()
-                    .withSku(new SkuName().withName("standard_D1"))
+        manager.reservationOrders()
+            .purchase("a075419f-44cc-497f-b68a-14ee811d48b9",
+                new PurchaseRequest().withSku(new SkuName().withName("standard_D1"))
                     .withLocation("westus")
                     .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
                     .withBillingScopeId("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83")
@@ -39,9 +39,8 @@ public final class ReservationOrderPurchaseSamples {
                     .withDisplayName("TestReservationOrder")
                     .withAppliedScopeType(AppliedScopeType.SHARED)
                     .withRenew(false)
-                    .withReservedResourceProperties(
-                        new PurchaseRequestPropertiesReservedResourceProperties()
-                            .withInstanceFlexibility(InstanceFlexibility.ON)),
+                    .withReservedResourceProperties(new PurchaseRequestPropertiesReservedResourceProperties()
+                        .withInstanceFlexibility(InstanceFlexibility.ON)),
                 com.azure.core.util.Context.NONE);
     }
 }

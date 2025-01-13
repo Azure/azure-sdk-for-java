@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateDataLakeStoreWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDataLakeStoreWithAccountParameters model =
-            BinaryData
-                .fromString("{\"name\":\"szfkbe\",\"properties\":{\"suffix\":\"wrmjmwvvjektc\"}}")
+        UpdateDataLakeStoreWithAccountParameters model
+            = BinaryData.fromString("{\"name\":\"surex\",\"properties\":{\"suffix\":\"ryocfsfksymdd\"}}")
                 .toObject(UpdateDataLakeStoreWithAccountParameters.class);
-        Assertions.assertEquals("szfkbe", model.name());
-        Assertions.assertEquals("wrmjmwvvjektc", model.suffix());
+        Assertions.assertEquals("surex", model.name());
+        Assertions.assertEquals("ryocfsfksymdd", model.suffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateDataLakeStoreWithAccountParameters model =
-            new UpdateDataLakeStoreWithAccountParameters().withName("szfkbe").withSuffix("wrmjmwvvjektc");
+        UpdateDataLakeStoreWithAccountParameters model
+            = new UpdateDataLakeStoreWithAccountParameters().withName("surex").withSuffix("ryocfsfksymdd");
         model = BinaryData.fromObject(model).toObject(UpdateDataLakeStoreWithAccountParameters.class);
-        Assertions.assertEquals("szfkbe", model.name());
-        Assertions.assertEquals("wrmjmwvvjektc", model.suffix());
+        Assertions.assertEquals("surex", model.name());
+        Assertions.assertEquals("ryocfsfksymdd", model.suffix());
     }
 }

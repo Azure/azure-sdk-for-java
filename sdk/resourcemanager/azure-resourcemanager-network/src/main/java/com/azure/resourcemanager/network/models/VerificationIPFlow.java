@@ -27,15 +27,9 @@ public interface VerificationIPFlow extends Executable<VerificationIPFlow>, HasP
     String ruleName();
 
     /** The entirety of verification ip flow parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResource,
-            DefinitionStages.WithDirection,
-            DefinitionStages.WithProtocol,
-            DefinitionStages.WithLocalIP,
-            DefinitionStages.WithRemoteIP,
-            DefinitionStages.WithLocalPort,
-            DefinitionStages.WithRemotePort,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithTargetResource, DefinitionStages.WithDirection,
+        DefinitionStages.WithProtocol, DefinitionStages.WithLocalIP, DefinitionStages.WithRemoteIP,
+        DefinitionStages.WithLocalPort, DefinitionStages.WithRemotePort, DefinitionStages.WithExecute {
     }
 
     /** Grouping of verification ip flow parameters. */

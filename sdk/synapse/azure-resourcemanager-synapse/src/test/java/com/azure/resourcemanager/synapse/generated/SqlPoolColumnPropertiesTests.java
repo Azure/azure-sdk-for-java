@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolColumnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolColumnProperties model =
-            BinaryData
-                .fromString("{\"columnType\":\"tinyint\",\"isComputed\":true}")
-                .toObject(SqlPoolColumnProperties.class);
-        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
+        SqlPoolColumnProperties model = BinaryData.fromString("{\"columnType\":\"date\",\"isComputed\":false}")
+            .toObject(SqlPoolColumnProperties.class);
+        Assertions.assertEquals(ColumnDataType.DATE, model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolColumnProperties model = new SqlPoolColumnProperties().withColumnType(ColumnDataType.TINYINT);
+        SqlPoolColumnProperties model = new SqlPoolColumnProperties().withColumnType(ColumnDataType.DATE);
         model = BinaryData.fromObject(model).toObject(SqlPoolColumnProperties.class);
-        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
+        Assertions.assertEquals(ColumnDataType.DATE, model.columnType());
     }
 }

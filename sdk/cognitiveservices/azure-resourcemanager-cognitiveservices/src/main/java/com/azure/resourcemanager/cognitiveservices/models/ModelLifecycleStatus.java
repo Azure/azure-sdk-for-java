@@ -5,20 +5,40 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Model lifecycle status. */
+/**
+ * Model lifecycle status.
+ */
 public final class ModelLifecycleStatus extends ExpandableStringEnum<ModelLifecycleStatus> {
-    /** Static value GenerallyAvailable for ModelLifecycleStatus. */
-    public static final ModelLifecycleStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
+    /**
+     * Static value Stable for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus STABLE = fromString("Stable");
 
-    /** Static value Preview for ModelLifecycleStatus. */
+    /**
+     * Static value Preview for ModelLifecycleStatus.
+     */
     public static final ModelLifecycleStatus PREVIEW = fromString("Preview");
 
     /**
+     * Static value GenerallyAvailable for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
+
+    /**
+     * Static value Deprecating for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus DEPRECATING = fromString("Deprecating");
+
+    /**
+     * Static value Deprecated for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus DEPRECATED = fromString("Deprecated");
+
+    /**
      * Creates a new instance of ModelLifecycleStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +47,17 @@ public final class ModelLifecycleStatus extends ExpandableStringEnum<ModelLifecy
 
     /**
      * Creates or finds a ModelLifecycleStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ModelLifecycleStatus.
      */
-    @JsonCreator
     public static ModelLifecycleStatus fromString(String name) {
         return fromString(name, ModelLifecycleStatus.class);
     }
 
     /**
      * Gets known ModelLifecycleStatus values.
-     *
+     * 
      * @return known ModelLifecycleStatus values.
      */
     public static Collection<ModelLifecycleStatus> values() {

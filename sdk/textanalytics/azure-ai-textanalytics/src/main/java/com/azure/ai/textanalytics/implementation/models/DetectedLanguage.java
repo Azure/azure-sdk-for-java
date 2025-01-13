@@ -27,7 +27,8 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     private String iso6391Name;
 
     /*
-     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is
+     * true.
      */
     private double confidenceScore;
 

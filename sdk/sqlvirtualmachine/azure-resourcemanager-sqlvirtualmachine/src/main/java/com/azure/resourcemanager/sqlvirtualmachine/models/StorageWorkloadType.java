@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage workload type. */
+/**
+ * Storage workload type.
+ */
 public final class StorageWorkloadType extends ExpandableStringEnum<StorageWorkloadType> {
-    /** Static value GENERAL for StorageWorkloadType. */
+    /**
+     * Static value GENERAL for StorageWorkloadType.
+     */
     public static final StorageWorkloadType GENERAL = fromString("GENERAL");
 
-    /** Static value OLTP for StorageWorkloadType. */
+    /**
+     * Static value OLTP for StorageWorkloadType.
+     */
     public static final StorageWorkloadType OLTP = fromString("OLTP");
 
-    /** Static value DW for StorageWorkloadType. */
+    /**
+     * Static value DW for StorageWorkloadType.
+     */
     public static final StorageWorkloadType DW = fromString("DW");
 
     /**
      * Creates a new instance of StorageWorkloadType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class StorageWorkloadType extends ExpandableStringEnum<StorageWorkl
 
     /**
      * Creates or finds a StorageWorkloadType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageWorkloadType.
      */
-    @JsonCreator
     public static StorageWorkloadType fromString(String name) {
         return fromString(name, StorageWorkloadType.class);
     }
 
     /**
      * Gets known StorageWorkloadType values.
-     *
+     * 
      * @return known StorageWorkloadType values.
      */
     public static Collection<StorageWorkloadType> values() {

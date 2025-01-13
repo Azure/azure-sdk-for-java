@@ -18,23 +18,18 @@ public class CredentialsTests {
     private static final String DUMMY_NAME = "Dummy-Name";
     private static final String DUMMY_VALUE = "DummyValue";
 
-
     static class InvalidInputsArgumentProvider implements ArgumentsProvider {
 
-        InvalidInputsArgumentProvider() { }
+        InvalidInputsArgumentProvider() {
+        }
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-            return Stream.of(
-                Arguments.of(null, NullPointerException.class),
-                Arguments.of(null, NullPointerException.class),
-                Arguments.of("", IllegalArgumentException.class),
-                Arguments.of("", IllegalArgumentException.class),
-                Arguments.of("", IllegalArgumentException.class)
-            );
+            return Stream.of(Arguments.of(null, NullPointerException.class),
+                Arguments.of(null, NullPointerException.class), Arguments.of("", IllegalArgumentException.class),
+                Arguments.of("", IllegalArgumentException.class), Arguments.of("", IllegalArgumentException.class));
         }
     }
-
 
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)

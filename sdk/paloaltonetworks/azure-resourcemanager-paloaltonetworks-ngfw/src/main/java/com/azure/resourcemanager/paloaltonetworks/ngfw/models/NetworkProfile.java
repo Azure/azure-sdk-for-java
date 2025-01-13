@@ -6,54 +6,51 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network settings for Firewall.
  */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * Vnet configurations
      */
-    @JsonProperty(value = "vnetConfiguration")
     private VnetConfiguration vnetConfiguration;
 
     /*
      * Vwan configurations
      */
-    @JsonProperty(value = "vwanConfiguration")
     private VwanConfiguration vwanConfiguration;
 
     /*
      * vnet or vwan, cannot be updated
      */
-    @JsonProperty(value = "networkType", required = true)
     private NetworkType networkType;
 
     /*
      * List of IPs associated with the Firewall
      */
-    @JsonProperty(value = "publicIps", required = true)
     private List<IpAddress> publicIps;
 
     /*
      * Enable egress NAT, enabled by default
      */
-    @JsonProperty(value = "enableEgressNat", required = true)
     private EgressNat enableEgressNat;
 
     /*
      * Egress nat IP to use
      */
-    @JsonProperty(value = "egressNatIp")
     private List<IpAddress> egressNatIp;
 
     /*
      * Non-RFC 1918 address
      */
-    @JsonProperty(value = "trustedRanges")
     private List<String> trustedRanges;
 
     /**
@@ -215,18 +212,18 @@ public final class NetworkProfile {
             vwanConfiguration().validate();
         }
         if (networkType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property networkType in model NetworkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property networkType in model NetworkProfile"));
         }
         if (publicIps() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publicIps in model NetworkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publicIps in model NetworkProfile"));
         } else {
             publicIps().forEach(e -> e.validate());
         }
         if (enableEgressNat() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property enableEgressNat in model NetworkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property enableEgressNat in model NetworkProfile"));
         }
         if (egressNatIp() != null) {
             egressNatIp().forEach(e -> e.validate());
@@ -234,4 +231,64 @@ public final class NetworkProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkType", this.networkType == null ? null : this.networkType.toString());
+        jsonWriter.writeArrayField("publicIps", this.publicIps, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("enableEgressNat",
+            this.enableEgressNat == null ? null : this.enableEgressNat.toString());
+        jsonWriter.writeJsonField("vnetConfiguration", this.vnetConfiguration);
+        jsonWriter.writeJsonField("vwanConfiguration", this.vwanConfiguration);
+        jsonWriter.writeArrayField("egressNatIp", this.egressNatIp, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("trustedRanges", this.trustedRanges,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkType".equals(fieldName)) {
+                    deserializedNetworkProfile.networkType = NetworkType.fromString(reader.getString());
+                } else if ("publicIps".equals(fieldName)) {
+                    List<IpAddress> publicIps = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
+                    deserializedNetworkProfile.publicIps = publicIps;
+                } else if ("enableEgressNat".equals(fieldName)) {
+                    deserializedNetworkProfile.enableEgressNat = EgressNat.fromString(reader.getString());
+                } else if ("vnetConfiguration".equals(fieldName)) {
+                    deserializedNetworkProfile.vnetConfiguration = VnetConfiguration.fromJson(reader);
+                } else if ("vwanConfiguration".equals(fieldName)) {
+                    deserializedNetworkProfile.vwanConfiguration = VwanConfiguration.fromJson(reader);
+                } else if ("egressNatIp".equals(fieldName)) {
+                    List<IpAddress> egressNatIp = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
+                    deserializedNetworkProfile.egressNatIp = egressNatIp;
+                } else if ("trustedRanges".equals(fieldName)) {
+                    List<String> trustedRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkProfile.trustedRanges = trustedRanges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
+    }
 }

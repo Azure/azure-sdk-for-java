@@ -21,24 +21,36 @@ public final class NodeReportsImpl implements NodeReports {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public NodeReportsImpl(
-        NodeReportsClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public NodeReportsImpl(NodeReportsClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<DscNodeReport> listByNode(
-        String resourceGroupName, String automationAccountName, String nodeId) {
-        PagedIterable<DscNodeReportInner> inner =
-            this.serviceClient().listByNode(resourceGroupName, automationAccountName, nodeId);
-        return Utils.mapPage(inner, inner1 -> new DscNodeReportImpl(inner1, this.manager()));
+    public PagedIterable<DscNodeReport> listByNode(String resourceGroupName, String automationAccountName,
+        String nodeId) {
+        PagedIterable<DscNodeReportInner> inner
+            = this.serviceClient().listByNode(resourceGroupName, automationAccountName, nodeId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeReportImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DscNodeReport> listByNode(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context) {
-        PagedIterable<DscNodeReportInner> inner =
-            this.serviceClient().listByNode(resourceGroupName, automationAccountName, nodeId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new DscNodeReportImpl(inner1, this.manager()));
+    public PagedIterable<DscNodeReport> listByNode(String resourceGroupName, String automationAccountName,
+        String nodeId, String filter, Context context) {
+        PagedIterable<DscNodeReportInner> inner
+            = this.serviceClient().listByNode(resourceGroupName, automationAccountName, nodeId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeReportImpl(inner1, this.manager()));
+    }
+
+    public Response<DscNodeReport> getWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId, Context context) {
+        Response<DscNodeReportInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DscNodeReportImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DscNodeReport get(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
@@ -50,30 +62,14 @@ public final class NodeReportsImpl implements NodeReports {
         }
     }
 
-    public Response<DscNodeReport> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
-        Response<DscNodeReportInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DscNodeReportImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Object> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId, Context context) {
+        return this.serviceClient()
+            .getContentWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, context);
     }
 
     public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
         return this.serviceClient().getContent(resourceGroupName, automationAccountName, nodeId, reportId);
-    }
-
-    public Response<Object> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
-        return this
-            .serviceClient()
-            .getContentWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, context);
     }
 
     private NodeReportsClient serviceClient() {

@@ -18,11 +18,13 @@ import com.azure.resourcemanager.logz.fluent.models.VMResourcesInner;
 import com.azure.resourcemanager.logz.models.LogzMonitorResourceUpdateParameters;
 import com.azure.resourcemanager.logz.models.VMHostUpdateRequest;
 
-/** An instance of this class provides access to all the operations defined in SubAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubAccountsClient.
+ */
 public interface SubAccountsClient {
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface SubAccountsClient {
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface SubAccountsClient {
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -59,12 +61,12 @@ public interface SubAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName, String subAccountName);
+    SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(String resourceGroupName,
+        String monitorName, String subAccountName);
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -76,16 +78,12 @@ public interface SubAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context);
+    SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(String resourceGroupName,
+        String monitorName, String subAccountName, LogzMonitorResourceInner body, Context context);
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -99,7 +97,7 @@ public interface SubAccountsClient {
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -111,16 +109,12 @@ public interface SubAccountsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogzMonitorResourceInner create(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context);
+    LogzMonitorResourceInner create(String resourceGroupName, String monitorName, String subAccountName,
+        LogzMonitorResourceInner body, Context context);
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -131,12 +125,12 @@ public interface SubAccountsClient {
      * @return a sub account under a given monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogzMonitorResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    Response<LogzMonitorResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context);
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -150,7 +144,7 @@ public interface SubAccountsClient {
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -164,7 +158,7 @@ public interface SubAccountsClient {
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -175,12 +169,12 @@ public interface SubAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String subAccountName,
+        Context context);
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -193,7 +187,7 @@ public interface SubAccountsClient {
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -207,11 +201,11 @@ public interface SubAccountsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,16 +213,12 @@ public interface SubAccountsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogzMonitorResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceUpdateParameters body,
-        Context context);
+    Response<LogzMonitorResourceInner> updateWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceUpdateParameters body, Context context);
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -242,7 +232,7 @@ public interface SubAccountsClient {
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -252,12 +242,12 @@ public interface SubAccountsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName);
+    PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName);
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -268,12 +258,12 @@ public interface SubAccountsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName, Context context);
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -284,12 +274,12 @@ public interface SubAccountsClient {
      * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context);
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -303,7 +293,7 @@ public interface SubAccountsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -313,12 +303,12 @@ public interface SubAccountsClient {
      * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VMResourcesInner> listVmHostUpdate(
-        String resourceGroupName, String monitorName, String subAccountName);
+    PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName);
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -330,12 +320,12 @@ public interface SubAccountsClient {
      * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VMResourcesInner> listVmHostUpdate(
-        String resourceGroupName, String monitorName, String subAccountName, VMHostUpdateRequest body, Context context);
+    PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName, VMHostUpdateRequest body, Context context);
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -349,7 +339,7 @@ public interface SubAccountsClient {
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -360,6 +350,6 @@ public interface SubAccountsClient {
      * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VMResourcesInner> listVMHosts(
-        String resourceGroupName, String monitorName, String subAccountName, Context context);
+    PagedIterable<VMResourcesInner> listVMHosts(String resourceGroupName, String monitorName, String subAccountName,
+        Context context);
 }

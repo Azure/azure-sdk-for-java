@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactProperties;
 public final class ArtifactPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"bpodxunkbebxm\",\"description\":\"yyntwl\",\"publisher\":\"qtkoievs\",\"filePath\":\"tgqr\",\"icon\":\"tmuwlauwzi\",\"targetOsType\":\"bm\",\"parameters\":\"datacjefuzmu\",\"createdDate\":\"2021-06-02T10:08:07Z\"}")
-                .toObject(ArtifactProperties.class);
+        ArtifactProperties model = BinaryData.fromString(
+            "{\"title\":\"bpodxunkbebxm\",\"description\":\"yyntwl\",\"publisher\":\"qtkoievs\",\"filePath\":\"tgqr\",\"icon\":\"tmuwlauwzi\",\"targetOsType\":\"bm\",\"parameters\":\"datacjefuzmu\",\"createdDate\":\"2021-06-02T10:08:07Z\"}")
+            .toObject(ArtifactProperties.class);
     }
 
     @org.junit.jupiter.api.Test

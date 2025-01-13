@@ -11,9 +11,11 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointCo
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
+import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -69,6 +71,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().identity();
     }
 
+    public HighAvailability highAvailability() {
+        return this.innerModel().highAvailability();
+    }
+
     public TlsVersion minimumTlsVersion() {
         return this.innerModel().minimumTlsVersion();
     }
@@ -83,6 +89,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public RedundancyMode redundancyMode() {
+        return this.innerModel().redundancyMode();
     }
 
     public ResourceState resourceState() {
@@ -239,6 +249,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             return this;
         } else {
             this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public ClusterImpl withHighAvailability(HighAvailability highAvailability) {
+        if (isInCreateMode()) {
+            this.innerModel().withHighAvailability(highAvailability);
+            return this;
+        } else {
+            this.updateParameters.withHighAvailability(highAvailability);
             return this;
         }
     }

@@ -32,19 +32,16 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     private final DataSourceAuthenticationType authType;
 
     static {
-        AzureDataExplorerDataFeedSourceAccessor.setAccessor(
-            new AzureDataExplorerDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getConnectionString(AzureDataExplorerDataFeedSource feedSource) {
-                    return feedSource.getConnectionString();
-                }
-            });
+        AzureDataExplorerDataFeedSourceAccessor.setAccessor(new AzureDataExplorerDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getConnectionString(AzureDataExplorerDataFeedSource feedSource) {
+                return feedSource.getConnectionString();
+            }
+        });
     }
 
-    private AzureDataExplorerDataFeedSource(final String connectionString,
-                                    final String query,
-                                    final String credentialId,
-                                    final DataSourceAuthenticationType authType) {
+    private AzureDataExplorerDataFeedSource(final String connectionString, final String query,
+        final String credentialId, final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
         this.credentialId = credentialId;
@@ -60,7 +57,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      * @return The AzureDataExplorerDataFeedSource.
      */
     public static AzureDataExplorerDataFeedSource fromBasicCredential(final String connectionString,
-                                                                      final String query) {
+        final String query) {
         return new AzureDataExplorerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
@@ -74,10 +71,8 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      * @return The AzureDataExplorerDataFeedSource.
      */
     public static AzureDataExplorerDataFeedSource fromManagedIdentityCredential(final String connectionString,
-                                                                                final String query) {
-        return new AzureDataExplorerDataFeedSource(connectionString,
-            query,
-            null,
+        final String query) {
+        return new AzureDataExplorerDataFeedSource(connectionString, query, null,
             DataSourceAuthenticationType.MANAGED_IDENTITY);
     }
 
@@ -94,11 +89,8 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      * @return The SQLServerDataFeedSource.
      */
     public static AzureDataExplorerDataFeedSource fromServicePrincipalCredential(final String connectionString,
-                                                                                 final String query,
-                                                                                 final String credentialId) {
-        return new AzureDataExplorerDataFeedSource(connectionString,
-            query,
-            credentialId,
+        final String query, final String credentialId) {
+        return new AzureDataExplorerDataFeedSource(connectionString, query, credentialId,
             DataSourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
@@ -115,12 +107,8 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      * @return The AzureDataExplorerDataFeedSource.
      */
     public static AzureDataExplorerDataFeedSource fromServicePrincipalInKeyVaultCredential(
-        final String connectionString,
-        final String query,
-        final String credentialId) {
-        return new AzureDataExplorerDataFeedSource(connectionString,
-            query,
-            credentialId,
+        final String connectionString, final String query, final String credentialId) {
+        return new AzureDataExplorerDataFeedSource(connectionString, query, credentialId,
             DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 

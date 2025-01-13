@@ -11,26 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingProfileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingProfileInfo model =
-            BinaryData
-                .fromString(
-                    "{\"billingProfileId\":\"hw\",\"billingProfileDisplayName\":\"oldweyuqdu\",\"indirectRelationshipOrganizationName\":\"mnnrwr\"}")
-                .toObject(BillingProfileInfo.class);
-        Assertions.assertEquals("hw", model.billingProfileId());
-        Assertions.assertEquals("oldweyuqdu", model.billingProfileDisplayName());
-        Assertions.assertEquals("mnnrwr", model.indirectRelationshipOrganizationName());
+        BillingProfileInfo model = BinaryData.fromString(
+            "{\"billingAccountId\":\"rgqjbpfzfsinzg\",\"billingProfileDisplayName\":\"cjrwzoxxjtfellu\",\"billingProfileId\":\"zitonpeqfpjkjl\",\"billingProfileSystemId\":\"fpdvhpfxxypi\",\"indirectRelationshipOrganizationName\":\"nmayhuybb\"}")
+            .toObject(BillingProfileInfo.class);
+        Assertions.assertEquals("rgqjbpfzfsinzg", model.billingAccountId());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.billingProfileDisplayName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.billingProfileId());
+        Assertions.assertEquals("fpdvhpfxxypi", model.billingProfileSystemId());
+        Assertions.assertEquals("nmayhuybb", model.indirectRelationshipOrganizationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingProfileInfo model =
-            new BillingProfileInfo()
-                .withBillingProfileId("hw")
-                .withBillingProfileDisplayName("oldweyuqdu")
-                .withIndirectRelationshipOrganizationName("mnnrwr");
+        BillingProfileInfo model = new BillingProfileInfo().withBillingAccountId("rgqjbpfzfsinzg")
+            .withBillingProfileDisplayName("cjrwzoxxjtfellu")
+            .withBillingProfileId("zitonpeqfpjkjl")
+            .withBillingProfileSystemId("fpdvhpfxxypi")
+            .withIndirectRelationshipOrganizationName("nmayhuybb");
         model = BinaryData.fromObject(model).toObject(BillingProfileInfo.class);
-        Assertions.assertEquals("hw", model.billingProfileId());
-        Assertions.assertEquals("oldweyuqdu", model.billingProfileDisplayName());
-        Assertions.assertEquals("mnnrwr", model.indirectRelationshipOrganizationName());
+        Assertions.assertEquals("rgqjbpfzfsinzg", model.billingAccountId());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.billingProfileDisplayName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.billingProfileId());
+        Assertions.assertEquals("fpdvhpfxxypi", model.billingProfileSystemId());
+        Assertions.assertEquals("nmayhuybb", model.indirectRelationshipOrganizationName());
     }
 }

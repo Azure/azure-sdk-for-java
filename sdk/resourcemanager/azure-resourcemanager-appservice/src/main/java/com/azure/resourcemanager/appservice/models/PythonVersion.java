@@ -19,6 +19,15 @@ public final class PythonVersion extends ExpandableStringEnum<PythonVersion> {
     public static final PythonVersion PYTHON_34 = PythonVersion.fromString("3.4");
 
     /**
+     * Creates a new instance of PythonVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PythonVersion() {
+    }
+
+    /**
      * Finds or creates a Python version based on the specified name.
      *
      * @param name a name
@@ -28,7 +37,11 @@ public final class PythonVersion extends ExpandableStringEnum<PythonVersion> {
         return fromString(name, PythonVersion.class);
     }
 
-    /** @return known Python versions */
+    /**
+     * Gets known Python versions.
+     *
+     * @return known Python versions
+     */
     public static Collection<PythonVersion> values() {
         return values(PythonVersion.class);
     }

@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mariadb.models.WaitStatisticsInput;
 
-/** An instance of this class provides access to all the operations defined in WaitStatisticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WaitStatisticsClient.
+ */
 public interface WaitStatisticsClient {
     /**
      * Retrieve wait statistics for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
@@ -27,12 +29,12 @@ public interface WaitStatisticsClient {
      * @return represents a Wait Statistic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WaitStatisticInner> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
+    Response<WaitStatisticInner> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context);
 
     /**
      * Retrieve wait statistics for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
@@ -46,7 +48,7 @@ public interface WaitStatisticsClient {
 
     /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
@@ -56,12 +58,12 @@ public interface WaitStatisticsClient {
      * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WaitStatisticInner> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters);
+    PagedIterable<WaitStatisticInner> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
@@ -72,6 +74,6 @@ public interface WaitStatisticsClient {
      * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WaitStatisticInner> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);
+    PagedIterable<WaitStatisticInner> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context);
 }

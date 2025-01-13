@@ -33,7 +33,9 @@ import java.util.Map;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerUpdateWithAadAuthEnabled.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * ServerUpdateWithAadAuthEnabled.json
      */
     /**
      * Sample code: ServerUpdateWithAadAuthEnabled.
@@ -60,7 +62,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerUpdateWithDataEncryptionEnabled.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * ServerUpdateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: ServerUpdateWithDataEncryptionEnabled.
@@ -93,7 +97,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PromoteReplicaAsPlannedSwitchover.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * PromoteReplicaAsPlannedSwitchover.json
      */
     /**
      * Sample code: SwitchOver a replica server as planned, i.e. it will wait for replication to complete before
@@ -114,7 +120,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PromoteReplicaAsForcedSwitchover.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * PromoteReplicaAsForcedSwitchover.json
      */
     /**
      * Sample code: SwitchOver a replica server as forced, i.e. it will replica as Primary and original primary as
@@ -135,7 +143,8 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerUpdate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerUpdate.json
      */
     /**
      * Sample code: ServerUpdate.
@@ -158,7 +167,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerUpdateWithMajorVersionUpgrade.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * ServerUpdateWithMajorVersionUpgrade.json
      */
     /**
      * Sample code: ServerUpdateWithMajorVersionUpgrade.
@@ -174,7 +185,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: ServerUpdateWithCustomerMaintenanceWindow.
@@ -196,7 +209,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PromoteReplicaAsForcedStandaloneServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * PromoteReplicaAsForcedStandaloneServer.json
      */
     /**
      * Sample code: Promote a replica server as a Standalone server as forced, i.e. it will promote a replica server
@@ -217,7 +232,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PromoteReplicaAsPlannedStandaloneServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * PromoteReplicaAsPlannedStandaloneServer.json
      */
     /**
      * Sample code: Promote a replica server as a Standalone server as planned, i.e. it will wait for replication to

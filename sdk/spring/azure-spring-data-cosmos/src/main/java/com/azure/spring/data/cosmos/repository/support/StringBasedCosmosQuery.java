@@ -31,6 +31,7 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  */
 public class StringBasedCosmosQuery extends AbstractCosmosQuery {
     private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SUM_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+sum.*", Pattern.CASE_INSENSITIVE);
 
     private final String query;
 
@@ -104,9 +105,12 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         } else if (isCountQuery()) {
             final String container = ((CosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             return this.operations.count(querySpec, container);
+        } else if (isSumQuery()) {
+            final String container = ((CosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
+            return this.operations.sum(querySpec, container);
         } else {
             return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
-                                            processor.getReturnedType().getReturnedType());
+                processor.getReturnedType().getReturnedType());
         }
     }
 
@@ -129,15 +133,31 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         return isCountQuery(query, getQueryMethod().getReturnedObjectType());
     }
 
+    /**
+     * This method is used to determine if the query is a sum query.
+     * @return boolean if the query is a sum query
+     */
+    protected boolean isSumQuery() {
+        return isSumQuery(query, getQueryMethod().getReturnedObjectType());
+    }
+
     static boolean isCountQuery(String query, Class<?> returnedType) {
-        if (isCountQueryReturnType(returnedType)) {
+        if (isNumericQueryReturnType(returnedType)) {
             return COUNT_QUERY_PATTERN.matcher(query).matches();
         } else {
             return false;
         }
     }
 
-    private static boolean isCountQueryReturnType(Class<?> returnedType) {
+    static boolean isSumQuery(String query, Class<?> returnedType) {
+        if (isNumericQueryReturnType(returnedType)) {
+            return SUM_QUERY_PATTERN.matcher(query).matches();
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean isNumericQueryReturnType(Class<?> returnedType) {
         return returnedType == Long.class
             || returnedType == long.class
             || returnedType == Integer.class

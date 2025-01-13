@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusException;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -75,18 +75,18 @@ public class TelemetryHelper {
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
+            AzureMonitorExporter.customize(sdkBuilder, applicationInsightsConnectionString);
         }
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
-            .addResourceCustomizer((resource, props) ->
-                instanceId == null ? resource : resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), instanceId).build())
+            .addResourceCustomizer((resource, props) -> instanceId == null
+                ? resource
+                : resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), instanceId).build())
             .addSamplerCustomizer((sampler, props) -> new Sampler() {
                 @Override
-                public SamplingResult shouldSample(Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                public SamplingResult shouldSample(Context parentContext, String traceId, String name,
+                    SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
                     if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
                         return SamplingResult.recordAndSample();
                     }
@@ -131,7 +131,9 @@ public class TelemetryHelper {
         } catch (ClassNotFoundException e) {
             logger.atWarning()
                 .addKeyValue("class", ServiceBusClientBuilder.class.getName())
-                .log("Could not determine azure-messaging-servicebus version, ServiceBusClientBuilder class is not found", e);
+                .log(
+                    "Could not determine azure-messaging-servicebus version, ServiceBusClientBuilder class is not found",
+                    e);
         }
 
         span.setAttribute(AttributeKey.longKey("durationSec"), options.getTestDuration().getSeconds());
@@ -157,7 +159,6 @@ public class TelemetryHelper {
             .startSpan();
     }
 
-
     public void recordError(String errorReason, String method) {
         recordError(errorReason, null, method);
     }
@@ -172,14 +173,11 @@ public class TelemetryHelper {
     }
 
     private void recordError(String errorReason, Throwable ex, String method) {
-        AttributesBuilder attributesBuilder = Attributes.builder()
-            .put(ERROR_TYPE_ATTRIBUTE, errorReason)
-            .put(AttributeKey.stringKey("method"), method);
+        AttributesBuilder attributesBuilder
+            = Attributes.builder().put(ERROR_TYPE_ATTRIBUTE, errorReason).put(AttributeKey.stringKey("method"), method);
 
         errorCounter.add(1, attributesBuilder.build());
-        LoggingEventBuilder log = logger.atError()
-            .addKeyValue("error.type", errorReason)
-            .addKeyValue("method", method);
+        LoggingEventBuilder log = logger.atError().addKeyValue("error.type", errorReason).addKeyValue("method", method);
         if (ex != null) {
             log.log("test error", ex);
         } else {

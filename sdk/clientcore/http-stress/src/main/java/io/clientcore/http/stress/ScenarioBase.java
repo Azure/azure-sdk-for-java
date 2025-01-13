@@ -7,14 +7,15 @@ import com.azure.perf.test.core.PerfStressTest;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-
 /**
  * Performance test for getting messages.
+ *
+ * @param <TOptions> The options configured for the test.
  */
 public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfStressTest<TOptions> {
     private final TelemetryHelper telemetryHelper;
-    private final Instant startTime = Instant.now();
+    private final long startTime = System.currentTimeMillis();
+
     /**
      * Creates a stress test.
      *

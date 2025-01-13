@@ -5,73 +5,74 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The properties of a wait statistic. */
+/**
+ * The properties of a wait statistic.
+ */
 @Fluent
-public final class WaitStatisticProperties {
+public final class WaitStatisticProperties implements JsonSerializable<WaitStatisticProperties> {
     /*
      * Observation start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Observation end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Wait event name.
      */
-    @JsonProperty(value = "eventName")
     private String eventName;
 
     /*
      * Wait event type name.
      */
-    @JsonProperty(value = "eventTypeName")
     private String eventTypeName;
 
     /*
      * Database query identifier.
      */
-    @JsonProperty(value = "queryId")
     private Long queryId;
 
     /*
      * Database Name.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Database user identifier.
      */
-    @JsonProperty(value = "userId")
     private Long userId;
 
     /*
      * Wait event count observed in this time interval.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Total time of wait in milliseconds in this time interval.
      */
-    @JsonProperty(value = "totalTimeInMs")
     private Double totalTimeInMs;
 
-    /** Creates an instance of WaitStatisticProperties class. */
+    /**
+     * Creates an instance of WaitStatisticProperties class.
+     */
     public WaitStatisticProperties() {
     }
 
     /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -80,7 +81,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -91,7 +92,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -100,7 +101,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -111,7 +112,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the eventName property: Wait event name.
-     *
+     * 
      * @return the eventName value.
      */
     public String eventName() {
@@ -120,7 +121,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the eventName property: Wait event name.
-     *
+     * 
      * @param eventName the eventName value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -131,7 +132,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the eventTypeName property: Wait event type name.
-     *
+     * 
      * @return the eventTypeName value.
      */
     public String eventTypeName() {
@@ -140,7 +141,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the eventTypeName property: Wait event type name.
-     *
+     * 
      * @param eventTypeName the eventTypeName value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -151,7 +152,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public Long queryId() {
@@ -160,7 +161,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -171,7 +172,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the databaseName property: Database Name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -180,7 +181,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the databaseName property: Database Name.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -191,7 +192,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the userId property: Database user identifier.
-     *
+     * 
      * @return the userId value.
      */
     public Long userId() {
@@ -200,7 +201,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the userId property: Database user identifier.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -211,7 +212,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -220,7 +221,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @param count the count value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -231,7 +232,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Get the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @return the totalTimeInMs value.
      */
     public Double totalTimeInMs() {
@@ -240,7 +241,7 @@ public final class WaitStatisticProperties {
 
     /**
      * Set the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @param totalTimeInMs the totalTimeInMs value to set.
      * @return the WaitStatisticProperties object itself.
      */
@@ -251,9 +252,73 @@ public final class WaitStatisticProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("eventName", this.eventName);
+        jsonWriter.writeStringField("eventTypeName", this.eventTypeName);
+        jsonWriter.writeNumberField("queryId", this.queryId);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeNumberField("userId", this.userId);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("totalTimeInMs", this.totalTimeInMs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatisticProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatisticProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WaitStatisticProperties.
+     */
+    public static WaitStatisticProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatisticProperties deserializedWaitStatisticProperties = new WaitStatisticProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventName".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.eventName = reader.getString();
+                } else if ("eventTypeName".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.eventTypeName = reader.getString();
+                } else if ("queryId".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.queryId = reader.getNullable(JsonReader::getLong);
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.databaseName = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.userId = reader.getNullable(JsonReader::getLong);
+                } else if ("count".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.count = reader.getNullable(JsonReader::getLong);
+                } else if ("totalTimeInMs".equals(fieldName)) {
+                    deserializedWaitStatisticProperties.totalTimeInMs = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatisticProperties;
+        });
     }
 }

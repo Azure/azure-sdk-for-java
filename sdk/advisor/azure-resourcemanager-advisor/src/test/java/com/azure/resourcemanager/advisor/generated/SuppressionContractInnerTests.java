@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SuppressionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuppressionContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"suppressionId\":\"pk\",\"ttl\":\"odpuozmyzydag\",\"expirationTimeStamp\":\"2021-10-21T07:36:04Z\"},\"id\":\"xbezyiuokktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"}")
-                .toObject(SuppressionContractInner.class);
-        Assertions.assertEquals("pk", model.suppressionId());
-        Assertions.assertEquals("odpuozmyzydag", model.ttl());
+        SuppressionContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"suppressionId\":\"mkfssxqukkfplgm\",\"ttl\":\"xnkjzkdesl\",\"expirationTimeStamp\":\"2021-02-28T10:36:53Z\"},\"id\":\"opwi\",\"name\":\"ighxpk\",\"type\":\"wzbaiue\"}")
+            .toObject(SuppressionContractInner.class);
+        Assertions.assertEquals("mkfssxqukkfplgm", model.suppressionId());
+        Assertions.assertEquals("xnkjzkdesl", model.ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuppressionContractInner model =
-            new SuppressionContractInner().withSuppressionId("pk").withTtl("odpuozmyzydag");
+        SuppressionContractInner model
+            = new SuppressionContractInner().withSuppressionId("mkfssxqukkfplgm").withTtl("xnkjzkdesl");
         model = BinaryData.fromObject(model).toObject(SuppressionContractInner.class);
-        Assertions.assertEquals("pk", model.suppressionId());
-        Assertions.assertEquals("odpuozmyzydag", model.ttl());
+        Assertions.assertEquals("mkfssxqukkfplgm", model.suppressionId());
+        Assertions.assertEquals("xnkjzkdesl", model.ttl());
     }
 }

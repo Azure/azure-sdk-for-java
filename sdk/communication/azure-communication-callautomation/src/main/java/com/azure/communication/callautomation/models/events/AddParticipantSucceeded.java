@@ -21,11 +21,6 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
      */
     private CommunicationIdentifier participant;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     private AddParticipantSucceeded() {
 
     }
@@ -40,21 +35,11 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
         jsonWriter.writeJsonField("participant", inner);
         super.writeFields(jsonWriter);
@@ -75,9 +60,7 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("participant".equals(fieldName)) {
+                if ("participant".equals(fieldName)) {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {

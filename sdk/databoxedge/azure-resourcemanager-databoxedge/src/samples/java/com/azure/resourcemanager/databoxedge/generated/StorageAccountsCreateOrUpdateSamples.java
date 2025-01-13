@@ -7,19 +7,22 @@ package com.azure.resourcemanager.databoxedge.generated;
 import com.azure.resourcemanager.databoxedge.models.DataPolicy;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountStatus;
 
-/** Samples for StorageAccounts CreateOrUpdate. */
+/**
+ * Samples for StorageAccounts CreateOrUpdate.
+ */
 public final class StorageAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/StorageAccountPut.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/StorageAccountPut.
+     * json
      */
     /**
      * Sample code: StorageAccountPut.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void storageAccountPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager
-            .storageAccounts()
+        manager.storageAccounts()
             .define("blobstorageaccount1")
             .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
             .withDescription("It's an awesome storage account")

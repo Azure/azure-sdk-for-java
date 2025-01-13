@@ -5,7 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.http.annotation.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.implementation.http.rest.UrlEscapers;
+import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * {@link HttpRequest}.
  *
  * <p>An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
- * components of the request like URL, path params etc, further modifying both un-configured, or preconfigured
+ * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
  * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example.
@@ -52,7 +52,7 @@ import java.util.function.Consumer;
  *     "name": "string"
  *   },
  *   "name": "doggie",
- *   "photoUrls": [
+ *   "photoUris": [
  *     "string"
  *   ],
  *   "tags": [
@@ -70,32 +70,27 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  * <pre>
- * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
- *     .build&#40;&#41;;
+ * JsonArray photoUris = new JsonArray&#40;&#41;
+ *     .addElement&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
+ *     .addElement&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;;
  *
- * JsonArray tags = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 0&#41;
- *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 1&#41;
- *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * JsonArray tags = new JsonArray&#40;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, 0&#41;
+ *         .setProperty&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, 1&#41;
+ *         .setProperty&#40;&quot;name&quot;, &quot;2021&quot;&#41;&#41;;
  *
- * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
- *     .add&#40;&quot;id&quot;, 0&#41;
- *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
- *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
- *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
- *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
- *     .add&#40;&quot;tags&quot;, tags&#41;
- *     .build&#40;&#41;;
+ * JsonObject requestBody = new JsonObject&#40;&#41;
+ *     .setProperty&#40;&quot;id&quot;, 0&#41;
+ *     .setProperty&#40;&quot;name&quot;, &quot;foo&quot;&#41;
+ *     .setProperty&#40;&quot;status&quot;, &quot;available&quot;&#41;
+ *     .setProperty&#40;&quot;category&quot;, new JsonObject&#40;&#41;.setProperty&#40;&quot;id&quot;, 0&#41;.setProperty&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
+ *     .setProperty&#40;&quot;photoUris&quot;, photoUris&#41;
+ *     .setProperty&#40;&quot;tags&quot;, tags&#41;;
  *
- * String requestBodyStr = requestBody.toString&#40;&#41;;
+ * BinaryData requestBodyData = BinaryData.fromObject&#40;requestBody&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  *
@@ -106,9 +101,9 @@ import java.util.function.Consumer;
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
- *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
+ *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
- *         .setBody&#40;BinaryData.fromString&#40;requestBodyStr&#41;&#41;
+ *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
@@ -217,7 +212,7 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a query parameter to the request URL. The parameter name and value will be URL encoded. To use an already
+     * Adds a query parameter to the request URI. The parameter name and value will be URI encoded. To use an already
      * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
      * @param parameterName The name of the query parameter.
@@ -232,7 +227,7 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value
+     * Adds a query parameter to the request URI, specifying whether the parameter is already encoded. A value
      * {@code true} for this argument indicates that value of {@link QueryParam#value()} is already encoded hence the
      * engine should not encode it. By default, the value will be encoded.
      *
@@ -251,11 +246,11 @@ public final class RequestOptions {
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> {
-            String url = request.getUrl().toString();
-            String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
-            String encodedParameterValue = encoded ? value : UrlEscapers.QUERY_ESCAPER.escape(value);
+            String uri = request.getUri().toString();
+            String encodedParameterName = encoded ? parameterName : UriEscapers.QUERY_ESCAPER.escape(parameterName);
+            String encodedParameterValue = encoded ? value : UriEscapers.QUERY_ESCAPER.escape(value);
 
-            request.setUrl(url + (url.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
+            request.setUri(uri + (uri.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
         });
 
         return this;
@@ -324,6 +319,26 @@ public final class RequestOptions {
         }
 
         this.context = context;
+
+        return this;
+    }
+
+    /**
+     * Adds a key-value pair to the request context associated with this request.
+     *
+     * @param key The key to add to the context.
+     * @param value The value to add to the context.
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @see #setContext(Context)
+     */
+    public RequestOptions putContext(Object key, Object value) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));
+        }
+
+        this.context = this.context.put(key, value);
 
         return this;
     }

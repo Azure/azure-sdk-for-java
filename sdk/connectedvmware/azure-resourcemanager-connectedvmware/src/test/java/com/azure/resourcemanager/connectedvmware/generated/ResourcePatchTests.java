@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePatch model =
-            BinaryData
-                .fromString("{\"tags\":{\"k\":\"wyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"}}")
-                .toObject(ResourcePatch.class);
+        ResourcePatch model = BinaryData
+            .fromString("{\"tags\":{\"k\":\"wyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"}}")
+            .toObject(ResourcePatch.class);
         Assertions.assertEquals("wyiftyhxhur", model.tags().get("k"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePatch model =
-            new ResourcePatch().withTags(mapOf("k", "wyiftyhxhur", "kjfkg", "tyxolniwpwc", "plwckbas", "awxklr"));
+        ResourcePatch model
+            = new ResourcePatch().withTags(mapOf("k", "wyiftyhxhur", "kjfkg", "tyxolniwpwc", "plwckbas", "awxklr"));
         model = BinaryData.fromObject(model).toObject(ResourcePatch.class);
         Assertions.assertEquals("wyiftyhxhur", model.tags().get("k"));
     }

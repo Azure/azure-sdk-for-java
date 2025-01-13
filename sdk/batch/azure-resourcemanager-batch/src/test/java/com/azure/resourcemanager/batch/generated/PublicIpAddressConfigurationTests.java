@@ -13,19 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class PublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PublicIpAddressConfiguration model
-            = BinaryData.fromString("{\"provision\":\"BatchManaged\",\"ipAddressIds\":[\"qnzarrwl\"]}")
-                .toObject(PublicIpAddressConfiguration.class);
-        Assertions.assertEquals(IpAddressProvisioningType.BATCH_MANAGED, model.provision());
-        Assertions.assertEquals("qnzarrwl", model.ipAddressIds().get(0));
+        PublicIpAddressConfiguration model = BinaryData.fromString(
+            "{\"provision\":\"NoPublicIPAddresses\",\"ipAddressIds\":[\"aytdwkqbrq\",\"bpaxhexiilivpdt\",\"irqtdqoa\"]}")
+            .toObject(PublicIpAddressConfiguration.class);
+        Assertions.assertEquals(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES, model.provision());
+        Assertions.assertEquals("aytdwkqbrq", model.ipAddressIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicIpAddressConfiguration model = new PublicIpAddressConfiguration()
-            .withProvision(IpAddressProvisioningType.BATCH_MANAGED).withIpAddressIds(Arrays.asList("qnzarrwl"));
+        PublicIpAddressConfiguration model
+            = new PublicIpAddressConfiguration().withProvision(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES)
+                .withIpAddressIds(Arrays.asList("aytdwkqbrq", "bpaxhexiilivpdt", "irqtdqoa"));
         model = BinaryData.fromObject(model).toObject(PublicIpAddressConfiguration.class);
-        Assertions.assertEquals(IpAddressProvisioningType.BATCH_MANAGED, model.provision());
-        Assertions.assertEquals("qnzarrwl", model.ipAddressIds().get(0));
+        Assertions.assertEquals(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES, model.provision());
+        Assertions.assertEquals("aytdwkqbrq", model.ipAddressIds().get(0));
     }
 }

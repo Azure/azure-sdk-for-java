@@ -19,4 +19,3 @@ module com.azure.messaging.webpubsub.client {
     opens com.azure.messaging.webpubsub.client.implementation to com.azure.core;
     opens com.azure.messaging.webpubsub.client.implementation.models to com.azure.core;
 }
-

@@ -48,8 +48,8 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     public void removeAllEventRoutes() {
         // Using sync client for simplicity. This function isn't testing the clients, so no need to use both sync and
         // async clients for cleanup
-        DigitalTwinsClient client = getDigitalTwinsClientBuilder(null,
-            DigitalTwinsServiceVersion.getLatest()).buildClient();
+        DigitalTwinsClient client
+            = getDigitalTwinsClientBuilder(null, DigitalTwinsServiceVersion.getLatest()).buildClient();
         PagedIterable<DigitalTwinsEventRoute> listedEventRoutes = client.listEventRoutes();
         List<String> currentEventRouteIds = new ArrayList<>();
         for (DigitalTwinsEventRoute listedEventRoute : listedEventRoutes) {

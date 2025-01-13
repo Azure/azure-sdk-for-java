@@ -13,8 +13,7 @@ public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabil
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    CheckNameAvailabilityResultImpl(
-        CheckNameAvailabilityResultInner innerObject,
+    CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

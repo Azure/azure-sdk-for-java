@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A single field mapping of the mapped entity. */
+/**
+ * A single field mapping of the mapped entity.
+ */
 @Fluent
-public final class FieldMapping {
+public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /*
      * the V3 identifier of the entity
      */
-    @JsonProperty(value = "identifier")
     private String identifier;
 
     /*
      * the column name to be mapped to the identifier
      */
-    @JsonProperty(value = "columnName")
     private String columnName;
 
     /**
+     * Creates an instance of FieldMapping class.
+     */
+    public FieldMapping() {
+    }
+
+    /**
      * Get the identifier property: the V3 identifier of the entity.
-     *
+     * 
      * @return the identifier value.
      */
     public String identifier() {
@@ -33,7 +43,7 @@ public final class FieldMapping {
 
     /**
      * Set the identifier property: the V3 identifier of the entity.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the FieldMapping object itself.
      */
@@ -44,7 +54,7 @@ public final class FieldMapping {
 
     /**
      * Get the columnName property: the column name to be mapped to the identifier.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -53,7 +63,7 @@ public final class FieldMapping {
 
     /**
      * Set the columnName property: the column name to be mapped to the identifier.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the FieldMapping object itself.
      */
@@ -64,9 +74,48 @@ public final class FieldMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identifier", this.identifier);
+        jsonWriter.writeStringField("columnName", this.columnName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FieldMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FieldMapping.
+     */
+    public static FieldMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FieldMapping deserializedFieldMapping = new FieldMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identifier".equals(fieldName)) {
+                    deserializedFieldMapping.identifier = reader.getString();
+                } else if ("columnName".equals(fieldName)) {
+                    deserializedFieldMapping.columnName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFieldMapping;
+        });
     }
 }

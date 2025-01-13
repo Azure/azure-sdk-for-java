@@ -6,41 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProperties;
 import com.azure.resourcemanager.apimanagement.models.NamedValueEntityBaseParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NamedValue Contract properties. */
+/**
+ * NamedValue Contract properties.
+ */
 @Fluent
 public final class NamedValueCreateContractProperties extends NamedValueEntityBaseParameters {
     /*
      * Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This
      * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * KeyVault location details of the namedValue.
      */
-    @JsonProperty(value = "keyVault")
     private KeyVaultContractCreateProperties keyVault;
 
-    /** Creates an instance of NamedValueCreateContractProperties class. */
+    /**
+     * Creates an instance of NamedValueCreateContractProperties class.
+     */
     public NamedValueCreateContractProperties() {
     }
 
     /**
      * Get the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +54,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
     /**
      * Set the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the NamedValueCreateContractProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
      * Get the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -74,7 +78,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
      * Set the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @param value the value value to set.
      * @return the NamedValueCreateContractProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
 
     /**
      * Get the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
@@ -94,7 +98,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
 
     /**
      * Set the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the NamedValueCreateContractProperties object itself.
      */
@@ -103,14 +107,18 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NamedValueCreateContractProperties withTags(List<String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NamedValueCreateContractProperties withSecret(Boolean secret) {
         super.withSecret(secret);
@@ -119,17 +127,15 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model NamedValueCreateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model NamedValueCreateContractProperties"));
         }
         if (keyVault() != null) {
             keyVault().validate();
@@ -137,4 +143,57 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NamedValueCreateContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("secret", secret());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeJsonField("keyVault", this.keyVault);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamedValueCreateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamedValueCreateContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NamedValueCreateContractProperties.
+     */
+    public static NamedValueCreateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamedValueCreateContractProperties deserializedNamedValueCreateContractProperties
+                = new NamedValueCreateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNamedValueCreateContractProperties.withTags(tags);
+                } else if ("secret".equals(fieldName)) {
+                    deserializedNamedValueCreateContractProperties
+                        .withSecret(reader.getNullable(JsonReader::getBoolean));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedNamedValueCreateContractProperties.displayName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedNamedValueCreateContractProperties.value = reader.getString();
+                } else if ("keyVault".equals(fieldName)) {
+                    deserializedNamedValueCreateContractProperties.keyVault
+                        = KeyVaultContractCreateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamedValueCreateContractProperties;
+        });
+    }
 }

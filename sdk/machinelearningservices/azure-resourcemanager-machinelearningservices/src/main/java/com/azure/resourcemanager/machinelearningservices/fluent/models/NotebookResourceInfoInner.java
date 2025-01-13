@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The NotebookResourceInfo model. */
 @Fluent
 public final class NotebookResourceInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookResourceInfoInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NotebookResourceInfoInner.class);
 
     /*
      * The fqdn property.

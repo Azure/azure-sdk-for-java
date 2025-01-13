@@ -16,8 +16,8 @@ public final class ValidationResponseImpl implements ValidationResponse {
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    ValidationResponseImpl(
-        ValidationResponseInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    ValidationResponseImpl(ValidationResponseInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

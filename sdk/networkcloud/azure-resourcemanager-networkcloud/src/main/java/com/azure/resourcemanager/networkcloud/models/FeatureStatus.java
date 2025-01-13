@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** FeatureStatus contains information regarding a Kubernetes cluster feature. */
+/**
+ * FeatureStatus contains information regarding a Kubernetes cluster feature.
+ */
 @Immutable
-public final class FeatureStatus {
+public final class FeatureStatus implements JsonSerializable<FeatureStatus> {
     /*
      * The status representing the state of this feature.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private FeatureDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The name of the feature.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The version of the feature.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of FeatureStatus class. */
+    /**
+     * Creates an instance of FeatureStatus class.
+     */
     public FeatureStatus() {
     }
 
     /**
      * Get the detailedStatus property: The status representing the state of this feature.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public FeatureDetailedStatus detailedStatus() {
@@ -49,7 +53,7 @@ public final class FeatureStatus {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -58,7 +62,7 @@ public final class FeatureStatus {
 
     /**
      * Get the name property: The name of the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +71,7 @@ public final class FeatureStatus {
 
     /**
      * Get the version property: The version of the feature.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -76,9 +80,50 @@ public final class FeatureStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureStatus.
+     */
+    public static FeatureStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureStatus deserializedFeatureStatus = new FeatureStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("detailedStatus".equals(fieldName)) {
+                    deserializedFeatureStatus.detailedStatus = FeatureDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedFeatureStatus.detailedStatusMessage = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFeatureStatus.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedFeatureStatus.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureStatus;
+        });
     }
 }

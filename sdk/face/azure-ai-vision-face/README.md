@@ -6,6 +6,7 @@ The Azure AI Face service provides AI algorithms that detect, recognize, and ana
 - Liveness detection
 - Face recognition
   - Face verification ("one-to-one" matching)
+  - Face identification ("one-to-many" matching)
 - Find similar faces
 - Group faces
 
@@ -47,6 +48,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 
 In order to interact with the Face service, you will need to create an instance of a client class,
 [FaceAsyncClient][face_client_async] or [FaceClient][face_client] by using [FaceClientBuilder][face_client_builder].
+[FaceAdministrationAsyncClient][face_administration_client_async] or [FaceAdministrationClient][face_administration_client] by using [FaceAdministrationClientBuilder][face_administration_client_builder].
 [FaceSessionAsyncClient][face_session_client_async] or [FaceSessionClient][face_session_client] by using [FaceSessionClientBuilder][face_session_client_builder].
 
 An **endpoint** and **credential** are necessary to instantiate the client object.
@@ -87,7 +89,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,7 +228,7 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
     .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
-CreateLivenessWithVerifySessionJsonContent parameters = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
+CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
     .setDeviceCorrelationId(deviceCorrelationId)
     .setSendResultsToClient(false);
 Path path = Paths.get(imagePathString);
@@ -252,7 +254,7 @@ be found here: [log levels][logLevels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -305,6 +307,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
 [face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
 [face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
+[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationAsyncClient.java
+[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClient.java
+[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClientBuilder.java
 [face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
 [face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
 [face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java

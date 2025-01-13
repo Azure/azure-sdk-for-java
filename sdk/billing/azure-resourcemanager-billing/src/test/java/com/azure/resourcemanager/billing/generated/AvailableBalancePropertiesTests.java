@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceProperties;
+import com.azure.resourcemanager.billing.models.AvailableBalanceProperties;
+import com.azure.resourcemanager.billing.models.AvailableBalancePropertiesAmount;
+import com.azure.resourcemanager.billing.models.AvailableBalancePropertiesTotalPaymentsOnAccount;
 
 public final class AvailableBalancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableBalanceProperties model =
-            BinaryData
-                .fromString("{\"amount\":{\"currency\":\"iucgygevqzn\",\"value\":13.069307}}")
-                .toObject(AvailableBalanceProperties.class);
+        AvailableBalanceProperties model = BinaryData.fromString(
+            "{\"amount\":{\"currency\":\"dxorrqnbpoczv\",\"value\":97.52604},\"paymentsOnAccount\":[{\"amount\":{\"currency\":\"dvjsllrmvvdf\",\"value\":2.8410316},\"billingProfileId\":\"pnpulexxbczwtru\",\"billingProfileDisplayName\":\"qzbqjvsov\",\"invoiceId\":\"okacspk\",\"invoiceName\":\"hzdobpxjmflbvvnc\",\"date\":\"2021-05-23T11:48:05Z\",\"paymentMethodType\":\"EWallet\"},{\"amount\":{\"currency\":\"wzjuqk\",\"value\":7.702547},\"billingProfileId\":\"jiwkuofoskghsau\",\"billingProfileDisplayName\":\"mjmvxieduugidyjr\",\"invoiceId\":\"byao\",\"invoiceName\":\"e\",\"date\":\"2021-10-23T12:01:36Z\",\"paymentMethodType\":\"None\"},{\"amount\":{\"currency\":\"lhocohslkev\",\"value\":33.826637},\"billingProfileId\":\"zfbuhf\",\"billingProfileDisplayName\":\"faxkffeii\",\"invoiceId\":\"lvmezyvshxmzsbbz\",\"invoiceName\":\"gigr\",\"date\":\"2021-05-16T13:08:42Z\",\"paymentMethodType\":\"None\"}],\"totalPaymentsOnAccount\":{\"currency\":\"xxjnspydptk\",\"value\":34.515266}}")
+            .toObject(AvailableBalanceProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableBalanceProperties model = new AvailableBalanceProperties();
+        AvailableBalanceProperties model
+            = new AvailableBalanceProperties().withAmount(new AvailableBalancePropertiesAmount())
+                .withTotalPaymentsOnAccount(new AvailableBalancePropertiesTotalPaymentsOnAccount());
         model = BinaryData.fromObject(model).toObject(AvailableBalanceProperties.class);
     }
 }

@@ -14,8 +14,7 @@ public final class LocationImpl implements Location {
 
     private final com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager;
 
-    LocationImpl(
-        LocationInner innerObject,
+    LocationImpl(LocationInner innerObject,
         com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

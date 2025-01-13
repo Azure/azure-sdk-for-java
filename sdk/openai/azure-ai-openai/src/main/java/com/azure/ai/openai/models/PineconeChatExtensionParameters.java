@@ -49,14 +49,6 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
-     */
-    @Generated
-    private String roleInformation;
-
-    /*
      * The environment name of Pinecone.
      */
     @Generated
@@ -181,32 +173,6 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @return the roleInformation value.
-     */
-    @Generated
-    public String getRoleInformation() {
-        return this.roleInformation;
-    }
-
-    /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @param roleInformation the roleInformation value to set.
-     * @return the PineconeChatExtensionParameters object itself.
-     */
-    @Generated
-    public PineconeChatExtensionParameters setRoleInformation(String roleInformation) {
-        this.roleInformation = roleInformation;
-        return this;
-    }
-
-    /**
      * Get the environment property: The environment name of Pinecone.
      *
      * @return the environment value.
@@ -274,15 +240,14 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
         jsonWriter.writeStringField("index_name", this.indexName);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
-        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
-        jsonWriter.writeStringField("role_information", this.roleInformation);
         jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
         jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
         jsonWriter.writeArrayField("include_contexts", this.includeContexts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -302,14 +267,13 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
             String indexName = null;
             PineconeFieldMappingOptions fieldsMapping = null;
             OnYourDataVectorizationSource embeddingDependency = null;
-            OnYourDataAuthenticationOptions authentication = null;
             Integer topNDocuments = null;
             Boolean inScope = null;
             Integer strictness = null;
-            String roleInformation = null;
             Integer maxSearchQueries = null;
             Boolean allowPartialResult = null;
             List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataAuthenticationOptions authentication = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -321,16 +285,12 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
                     fieldsMapping = PineconeFieldMappingOptions.fromJson(reader);
                 } else if ("embedding_dependency".equals(fieldName)) {
                     embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("top_n_documents".equals(fieldName)) {
                     topNDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("in_scope".equals(fieldName)) {
                     inScope = reader.getNullable(JsonReader::getBoolean);
                 } else if ("strictness".equals(fieldName)) {
                     strictness = reader.getNullable(JsonReader::getInt);
-                } else if ("role_information".equals(fieldName)) {
-                    roleInformation = reader.getString();
                 } else if ("max_search_queries".equals(fieldName)) {
                     maxSearchQueries = reader.getNullable(JsonReader::getInt);
                 } else if ("allow_partial_result".equals(fieldName)) {
@@ -338,20 +298,21 @@ public final class PineconeChatExtensionParameters implements JsonSerializable<P
                 } else if ("include_contexts".equals(fieldName)) {
                     includeContexts
                         = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             PineconeChatExtensionParameters deserializedPineconeChatExtensionParameters
                 = new PineconeChatExtensionParameters(environment, indexName, fieldsMapping, embeddingDependency);
-            deserializedPineconeChatExtensionParameters.authentication = authentication;
             deserializedPineconeChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedPineconeChatExtensionParameters.inScope = inScope;
             deserializedPineconeChatExtensionParameters.strictness = strictness;
-            deserializedPineconeChatExtensionParameters.roleInformation = roleInformation;
             deserializedPineconeChatExtensionParameters.maxSearchQueries = maxSearchQueries;
             deserializedPineconeChatExtensionParameters.allowPartialResult = allowPartialResult;
             deserializedPineconeChatExtensionParameters.includeContexts = includeContexts;
+            deserializedPineconeChatExtensionParameters.authentication = authentication;
             return deserializedPineconeChatExtensionParameters;
         });
     }

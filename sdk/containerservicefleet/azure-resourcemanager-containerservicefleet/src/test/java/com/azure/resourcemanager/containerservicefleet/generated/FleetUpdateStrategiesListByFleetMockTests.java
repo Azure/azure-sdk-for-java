@@ -22,7 +22,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"df\",\"groups\":[{\"name\":\"ae\"},{\"name\":\"kojvd\"},{\"name\":\"pzfoqoui\"}],\"afterStageWaitInSeconds\":1370358053}]}},\"eTag\":\"arz\",\"id\":\"zuf\",\"name\":\"x\",\"type\":\"iqopidoamciod\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"r\",\"groups\":[{\"name\":\"dmjsjqb\"},{\"name\":\"hhyxxrw\"},{\"name\":\"yc\"},{\"name\":\"duhpk\"}],\"afterStageWaitInSeconds\":1440361385}]}},\"eTag\":\"mareqnajxqugj\",\"id\":\"ycubeddgs\",\"name\":\"ofwq\",\"type\":\"zqalkrmnjijpx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FleetUpdateStrategy> response
-            = manager.fleetUpdateStrategies().listByFleet("gkfbtndoaong", "jcntuj", com.azure.core.util.Context.NONE);
+            = manager.fleetUpdateStrategies().listByFleet("db", "fatpxllrxcyjmoa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("df", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("ae", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1370358053,
+        Assertions.assertEquals("r", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("dmjsjqb",
+            response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1440361385,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

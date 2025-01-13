@@ -13,27 +13,27 @@ import java.util.Collection;
  */
 public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<NetworkInterfaceAuxiliarySku> {
     /**
-     * Static value None for NetworkInterfaceAuxiliarySku.
+     * no sku.
      */
     public static final NetworkInterfaceAuxiliarySku NONE = fromString("None");
 
     /**
-     * Static value A1 for NetworkInterfaceAuxiliarySku.
+     * A1 sku.
      */
     public static final NetworkInterfaceAuxiliarySku A1 = fromString("A1");
 
     /**
-     * Static value A2 for NetworkInterfaceAuxiliarySku.
+     * A2 sku.
      */
     public static final NetworkInterfaceAuxiliarySku A2 = fromString("A2");
 
     /**
-     * Static value A4 for NetworkInterfaceAuxiliarySku.
+     * A4 sku.
      */
     public static final NetworkInterfaceAuxiliarySku A4 = fromString("A4");
 
     /**
-     * Static value A8 for NetworkInterfaceAuxiliarySku.
+     * A8 sku.
      */
     public static final NetworkInterfaceAuxiliarySku A8 = fromString("A8");
 

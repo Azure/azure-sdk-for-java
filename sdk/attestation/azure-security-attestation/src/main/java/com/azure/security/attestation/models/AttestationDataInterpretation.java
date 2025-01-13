@@ -48,5 +48,6 @@ public final class AttestationDataInterpretation extends ExpandableStringEnum<At
     /**
      * Creates an instance of {@link AttestationDataInterpretation}
      */
-    public AttestationDataInterpretation() { }
+    public AttestationDataInterpretation() {
+    }
 }

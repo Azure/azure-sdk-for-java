@@ -6,44 +6,48 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The authorization policy. */
+/**
+ * The authorization policy.
+ */
 @Fluent
-public final class AuthorizationPolicyInner {
+public final class AuthorizationPolicyInner implements JsonSerializable<AuthorizationPolicyInner> {
     /*
      * Name of the policy.
      */
-    @JsonProperty(value = "policyName", access = JsonProperty.Access.WRITE_ONLY)
     private String policyName;
 
     /*
      * The permissions associated with the policy.
      */
-    @JsonProperty(value = "permissions", required = true)
     private List<PermissionTypes> permissions;
 
     /*
      * Primary key associated with the policy.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Secondary key associated with the policy.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
-    /** Creates an instance of AuthorizationPolicyInner class. */
+    /**
+     * Creates an instance of AuthorizationPolicyInner class.
+     */
     public AuthorizationPolicyInner() {
     }
 
     /**
      * Get the policyName property: Name of the policy.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -52,7 +56,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Get the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @return the permissions value.
      */
     public List<PermissionTypes> permissions() {
@@ -61,7 +65,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Set the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the AuthorizationPolicyInner object itself.
      */
@@ -72,7 +76,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Get the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -81,7 +85,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Set the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the AuthorizationPolicyInner object itself.
      */
@@ -92,7 +96,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Get the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -101,7 +105,7 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Set the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the AuthorizationPolicyInner object itself.
      */
@@ -112,17 +116,64 @@ public final class AuthorizationPolicyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permissions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property permissions in model AuthorizationPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property permissions in model AuthorizationPolicyInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AuthorizationPolicyInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("permissions", this.permissions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationPolicyInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizationPolicyInner.
+     */
+    public static AuthorizationPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationPolicyInner deserializedAuthorizationPolicyInner = new AuthorizationPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("permissions".equals(fieldName)) {
+                    List<PermissionTypes> permissions
+                        = reader.readArray(reader1 -> PermissionTypes.fromString(reader1.getString()));
+                    deserializedAuthorizationPolicyInner.permissions = permissions;
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAuthorizationPolicyInner.policyName = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedAuthorizationPolicyInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedAuthorizationPolicyInner.secondaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationPolicyInner;
+        });
+    }
 }

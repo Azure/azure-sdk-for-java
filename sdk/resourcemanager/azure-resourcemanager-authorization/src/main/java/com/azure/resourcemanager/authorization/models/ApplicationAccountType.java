@@ -17,11 +17,20 @@ public final class ApplicationAccountType extends ExpandableStringEnum<Applicati
     public static final ApplicationAccountType AZURE_AD_MULTIPLE_ORGS = fromString("AzureADMultipleOrgs");
 
     /** Users with a personal Microsoft account, or a work or school account in any organization’s Azure AD tenant. */
-    public static final ApplicationAccountType AZURE_AD_AND_PERSONAL_MICROSOFT_ACCOUNT =
-        fromString("AzureADandPersonalMicrosoftAccount");
+    public static final ApplicationAccountType AZURE_AD_AND_PERSONAL_MICROSOFT_ACCOUNT
+        = fromString("AzureADandPersonalMicrosoftAccount");
 
     /** Users with a personal Microsoft account only. */
     public static final ApplicationAccountType PERSONAL_MICROSOFT_ACCOUNT = fromString("PersonalMicrosoftAccount");
+
+    /**
+     * Creates a new instance of ApplicationAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationAccountType() {
+    }
 
     /**
      * Creates or finds a ApplicationAccountType from its string representation.
@@ -33,7 +42,11 @@ public final class ApplicationAccountType extends ExpandableStringEnum<Applicati
         return fromString(name, ApplicationAccountType.class);
     }
 
-    /** @return known ApplicationAccountType values. */
+    /**
+     * Gets known ApplicationAccountType values.
+     *
+     * @return known ApplicationAccountType values.
+     */
     public static Collection<ApplicationAccountType> values() {
         return values(ApplicationAccountType.class);
     }

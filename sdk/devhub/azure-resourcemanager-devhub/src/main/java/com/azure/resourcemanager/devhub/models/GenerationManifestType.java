@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Determines the type of manifests to be generated. */
+/**
+ * Determines the type of manifests to be generated.
+ */
 public final class GenerationManifestType extends ExpandableStringEnum<GenerationManifestType> {
-    /** Static value helm for GenerationManifestType. */
+    /**
+     * Static value helm for GenerationManifestType.
+     */
     public static final GenerationManifestType HELM = fromString("helm");
 
-    /** Static value kube for GenerationManifestType. */
+    /**
+     * Static value kube for GenerationManifestType.
+     */
     public static final GenerationManifestType KUBE = fromString("kube");
 
     /**
      * Creates a new instance of GenerationManifestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class GenerationManifestType extends ExpandableStringEnum<Generatio
 
     /**
      * Creates or finds a GenerationManifestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GenerationManifestType.
      */
-    @JsonCreator
     public static GenerationManifestType fromString(String name) {
         return fromString(name, GenerationManifestType.class);
     }
 
     /**
      * Gets known GenerationManifestType values.
-     *
+     * 
      * @return known GenerationManifestType values.
      */
     public static Collection<GenerationManifestType> values() {

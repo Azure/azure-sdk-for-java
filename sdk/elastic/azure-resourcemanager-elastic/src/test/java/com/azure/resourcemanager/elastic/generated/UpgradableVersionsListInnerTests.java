@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UpgradableVersionsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradableVersionsListInner model =
-            BinaryData
-                .fromString("{\"currentVersion\":\"eic\",\"upgradableVersions\":[\"npzaoq\"]}")
-                .toObject(UpgradableVersionsListInner.class);
-        Assertions.assertEquals("eic", model.currentVersion());
-        Assertions.assertEquals("npzaoq", model.upgradableVersions().get(0));
+        UpgradableVersionsListInner model = BinaryData
+            .fromString(
+                "{\"currentVersion\":\"pwvlqdq\",\"upgradableVersions\":[\"qylihkaetckt\",\"fcivfsnkym\",\"ctq\"]}")
+            .toObject(UpgradableVersionsListInner.class);
+        Assertions.assertEquals("pwvlqdq", model.currentVersion());
+        Assertions.assertEquals("qylihkaetckt", model.upgradableVersions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpgradableVersionsListInner model =
-            new UpgradableVersionsListInner().withCurrentVersion("eic").withUpgradableVersions(Arrays.asList("npzaoq"));
+        UpgradableVersionsListInner model = new UpgradableVersionsListInner().withCurrentVersion("pwvlqdq")
+            .withUpgradableVersions(Arrays.asList("qylihkaetckt", "fcivfsnkym", "ctq"));
         model = BinaryData.fromObject(model).toObject(UpgradableVersionsListInner.class);
-        Assertions.assertEquals("eic", model.currentVersion());
-        Assertions.assertEquals("npzaoq", model.upgradableVersions().get(0));
+        Assertions.assertEquals("pwvlqdq", model.currentVersion());
+        Assertions.assertEquals("qylihkaetckt", model.upgradableVersions().get(0));
     }
 }

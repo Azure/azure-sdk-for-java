@@ -30,17 +30,23 @@ import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
 import com.azure.resourcemanager.automation.models.TypeFieldListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FieldsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FieldsClient.
+ */
 public final class FieldsClientImpl implements FieldsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FieldsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of FieldsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FieldsClientImpl(AutomationClientImpl client) {
@@ -54,28 +60,22 @@ public final class FieldsClientImpl implements FieldsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientFiel")
-    private interface FieldsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields")
-        @ExpectedResponses({200})
+    public interface FieldsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TypeFieldListResult>> listByType(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TypeFieldListResult>> listByType(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("moduleName") String moduleName,
-            @PathParam("typeName") String typeName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moduleName") String moduleName, @PathParam("typeName") String typeName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -84,16 +84,14 @@ public final class FieldsClientImpl implements FieldsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list fields operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TypeFieldInner>> listByTypeSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName) {
+    private Mono<PagedResponse<TypeFieldInner>> listByTypeSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String moduleName, String typeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -110,37 +108,23 @@ public final class FieldsClientImpl implements FieldsClient {
             return Mono.error(new IllegalArgumentException("Parameter typeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByType(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            moduleName,
-                            typeName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<TypeFieldInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                context -> service.listByType(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    moduleName, typeName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<TypeFieldInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -150,16 +134,14 @@ public final class FieldsClientImpl implements FieldsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list fields operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TypeFieldInner>> listByTypeSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context) {
+    private Mono<PagedResponse<TypeFieldInner>> listByTypeSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String moduleName, String typeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,34 +158,22 @@ public final class FieldsClientImpl implements FieldsClient {
             return Mono.error(new IllegalArgumentException("Parameter typeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByType(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                moduleName,
-                typeName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByType(this.client.getEndpoint(), resourceGroupName, automationAccountName, moduleName, typeName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -214,15 +184,15 @@ public final class FieldsClientImpl implements FieldsClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TypeFieldInner> listByTypeAsync(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName) {
+    private PagedFlux<TypeFieldInner> listByTypeAsync(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName) {
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, automationAccountName, moduleName, typeName));
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -234,15 +204,15 @@ public final class FieldsClientImpl implements FieldsClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TypeFieldInner> listByTypeAsync(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context) {
+    private PagedFlux<TypeFieldInner> listByTypeAsync(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName, Context context) {
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, automationAccountName, moduleName, typeName, context));
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -253,14 +223,14 @@ public final class FieldsClientImpl implements FieldsClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TypeFieldInner> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName) {
+    public PagedIterable<TypeFieldInner> listByType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName) {
         return new PagedIterable<>(listByTypeAsync(resourceGroupName, automationAccountName, moduleName, typeName));
     }
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -272,8 +242,8 @@ public final class FieldsClientImpl implements FieldsClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TypeFieldInner> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context) {
+    public PagedIterable<TypeFieldInner> listByType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName, Context context) {
         return new PagedIterable<>(
             listByTypeAsync(resourceGroupName, automationAccountName, moduleName, typeName, context));
     }

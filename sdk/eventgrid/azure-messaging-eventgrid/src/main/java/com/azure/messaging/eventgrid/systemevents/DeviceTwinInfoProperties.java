@@ -76,6 +76,9 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

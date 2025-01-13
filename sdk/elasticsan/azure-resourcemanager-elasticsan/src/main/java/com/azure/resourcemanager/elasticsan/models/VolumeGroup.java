@@ -91,6 +91,14 @@ public interface VolumeGroup {
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
+     * Gets the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @return the enforceDataIntegrityCheckForIscsi value.
+     */
+    Boolean enforceDataIntegrityCheckForIscsi();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -139,9 +147,9 @@ public interface VolumeGroup {
          * The stage of the VolumeGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType, DefinitionStages.WithEncryption,
-            DefinitionStages.WithEncryptionProperties, DefinitionStages.WithNetworkAcls {
+        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType,
+            DefinitionStages.WithEncryption, DefinitionStages.WithEncryptionProperties,
+            DefinitionStages.WithNetworkAcls, DefinitionStages.WithEnforceDataIntegrityCheckForIscsi {
             /**
              * Executes the create request.
              * 
@@ -224,6 +232,21 @@ public interface VolumeGroup {
              */
             WithCreate withNetworkAcls(NetworkRuleSet networkAcls);
         }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify enforceDataIntegrityCheckForIscsi.
+         */
+        interface WithEnforceDataIntegrityCheckForIscsi {
+            /**
+             * Specifies the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data
+             * Integrity Check is enabled.
+             * 
+             * @param enforceDataIntegrityCheckForIscsi A boolean indicating whether or not Data Integrity Check is
+             * enabled.
+             * @return the next definition stage.
+             */
+            WithCreate withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
+        }
     }
 
     /**
@@ -237,7 +260,8 @@ public interface VolumeGroup {
      * The template for VolumeGroup update.
      */
     interface Update extends UpdateStages.WithIdentity, UpdateStages.WithProtocolType, UpdateStages.WithEncryption,
-        UpdateStages.WithEncryptionProperties, UpdateStages.WithNetworkAcls {
+        UpdateStages.WithEncryptionProperties, UpdateStages.WithNetworkAcls,
+        UpdateStages.WithEnforceDataIntegrityCheckForIscsi {
         /**
          * Executes the update request.
          * 
@@ -323,6 +347,21 @@ public interface VolumeGroup {
              * @return the next definition stage.
              */
             Update withNetworkAcls(NetworkRuleSet networkAcls);
+        }
+
+        /**
+         * The stage of the VolumeGroup update allowing to specify enforceDataIntegrityCheckForIscsi.
+         */
+        interface WithEnforceDataIntegrityCheckForIscsi {
+            /**
+             * Specifies the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data
+             * Integrity Check is enabled.
+             * 
+             * @param enforceDataIntegrityCheckForIscsi A boolean indicating whether or not Data Integrity Check is
+             * enabled.
+             * @return the next definition stage.
+             */
+            Update withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
         }
     }
 

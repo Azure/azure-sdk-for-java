@@ -21,9 +21,9 @@ public final class ServiceBusReceivedMessageContext {
     private final String entityPath;
 
     ServiceBusReceivedMessageContext(ServiceBusReceiverAsyncClient receiverClient,
-                                     ServiceBusMessageContext receivedMessageContext) {
-        this.receivedMessageContext = Objects.requireNonNull(receivedMessageContext,
-            "'receivedMessageContext' cannot be null");
+        ServiceBusMessageContext receivedMessageContext) {
+        this.receivedMessageContext
+            = Objects.requireNonNull(receivedMessageContext, "'receivedMessageContext' cannot be null");
         this.receiverClient = Objects.requireNonNull(receiverClient, "'receiverClient' cannot be null");
         this.sessionReceivers = null;
         entityPath = receiverClient.getEntityPath();
@@ -47,7 +47,6 @@ public final class ServiceBusReceivedMessageContext {
     public ServiceBusReceivedMessage getMessage() {
         return receivedMessageContext.getMessage();
     }
-
 
     /**
      *  Gets the Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.

@@ -5,66 +5,67 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Static definitions of the ProactiveDetection configuration rule (same values for all components). */
+/**
+ * Static definitions of the ProactiveDetection configuration rule (same values for all components).
+ */
 @Fluent
-public final class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions {
+public final class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+    implements JsonSerializable<ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions> {
     /*
      * The rule name
      */
-    @JsonProperty(value = "Name")
     private String name;
 
     /*
      * The rule name as it is displayed in UI
      */
-    @JsonProperty(value = "DisplayName")
     private String displayName;
 
     /*
      * The rule description
      */
-    @JsonProperty(value = "Description")
     private String description;
 
     /*
      * URL which displays additional info about the proactive detection rule
      */
-    @JsonProperty(value = "HelpUrl")
     private String helpUrl;
 
     /*
      * A flag indicating whether the rule is hidden (from the UI)
      */
-    @JsonProperty(value = "IsHidden")
     private Boolean isHidden;
 
     /*
      * A flag indicating whether the rule is enabled by default
      */
-    @JsonProperty(value = "IsEnabledByDefault")
     private Boolean isEnabledByDefault;
 
     /*
      * A flag indicating whether the rule is in preview
      */
-    @JsonProperty(value = "IsInPreview")
     private Boolean isInPreview;
 
     /*
      * A flag indicating whether email notifications are supported for detections for this rule
      */
-    @JsonProperty(value = "SupportsEmailNotifications")
     private Boolean supportsEmailNotifications;
 
-    /** Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions class.
+     */
     public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions() {
     }
 
     /**
      * Get the name property: The rule name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,7 +74,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the name property: The rule name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
@@ -84,7 +85,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Get the displayName property: The rule name as it is displayed in UI.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -93,19 +94,19 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the displayName property: The rule name as it is displayed in UI.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withDisplayName(
-        String displayName) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
     /**
      * Get the description property: The rule description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,19 +115,19 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the description property: The rule description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withDescription(
-        String description) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
      * Get the helpUrl property: URL which displays additional info about the proactive detection rule.
-     *
+     * 
      * @return the helpUrl value.
      */
     public String helpUrl() {
@@ -135,7 +136,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the helpUrl property: URL which displays additional info about the proactive detection rule.
-     *
+     * 
      * @param helpUrl the helpUrl value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
@@ -146,7 +147,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Get the isHidden property: A flag indicating whether the rule is hidden (from the UI).
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -155,7 +156,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the isHidden property: A flag indicating whether the rule is hidden (from the UI).
-     *
+     * 
      * @param isHidden the isHidden value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
@@ -166,7 +167,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Get the isEnabledByDefault property: A flag indicating whether the rule is enabled by default.
-     *
+     * 
      * @return the isEnabledByDefault value.
      */
     public Boolean isEnabledByDefault() {
@@ -175,19 +176,19 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the isEnabledByDefault property: A flag indicating whether the rule is enabled by default.
-     *
+     * 
      * @param isEnabledByDefault the isEnabledByDefault value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withIsEnabledByDefault(
-        Boolean isEnabledByDefault) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withIsEnabledByDefault(Boolean isEnabledByDefault) {
         this.isEnabledByDefault = isEnabledByDefault;
         return this;
     }
 
     /**
      * Get the isInPreview property: A flag indicating whether the rule is in preview.
-     *
+     * 
      * @return the isInPreview value.
      */
     public Boolean isInPreview() {
@@ -196,12 +197,12 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     /**
      * Set the isInPreview property: A flag indicating whether the rule is in preview.
-     *
+     * 
      * @param isInPreview the isInPreview value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withIsInPreview(
-        Boolean isInPreview) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withIsInPreview(Boolean isInPreview) {
         this.isInPreview = isInPreview;
         return this;
     }
@@ -209,7 +210,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
     /**
      * Get the supportsEmailNotifications property: A flag indicating whether email notifications are supported for
      * detections for this rule.
-     *
+     * 
      * @return the supportsEmailNotifications value.
      */
     public Boolean supportsEmailNotifications() {
@@ -219,21 +220,90 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
     /**
      * Set the supportsEmailNotifications property: A flag indicating whether email notifications are supported for
      * detections for this rule.
-     *
+     * 
      * @param supportsEmailNotifications the supportsEmailNotifications value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withSupportsEmailNotifications(
-        Boolean supportsEmailNotifications) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withSupportsEmailNotifications(Boolean supportsEmailNotifications) {
         this.supportsEmailNotifications = supportsEmailNotifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Name", this.name);
+        jsonWriter.writeStringField("DisplayName", this.displayName);
+        jsonWriter.writeStringField("Description", this.description);
+        jsonWriter.writeStringField("HelpUrl", this.helpUrl);
+        jsonWriter.writeBooleanField("IsHidden", this.isHidden);
+        jsonWriter.writeBooleanField("IsEnabledByDefault", this.isEnabledByDefault);
+        jsonWriter.writeBooleanField("IsInPreview", this.isInPreview);
+        jsonWriter.writeBooleanField("SupportsEmailNotifications", this.supportsEmailNotifications);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions from the
+     * JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions if the
+     * JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.
+     */
+    public static ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+                = new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Name".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.name
+                        = reader.getString();
+                } else if ("DisplayName".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.displayName
+                        = reader.getString();
+                } else if ("Description".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.description
+                        = reader.getString();
+                } else if ("HelpUrl".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.helpUrl
+                        = reader.getString();
+                } else if ("IsHidden".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.isHidden
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("IsEnabledByDefault".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.isEnabledByDefault
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("IsInPreview".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.isInPreview
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("SupportsEmailNotifications".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.supportsEmailNotifications
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions;
+        });
     }
 }

@@ -24,6 +24,8 @@ public class FileSystemAccessPolicies {
     }
 
     /**
+     * Gets the level of public access the file system allows.
+     *
      * @return the level of public access the file system allows.
      */
     public PublicAccessType getDataLakeAccessType() {
@@ -31,6 +33,8 @@ public class FileSystemAccessPolicies {
     }
 
     /**
+     * Gets the {@link DataLakeSignedIdentifier DataLakeSignedIdentifiers} associated with the file system.
+     *
      * @return the {@link DataLakeSignedIdentifier DataLakeSignedIdentifiers} associated with the file system.
      */
     public List<DataLakeSignedIdentifier> getIdentifiers() {

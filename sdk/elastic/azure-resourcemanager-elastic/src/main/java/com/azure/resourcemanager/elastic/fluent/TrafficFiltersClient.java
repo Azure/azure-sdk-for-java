@@ -9,12 +9,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in TrafficFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrafficFiltersClient.
+ */
 public interface TrafficFiltersClient {
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -28,8 +30,8 @@ public interface TrafficFiltersClient {
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

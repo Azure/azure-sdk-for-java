@@ -28,21 +28,20 @@ public class UploadFileShareTest extends FileTestBase<StoragePerfStressOptions> 
     @Override
     public void run() {
         inputStream.reset();
-        ParallelTransferOptions transferOptions = new ParallelTransferOptions()
-            .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
-            .setBlockSizeLong(options.getTransferBlockSize())
-            .setMaxConcurrency(options.getTransferConcurrency());
+        ParallelTransferOptions transferOptions
+            = new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+                .setBlockSizeLong(options.getTransferBlockSize())
+                .setMaxConcurrency(options.getTransferConcurrency());
         shareFileClient.upload(inputStream, options.getSize(), transferOptions);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        ParallelTransferOptions transferOptions = new ParallelTransferOptions()
-            .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
-            .setBlockSizeLong(options.getTransferBlockSize())
-            .setMaxConcurrency(options.getTransferConcurrency());
-        return shareFileAsyncClient.upload(byteBufferFlux, transferOptions)
-            .then();
+        ParallelTransferOptions transferOptions
+            = new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+                .setBlockSizeLong(options.getTransferBlockSize())
+                .setMaxConcurrency(options.getTransferConcurrency());
+        return shareFileAsyncClient.upload(byteBufferFlux, transferOptions).then();
     }
 
     @Override

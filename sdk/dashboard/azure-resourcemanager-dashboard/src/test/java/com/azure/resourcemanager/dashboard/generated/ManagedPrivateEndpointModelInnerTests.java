@@ -30,8 +30,10 @@ public final class ManagedPrivateEndpointModelInnerTests {
     public void testSerialize() throws Exception {
         ManagedPrivateEndpointModelInner model = new ManagedPrivateEndpointModelInner().withLocation("ej")
             .withTags(mapOf("xdn", "orxzdmohctbqvud", "wdkcglhsl", "nvowgujju", "yggdtjixh", "zj"))
-            .withPrivateLinkResourceId("grhpdjpju").withPrivateLinkResourceRegion("sxazjpq")
-            .withGroupIds(Arrays.asList("ualhbxxhejj")).withRequestMessage("v")
+            .withPrivateLinkResourceId("grhpdjpju")
+            .withPrivateLinkResourceRegion("sxazjpq")
+            .withGroupIds(Arrays.asList("ualhbxxhejj"))
+            .withRequestMessage("v")
             .withPrivateLinkServiceUrl("wlbjnpgacftade");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointModelInner.class);
         Assertions.assertEquals("ej", model.location());

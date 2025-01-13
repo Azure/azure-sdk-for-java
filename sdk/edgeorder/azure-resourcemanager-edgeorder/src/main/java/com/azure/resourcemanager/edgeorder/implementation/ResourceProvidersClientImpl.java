@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeorder.fluent.ResourceProvidersClient;
@@ -59,24 +58,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EdgeOrderManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(EdgeOrderManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -86,516 +89,367 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "EdgeOrderManagementC")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.EdgeOrder/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResult>> listOperations(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationListResult>> listOperations(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/addresses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AddressResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AddressResourceList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listProductFamilies")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProductFamilies>> listProductFamilies(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$skipToken") String skipToken,
+        Mono<Response<ProductFamilies>> listProductFamilies(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$expand") String expand, @QueryParam("$skipToken") String skipToken,
             @BodyParam("application/json") ProductFamiliesRequest productFamiliesRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listConfigurations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Configurations>> listConfigurations(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Configurations>> listConfigurations(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @QueryParam("$skipToken") String skipToken,
             @BodyParam("application/json") ConfigurationsRequest configurationsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/productFamiliesMetadata")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProductFamiliesMetadata>> listProductFamiliesMetadata(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProductFamiliesMetadata>> listProductFamiliesMetadata(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/orders")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderResourceList>> listOrderAtSubscriptionLevel(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OrderResourceList>> listOrderAtSubscriptionLevel(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/orderItems")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderItemResourceList>> listOrderItemsAtSubscriptionLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OrderItemResourceList>> listOrderItemsAtSubscriptionLevel(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AddressResourceList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AddressResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("addressName") String addressName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createAddress(@HostParam("$host") String endpoint,
+            @PathParam("addressName") String addressName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AddressResourceInner addressResource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/addresses")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AddressResourceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("addressName") String addressName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
-                + "/{addressName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses/{addressName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AddressResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("addressName") String addressName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
-                + "/{addressName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createAddress(
-            @HostParam("$host") String endpoint,
-            @PathParam("addressName") String addressName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AddressResourceInner addressResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
-                + "/{addressName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("addressName") String addressName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
-                + "/{addressName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAddress(
-            @HostParam("$host") String endpoint,
-            @PathParam("addressName") String addressName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> updateAddress(@HostParam("$host") String endpoint,
+            @PathParam("addressName") String addressName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") AddressUpdateParameter addressUpdateParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orders")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderResourceList>> listOrderAtResourceGroupLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OrderResourceList>> listOrderAtResourceGroupLevel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/locations"
-                + "/{location}/orders/{orderName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/locations/{location}/orders/{orderName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderResourceInner>> getOrderByName(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderName") String orderName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OrderResourceInner>> getOrderByName(@HostParam("$host") String endpoint,
+            @PathParam("orderName") String orderName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderItemResourceList>> listOrderItemsAtResourceGroupLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OrderItemResourceList>> listOrderItemsAtResourceGroupLevel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderItemResourceInner>> getOrderItemByName(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OrderItemResourceInner>> getOrderItemByName(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrderItem(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrderItem(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") OrderItemResourceInner orderItemResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByName(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByName(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateOrderItem(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> updateOrderItem(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") OrderItemUpdateParameter orderItemUpdateParameter,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/cancel")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> cancelOrderItem(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CancellationReason cancellationReason, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}/cancel")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/return")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancelOrderItem(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CancellationReason cancellationReason,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder"
-                + "/orderItems/{orderItemName}/return")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> returnOrderItem(
-            @HostParam("$host") String endpoint,
-            @PathParam("orderItemName") String orderItemName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> returnOrderItem(@HostParam("$host") String endpoint,
+            @PathParam("orderItemName") String orderItemName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReturnOrderItemDetails returnOrderItemDetails,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listOperationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AddressResourceList>> listAddressesAtSubscriptionLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProductFamilies>> listProductFamiliesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Configurations>> listConfigurationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProductFamiliesMetadata>> listProductFamiliesMetadataNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrderResourceList>> listOrderAtSubscriptionLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrderItemResourceList>> listOrderItemsAtSubscriptionLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AddressResourceList>> listAddressesAtResourceGroupLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrderResourceList>> listOrderAtResourceGroupLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrderItemResourceList>> listOrderItemsAtResourceGroupLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<OperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listOperationsAsync() {
-        return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listOperationsSinglePageAsync(),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listOperationsAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context),
+        return new PagedFlux<>(() -> listOperationsSinglePageAsync(context),
             nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
@@ -604,12 +458,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations(Context context) {
@@ -618,166 +473,126 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AddressResourceInner>> listSinglePageAsync(String filter, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<AddressResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, skipToken, accept, context))
+            .<PagedResponse<AddressResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listSinglePageAsync(
-        String filter, String skipToken, Context context) {
+    private Mono<PagedResponse<AddressResourceInner>> listSinglePageAsync(String filter, String skipToken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter,
+                skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddressResourceInner> listAsync(String filter, String skipToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skipToken),
             nextLink -> listAddressesAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddressResourceInner> listAsync() {
         final String filter = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skipToken),
             nextLink -> listAddressesAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddressResourceInner> listAsync(String filter, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, skipToken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skipToken, context),
             nextLink -> listAddressesAtSubscriptionLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddressResourceInner> list() {
@@ -788,16 +603,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddressResourceInner> list(String filter, String skipToken, Context context) {
@@ -806,180 +621,138 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductFamilyInner>> listProductFamiliesSinglePageAsync(
         ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (productFamiliesRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter productFamiliesRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter productFamiliesRequest is required and cannot be null."));
         } else {
             productFamiliesRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listProductFamilies(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            expand,
-                            skipToken,
-                            productFamiliesRequest,
-                            accept,
-                            context))
-            .<PagedResponse<ProductFamilyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listProductFamilies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), expand, skipToken, productFamiliesRequest, accept, context))
+            .<PagedResponse<ProductFamilyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductFamilyInner>> listProductFamiliesSinglePageAsync(
         ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (productFamiliesRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter productFamiliesRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter productFamiliesRequest is required and cannot be null."));
         } else {
             productFamiliesRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listProductFamilies(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                expand,
-                skipToken,
-                productFamiliesRequest,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listProductFamilies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), expand, skipToken, productFamiliesRequest, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProductFamilyInner> listProductFamiliesAsync(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken) {
-        return new PagedFlux<>(
-            () -> listProductFamiliesSinglePageAsync(productFamiliesRequest, expand, skipToken),
+    private PagedFlux<ProductFamilyInner> listProductFamiliesAsync(ProductFamiliesRequest productFamiliesRequest,
+        String expand, String skipToken) {
+        return new PagedFlux<>(() -> listProductFamiliesSinglePageAsync(productFamiliesRequest, expand, skipToken),
             nextLink -> listProductFamiliesNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProductFamilyInner> listProductFamiliesAsync(ProductFamiliesRequest productFamiliesRequest) {
         final String expand = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listProductFamiliesSinglePageAsync(productFamiliesRequest, expand, skipToken),
+        return new PagedFlux<>(() -> listProductFamiliesSinglePageAsync(productFamiliesRequest, expand, skipToken),
             nextLink -> listProductFamiliesNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProductFamilyInner> listProductFamiliesAsync(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context) {
+    private PagedFlux<ProductFamilyInner> listProductFamiliesAsync(ProductFamiliesRequest productFamiliesRequest,
+        String expand, String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listProductFamiliesSinglePageAsync(productFamiliesRequest, expand, skipToken, context),
             nextLink -> listProductFamiliesNextSinglePageAsync(nextLink, context));
@@ -987,12 +760,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductFamilyInner> listProductFamilies(ProductFamiliesRequest productFamiliesRequest) {
@@ -1003,50 +776,46 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProductFamilyInner> listProductFamilies(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context) {
+    public PagedIterable<ProductFamilyInner> listProductFamilies(ProductFamiliesRequest productFamiliesRequest,
+        String expand, String skipToken, Context context) {
         return new PagedIterable<>(listProductFamiliesAsync(productFamiliesRequest, expand, skipToken, context));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationInner>> listConfigurationsSinglePageAsync(
-        ConfigurationsRequest configurationsRequest, String skipToken) {
+    private Mono<PagedResponse<ConfigurationInner>>
+        listConfigurationsSinglePageAsync(ConfigurationsRequest configurationsRequest, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationsRequest == null) {
             return Mono
@@ -1057,55 +826,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listConfigurations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skipToken,
-                            configurationsRequest,
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listConfigurations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), skipToken, configurationsRequest, accept, context))
+            .<PagedResponse<ConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationInner>> listConfigurationsSinglePageAsync(
         ConfigurationsRequest configurationsRequest, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationsRequest == null) {
             return Mono
@@ -1116,93 +866,77 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listConfigurations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skipToken,
-                configurationsRequest,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listConfigurations(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+                skipToken, configurationsRequest, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationInner> listConfigurationsAsync(
-        ConfigurationsRequest configurationsRequest, String skipToken) {
-        return new PagedFlux<>(
-            () -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken),
+    private PagedFlux<ConfigurationInner> listConfigurationsAsync(ConfigurationsRequest configurationsRequest,
+        String skipToken) {
+        return new PagedFlux<>(() -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken),
             nextLink -> listConfigurationsNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationInner> listConfigurationsAsync(ConfigurationsRequest configurationsRequest) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken),
+        return new PagedFlux<>(() -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken),
             nextLink -> listConfigurationsNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationInner> listConfigurationsAsync(
-        ConfigurationsRequest configurationsRequest, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken, context),
+    private PagedFlux<ConfigurationInner> listConfigurationsAsync(ConfigurationsRequest configurationsRequest,
+        String skipToken, Context context) {
+        return new PagedFlux<>(() -> listConfigurationsSinglePageAsync(configurationsRequest, skipToken, context),
             nextLink -> listConfigurationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listConfigurations(ConfigurationsRequest configurationsRequest) {
@@ -1213,175 +947,139 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationInner> listConfigurations(
-        ConfigurationsRequest configurationsRequest, String skipToken, Context context) {
+    public PagedIterable<ConfigurationInner> listConfigurations(ConfigurationsRequest configurationsRequest,
+        String skipToken, Context context) {
         return new PagedIterable<>(listConfigurationsAsync(configurationsRequest, skipToken, context));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>> listProductFamiliesMetadataSinglePageAsync(
-        String skipToken) {
+    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>>
+        listProductFamiliesMetadataSinglePageAsync(String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listProductFamiliesMetadata(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ProductFamiliesMetadataDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listProductFamiliesMetadata(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ProductFamiliesMetadataDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>> listProductFamiliesMetadataSinglePageAsync(
-        String skipToken, Context context) {
+    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>>
+        listProductFamiliesMetadataSinglePageAsync(String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listProductFamiliesMetadata(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listProductFamiliesMetadata(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadataAsync(String skipToken) {
-        return new PagedFlux<>(
-            () -> listProductFamiliesMetadataSinglePageAsync(skipToken),
+        return new PagedFlux<>(() -> listProductFamiliesMetadataSinglePageAsync(skipToken),
             nextLink -> listProductFamiliesMetadataNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadataAsync() {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listProductFamiliesMetadataSinglePageAsync(skipToken),
+        return new PagedFlux<>(() -> listProductFamiliesMetadataSinglePageAsync(skipToken),
             nextLink -> listProductFamiliesMetadataNextSinglePageAsync(nextLink));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadataAsync(
-        String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listProductFamiliesMetadataSinglePageAsync(skipToken, context),
+    private PagedFlux<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadataAsync(String skipToken,
+        Context context) {
+        return new PagedFlux<>(() -> listProductFamiliesMetadataSinglePageAsync(skipToken, context),
             nextLink -> listProductFamiliesMetadataNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadata() {
@@ -1391,168 +1089,130 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadata(
-        String skipToken, Context context) {
+    public PagedIterable<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadata(String skipToken,
+        Context context) {
         return new PagedIterable<>(listProductFamiliesMetadataAsync(skipToken, context));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelSinglePageAsync(String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOrderAtSubscriptionLevel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<OrderResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOrderAtSubscriptionLevel(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<OrderResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelSinglePageAsync(
-        String skipToken, Context context) {
+    private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelSinglePageAsync(String skipToken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOrderAtSubscriptionLevel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOrderAtSubscriptionLevel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderResourceInner> listOrderAtSubscriptionLevelAsync(String skipToken) {
-        return new PagedFlux<>(
-            () -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken),
+        return new PagedFlux<>(() -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken),
             nextLink -> listOrderAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderResourceInner> listOrderAtSubscriptionLevelAsync() {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken),
+        return new PagedFlux<>(() -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken),
             nextLink -> listOrderAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderResourceInner> listOrderAtSubscriptionLevelAsync(String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken, context),
+        return new PagedFlux<>(() -> listOrderAtSubscriptionLevelSinglePageAsync(skipToken, context),
             nextLink -> listOrderAtSubscriptionLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrderResourceInner> listOrderAtSubscriptionLevel() {
@@ -1562,13 +1222,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrderResourceInner> listOrderAtSubscriptionLevel(String skipToken, Context context) {
@@ -1577,173 +1237,131 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelSinglePageAsync(
-        String filter, String expand, String skipToken) {
+    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelSinglePageAsync(String filter,
+        String expand, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOrderItemsAtSubscriptionLevel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<OrderItemResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listOrderItemsAtSubscriptionLevel(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, expand, skipToken, accept, context))
+            .<PagedResponse<OrderItemResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelSinglePageAsync(
-        String filter, String expand, String skipToken, Context context) {
+    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelSinglePageAsync(String filter,
+        String expand, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOrderItemsAtSubscriptionLevel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                expand,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOrderItemsAtSubscriptionLevel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, expand, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderItemResourceInner> listOrderItemsAtSubscriptionLevelAsync(
-        String filter, String expand, String skipToken) {
-        return new PagedFlux<>(
-            () -> listOrderItemsAtSubscriptionLevelSinglePageAsync(filter, expand, skipToken),
+    private PagedFlux<OrderItemResourceInner> listOrderItemsAtSubscriptionLevelAsync(String filter, String expand,
+        String skipToken) {
+        return new PagedFlux<>(() -> listOrderItemsAtSubscriptionLevelSinglePageAsync(filter, expand, skipToken),
             nextLink -> listOrderItemsAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderItemResourceInner> listOrderItemsAtSubscriptionLevelAsync() {
         final String filter = null;
         final String expand = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listOrderItemsAtSubscriptionLevelSinglePageAsync(filter, expand, skipToken),
+        return new PagedFlux<>(() -> listOrderItemsAtSubscriptionLevelSinglePageAsync(filter, expand, skipToken),
             nextLink -> listOrderItemsAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderItemResourceInner> listOrderItemsAtSubscriptionLevelAsync(
-        String filter, String expand, String skipToken, Context context) {
+    private PagedFlux<OrderItemResourceInner> listOrderItemsAtSubscriptionLevelAsync(String filter, String expand,
+        String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listOrderItemsAtSubscriptionLevelSinglePageAsync(filter, expand, skipToken, context),
             nextLink -> listOrderItemsAtSubscriptionLevelNextSinglePageAsync(nextLink, context));
@@ -1751,10 +1369,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel() {
@@ -1766,53 +1384,49 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel(
-        String filter, String expand, String skipToken, Context context) {
+    public PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel(String filter, String expand,
+        String skipToken, Context context) {
         return new PagedIterable<>(listOrderItemsAtSubscriptionLevelAsync(filter, expand, skipToken, context));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, String skipToken) {
+    private Mono<PagedResponse<AddressResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1821,57 +1435,37 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<AddressResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, skipToken, accept, context))
+            .<PagedResponse<AddressResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, String skipToken, Context context) {
+    private Mono<PagedResponse<AddressResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1880,95 +1474,78 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AddressResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, String skipToken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken),
+    private PagedFlux<AddressResourceInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken),
             nextLink -> listAddressesAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddressResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken),
             nextLink -> listAddressesAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AddressResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken, context),
+    private PagedFlux<AddressResourceInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        String skipToken, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, skipToken, context),
             nextLink -> listAddressesAtResourceGroupLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddressResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -1979,150 +1556,139 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AddressResourceInner> listByResourceGroup(
-        String resourceGroupName, String filter, String skipToken, Context context) {
+    public PagedIterable<AddressResourceInner> listByResourceGroup(String resourceGroupName, String filter,
+        String skipToken, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, skipToken, context));
     }
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
+     * @return information about the specified address along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AddressResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String addressName) {
+    private Mono<Response<AddressResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String addressName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            addressName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), addressName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
+     * @return information about the specified address along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AddressResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String addressName, Context context) {
+    private Mono<Response<AddressResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String addressName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                addressName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            addressName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
+     * @return information about the specified address on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AddressResourceInner> getByResourceGroupAsync(String resourceGroupName, String addressName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, addressName)
-            .flatMap(
-                (Response<AddressResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified address along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AddressResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String addressName,
+        Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, addressName, context).block();
+    }
+
+    /**
+     * Gets information about the specified address.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2130,56 +1696,34 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddressResourceInner getByResourceGroup(String resourceGroupName, String addressName) {
-        return getByResourceGroupAsync(resourceGroupName, addressName).block();
-    }
-
-    /**
-     * Gets information about the specified address.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddressResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String addressName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, addressName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, addressName, Context.NONE).getValue();
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createAddressWithResponseAsync(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource) {
+    private Mono<Response<Flux<ByteBuffer>>> createAddressWithResponseAsync(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2193,51 +1737,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createAddress(
-                            this.client.getEndpoint(),
-                            addressName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            addressResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createAddress(this.client.getEndpoint(), addressName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), addressResource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createAddressWithResponseAsync(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createAddressWithResponseAsync(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2251,153 +1782,135 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createAddress(
-                this.client.getEndpoint(),
-                addressName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                addressResource,
-                accept,
-                context);
+        return service.createAddress(this.client.getEndpoint(), addressName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), addressResource, accept, context);
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link PollerFlux} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddressAsync(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createAddressWithResponseAsync(addressName, resourceGroupName, addressResource);
-        return this
-            .client
-            .<AddressResourceInner, AddressResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AddressResourceInner.class,
-                AddressResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner>
+        beginCreateAddressAsync(String addressName, String resourceGroupName, AddressResourceInner addressResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createAddressWithResponseAsync(addressName, resourceGroupName, addressResource);
+        return this.client.<AddressResourceInner, AddressResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AddressResourceInner.class, AddressResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link PollerFlux} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddressAsync(
         String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createAddressWithResponseAsync(addressName, resourceGroupName, addressResource, context);
-        return this
-            .client
-            .<AddressResourceInner, AddressResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AddressResourceInner.class, AddressResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createAddressWithResponseAsync(addressName, resourceGroupName, addressResource, context);
+        return this.client.<AddressResourceInner, AddressResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AddressResourceInner.class, AddressResourceInner.class, context);
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource) {
-        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource).getSyncPoller();
+    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource) {
+        return this.beginCreateAddressAsync(addressName, resourceGroupName, addressResource).getSyncPoller();
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context) {
-        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource, context).getSyncPoller();
+    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource, Context context) {
+        return this.beginCreateAddressAsync(addressName, resourceGroupName, addressResource, context).getSyncPoller();
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AddressResourceInner> createAddressAsync(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource) {
-        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource)
-            .last()
+    private Mono<AddressResourceInner> createAddressAsync(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource) {
+        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AddressResourceInner> createAddressAsync(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context) {
-        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource, context)
-            .last()
+    private Mono<AddressResourceInner> createAddressAsync(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource, Context context) {
+        return beginCreateAddressAsync(addressName, resourceGroupName, addressResource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2406,16 +1919,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResourceInner createAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource) {
+    public AddressResourceInner createAddress(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource) {
         return createAddressAsync(addressName, resourceGroupName, addressResource).block();
     }
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
@@ -2425,192 +1938,165 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResourceInner createAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context) {
+    public AddressResourceInner createAddress(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource, Context context) {
         return createAddressAsync(addressName, resourceGroupName, addressResource, context).block();
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String addressName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            addressName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), addressName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String addressName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String addressName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                addressName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            addressName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String addressName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, addressName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String addressName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String addressName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, addressName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String addressName) {
-        return beginDeleteAsync(resourceGroupName, addressName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, addressName).getSyncPoller();
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String addressName, Context context) {
-        return beginDeleteAsync(resourceGroupName, addressName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String addressName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, addressName, context).getSyncPoller();
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String addressName) {
@@ -2619,29 +2105,28 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String addressName, Context context) {
-        return beginDeleteAsync(resourceGroupName, addressName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, addressName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2653,10 +2138,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2669,286 +2154,299 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAddressWithResponseAsync(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAddressWithResponseAsync(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (addressUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter addressUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter addressUpdateParameter is required and cannot be null."));
         } else {
             addressUpdateParameter.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateAddress(
-                            this.client.getEndpoint(),
-                            addressName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            addressUpdateParameter,
-                            accept,
-                            context))
+            .withContext(context -> service.updateAddress(this.client.getEndpoint(), addressName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), ifMatch,
+                addressUpdateParameter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAddressWithResponseAsync(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAddressWithResponseAsync(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (addressName == null) {
             return Mono.error(new IllegalArgumentException("Parameter addressName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (addressUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter addressUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter addressUpdateParameter is required and cannot be null."));
         } else {
             addressUpdateParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAddress(
-                this.client.getEndpoint(),
-                addressName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ifMatch,
-                addressUpdateParameter,
-                accept,
-                context);
+        return service.updateAddress(this.client.getEndpoint(), addressName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), ifMatch, addressUpdateParameter, accept, context);
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link PollerFlux} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddressAsync(
         String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAddressWithResponseAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch);
-        return this
-            .client
-            .<AddressResourceInner, AddressResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AddressResourceInner.class,
-                AddressResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAddressWithResponseAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch);
+        return this.client.<AddressResourceInner, AddressResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AddressResourceInner.class, AddressResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressUpdateParameter Address update parameters from request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of address Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddressAsync(
+        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAddressWithResponseAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch);
+        return this.client.<AddressResourceInner, AddressResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AddressResourceInner.class, AddressResourceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates the properties of an existing address.
+     * 
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link PollerFlux} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddressAsync(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
+        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAddressWithResponseAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context);
-        return this
-            .client
-            .<AddressResourceInner, AddressResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AddressResourceInner.class, AddressResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAddressWithResponseAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context);
+        return this.client.<AddressResourceInner, AddressResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AddressResourceInner.class, AddressResourceInner.class, context);
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
-        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).getSyncPoller();
-    }
-
-    /**
-     * Updates the properties of an existing address.
-     *
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context) {
-        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context)
+    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter) {
+        final String ifMatch = null;
+        return this.beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch)
             .getSyncPoller();
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context) {
+        return this.beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the properties of an existing address.
+     * 
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressUpdateParameter Address update parameters from request body.
+     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
+     * server matches this value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return address Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AddressResourceInner> updateAddressAsync(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
-        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch)
-            .last()
+    private Mono<AddressResourceInner> updateAddressAsync(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter, String ifMatch) {
+        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return address Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AddressResourceInner> updateAddressAsync(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter) {
+    private Mono<AddressResourceInner> updateAddressAsync(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter) {
         final String ifMatch = null;
-        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch)
-            .last()
+        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return address Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AddressResourceInner> updateAddressAsync(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context) {
+        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the properties of an existing address.
+     * 
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressUpdateParameter Address update parameters from request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return address Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddressResourceInner updateAddress(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter) {
+        final String ifMatch = null;
+        return updateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).block();
+    }
+
+    /**
+     * Updates the properties of an existing address.
+     * 
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressUpdateParameter Address update parameters from request body.
+     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2956,105 +2454,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AddressResourceInner> updateAddressAsync(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context) {
-        return beginUpdateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates the properties of an existing address.
-     *
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResourceInner updateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch) {
-        return updateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).block();
-    }
-
-    /**
-     * Updates the properties of an existing address.
-     *
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressUpdateParameter Address update parameters from request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResourceInner updateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter) {
-        final String ifMatch = null;
-        return updateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch).block();
-    }
-
-    /**
-     * Updates the properties of an existing address.
-     *
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResourceInner updateAddress(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context) {
+    public AddressResourceInner updateAddress(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context) {
         return updateAddressAsync(addressName, resourceGroupName, addressUpdateParameter, ifMatch, context).block();
     }
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderResourceInner>> listOrderAtResourceGroupLevelSinglePageAsync(
-        String resourceGroupName, String skipToken) {
+    private Mono<PagedResponse<OrderResourceInner>>
+        listOrderAtResourceGroupLevelSinglePageAsync(String resourceGroupName, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3062,54 +2486,35 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOrderAtResourceGroupLevel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<OrderResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOrderAtResourceGroupLevel(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), skipToken, accept,
+                context))
+            .<PagedResponse<OrderResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderResourceInner>> listOrderAtResourceGroupLevelSinglePageAsync(
-        String resourceGroupName, String skipToken, Context context) {
+    private Mono<PagedResponse<OrderResourceInner>>
+        listOrderAtResourceGroupLevelSinglePageAsync(String resourceGroupName, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3118,74 +2523,59 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOrderAtResourceGroupLevel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOrderAtResourceGroupLevel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderResourceInner> listOrderAtResourceGroupLevelAsync(
-        String resourceGroupName, String skipToken) {
-        return new PagedFlux<>(
-            () -> listOrderAtResourceGroupLevelSinglePageAsync(resourceGroupName, skipToken),
+    private PagedFlux<OrderResourceInner> listOrderAtResourceGroupLevelAsync(String resourceGroupName,
+        String skipToken) {
+        return new PagedFlux<>(() -> listOrderAtResourceGroupLevelSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listOrderAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderResourceInner> listOrderAtResourceGroupLevelAsync(String resourceGroupName) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listOrderAtResourceGroupLevelSinglePageAsync(resourceGroupName, skipToken),
+        return new PagedFlux<>(() -> listOrderAtResourceGroupLevelSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listOrderAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderResourceInner> listOrderAtResourceGroupLevelAsync(
-        String resourceGroupName, String skipToken, Context context) {
+    private PagedFlux<OrderResourceInner> listOrderAtResourceGroupLevelAsync(String resourceGroupName, String skipToken,
+        Context context) {
         return new PagedFlux<>(
             () -> listOrderAtResourceGroupLevelSinglePageAsync(resourceGroupName, skipToken, context),
             nextLink -> listOrderAtResourceGroupLevelNextSinglePageAsync(nextLink, context));
@@ -3193,12 +2583,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(String resourceGroupName) {
@@ -3208,49 +2598,45 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(
-        String resourceGroupName, String skipToken, Context context) {
+    public PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(String resourceGroupName, String skipToken,
+        Context context) {
         return new PagedIterable<>(listOrderAtResourceGroupLevelAsync(resourceGroupName, skipToken, context));
     }
 
     /**
      * Gets an order.
-     *
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
+     * @return an order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrderResourceInner>> getOrderByNameWithResponseAsync(
-        String orderName, String resourceGroupName, String location) {
+    private Mono<Response<OrderResourceInner>> getOrderByNameWithResponseAsync(String orderName,
+        String resourceGroupName, String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3262,23 +2648,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getOrderByName(
-                            this.client.getEndpoint(),
-                            orderName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getOrderByName(this.client.getEndpoint(), orderName, this.client.getSubscriptionId(),
+                    resourceGroupName, location, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an order.
-     *
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
@@ -3286,25 +2663,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
+     * @return an order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrderResourceInner>> getOrderByNameWithResponseAsync(
-        String orderName, String resourceGroupName, String location, Context context) {
+    private Mono<Response<OrderResourceInner>> getOrderByNameWithResponseAsync(String orderName,
+        String resourceGroupName, String location, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3315,45 +2688,48 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOrderByName(
-                this.client.getEndpoint(),
-                orderName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getOrderByName(this.client.getEndpoint(), orderName, this.client.getSubscriptionId(),
+            resourceGroupName, location, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an order.
-     *
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
+     * @return an order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrderResourceInner> getOrderByNameAsync(String orderName, String resourceGroupName, String location) {
         return getOrderByNameWithResponseAsync(orderName, resourceGroupName, location)
-            .flatMap(
-                (Response<OrderResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an order.
-     *
+     * 
+     * @param orderName The name of the order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OrderResourceInner> getOrderByNameWithResponse(String orderName, String resourceGroupName,
+        String location, Context context) {
+        return getOrderByNameWithResponseAsync(orderName, resourceGroupName, location, context).block();
+    }
+
+    /**
+     * Gets an order.
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
@@ -3364,57 +2740,35 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrderResourceInner getOrderByName(String orderName, String resourceGroupName, String location) {
-        return getOrderByNameAsync(orderName, resourceGroupName, location).block();
-    }
-
-    /**
-     * Gets an order.
-     *
-     * @param orderName The name of the order.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OrderResourceInner> getOrderByNameWithResponse(
-        String orderName, String resourceGroupName, String location, Context context) {
-        return getOrderByNameWithResponseAsync(orderName, resourceGroupName, location, context).block();
+        return getOrderByNameWithResponse(orderName, resourceGroupName, location, Context.NONE).getValue();
     }
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtResourceGroupLevelSinglePageAsync(
         String resourceGroupName, String filter, String expand, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3422,62 +2776,41 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOrderItemsAtResourceGroupLevel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<OrderItemResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOrderItemsAtResourceGroupLevel(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), filter, expand,
+                skipToken, accept, context))
+            .<PagedResponse<OrderItemResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtResourceGroupLevelSinglePageAsync(
         String resourceGroupName, String filter, String expand, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3486,46 +2819,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOrderItemsAtResourceGroupLevel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                expand,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOrderItemsAtResourceGroupLevel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), filter, expand, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderItemResourceInner> listOrderItemsAtResourceGroupLevelAsync(
-        String resourceGroupName, String filter, String expand, String skipToken) {
+    private PagedFlux<OrderItemResourceInner> listOrderItemsAtResourceGroupLevelAsync(String resourceGroupName,
+        String filter, String expand, String skipToken) {
         return new PagedFlux<>(
             () -> listOrderItemsAtResourceGroupLevelSinglePageAsync(resourceGroupName, filter, expand, skipToken),
             nextLink -> listOrderItemsAtResourceGroupLevelNextSinglePageAsync(nextLink));
@@ -3533,12 +2851,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderItemResourceInner> listOrderItemsAtResourceGroupLevelAsync(String resourceGroupName) {
@@ -3552,39 +2870,37 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderItemResourceInner> listOrderItemsAtResourceGroupLevelAsync(
-        String resourceGroupName, String filter, String expand, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listOrderItemsAtResourceGroupLevelSinglePageAsync(
-                    resourceGroupName, filter, expand, skipToken, context),
+    private PagedFlux<OrderItemResourceInner> listOrderItemsAtResourceGroupLevelAsync(String resourceGroupName,
+        String filter, String expand, String skipToken, Context context) {
+        return new PagedFlux<>(() -> listOrderItemsAtResourceGroupLevelSinglePageAsync(resourceGroupName, filter,
+            expand, skipToken, context),
             nextLink -> listOrderItemsAtResourceGroupLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(String resourceGroupName) {
@@ -3597,113 +2913,94 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(
-        String resourceGroupName, String filter, String expand, String skipToken, Context context) {
+    public PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(String resourceGroupName,
+        String filter, String expand, String skipToken, Context context) {
         return new PagedIterable<>(
             listOrderItemsAtResourceGroupLevelAsync(resourceGroupName, filter, expand, skipToken, context));
     }
 
     /**
      * Gets an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
+     * @return an order item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrderItemResourceInner>> getOrderItemByNameWithResponseAsync(
-        String orderItemName, String resourceGroupName, String expand) {
+    private Mono<Response<OrderItemResourceInner>> getOrderItemByNameWithResponseAsync(String orderItemName,
+        String resourceGroupName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getOrderItemByName(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            expand,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getOrderItemByName(this.client.getEndpoint(), orderItemName,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
+     * @return an order item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrderItemResourceInner>> getOrderItemByNameWithResponseAsync(
-        String orderItemName, String resourceGroupName, String expand, Context context) {
+    private Mono<Response<OrderItemResourceInner>> getOrderItemByNameWithResponseAsync(String orderItemName,
+        String resourceGroupName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3711,73 +3008,51 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOrderItemByName(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                expand,
-                accept,
-                context);
+        return service.getOrderItemByName(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), expand, accept, context);
     }
 
     /**
      * Gets an order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> getOrderItemByNameAsync(
-        String orderItemName, String resourceGroupName, String expand) {
-        return getOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, expand)
-            .flatMap(
-                (Response<OrderItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
+     * @return an order item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrderItemResourceInner> getOrderItemByNameAsync(String orderItemName, String resourceGroupName) {
         final String expand = null;
         return getOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, expand)
-            .flatMap(
-                (Response<OrderItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OrderItemResourceInner> getOrderItemByNameWithResponse(String orderItemName,
+        String resourceGroupName, String expand, Context context) {
+        return getOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, expand, context).block();
+    }
+
+    /**
+     * Gets an order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3788,59 +3063,34 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrderItemResourceInner getOrderItemByName(String orderItemName, String resourceGroupName) {
         final String expand = null;
-        return getOrderItemByNameAsync(orderItemName, resourceGroupName, expand).block();
-    }
-
-    /**
-     * Gets an order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OrderItemResourceInner> getOrderItemByNameWithResponse(
-        String orderItemName, String resourceGroupName, String expand, Context context) {
-        return getOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, expand, context).block();
+        return getOrderItemByNameWithResponse(orderItemName, resourceGroupName, expand, Context.NONE).getValue();
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrderItemWithResponseAsync(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, OrderItemResourceInner orderItemResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3854,25 +3104,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrderItem(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            orderItemResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrderItem(this.client.getEndpoint(), orderItemName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), orderItemResource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -3880,25 +3121,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrderItemWithResponseAsync(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3912,49 +3149,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrderItem(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                orderItemResource,
-                accept,
-                context);
+        return service.createOrderItem(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), orderItemResource, accept, context);
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link PollerFlux} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItemAsync(
         String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemResource);
-        return this
-            .client
-            .<OrderItemResourceInner, OrderItemResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OrderItemResourceInner.class,
-                OrderItemResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemResource);
+        return this.client.<OrderItemResourceInner, OrderItemResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrderItemResourceInner.class, OrderItemResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -3962,46 +3186,40 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link PollerFlux} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItemAsync(
         String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemResource, context);
-        return this
-            .client
-            .<OrderItemResourceInner, OrderItemResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OrderItemResourceInner.class,
-                OrderItemResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemResource, context);
+        return this.client.<OrderItemResourceInner, OrderItemResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrderItemResourceInner.class, OrderItemResourceInner.class, context);
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
-        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource).getSyncPoller();
+    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner>
+        beginCreateOrderItem(String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
+        return this.beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource).getSyncPoller();
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -4009,38 +3227,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(
         String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
-        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource, context).getSyncPoller();
+        return this.beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> createOrderItemAsync(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
-        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource)
-            .last()
+    private Mono<OrderItemResourceInner> createOrderItemAsync(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource) {
+        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -4048,20 +3266,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> createOrderItemAsync(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
-        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource, context)
-            .last()
+    private Mono<OrderItemResourceInner> createOrderItemAsync(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource, Context context) {
+        return beginCreateOrderItemAsync(orderItemName, resourceGroupName, orderItemResource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -4071,15 +3288,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrderItemResourceInner createOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource) {
+    public OrderItemResourceInner createOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource) {
         return createOrderItemAsync(orderItemName, resourceGroupName, orderItemResource).block();
     }
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -4090,38 +3307,34 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrderItemResourceInner createOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context) {
+    public OrderItemResourceInner createOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource, Context context) {
         return createOrderItemAsync(orderItemName, resourceGroupName, orderItemResource, context).block();
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByNameWithResponseAsync(
-        String orderItemName, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByNameWithResponseAsync(String orderItemName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4129,48 +3342,35 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteOrderItemByName(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.deleteOrderItemByName(this.client.getEndpoint(), orderItemName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByNameWithResponseAsync(
-        String orderItemName, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteOrderItemByNameWithResponseAsync(String orderItemName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4178,131 +3378,119 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteOrderItemByName(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deleteOrderItemByName(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteOrderItemByNameAsync(
-        String orderItemName, String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteOrderItemByNameAsync(String orderItemName,
+        String resourceGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteOrderItemByNameAsync(
-        String orderItemName, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteOrderItemByNameAsync(String orderItemName,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteOrderItemByNameWithResponseAsync(orderItemName, resourceGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(
-        String orderItemName, String resourceGroupName) {
-        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(String orderItemName,
+        String resourceGroupName) {
+        return this.beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName).getSyncPoller();
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(
-        String orderItemName, String resourceGroupName, Context context) {
-        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(String orderItemName, String resourceGroupName,
+        Context context) {
+        return this.beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteOrderItemByNameAsync(String orderItemName, String resourceGroupName) {
-        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName)
-            .last()
+        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteOrderItemByNameAsync(String orderItemName, String resourceGroupName, Context context) {
-        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName, context)
-            .last()
+        return beginDeleteOrderItemByNameAsync(orderItemName, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4316,7 +3504,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -4331,308 +3519,262 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateOrderItemWithResponseAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> updateOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (orderItemUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter orderItemUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter orderItemUpdateParameter is required and cannot be null."));
         } else {
             orderItemUpdateParameter.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateOrderItem(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            orderItemUpdateParameter,
-                            accept,
-                            context))
+            .withContext(context -> service.updateOrderItem(this.client.getEndpoint(), orderItemName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), ifMatch,
+                orderItemUpdateParameter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateOrderItemWithResponseAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (orderItemUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter orderItemUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter orderItemUpdateParameter is required and cannot be null."));
         } else {
             orderItemUpdateParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateOrderItem(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ifMatch,
-                orderItemUpdateParameter,
-                accept,
-                context);
+        return service.updateOrderItem(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), ifMatch, orderItemUpdateParameter, accept, context);
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link PollerFlux} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
+        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter,
         String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch);
-        return this
-            .client
-            .<OrderItemResourceInner, OrderItemResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OrderItemResourceInner.class,
-                OrderItemResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch);
+        return this.client.<OrderItemResourceInner, OrderItemResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrderItemResourceInner.class, OrderItemResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param orderItemUpdateParameter order item update parameters from request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of represents order item contract.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItemAsync(
+        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateOrderItemWithResponseAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch);
+        return this.client.<OrderItemResourceInner, OrderItemResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrderItemResourceInner.class, OrderItemResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Updates the properties of an existing order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link PollerFlux} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context) {
+        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter,
+        String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateOrderItemWithResponseAsync(
-                orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateOrderItemWithResponseAsync(orderItemName, resourceGroupName,
+            orderItemUpdateParameter, ifMatch, context);
+        return this.client.<OrderItemResourceInner, OrderItemResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrderItemResourceInner.class, OrderItemResourceInner.class, context);
+    }
+
+    /**
+     * Updates the properties of an existing order item.
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param orderItemUpdateParameter order item update parameters from request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
+        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter) {
+        final String ifMatch = null;
+        return this.beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the properties of an existing order item.
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param orderItemUpdateParameter order item update parameters from request body.
+     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
+     * server matches this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
+        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter,
+        String ifMatch, Context context) {
         return this
-            .client
-            .<OrderItemResourceInner, OrderItemResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OrderItemResourceInner.class,
-                OrderItemResourceInner.class,
-                context);
-    }
-
-    /**
-     * Updates the properties of an existing order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param orderItemUpdateParameter order item update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch) {
-        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch)
+            .beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch, context)
             .getSyncPoller();
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
-     * @param context The context to associate with this operation.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context) {
-        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Updates the properties of an existing order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param orderItemUpdateParameter order item update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> updateOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch) {
-        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch)
-            .last()
+    private Mono<OrderItemResourceInner> updateOrderItemAsync(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch) {
+        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> updateOrderItemAsync(
-        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter) {
+    private Mono<OrderItemResourceInner> updateOrderItemAsync(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter) {
         final String ifMatch = null;
-        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch)
-            .last()
+        return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return represents order item contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderItemResourceInner> updateOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context) {
+    private Mono<OrderItemResourceInner> updateOrderItemAsync(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch, Context context) {
         return beginUpdateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4640,29 +3782,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Updates the properties of an existing order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param orderItemUpdateParameter order item update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrderItemResourceInner updateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch) {
-        return updateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch).block();
-    }
-
-    /**
-     * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
@@ -4672,20 +3792,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrderItemResourceInner updateOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter) {
+    public OrderItemResourceInner updateOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter) {
         final String ifMatch = null;
         return updateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch).block();
     }
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4693,44 +3813,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrderItemResourceInner updateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context) {
+    public OrderItemResourceInner updateOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch, Context context) {
         return updateOrderItemAsync(orderItemName, resourceGroupName, orderItemUpdateParameter, ifMatch, context)
             .block();
     }
 
     /**
      * Cancel order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelOrderItemWithResponseAsync(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason) {
+    private Mono<Response<Void>> cancelOrderItemWithResponseAsync(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4744,24 +3856,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancelOrderItem(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            cancellationReason,
-                            accept,
-                            context))
+            .withContext(context -> service.cancelOrderItem(this.client.getEndpoint(), orderItemName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), cancellationReason,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancel order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
@@ -4769,25 +3872,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelOrderItemWithResponseAsync(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason, Context context) {
+    private Mono<Response<Void>> cancelOrderItemWithResponseAsync(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4801,39 +3900,49 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancelOrderItem(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                cancellationReason,
-                accept,
-                context);
+        return service.cancelOrderItem(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), cancellationReason, accept, context);
     }
 
     /**
      * Cancel order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelOrderItemAsync(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason) {
+    private Mono<Void> cancelOrderItemAsync(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason) {
         return cancelOrderItemWithResponseAsync(orderItemName, resourceGroupName, cancellationReason)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Cancel order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cancellationReason Reason for cancellation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelOrderItemWithResponse(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason, Context context) {
+        return cancelOrderItemWithResponseAsync(orderItemName, resourceGroupName, cancellationReason, context).block();
+    }
+
+    /**
+     * Cancel order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
@@ -4843,87 +3952,55 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelOrderItem(String orderItemName, String resourceGroupName, CancellationReason cancellationReason) {
-        cancelOrderItemAsync(orderItemName, resourceGroupName, cancellationReason).block();
-    }
-
-    /**
-     * Cancel order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cancellationReason Reason for cancellation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelOrderItemWithResponse(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason, Context context) {
-        return cancelOrderItemWithResponseAsync(orderItemName, resourceGroupName, cancellationReason, context).block();
+        cancelOrderItemWithResponse(orderItemName, resourceGroupName, cancellationReason, Context.NONE);
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> returnOrderItemWithResponseAsync(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
+    private Mono<Response<Flux<ByteBuffer>>> returnOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (returnOrderItemDetails == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter returnOrderItemDetails is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter returnOrderItemDetails is required and cannot be null."));
         } else {
             returnOrderItemDetails.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .returnOrderItem(
-                            this.client.getEndpoint(),
-                            orderItemName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            returnOrderItemDetails,
-                            accept,
-                            context))
+            .withContext(context -> service.returnOrderItem(this.client.getEndpoint(), orderItemName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), returnOrderItemDetails,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -4931,79 +4008,61 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> returnOrderItemWithResponseAsync(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> returnOrderItemWithResponseAsync(String orderItemName,
+        String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (orderItemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orderItemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (returnOrderItemDetails == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter returnOrderItemDetails is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter returnOrderItemDetails is required and cannot be null."));
         } else {
             returnOrderItemDetails.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .returnOrderItem(
-                this.client.getEndpoint(),
-                orderItemName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                returnOrderItemDetails,
-                accept,
-                context);
+        return service.returnOrderItem(this.client.getEndpoint(), orderItemName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), returnOrderItemDetails, accept, context);
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReturnOrderItemAsync(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            returnOrderItemWithResponseAsync(orderItemName, resourceGroupName, returnOrderItemDetails);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginReturnOrderItemAsync(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = returnOrderItemWithResponseAsync(orderItemName, resourceGroupName, returnOrderItemDetails);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -5011,42 +4070,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReturnOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginReturnOrderItemAsync(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            returnOrderItemWithResponseAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = returnOrderItemWithResponseAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
-        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails) {
+        return this.beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails).getSyncPoller();
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -5054,40 +4109,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
-        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context)
+    public SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context) {
+        return this.beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context)
             .getSyncPoller();
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> returnOrderItemAsync(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
-        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails)
-            .last()
+    private Mono<Void> returnOrderItemAsync(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails) {
+        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -5095,22 +4146,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> returnOrderItemAsync(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
-        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context)
-            .last()
+    private Mono<Void> returnOrderItemAsync(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context) {
+        return beginReturnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -5119,14 +4166,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void returnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
+    public void returnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails) {
         returnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails).block();
     }
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -5136,22 +4183,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void returnOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
+    public void returnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context) {
         returnOrderItemAsync(orderItemName, resourceGroupName, returnOrderItemDetails, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
@@ -5159,35 +4204,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink, Context context) {
@@ -5195,109 +4232,79 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOperationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listAddressesAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AddressResourceInner>>
+        listAddressesAtSubscriptionLevelNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listAddressesAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AddressResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAddressesAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<AddressResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listAddressesAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AddressResourceInner>>
+        listAddressesAtSubscriptionLevelNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAddressesAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAddressesAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductFamilyInner>> listProductFamiliesNextSinglePageAsync(String nextLink) {
@@ -5305,72 +4312,53 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listProductFamiliesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProductFamilyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ProductFamilyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProductFamilyInner>> listProductFamiliesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ProductFamilyInner>> listProductFamiliesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listProductFamiliesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listProductFamiliesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationInner>> listConfigurationsNextSinglePageAsync(String nextLink) {
@@ -5378,147 +4366,109 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listConfigurationsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationInner>> listConfigurationsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfigurationInner>> listConfigurationsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listConfigurationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listConfigurationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>> listProductFamiliesMetadataNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>>
+        listProductFamiliesMetadataNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listProductFamiliesMetadataNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProductFamiliesMetadataDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listProductFamiliesMetadataNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProductFamiliesMetadataDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>> listProductFamiliesMetadataNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ProductFamiliesMetadataDetailsInner>>
+        listProductFamiliesMetadataNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listProductFamiliesMetadataNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listProductFamiliesMetadataNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelNextSinglePageAsync(String nextLink) {
@@ -5526,223 +4476,162 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listOrderAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OrderResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listOrderAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OrderResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<OrderResourceInner>> listOrderAtSubscriptionLevelNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOrderAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOrderAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<OrderItemResourceInner>>
+        listOrderItemsAtSubscriptionLevelNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listOrderItemsAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OrderItemResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOrderItemsAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<OrderItemResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<OrderItemResourceInner>>
+        listOrderItemsAtSubscriptionLevelNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOrderItemsAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOrderItemsAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listAddressesAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AddressResourceInner>>
+        listAddressesAtResourceGroupLevelNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listAddressesAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AddressResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAddressesAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<AddressResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AddressResourceInner>> listAddressesAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AddressResourceInner>>
+        listAddressesAtResourceGroupLevelNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAddressesAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAddressesAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrderResourceInner>> listOrderAtResourceGroupLevelNextSinglePageAsync(String nextLink) {
@@ -5750,138 +4639,96 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listOrderAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OrderResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listOrderAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OrderResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderResourceInner>> listOrderAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<OrderResourceInner>> listOrderAtResourceGroupLevelNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOrderAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOrderAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<OrderItemResourceInner>>
+        listOrderItemsAtResourceGroupLevelNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOrderItemsAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OrderItemResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOrderItemsAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<OrderItemResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderItemResourceInner>> listOrderItemsAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<OrderItemResourceInner>>
+        listOrderItemsAtResourceGroupLevelNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOrderItemsAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOrderItemsAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

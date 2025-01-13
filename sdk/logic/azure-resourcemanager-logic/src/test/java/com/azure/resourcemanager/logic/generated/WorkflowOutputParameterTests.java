@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowOutputParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowOutputParameter model =
-            BinaryData
-                .fromString(
-                    "{\"error\":\"dataofmxagkvtmelmqkr\",\"type\":\"Array\",\"value\":\"dataljuahaquhcdh\",\"metadata\":\"dataualaexqpvfadmw\",\"description\":\"crgvxpvgom\"}")
-                .toObject(WorkflowOutputParameter.class);
-        Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("crgvxpvgom", model.description());
+        WorkflowOutputParameter model = BinaryData.fromString(
+            "{\"error\":\"dataxqhuexm\",\"type\":\"Int\",\"value\":\"datastvlzywemhzrnc\",\"metadata\":\"datatclusiypbsfgy\",\"description\":\"uslfead\"}")
+            .toObject(WorkflowOutputParameter.class);
+        Assertions.assertEquals(ParameterType.INT, model.type());
+        Assertions.assertEquals("uslfead", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowOutputParameter model =
-            new WorkflowOutputParameter()
-                .withType(ParameterType.ARRAY)
-                .withValue("dataljuahaquhcdh")
-                .withMetadata("dataualaexqpvfadmw")
-                .withDescription("crgvxpvgom");
+        WorkflowOutputParameter model = new WorkflowOutputParameter().withType(ParameterType.INT)
+            .withValue("datastvlzywemhzrnc")
+            .withMetadata("datatclusiypbsfgy")
+            .withDescription("uslfead");
         model = BinaryData.fromObject(model).toObject(WorkflowOutputParameter.class);
-        Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("crgvxpvgom", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.type());
+        Assertions.assertEquals("uslfead", model.description());
     }
 }

@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.QueryColumn;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Query properties. */
+/**
+ * Query properties.
+ */
 @Fluent
-public final class QueryProperties {
+public final class QueryProperties implements JsonSerializable<QueryProperties> {
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of columns
      */
-    @JsonProperty(value = "columns")
     private List<QueryColumn> columns;
 
     /*
      * Array of rows
      */
-    @JsonProperty(value = "rows")
     private List<List<Object>> rows;
 
-    /** Creates an instance of QueryProperties class. */
+    /**
+     * Creates an instance of QueryProperties class.
+     */
     public QueryProperties() {
     }
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -45,7 +50,7 @@ public final class QueryProperties {
 
     /**
      * Set the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the QueryProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class QueryProperties {
 
     /**
      * Get the columns property: Array of columns.
-     *
+     * 
      * @return the columns value.
      */
     public List<QueryColumn> columns() {
@@ -65,7 +70,7 @@ public final class QueryProperties {
 
     /**
      * Set the columns property: Array of columns.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the QueryProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class QueryProperties {
 
     /**
      * Get the rows property: Array of rows.
-     *
+     * 
      * @return the rows value.
      */
     public List<List<Object>> rows() {
@@ -85,7 +90,7 @@ public final class QueryProperties {
 
     /**
      * Set the rows property: Array of rows.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the QueryProperties object itself.
      */
@@ -96,12 +101,58 @@ public final class QueryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryProperties.
+     */
+    public static QueryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryProperties deserializedQueryProperties = new QueryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedQueryProperties.nextLink = reader.getString();
+                } else if ("columns".equals(fieldName)) {
+                    List<QueryColumn> columns = reader.readArray(reader1 -> QueryColumn.fromJson(reader1));
+                    deserializedQueryProperties.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<List<Object>> rows
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.readUntyped()));
+                    deserializedQueryProperties.rows = rows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryProperties;
+        });
     }
 }

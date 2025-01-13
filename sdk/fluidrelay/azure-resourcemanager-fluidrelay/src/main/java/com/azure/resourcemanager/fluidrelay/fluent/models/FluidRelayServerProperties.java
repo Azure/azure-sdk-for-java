@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.fluidrelay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.models.EncryptionProperties;
 import com.azure.resourcemanager.fluidrelay.models.FluidRelayEndpoints;
 import com.azure.resourcemanager.fluidrelay.models.ProvisioningState;
 import com.azure.resourcemanager.fluidrelay.models.StorageSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a Fluid Relay Service resource. */
+/**
+ * The properties of a Fluid Relay Service resource.
+ */
 @Fluent
-public final class FluidRelayServerProperties {
+public final class FluidRelayServerProperties implements JsonSerializable<FluidRelayServerProperties> {
     /*
      * The Fluid tenantId for this server
      */
-    @JsonProperty(value = "frsTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String frsTenantId;
 
     /*
      * The Fluid Relay Service endpoints for this server.
      */
-    @JsonProperty(value = "fluidRelayEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private FluidRelayEndpoints fluidRelayEndpoints;
 
     /*
      * Provision states for FluidRelay RP
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * All encryption configuration for a resource.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
-     * StorageSKU
-     *
      * Sku of the storage associated with the resource
      */
-    @JsonProperty(value = "storagesku")
     private StorageSku storagesku;
 
     /**
+     * Creates an instance of FluidRelayServerProperties class.
+     */
+    public FluidRelayServerProperties() {
+    }
+
+    /**
      * Get the frsTenantId property: The Fluid tenantId for this server.
-     *
+     * 
      * @return the frsTenantId value.
      */
     public String frsTenantId() {
@@ -57,7 +62,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Get the fluidRelayEndpoints property: The Fluid Relay Service endpoints for this server.
-     *
+     * 
      * @return the fluidRelayEndpoints value.
      */
     public FluidRelayEndpoints fluidRelayEndpoints() {
@@ -66,7 +71,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Get the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -75,7 +80,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Set the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the FluidRelayServerProperties object itself.
      */
@@ -86,7 +91,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Get the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -95,7 +100,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Set the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FluidRelayServerProperties object itself.
      */
@@ -105,10 +110,8 @@ public final class FluidRelayServerProperties {
     }
 
     /**
-     * Get the storagesku property: StorageSKU
-     *
-     * <p>Sku of the storage associated with the resource.
-     *
+     * Get the storagesku property: Sku of the storage associated with the resource.
+     * 
      * @return the storagesku value.
      */
     public StorageSku storagesku() {
@@ -116,10 +119,8 @@ public final class FluidRelayServerProperties {
     }
 
     /**
-     * Set the storagesku property: StorageSKU
-     *
-     * <p>Sku of the storage associated with the resource.
-     *
+     * Set the storagesku property: Sku of the storage associated with the resource.
+     * 
      * @param storagesku the storagesku value to set.
      * @return the FluidRelayServerProperties object itself.
      */
@@ -130,7 +131,7 @@ public final class FluidRelayServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -140,5 +141,53 @@ public final class FluidRelayServerProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("storagesku", this.storagesku == null ? null : this.storagesku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayServerProperties.
+     */
+    public static FluidRelayServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerProperties deserializedFluidRelayServerProperties = new FluidRelayServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frsTenantId".equals(fieldName)) {
+                    deserializedFluidRelayServerProperties.frsTenantId = reader.getString();
+                } else if ("fluidRelayEndpoints".equals(fieldName)) {
+                    deserializedFluidRelayServerProperties.fluidRelayEndpoints = FluidRelayEndpoints.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFluidRelayServerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedFluidRelayServerProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("storagesku".equals(fieldName)) {
+                    deserializedFluidRelayServerProperties.storagesku = StorageSku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerProperties;
+        });
     }
 }

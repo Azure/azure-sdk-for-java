@@ -52,21 +52,21 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of PoolsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PoolsClientImpl(DevOpsInfrastructureClientImpl client) {
+    PoolsClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service = RestProxy.create(PoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientPools to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientPools to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -1169,8 +1169,6 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List Pool resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1199,8 +1197,6 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List Pool resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1228,8 +1224,6 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List Pool resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1258,8 +1252,6 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List Pool resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

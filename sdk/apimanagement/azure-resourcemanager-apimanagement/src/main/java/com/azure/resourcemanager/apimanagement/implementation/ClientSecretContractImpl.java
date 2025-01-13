@@ -12,8 +12,7 @@ public final class ClientSecretContractImpl implements ClientSecretContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ClientSecretContractImpl(
-        ClientSecretContractInner innerObject,
+    ClientSecretContractImpl(ClientSecretContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

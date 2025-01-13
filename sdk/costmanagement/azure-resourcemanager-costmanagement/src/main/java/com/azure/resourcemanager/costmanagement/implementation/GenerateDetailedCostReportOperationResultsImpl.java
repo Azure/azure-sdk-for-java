@@ -19,8 +19,7 @@ public final class GenerateDetailedCostReportOperationResultsImpl
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public GenerateDetailedCostReportOperationResultsImpl(
-        GenerateDetailedCostReportOperationResultsClient innerClient,
+    public GenerateDetailedCostReportOperationResultsImpl(GenerateDetailedCostReportOperationResultsClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

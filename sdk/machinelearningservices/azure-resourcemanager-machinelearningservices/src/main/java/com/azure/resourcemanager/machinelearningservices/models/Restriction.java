@@ -13,7 +13,8 @@ import java.util.List;
 /** The restriction because of which SKU cannot be used. */
 @Fluent
 public final class Restriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Restriction.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Restriction.class);
 
     /*
      * The type of restrictions. As of now only possible value for this is

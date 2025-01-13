@@ -5,86 +5,100 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
-/** Describes bookmark properties. */
+/**
+ * Describes bookmark properties.
+ */
 @Fluent
 public final class HuntingBookmarkProperties extends EntityCommonProperties {
     /*
      * The time the bookmark was created
      */
-    @JsonProperty(value = "created")
     private OffsetDateTime created;
 
     /*
      * Describes a user that created the bookmark
      */
-    @JsonProperty(value = "createdBy")
     private UserInfo createdBy;
 
     /*
      * The display name of the bookmark
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The time of the event
      */
-    @JsonProperty(value = "eventTime")
     private OffsetDateTime eventTime;
 
     /*
      * List of labels relevant to this bookmark
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * The notes of the bookmark
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /*
      * The query of the bookmark.
      */
-    @JsonProperty(value = "query", required = true)
     private String query;
 
     /*
      * The query result of the bookmark.
      */
-    @JsonProperty(value = "queryResult")
     private String queryResult;
 
     /*
      * The last time the bookmark was updated
      */
-    @JsonProperty(value = "updated")
     private OffsetDateTime updated;
 
     /*
      * Describes a user that updated the bookmark
      */
-    @JsonProperty(value = "updatedBy")
     private UserInfo updatedBy;
 
     /*
      * Describes an incident that relates to bookmark
      */
-    @JsonProperty(value = "incidentInfo")
     private IncidentInfo incidentInfo;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of HuntingBookmarkProperties class.
+     */
+    public HuntingBookmarkProperties() {
+    }
 
     /**
      * Get the created property: The time the bookmark was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -93,7 +107,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the created property: The time the bookmark was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -104,7 +118,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @return the createdBy value.
      */
     public UserInfo createdBy() {
@@ -113,7 +127,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -124,7 +138,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the displayName property: The display name of the bookmark.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -133,7 +147,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the displayName property: The display name of the bookmark.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -144,7 +158,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the eventTime property: The time of the event.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -153,7 +167,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the eventTime property: The time of the event.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -164,7 +178,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -173,7 +187,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -184,7 +198,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the notes property: The notes of the bookmark.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -193,7 +207,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the notes property: The notes of the bookmark.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -204,7 +218,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the query property: The query of the bookmark.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -213,7 +227,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the query property: The query of the bookmark.
-     *
+     * 
      * @param query the query value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -224,7 +238,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the queryResult property: The query result of the bookmark.
-     *
+     * 
      * @return the queryResult value.
      */
     public String queryResult() {
@@ -233,7 +247,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the queryResult property: The query result of the bookmark.
-     *
+     * 
      * @param queryResult the queryResult value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -244,7 +258,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the updated property: The last time the bookmark was updated.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -253,7 +267,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the updated property: The last time the bookmark was updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -264,7 +278,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the updatedBy property: Describes a user that updated the bookmark.
-     *
+     * 
      * @return the updatedBy value.
      */
     public UserInfo updatedBy() {
@@ -273,7 +287,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the updatedBy property: Describes a user that updated the bookmark.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -284,7 +298,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Get the incidentInfo property: Describes an incident that relates to bookmark.
-     *
+     * 
      * @return the incidentInfo value.
      */
     public IncidentInfo incidentInfo() {
@@ -293,7 +307,7 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
 
     /**
      * Set the incidentInfo property: Describes an incident that relates to bookmark.
-     *
+     * 
      * @param incidentInfo the incidentInfo value to set.
      * @return the HuntingBookmarkProperties object itself.
      */
@@ -303,25 +317,45 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (createdBy() != null) {
             createdBy().validate();
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model HuntingBookmarkProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model HuntingBookmarkProperties"));
         }
         if (query() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property query in model HuntingBookmarkProperties"));
         }
         if (updatedBy() != null) {
@@ -333,4 +367,83 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HuntingBookmarkProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("created",
+            this.created == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.created));
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("eventTime",
+            this.eventTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventTime));
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("notes", this.notes);
+        jsonWriter.writeStringField("queryResult", this.queryResult);
+        jsonWriter.writeStringField("updated",
+            this.updated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updated));
+        jsonWriter.writeJsonField("updatedBy", this.updatedBy);
+        jsonWriter.writeJsonField("incidentInfo", this.incidentInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HuntingBookmarkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HuntingBookmarkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HuntingBookmarkProperties.
+     */
+    public static HuntingBookmarkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HuntingBookmarkProperties deserializedHuntingBookmarkProperties = new HuntingBookmarkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHuntingBookmarkProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.friendlyName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.displayName = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.query = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.createdBy = UserInfo.fromJson(reader);
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHuntingBookmarkProperties.labels = labels;
+                } else if ("notes".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.notes = reader.getString();
+                } else if ("queryResult".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.queryResult = reader.getString();
+                } else if ("updated".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.updated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.updatedBy = UserInfo.fromJson(reader);
+                } else if ("incidentInfo".equals(fieldName)) {
+                    deserializedHuntingBookmarkProperties.incidentInfo = IncidentInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHuntingBookmarkProperties;
+        });
+    }
 }

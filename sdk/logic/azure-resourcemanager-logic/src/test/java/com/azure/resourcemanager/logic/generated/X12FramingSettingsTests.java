@@ -13,38 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class X12FramingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12FramingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"dataElementSeparator\":1165309637,\"componentSeparator\":2128270651,\"replaceSeparatorsInPayload\":true,\"replaceCharacter\":206197210,\"segmentTerminator\":1485763904,\"characterSet\":\"UTF8\",\"segmentTerminatorSuffix\":\"None\"}")
-                .toObject(X12FramingSettings.class);
-        Assertions.assertEquals(1165309637, model.dataElementSeparator());
-        Assertions.assertEquals(2128270651, model.componentSeparator());
+        X12FramingSettings model = BinaryData.fromString(
+            "{\"dataElementSeparator\":1024527659,\"componentSeparator\":287579834,\"replaceSeparatorsInPayload\":true,\"replaceCharacter\":1727894568,\"segmentTerminator\":806033816,\"characterSet\":\"Basic\",\"segmentTerminatorSuffix\":\"LF\"}")
+            .toObject(X12FramingSettings.class);
+        Assertions.assertEquals(1024527659, model.dataElementSeparator());
+        Assertions.assertEquals(287579834, model.componentSeparator());
         Assertions.assertEquals(true, model.replaceSeparatorsInPayload());
-        Assertions.assertEquals(206197210, model.replaceCharacter());
-        Assertions.assertEquals(1485763904, model.segmentTerminator());
-        Assertions.assertEquals(X12CharacterSet.UTF8, model.characterSet());
-        Assertions.assertEquals(SegmentTerminatorSuffix.NONE, model.segmentTerminatorSuffix());
+        Assertions.assertEquals(1727894568, model.replaceCharacter());
+        Assertions.assertEquals(806033816, model.segmentTerminator());
+        Assertions.assertEquals(X12CharacterSet.BASIC, model.characterSet());
+        Assertions.assertEquals(SegmentTerminatorSuffix.LF, model.segmentTerminatorSuffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12FramingSettings model =
-            new X12FramingSettings()
-                .withDataElementSeparator(1165309637)
-                .withComponentSeparator(2128270651)
-                .withReplaceSeparatorsInPayload(true)
-                .withReplaceCharacter(206197210)
-                .withSegmentTerminator(1485763904)
-                .withCharacterSet(X12CharacterSet.UTF8)
-                .withSegmentTerminatorSuffix(SegmentTerminatorSuffix.NONE);
+        X12FramingSettings model = new X12FramingSettings().withDataElementSeparator(1024527659)
+            .withComponentSeparator(287579834)
+            .withReplaceSeparatorsInPayload(true)
+            .withReplaceCharacter(1727894568)
+            .withSegmentTerminator(806033816)
+            .withCharacterSet(X12CharacterSet.BASIC)
+            .withSegmentTerminatorSuffix(SegmentTerminatorSuffix.LF);
         model = BinaryData.fromObject(model).toObject(X12FramingSettings.class);
-        Assertions.assertEquals(1165309637, model.dataElementSeparator());
-        Assertions.assertEquals(2128270651, model.componentSeparator());
+        Assertions.assertEquals(1024527659, model.dataElementSeparator());
+        Assertions.assertEquals(287579834, model.componentSeparator());
         Assertions.assertEquals(true, model.replaceSeparatorsInPayload());
-        Assertions.assertEquals(206197210, model.replaceCharacter());
-        Assertions.assertEquals(1485763904, model.segmentTerminator());
-        Assertions.assertEquals(X12CharacterSet.UTF8, model.characterSet());
-        Assertions.assertEquals(SegmentTerminatorSuffix.NONE, model.segmentTerminatorSuffix());
+        Assertions.assertEquals(1727894568, model.replaceCharacter());
+        Assertions.assertEquals(806033816, model.segmentTerminator());
+        Assertions.assertEquals(X12CharacterSet.BASIC, model.characterSet());
+        Assertions.assertEquals(SegmentTerminatorSuffix.LF, model.segmentTerminatorSuffix());
     }
 }

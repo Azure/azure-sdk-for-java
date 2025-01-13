@@ -4,7 +4,7 @@
 package com.azure.maps.geolocation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
@@ -23,14 +23,14 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestBase.getHttpClients()
+        return TestProxyTestBase.getHttpClients()
             .flatMap(httpClient -> Arrays.stream(GeolocationServiceVersion.values())
                 .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
     static IpAddressToLocationResult getExpectedLocation() {
-        try (JsonReader jsonReader = JsonProviders.createReader(
-            ClassLoader.getSystemResourceAsStream("getlocation.json"))) {
+        try (JsonReader jsonReader
+            = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream("getlocation.json"))) {
             return IpAddressToLocationResult.fromJson(jsonReader);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

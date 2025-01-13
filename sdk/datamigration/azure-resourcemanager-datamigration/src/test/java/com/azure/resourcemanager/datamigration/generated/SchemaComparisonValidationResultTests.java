@@ -13,26 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaComparisonValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaComparisonValidationResult model =
-            BinaryData
-                .fromString(
-                    "{\"schemaDifferences\":{\"objectName\":\"hoqca\",\"objectType\":\"Function\",\"updateAction\":\"AddedOnTarget\"},\"validationErrors\":{\"text\":\"djvlpj\",\"severity\":\"Error\"},\"sourceDatabaseObjectCount\":{\"sgeivsiy\":6206470742211540343},\"targetDatabaseObjectCount\":{\"cjdx\":4044375509992632439,\"zoggculapz\":8303203525289313227}}")
-                .toObject(SchemaComparisonValidationResult.class);
-        Assertions.assertEquals(6206470742211540343L, model.sourceDatabaseObjectCount().get("sgeivsiy"));
-        Assertions.assertEquals(4044375509992632439L, model.targetDatabaseObjectCount().get("cjdx"));
+        SchemaComparisonValidationResult model = BinaryData.fromString(
+            "{\"schemaDifferences\":{\"objectName\":\"foj\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"ChangedOnTarget\"},\"validationErrors\":{\"text\":\"lcplc\",\"severity\":\"Warning\"},\"sourceDatabaseObjectCount\":{\"lhzdsqtzb\":2890962376533436249,\"nowc\":2978941899472695406,\"gmvecactxmw\":4272824792965282046,\"yowc\":8777916003567598395},\"targetDatabaseObjectCount\":{\"ekqvgqouwif\":3485830042406616316,\"j\":4207965579372127021,\"vqikfxcvhrfsphu\":6985401659827260093}}")
+            .toObject(SchemaComparisonValidationResult.class);
+        Assertions.assertEquals(2890962376533436249L, model.sourceDatabaseObjectCount().get("lhzdsqtzb"));
+        Assertions.assertEquals(3485830042406616316L, model.targetDatabaseObjectCount().get("ekqvgqouwif"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaComparisonValidationResult model =
-            new SchemaComparisonValidationResult()
-                .withSourceDatabaseObjectCount(mapOf("sgeivsiy", 6206470742211540343L))
-                .withTargetDatabaseObjectCount(mapOf("cjdx", 4044375509992632439L, "zoggculapz", 8303203525289313227L));
+        SchemaComparisonValidationResult model = new SchemaComparisonValidationResult()
+            .withSourceDatabaseObjectCount(mapOf("lhzdsqtzb", 2890962376533436249L, "nowc", 2978941899472695406L,
+                "gmvecactxmw", 4272824792965282046L, "yowc", 8777916003567598395L))
+            .withTargetDatabaseObjectCount(mapOf("ekqvgqouwif", 3485830042406616316L, "j", 4207965579372127021L,
+                "vqikfxcvhrfsphu", 6985401659827260093L));
         model = BinaryData.fromObject(model).toObject(SchemaComparisonValidationResult.class);
-        Assertions.assertEquals(6206470742211540343L, model.sourceDatabaseObjectCount().get("sgeivsiy"));
-        Assertions.assertEquals(4044375509992632439L, model.targetDatabaseObjectCount().get("cjdx"));
+        Assertions.assertEquals(2890962376533436249L, model.sourceDatabaseObjectCount().get("lhzdsqtzb"));
+        Assertions.assertEquals(3485830042406616316L, model.targetDatabaseObjectCount().get("ekqvgqouwif"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

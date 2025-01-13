@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class CommunityGalleryImagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/
      * communityGalleryExamples/CommunityGalleryImage_List.json
      */
     /**

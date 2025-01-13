@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class TransformationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Get.json
      */
     /**
@@ -19,7 +19,7 @@ public final class TransformationsGetSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getATransformation(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.transformations().getWithResponse("sjrg4423", "sj8374", "transformation952",
-            com.azure.core.util.Context.NONE);
+        manager.transformations()
+            .getWithResponse("sjrg4423", "sj8374", "transformation952", com.azure.core.util.Context.NONE);
     }
 }

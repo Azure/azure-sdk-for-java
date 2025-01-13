@@ -28,13 +28,12 @@ public final class NetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInner model
-            = new NetworkInner()
-                .withProperties(new NetworkProperties().withFabricType("eipheoflokeyy")
-                    .withSubnets(Arrays.asList(new Subnet().withName("bdlwtgrhpdjpj")
-                        .withFriendlyName("asxazjpqyegualhb").withAddressList(Arrays.asList("e", "jzzvdud"))))
-                    .withFriendlyName("dslfhotwmcy").withNetworkType("wlbjnpgacftade"))
-                .withLocation("nltyfsoppusuesnz");
+        NetworkInner model = new NetworkInner().withProperties(new NetworkProperties().withFabricType("eipheoflokeyy")
+            .withSubnets(Arrays.asList(new Subnet().withName("bdlwtgrhpdjpj")
+                .withFriendlyName("asxazjpqyegualhb")
+                .withAddressList(Arrays.asList("e", "jzzvdud"))))
+            .withFriendlyName("dslfhotwmcy")
+            .withNetworkType("wlbjnpgacftade")).withLocation("nltyfsoppusuesnz");
         model = BinaryData.fromObject(model).toObject(NetworkInner.class);
         Assertions.assertEquals("eipheoflokeyy", model.properties().fabricType());
         Assertions.assertEquals("bdlwtgrhpdjpj", model.properties().subnets().get(0).name());

@@ -34,7 +34,6 @@ public final class ContinuousDtmfRecognitionOptions {
      */
     private String operationCallbackUrl;
 
-
     /**
      * Get the targetParticipant property.
      *

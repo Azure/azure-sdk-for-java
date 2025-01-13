@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the stop action properties. */
+/**
+ * Defines the stop action properties.
+ */
 @Fluent
-public final class StopVirtualMachineOptions {
+public final class StopVirtualMachineOptions implements JsonSerializable<StopVirtualMachineOptions> {
     /*
      * Gets or sets a value indicating whether to request non-graceful VM shutdown. True value for this flag indicates
      * non-graceful shutdown whereas false indicates otherwise. Defaults to false.
      */
-    @JsonProperty(value = "skipShutdown")
     private Boolean skipShutdown;
 
-    /** Creates an instance of StopVirtualMachineOptions class. */
+    /**
+     * Creates an instance of StopVirtualMachineOptions class.
+     */
     public StopVirtualMachineOptions() {
     }
 
     /**
      * Get the skipShutdown property: Gets or sets a value indicating whether to request non-graceful VM shutdown. True
      * value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Defaults to false.
-     *
+     * 
      * @return the skipShutdown value.
      */
     public Boolean skipShutdown() {
@@ -34,7 +41,7 @@ public final class StopVirtualMachineOptions {
     /**
      * Set the skipShutdown property: Gets or sets a value indicating whether to request non-graceful VM shutdown. True
      * value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Defaults to false.
-     *
+     * 
      * @param skipShutdown the skipShutdown value to set.
      * @return the StopVirtualMachineOptions object itself.
      */
@@ -45,9 +52,45 @@ public final class StopVirtualMachineOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("skipShutdown", this.skipShutdown);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StopVirtualMachineOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StopVirtualMachineOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StopVirtualMachineOptions.
+     */
+    public static StopVirtualMachineOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StopVirtualMachineOptions deserializedStopVirtualMachineOptions = new StopVirtualMachineOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skipShutdown".equals(fieldName)) {
+                    deserializedStopVirtualMachineOptions.skipShutdown = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStopVirtualMachineOptions;
+        });
     }
 }

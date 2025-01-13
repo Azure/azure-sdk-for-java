@@ -15,15 +15,11 @@
   <!-- Need not change for every release-->
 
   <modules>
-
     <module>azure-identity</module>
-
     <module>azure-identity-perf</module>
-
     <module>azure-identity-extensions</module>
-
     <module>azure-identity-broker</module>
-
+    <module>azure-identity-broker-samples</module>
   </modules>
 
 </project>

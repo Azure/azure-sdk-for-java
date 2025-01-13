@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResourceListResultInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -27,14 +29,14 @@ public interface PrivateLinkResourcesClient {
      * @return a list of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,9 +49,9 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -60,14 +62,14 @@ public interface PrivateLinkResourcesClient {
      * @return details of a group ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.

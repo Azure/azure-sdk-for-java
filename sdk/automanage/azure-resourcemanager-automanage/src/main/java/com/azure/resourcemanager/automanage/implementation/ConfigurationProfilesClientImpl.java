@@ -35,23 +35,28 @@ import com.azure.resourcemanager.automanage.models.ConfigurationProfileList;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileUpdate;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationProfilesClient.
+ */
 public final class ConfigurationProfilesClientImpl implements ConfigurationProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfigurationProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomanageClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationProfilesClientImpl(AutomanageClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ConfigurationProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ConfigurationProfilesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,126 +66,93 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomanageClientConf")
-    private interface ConfigurationProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
-                + "/configurationProfiles/{configurationProfileName}")
-        @ExpectedResponses({200, 201})
+    public interface ConfigurationProfilesService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfiles/{configurationProfileName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationProfileInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConfigurationProfileInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("configurationProfileName") String configurationProfileName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConfigurationProfileInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConfigurationProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
-                + "/configurationProfiles/{configurationProfileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfiles/{configurationProfileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationProfileInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConfigurationProfileInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("configurationProfileName") String configurationProfileName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
-                + "/configurationProfiles/{configurationProfileName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfiles/{configurationProfileName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configurationProfileName") String configurationProfileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
-                + "/configurationProfiles/{configurationProfileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfiles/{configurationProfileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationProfileInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConfigurationProfileInner>> update(@HostParam("$host") String endpoint,
             @PathParam("configurationProfileName") String configurationProfileName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConfigurationProfileUpdate parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConfigurationProfileUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
-                + "/configurationProfiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationProfileList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConfigurationProfileList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Automanage/configurationProfiles")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationProfileList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfigurationProfileList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to create or update configuration profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileInner parameters) {
+    private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -193,24 +165,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            configurationProfileName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), configurationProfileName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to create or update configuration profile.
@@ -218,31 +181,23 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(
-        String configurationProfileName,
-        String resourceGroupName,
-        ConfigurationProfileInner parameters,
-        Context context) {
+    private Mono<Response<ConfigurationProfileInner>> createOrUpdateWithResponseAsync(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,21 +210,14 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                configurationProfileName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), configurationProfileName,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Creates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to create or update configuration profile.
@@ -279,32 +227,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return definition of the configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationProfileInner> createOrUpdateAsync(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileInner parameters) {
+    private Mono<ConfigurationProfileInner> createOrUpdateAsync(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileInner parameters) {
         return createOrUpdateWithResponseAsync(configurationProfileName, resourceGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a configuration profile.
-     *
-     * @param configurationProfileName Name of the configuration profile.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Parameters supplied to create or update configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationProfileInner createOrUpdate(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileInner parameters) {
-        return createOrUpdateAsync(configurationProfileName, resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Creates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to create or update configuration profile.
@@ -315,118 +246,106 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return definition of the configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationProfileInner> createOrUpdateWithResponse(
-        String configurationProfileName,
-        String resourceGroupName,
-        ConfigurationProfileInner parameters,
-        Context context) {
+    public Response<ConfigurationProfileInner> createOrUpdateWithResponse(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(configurationProfileName, resourceGroupName, parameters, context)
             .block();
     }
 
     /**
+     * Creates a configuration profile.
+     * 
+     * @param configurationProfileName Name of the configuration profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters Parameters supplied to create or update configuration profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationProfileInner createOrUpdate(String configurationProfileName, String resourceGroupName,
+        ConfigurationProfileInner parameters) {
+        return createOrUpdateWithResponse(configurationProfileName, resourceGroupName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get information about a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName The configuration profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String configurationProfileName) {
+    private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String configurationProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            configurationProfileName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            this.client.getSubscriptionId(), configurationProfileName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get information about a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName The configuration profile name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String configurationProfileName, Context context) {
+    private Mono<Response<ConfigurationProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String configurationProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                configurationProfileName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            configurationProfileName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get information about a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName The configuration profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,30 +354,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return information about a configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationProfileInner> getByResourceGroupAsync(
-        String resourceGroupName, String configurationProfileName) {
+    private Mono<ConfigurationProfileInner> getByResourceGroupAsync(String resourceGroupName,
+        String configurationProfileName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configurationProfileName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get information about a configuration profile.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configurationProfileName The configuration profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationProfileInner getByResourceGroup(String resourceGroupName, String configurationProfileName) {
-        return getByResourceGroupAsync(resourceGroupName, configurationProfileName).block();
-    }
-
-    /**
-     * Get information about a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName The configuration profile name.
      * @param context The context to associate with this operation.
@@ -468,14 +372,29 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return information about a configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String configurationProfileName, Context context) {
+    public Response<ConfigurationProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String configurationProfileName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configurationProfileName, context).block();
     }
 
     /**
+     * Get information about a configuration profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configurationProfileName The configuration profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a configuration profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationProfileInner getByResourceGroup(String resourceGroupName, String configurationProfileName) {
+        return getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE).getValue();
+    }
+
+    /**
      * Delete a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName Name of the configuration profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,45 +405,32 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String configurationProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            configurationProfileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, configurationProfileName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName Name of the configuration profile.
      * @param context The context to associate with this operation.
@@ -534,45 +440,33 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String configurationProfileName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String configurationProfileName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                configurationProfileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, configurationProfileName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName Name of the configuration profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -587,21 +481,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Delete a configuration profile.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configurationProfileName Name of the configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String configurationProfileName) {
-        deleteAsync(resourceGroupName, configurationProfileName).block();
-    }
-
-    /**
-     * Delete a configuration profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileName Name of the configuration profile.
      * @param context The context to associate with this operation.
@@ -611,42 +491,51 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String configurationProfileName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String configurationProfileName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, configurationProfileName, context).block();
     }
 
     /**
+     * Delete a configuration profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configurationProfileName Name of the configuration profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String configurationProfileName) {
+        deleteWithResponse(resourceGroupName, configurationProfileName, Context.NONE);
+    }
+
+    /**
      * Updates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to update configuration profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileUpdate parameters) {
+    private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -659,24 +548,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            configurationProfileName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), configurationProfileName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to update configuration profile.
@@ -684,31 +564,23 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the configuration profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(
-        String configurationProfileName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters,
-        Context context) {
+    private Mono<Response<ConfigurationProfileInner>> updateWithResponseAsync(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (configurationProfileName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,21 +593,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                configurationProfileName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), configurationProfileName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to update configuration profile.
@@ -745,32 +609,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return definition of the configuration profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationProfileInner> updateAsync(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileUpdate parameters) {
+    private Mono<ConfigurationProfileInner> updateAsync(String configurationProfileName, String resourceGroupName,
+        ConfigurationProfileUpdate parameters) {
         return updateWithResponseAsync(configurationProfileName, resourceGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a configuration profile.
-     *
-     * @param configurationProfileName Name of the configuration profile.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Parameters supplied to update configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationProfileInner update(
-        String configurationProfileName, String resourceGroupName, ConfigurationProfileUpdate parameters) {
-        return updateAsync(configurationProfileName, resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Updates a configuration profile.
-     *
+     * 
      * @param configurationProfileName Name of the configuration profile.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters Parameters supplied to update configuration profile.
@@ -781,38 +628,48 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
      * @return definition of the configuration profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationProfileInner> updateWithResponse(
-        String configurationProfileName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters,
-        Context context) {
+    public Response<ConfigurationProfileInner> updateWithResponse(String configurationProfileName,
+        String resourceGroupName, ConfigurationProfileUpdate parameters, Context context) {
         return updateWithResponseAsync(configurationProfileName, resourceGroupName, parameters, context).block();
     }
 
     /**
+     * Updates a configuration profile.
+     * 
+     * @param configurationProfileName Name of the configuration profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters Parameters supplied to update configuration profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationProfileInner update(String configurationProfileName, String resourceGroupName,
+        ConfigurationProfileUpdate parameters) {
+        return updateWithResponse(configurationProfileName, resourceGroupName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<ConfigurationProfileInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -820,48 +677,34 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ConfigurationProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ConfigurationProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -870,22 +713,15 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -899,7 +735,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -914,13 +750,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the list configuration profile operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> listByResourceGroup(String resourceGroupName) {
@@ -929,14 +765,14 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the list configuration profile operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -945,86 +781,63 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ConfigurationProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list configuration profile operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list configuration profile operation as paginated response with {@link PagedFlux}.
@@ -1036,7 +849,7 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1050,11 +863,11 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the list configuration profile operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> list() {
@@ -1063,13 +876,13 @@ public final class ConfigurationProfilesClientImpl implements ConfigurationProfi
 
     /**
      * Retrieve a list of configuration profile within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the list configuration profile operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileInner> list(Context context) {

@@ -143,7 +143,9 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         final List<EventData> partitionEventList = Collections.synchronizedList(new ArrayList<EventData>());
         Thread thread = new Thread(() -> {
             partitionEventList.addAll(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
-                .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData)
+                .filter(event -> isMatchingEvent(event, messageTrackingValue))
+                .take(1)
+                .map(PartitionEvent::getData)
                 .collectList()
                 .block());
         });
@@ -191,7 +193,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         applicationPairTypes.add(new Pair("timestamp", new Date(1670289289)));
         applicationPairTypes.add(new Pair("uuid", UUID.fromString("a0739e7a-9926-4dd0-b4db-ee3c6ae255b3")));
 
-        applicationPairTypes.add(new Pair("byte[]", new Byte[]{10, 1},
+        applicationPairTypes.add(new Pair("byte[]", new Byte[] { 10, 1 },
             (expected, actual) -> assertEqualsArray((Byte[]) expected, actual, (a) -> {
                 assertTrue(a instanceof byte[]);
                 final byte[] bytes = (byte[]) a;
@@ -217,10 +219,10 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             });
         }));
 
-        applicationPairTypes.add(new Pair("list", listOfStrings,
-            (expected, actual) -> assertEqualsList((List<String>) expected, actual)));
+        applicationPairTypes.add(
+            new Pair("list", listOfStrings, (expected, actual) -> assertEqualsList((List<String>) expected, actual)));
 
-        applicationPairTypes.add(new Pair("array", new Float[]{15.5f, 10.2f}, (expected, actual) -> {
+        applicationPairTypes.add(new Pair("array", new Float[] { 15.5f, 10.2f }, (expected, actual) -> {
             assertEqualsArray((Float[]) expected, actual, (a) -> {
                 assertTrue(a instanceof float[]);
                 final float[] primitive = (float[]) a;
@@ -235,8 +237,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         }));
 
         final String partitionId = "1";
-        final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId)
-            .block();
+        final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId).block();
 
         assertNotNull(partitionProperties);
 
@@ -250,9 +251,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         applicationPairTypes.forEach(pair -> data.getProperties().put(pair.getKey(), pair.getValue()));
 
         // Act & Assert
-        StepVerifier.create(producer.send(data, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(data, options)).expectComplete().verify(TIMEOUT);
 
         StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.fromOffset(lastOffset)))
             .assertNext(partitionEvent -> {
@@ -291,24 +290,30 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,
         Map<String, Object> applicationProperties, EventData actual) {
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.MESSAGE_ID.getValue()));
-        Assertions.assertEquals(message.getMessageId(), actual.getSystemProperties().get(AmqpMessageConstant.MESSAGE_ID.getValue()));
+        Assertions.assertEquals(message.getMessageId(),
+            actual.getSystemProperties().get(AmqpMessageConstant.MESSAGE_ID.getValue()));
         Assertions.assertEquals(message.getMessageId(), actual.getMessageId());
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.USER_ID.getValue()));
-        Assertions.assertEquals(new String(message.getUserId()), new String((byte[]) actual.getSystemProperties().get(AmqpMessageConstant.USER_ID.getValue())));
+        Assertions.assertEquals(new String(message.getUserId()),
+            new String((byte[]) actual.getSystemProperties().get(AmqpMessageConstant.USER_ID.getValue())));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.TO.getValue()));
-        Assertions.assertEquals(message.getAddress(), actual.getSystemProperties().get(AmqpMessageConstant.TO.getValue()));
+        Assertions.assertEquals(message.getAddress(),
+            actual.getSystemProperties().get(AmqpMessageConstant.TO.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CONTENT_TYPE.getValue()));
-        Assertions.assertEquals(message.getContentType(), actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_TYPE.getValue()));
+        Assertions.assertEquals(message.getContentType(),
+            actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_TYPE.getValue()));
         Assertions.assertEquals(message.getContentType(), actual.getContentType());
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
-        Assertions.assertEquals(message.getContentEncoding(), actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
+        Assertions.assertEquals(message.getContentEncoding(),
+            actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CORRELATION_ID.getValue()));
-        Assertions.assertEquals(message.getCorrelationId(), actual.getSystemProperties().get(AmqpMessageConstant.CORRELATION_ID.getValue()));
+        Assertions.assertEquals(message.getCorrelationId(),
+            actual.getSystemProperties().get(AmqpMessageConstant.CORRELATION_ID.getValue()));
         Assertions.assertEquals(message.getCorrelationId(), actual.getCorrelationId());
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CREATION_TIME.getValue()));
@@ -316,16 +321,20 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             actual.getSystemProperties().get(AmqpMessageConstant.CREATION_TIME.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.SUBJECT.getValue()));
-        Assertions.assertEquals(message.getSubject(), actual.getSystemProperties().get(AmqpMessageConstant.SUBJECT.getValue()));
+        Assertions.assertEquals(message.getSubject(),
+            actual.getSystemProperties().get(AmqpMessageConstant.SUBJECT.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.GROUP_ID.getValue()));
-        Assertions.assertEquals(message.getGroupId(), actual.getSystemProperties().get(AmqpMessageConstant.GROUP_ID.getValue()));
+        Assertions.assertEquals(message.getGroupId(),
+            actual.getSystemProperties().get(AmqpMessageConstant.GROUP_ID.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
-        Assertions.assertEquals(message.getReplyToGroupId(), actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assertions.assertEquals(message.getReplyToGroupId(),
+            actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.REPLY_TO.getValue()));
-        Assertions.assertEquals(message.getReplyTo(), actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO.getValue()));
+        Assertions.assertEquals(message.getReplyTo(),
+            actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
         Assertions.assertEquals(message.getProperties().getAbsoluteExpiryTime().toInstant().atOffset(ZoneOffset.UTC),
@@ -382,7 +391,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         assertNotNull(replyTo);
         Assertions.assertEquals(message.getReplyTo(), replyTo.toString());
 
-
         final OffsetDateTime absoluteExpiryTime = actualProperties.getAbsoluteExpiryTime();
         assertNotNull(absoluteExpiryTime);
 
@@ -420,8 +428,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             final T a = expected.get(i);
             final T b = actualContents.get(i);
 
-            assertEquals(a, b, String.format("T[] at index %d did not match. Expected: %s. Actual: %s",
-                i, expected, actual));
+            assertEquals(a, b,
+                String.format("T[] at index %d did not match. Expected: %s. Actual: %s", i, expected, actual));
         }
     }
 
@@ -446,8 +454,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             final T a = expected[i];
             final T b = expected[i];
 
-            assertEquals(a, b, String.format("T[] at index %d did not match. Expected: %s. Actual: %s", i,
-                expected, actual));
+            assertEquals(a, b,
+                String.format("T[] at index %d did not match. Expected: %s. Actual: %s", i, expected, actual));
         }
     }
 

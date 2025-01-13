@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"wkdcwmqs\",\"connectionString\":\"ilm\",\"useFromLocation\":\"dqaolfylnkk\",\"resourceId\":\"pjvlywltmfwo\"}")
-                .toObject(CacheUpdateProperties.class);
+        CacheUpdateProperties model = BinaryData.fromString(
+            "{\"description\":\"wkdcwmqs\",\"connectionString\":\"ilm\",\"useFromLocation\":\"dqaolfylnkk\",\"resourceId\":\"pjvlywltmfwo\"}")
+            .toObject(CacheUpdateProperties.class);
         Assertions.assertEquals("wkdcwmqs", model.description());
         Assertions.assertEquals("ilm", model.connectionString());
         Assertions.assertEquals("dqaolfylnkk", model.useFromLocation());
@@ -24,12 +22,10 @@ public final class CacheUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheUpdateProperties model =
-            new CacheUpdateProperties()
-                .withDescription("wkdcwmqs")
-                .withConnectionString("ilm")
-                .withUseFromLocation("dqaolfylnkk")
-                .withResourceId("pjvlywltmfwo");
+        CacheUpdateProperties model = new CacheUpdateProperties().withDescription("wkdcwmqs")
+            .withConnectionString("ilm")
+            .withUseFromLocation("dqaolfylnkk")
+            .withResourceId("pjvlywltmfwo");
         model = BinaryData.fromObject(model).toObject(CacheUpdateProperties.class);
         Assertions.assertEquals("wkdcwmqs", model.description());
         Assertions.assertEquals("ilm", model.connectionString());

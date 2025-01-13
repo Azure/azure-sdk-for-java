@@ -75,6 +75,13 @@ public interface RedisEnterpriseManagementClient {
     DatabasesClient getDatabases();
 
     /**
+     * Gets the AccessPolicyAssignmentsClient object to access its operations.
+     * 
+     * @return the AccessPolicyAssignmentsClient object.
+     */
+    AccessPolicyAssignmentsClient getAccessPolicyAssignments();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
      * @return the PrivateEndpointConnectionsClient object.

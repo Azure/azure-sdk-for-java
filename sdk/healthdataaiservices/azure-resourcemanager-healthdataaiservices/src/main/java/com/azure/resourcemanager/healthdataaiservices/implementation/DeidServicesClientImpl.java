@@ -1179,8 +1179,6 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
-     * List DeidService resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1209,8 +1207,6 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
-     * List DeidService resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1239,8 +1235,6 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
-     * List DeidService resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1269,8 +1263,6 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
-     * List DeidService resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

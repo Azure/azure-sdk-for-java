@@ -24,18 +24,17 @@ public final class HttpRedirectOptions {
      *
      * @param maxAttempts The maximum number of redirect attempts to be made.
      * @param allowedRedirectHttpMethods The set of HTTP methods that are allowed to be redirected.
-     * @param locationHeader The header name containing the redirect URL.
+     * @param locationHeader The header name containing the redirect URI.
      * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
      */
-    public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader, EnumSet<HttpMethod> allowedRedirectHttpMethods) {
+    public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader,
+        EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
-            throw LOGGER.atError().log(null,
-                new IllegalArgumentException("Max attempts cannot be less than 0."));
+            throw LOGGER.atError().log(null, new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
-        this.allowedRedirectHttpMethods = allowedRedirectHttpMethods == null
-            ? EnumSet.noneOf(HttpMethod.class)
-            : allowedRedirectHttpMethods;
+        this.allowedRedirectHttpMethods
+            = allowedRedirectHttpMethods == null ? EnumSet.noneOf(HttpMethod.class) : allowedRedirectHttpMethods;
         this.locationHeader = locationHeader;
     }
 
@@ -67,7 +66,8 @@ public final class HttpRedirectOptions {
      * {@link Response}.
      * @return The updated {@link HttpRedirectOptions} object.
      */
-    public HttpRedirectOptions setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
+    public HttpRedirectOptions
+        setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
         this.shouldRedirectCondition = shouldRedirectCondition;
         return this;
     }
@@ -84,11 +84,11 @@ public final class HttpRedirectOptions {
     }
 
     /**
-     * Gets the header name containing the redirect URL.
+     * Gets the header name containing the redirect URI.
      * <p>
-     * If null, the default behavior is to use the "Location" header to locate the redirect URL in the response headers.
+     * If null, the default behavior is to use the "Location" header to locate the redirect URI in the response headers.
      *
-     * @return The header name containing the redirect URL.
+     * @return The header name containing the redirect URI.
      */
     public HttpHeaderName getLocationHeader() {
         return locationHeader;

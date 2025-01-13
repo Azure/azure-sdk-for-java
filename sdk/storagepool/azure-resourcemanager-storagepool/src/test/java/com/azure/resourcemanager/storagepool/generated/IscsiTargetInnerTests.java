@@ -16,52 +16,40 @@ import org.junit.jupiter.api.Assertions;
 public final class IscsiTargetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IscsiTargetInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[{\"initiatorIqn\":\"lxotogtwrupq\",\"mappedLuns\":[]},{\"initiatorIqn\":\"xvnmicykvceov\",\"mappedLuns\":[]},{\"initiatorIqn\":\"ilovnot\",\"mappedLuns\":[]},{\"initiatorIqn\":\"fj\",\"mappedLuns\":[]}],\"luns\":[{\"name\":\"jbkcnxdhbttkph\",\"managedDiskAzureResourceId\":\"wpn\",\"lun\":224051014},{\"name\":\"oqnermclfpl\",\"managedDiskAzureResourceId\":\"hoxus\",\"lun\":2041952882},{\"name\":\"abgy\",\"managedDiskAzureResourceId\":\"psbjta\",\"lun\":610868240},{\"name\":\"gxywpmue\",\"managedDiskAzureResourceId\":\"fjz\",\"lun\":224913714}],\"targetIqn\":\"kqujidsuyono\",\"provisioningState\":\"Failed\",\"status\":\"Running\",\"endpoints\":[\"cq\",\"tcc\",\"g\"],\"port\":1054992005,\"sessions\":[\"tlmoyrx\",\"wfudwpzntxhdzhl\",\"qj\",\"hckfrlhrx\"]},\"systemData\":{\"createdBy\":\"yvpycanuzbpzk\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-09-06T02:44:44Z\",\"lastModifiedBy\":\"crnwbmeh\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-09-03T17:59:20Z\"},\"managedBy\":\"us\",\"managedByExtended\":[\"lhspkdee\"],\"id\":\"aofmxagkvtme\",\"name\":\"mqkrhahvljuahaqu\",\"type\":\"c\"}")
-                .toObject(IscsiTargetInner.class);
-        Assertions.assertEquals(IscsiTargetAclMode.STATIC, model.aclMode());
-        Assertions.assertEquals("lxotogtwrupq", model.staticAcls().get(0).initiatorIqn());
-        Assertions.assertEquals("jbkcnxdhbttkph", model.luns().get(0).name());
-        Assertions.assertEquals("wpn", model.luns().get(0).managedDiskAzureResourceId());
-        Assertions.assertEquals("kqujidsuyono", model.targetIqn());
-        Assertions.assertEquals(OperationalStatus.RUNNING, model.status());
-        Assertions.assertEquals("cq", model.endpoints().get(0));
-        Assertions.assertEquals(1054992005, model.port());
+        IscsiTargetInner model = BinaryData.fromString(
+            "{\"properties\":{\"aclMode\":\"Dynamic\",\"staticAcls\":[{\"initiatorIqn\":\"evfiwjmygt\",\"mappedLuns\":[\"slswtm\",\"eriofzpyqs\",\"mwabnetshhszhedp\",\"vwiwubmwmbesld\"]}],\"luns\":[{\"name\":\"wtppjflcxogaoko\",\"managedDiskAzureResourceId\":\"z\",\"lun\":1813308851},{\"name\":\"ikvmkqzeqqk\",\"managedDiskAzureResourceId\":\"l\",\"lun\":228938566}],\"targetIqn\":\"xmhhvhgureo\",\"provisioningState\":\"Creating\",\"status\":\"Stopped\",\"endpoints\":[\"dagxtibqd\",\"bxwakbog\"],\"port\":836308274,\"sessions\":[\"kzgxhurip\",\"bpodxunkbebxm\",\"byyntwlrbqt\",\"oievseotgqrlltm\"]},\"systemData\":{\"createdBy\":\"auwzizxbmpgc\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-05-02T05:37:12Z\",\"lastModifiedBy\":\"uvpb\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-09T07:20:50Z\"},\"managedBy\":\"rp\",\"managedByExtended\":[\"bmnzbtbhjpgl\",\"fgohdneuelfphs\",\"yhtozfikdowwqu\",\"v\"],\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}")
+            .toObject(IscsiTargetInner.class);
+        Assertions.assertEquals(IscsiTargetAclMode.DYNAMIC, model.aclMode());
+        Assertions.assertEquals("evfiwjmygt", model.staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("slswtm", model.staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("wtppjflcxogaoko", model.luns().get(0).name());
+        Assertions.assertEquals("z", model.luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("xmhhvhgureo", model.targetIqn());
+        Assertions.assertEquals(OperationalStatus.STOPPED, model.status());
+        Assertions.assertEquals("dagxtibqd", model.endpoints().get(0));
+        Assertions.assertEquals(836308274, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiTargetInner model =
-            new IscsiTargetInner()
-                .withAclMode(IscsiTargetAclMode.STATIC)
-                .withStaticAcls(
-                    Arrays
-                        .asList(
-                            new Acl().withInitiatorIqn("lxotogtwrupq").withMappedLuns(Arrays.asList()),
-                            new Acl().withInitiatorIqn("xvnmicykvceov").withMappedLuns(Arrays.asList()),
-                            new Acl().withInitiatorIqn("ilovnot").withMappedLuns(Arrays.asList()),
-                            new Acl().withInitiatorIqn("fj").withMappedLuns(Arrays.asList())))
-                .withLuns(
-                    Arrays
-                        .asList(
-                            new IscsiLun().withName("jbkcnxdhbttkph").withManagedDiskAzureResourceId("wpn"),
-                            new IscsiLun().withName("oqnermclfpl").withManagedDiskAzureResourceId("hoxus"),
-                            new IscsiLun().withName("abgy").withManagedDiskAzureResourceId("psbjta"),
-                            new IscsiLun().withName("gxywpmue").withManagedDiskAzureResourceId("fjz")))
-                .withTargetIqn("kqujidsuyono")
-                .withStatus(OperationalStatus.RUNNING)
-                .withEndpoints(Arrays.asList("cq", "tcc", "g"))
-                .withPort(1054992005);
+        IscsiTargetInner model = new IscsiTargetInner().withAclMode(IscsiTargetAclMode.DYNAMIC)
+            .withStaticAcls(Arrays.asList(new Acl().withInitiatorIqn("evfiwjmygt")
+                .withMappedLuns(Arrays.asList("slswtm", "eriofzpyqs", "mwabnetshhszhedp", "vwiwubmwmbesld"))))
+            .withLuns(Arrays.asList(new IscsiLun().withName("wtppjflcxogaoko").withManagedDiskAzureResourceId("z"),
+                new IscsiLun().withName("ikvmkqzeqqk").withManagedDiskAzureResourceId("l")))
+            .withTargetIqn("xmhhvhgureo")
+            .withStatus(OperationalStatus.STOPPED)
+            .withEndpoints(Arrays.asList("dagxtibqd", "bxwakbog"))
+            .withPort(836308274);
         model = BinaryData.fromObject(model).toObject(IscsiTargetInner.class);
-        Assertions.assertEquals(IscsiTargetAclMode.STATIC, model.aclMode());
-        Assertions.assertEquals("lxotogtwrupq", model.staticAcls().get(0).initiatorIqn());
-        Assertions.assertEquals("jbkcnxdhbttkph", model.luns().get(0).name());
-        Assertions.assertEquals("wpn", model.luns().get(0).managedDiskAzureResourceId());
-        Assertions.assertEquals("kqujidsuyono", model.targetIqn());
-        Assertions.assertEquals(OperationalStatus.RUNNING, model.status());
-        Assertions.assertEquals("cq", model.endpoints().get(0));
-        Assertions.assertEquals(1054992005, model.port());
+        Assertions.assertEquals(IscsiTargetAclMode.DYNAMIC, model.aclMode());
+        Assertions.assertEquals("evfiwjmygt", model.staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("slswtm", model.staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("wtppjflcxogaoko", model.luns().get(0).name());
+        Assertions.assertEquals("z", model.luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("xmhhvhgureo", model.targetIqn());
+        Assertions.assertEquals(OperationalStatus.STOPPED, model.status());
+        Assertions.assertEquals("dagxtibqd", model.endpoints().get(0));
+        Assertions.assertEquals(836308274, model.port());
     }
 }

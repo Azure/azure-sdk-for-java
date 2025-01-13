@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AcrTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Acr model =
-            BinaryData
-                .fromString(
-                    "{\"acrSubscriptionId\":\"x\",\"acrResourceGroup\":\"jpgd\",\"acrRegistryName\":\"ocjjxhvpmouexh\",\"acrRepositoryName\":\"xibqeojnx\"}")
-                .toObject(Acr.class);
-        Assertions.assertEquals("x", model.acrSubscriptionId());
-        Assertions.assertEquals("jpgd", model.acrResourceGroup());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.acrRegistryName());
-        Assertions.assertEquals("xibqeojnx", model.acrRepositoryName());
+        Acr model = BinaryData.fromString(
+            "{\"acrSubscriptionId\":\"zafb\",\"acrResourceGroup\":\"j\",\"acrRegistryName\":\"btoqcjmkljavbqid\",\"acrRepositoryName\":\"ajzyul\"}")
+            .toObject(Acr.class);
+        Assertions.assertEquals("zafb", model.acrSubscriptionId());
+        Assertions.assertEquals("j", model.acrResourceGroup());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.acrRegistryName());
+        Assertions.assertEquals("ajzyul", model.acrRepositoryName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Acr model =
-            new Acr()
-                .withAcrSubscriptionId("x")
-                .withAcrResourceGroup("jpgd")
-                .withAcrRegistryName("ocjjxhvpmouexh")
-                .withAcrRepositoryName("xibqeojnx");
+        Acr model = new Acr().withAcrSubscriptionId("zafb")
+            .withAcrResourceGroup("j")
+            .withAcrRegistryName("btoqcjmkljavbqid")
+            .withAcrRepositoryName("ajzyul");
         model = BinaryData.fromObject(model).toObject(Acr.class);
-        Assertions.assertEquals("x", model.acrSubscriptionId());
-        Assertions.assertEquals("jpgd", model.acrResourceGroup());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.acrRegistryName());
-        Assertions.assertEquals("xibqeojnx", model.acrRepositoryName());
+        Assertions.assertEquals("zafb", model.acrSubscriptionId());
+        Assertions.assertEquals("j", model.acrResourceGroup());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.acrRegistryName());
+        Assertions.assertEquals("ajzyul", model.acrRepositoryName());
     }
 }

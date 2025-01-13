@@ -5,21 +5,24 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration parameters used while performing a rolling upgrade.
  */
 @Fluent
-public final class RollingUpgradePolicy {
+public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgradePolicy> {
     /*
      * Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain
-     * and maxBatchInstancePercent to determine the batch size. If this field is not set, Azure Azure Batch will not
-     * set its default value. The value of enableCrossZoneUpgrade on the created VirtualMachineScaleSet will be decided
-     * by the default configurations on VirtualMachineScaleSet. This field is able to be set to true or false only when
+     * and maxBatchInstancePercent to determine the batch size. If this field is not set, Azure Azure Batch will not set
+     * its default value. The value of enableCrossZoneUpgrade on the created VirtualMachineScaleSet will be decided by
+     * the default configurations on VirtualMachineScaleSet. This field is able to be set to true or false only when
      * using NodePlacementConfiguration as Zonal.
      */
-    @JsonProperty(value = "enableCrossZoneUpgrade")
     private Boolean enableCrossZoneUpgrade;
 
     /*
@@ -29,18 +32,16 @@ public final class RollingUpgradePolicy {
      * between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with
      * value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
      */
-    @JsonProperty(value = "maxBatchInstancePercent")
     private Integer maxBatchInstancePercent;
 
     /*
      * The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously
      * unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine
-     * health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch.
-     * The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and
-     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more
-     * than maxUnhealthyInstancePercent.
+     * health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. The
+     * value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and
+     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than
+     * maxUnhealthyInstancePercent.
      */
-    @JsonProperty(value = "maxUnhealthyInstancePercent")
     private Integer maxUnhealthyInstancePercent;
 
     /*
@@ -48,26 +49,22 @@ public final class RollingUpgradePolicy {
      * check will happen after each batch is upgraded. If this percentage is ever exceeded, the rolling update aborts.
      * The value of this field should be between 0 and 100, inclusive.
      */
-    @JsonProperty(value = "maxUnhealthyUpgradedInstancePercent")
     private Integer maxUnhealthyUpgradedInstancePercent;
 
     /*
      * The wait time between completing the update for all virtual machines in one batch and starting the next batch.
      * The time duration should be specified in ISO 8601 format.
      */
-    @JsonProperty(value = "pauseTimeBetweenBatches")
     private String pauseTimeBetweenBatches;
 
     /*
      * Upgrade all unhealthy instances in a scale set before any healthy instances.
      */
-    @JsonProperty(value = "prioritizeUnhealthyInstances")
     private Boolean prioritizeUnhealthyInstances;
 
     /*
      * Rollback failed instances to previous model if the Rolling Upgrade policy is violated.
      */
-    @JsonProperty(value = "rollbackFailedInstancesOnPolicyBreach")
     private Boolean rollbackFailedInstancesOnPolicyBreach;
 
     /**
@@ -109,8 +106,8 @@ public final class RollingUpgradePolicy {
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in
      * previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher
      * reliability. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and
-     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more
-     * than maxUnhealthyInstancePercent.
+     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than
+     * maxUnhealthyInstancePercent.
      * 
      * @return the maxBatchInstancePercent value.
      */
@@ -123,8 +120,8 @@ public final class RollingUpgradePolicy {
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in
      * previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher
      * reliability. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and
-     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more
-     * than maxUnhealthyInstancePercent.
+     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than
+     * maxUnhealthyInstancePercent.
      * 
      * @param maxBatchInstancePercent the maxBatchInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
@@ -136,9 +133,9 @@ public final class RollingUpgradePolicy {
 
     /**
      * Get the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
-     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
-     * be checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
+     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
+     * checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both
      * maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of
      * maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
      * 
@@ -150,9 +147,9 @@ public final class RollingUpgradePolicy {
 
     /**
      * Set the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
-     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
-     * be checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
+     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
+     * checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both
      * maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of
      * maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
      * 
@@ -167,8 +164,8 @@ public final class RollingUpgradePolicy {
     /**
      * Get the maxUnhealthyUpgradedInstancePercent property: The maximum percentage of upgraded virtual machine
      * instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If
-     * this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and
-     * 100, inclusive.
+     * this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and 100,
+     * inclusive.
      * 
      * @return the maxUnhealthyUpgradedInstancePercent value.
      */
@@ -179,8 +176,8 @@ public final class RollingUpgradePolicy {
     /**
      * Set the maxUnhealthyUpgradedInstancePercent property: The maximum percentage of upgraded virtual machine
      * instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If
-     * this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and
-     * 100, inclusive.
+     * this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and 100,
+     * inclusive.
      * 
      * @param maxUnhealthyUpgradedInstancePercent the maxUnhealthyUpgradedInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
@@ -191,8 +188,8 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
-     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format.
+     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
+     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format.
      * 
      * @return the pauseTimeBetweenBatches value.
      */
@@ -201,8 +198,8 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
-     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format.
+     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
+     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format.
      * 
      * @param pauseTimeBetweenBatches the pauseTimeBetweenBatches value to set.
      * @return the RollingUpgradePolicy object itself.
@@ -263,5 +260,65 @@ public final class RollingUpgradePolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableCrossZoneUpgrade", this.enableCrossZoneUpgrade);
+        jsonWriter.writeNumberField("maxBatchInstancePercent", this.maxBatchInstancePercent);
+        jsonWriter.writeNumberField("maxUnhealthyInstancePercent", this.maxUnhealthyInstancePercent);
+        jsonWriter.writeNumberField("maxUnhealthyUpgradedInstancePercent", this.maxUnhealthyUpgradedInstancePercent);
+        jsonWriter.writeStringField("pauseTimeBetweenBatches", this.pauseTimeBetweenBatches);
+        jsonWriter.writeBooleanField("prioritizeUnhealthyInstances", this.prioritizeUnhealthyInstances);
+        jsonWriter.writeBooleanField("rollbackFailedInstancesOnPolicyBreach",
+            this.rollbackFailedInstancesOnPolicyBreach);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RollingUpgradePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RollingUpgradePolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RollingUpgradePolicy.
+     */
+    public static RollingUpgradePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RollingUpgradePolicy deserializedRollingUpgradePolicy = new RollingUpgradePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableCrossZoneUpgrade".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.enableCrossZoneUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxBatchInstancePercent".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.maxBatchInstancePercent = reader.getNullable(JsonReader::getInt);
+                } else if ("maxUnhealthyInstancePercent".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.maxUnhealthyInstancePercent
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxUnhealthyUpgradedInstancePercent".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.maxUnhealthyUpgradedInstancePercent
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("pauseTimeBetweenBatches".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.pauseTimeBetweenBatches = reader.getString();
+                } else if ("prioritizeUnhealthyInstances".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.prioritizeUnhealthyInstances
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rollbackFailedInstancesOnPolicyBreach".equals(fieldName)) {
+                    deserializedRollingUpgradePolicy.rollbackFailedInstancesOnPolicyBreach
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRollingUpgradePolicy;
+        });
     }
 }

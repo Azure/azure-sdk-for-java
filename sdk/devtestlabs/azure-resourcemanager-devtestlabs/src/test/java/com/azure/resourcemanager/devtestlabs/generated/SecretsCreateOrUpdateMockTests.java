@@ -6,70 +6,39 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.Secret;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecretsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"value\":\"snvlaqd\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"kokb\"},\"location\":\"zothym\",\"tags\":{\"msn\":\"l\",\"aaneakhtmhobcya\":\"gwi\",\"gxkfnaoaqymhccto\":\"rfvqtvkhgvo\",\"czygxv\":\"uowyrnskbyhqu\"},\"id\":\"ajpxecxqnwhscoza\",\"name\":\"mvgxsmpknpwir\",\"type\":\"ljfewxqo\"}";
 
-        String responseStr =
-            "{\"properties\":{\"value\":\"snvlaqd\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"kokb\"},\"location\":\"zothym\",\"tags\":{\"msn\":\"l\",\"aaneakhtmhobcya\":\"gwi\",\"gxkfnaoaqymhccto\":\"rfvqtvkhgvo\",\"czygxv\":\"uowyrnskbyhqu\"},\"id\":\"ajpxecxqnwhscoza\",\"name\":\"mvgxsmpknpwir\",\"type\":\"ljfewxqo\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Secret response =
-            manager
-                .secrets()
-                .define("kczynuhhoqeqsh")
-                .withRegion("jmlfuyfjbp")
-                .withExistingUser("fjzc", "aaxoialahfxwcc", "kdxkuk")
-                .withTags(mapOf("fuiocuselq", "dhlrufzcqyjmq", "qmdtffi", "rsazrhxud", "khmwdmd", "jmr"))
-                .withValue("ljqkxyrqolnthbb")
-                .create();
+        Secret response = manager.secrets()
+            .define("kczynuhhoqeqsh")
+            .withRegion("jmlfuyfjbp")
+            .withExistingUser("fjzc", "aaxoialahfxwcc", "kdxkuk")
+            .withTags(mapOf("fuiocuselq", "dhlrufzcqyjmq", "qmdtffi", "rsazrhxud", "khmwdmd", "jmr"))
+            .withValue("ljqkxyrqolnthbb")
+            .create();
 
         Assertions.assertEquals("zothym", response.location());
         Assertions.assertEquals("l", response.tags().get("msn"));

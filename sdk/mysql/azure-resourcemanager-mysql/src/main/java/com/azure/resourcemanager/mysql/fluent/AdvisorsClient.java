@@ -40,8 +40,8 @@ public interface AdvisorsClient {
      * @return a recommendation action advisor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvisorInner> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context);
+    Response<AdvisorInner> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        Context context);
 
     /**
      * List recommendation action advisors.

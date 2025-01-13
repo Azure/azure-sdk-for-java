@@ -6,24 +6,26 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A set of rules describing access policies applied to NFSv3 clients of the cache.
  */
 @Fluent
-public final class NfsAccessPolicy {
+public final class NfsAccessPolicy implements JsonSerializable<NfsAccessPolicy> {
     /*
      * Name identifying this policy. Access Policy names are not case sensitive.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The set of rules describing client accesses allowed under this policy.
      */
-    @JsonProperty(value = "accessRules", required = true)
     private List<NfsAccessRule> accessRules;
 
     /**
@@ -91,4 +93,45 @@ public final class NfsAccessPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NfsAccessPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("accessRules", this.accessRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NfsAccessPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NfsAccessPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NfsAccessPolicy.
+     */
+    public static NfsAccessPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NfsAccessPolicy deserializedNfsAccessPolicy = new NfsAccessPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNfsAccessPolicy.name = reader.getString();
+                } else if ("accessRules".equals(fieldName)) {
+                    List<NfsAccessRule> accessRules = reader.readArray(reader1 -> NfsAccessRule.fromJson(reader1));
+                    deserializedNfsAccessPolicy.accessRules = accessRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNfsAccessPolicy;
+        });
+    }
 }

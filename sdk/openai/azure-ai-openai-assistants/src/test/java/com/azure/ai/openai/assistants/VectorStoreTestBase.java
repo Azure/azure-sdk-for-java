@@ -17,23 +17,44 @@ public abstract class VectorStoreTestBase extends AssistantsClientTestBase {
     static final String ALPHABET_FINANCIAL_STATEMENT = "20210203_alphabet_10K.pdf";
 
     public abstract void updateVectorStoreName(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void listVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFileWithAutoChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFileWithStaticChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void throwExceptionWhenOverrideExistChunkStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void getVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void listVectorStoreFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void deleteVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFileBatchWithAutoChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void createVectorStoreFileBatchWithStaticChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void throwExceptionWhenOverrideExistChunkStrategyInBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void getVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void listVectorStoreFilesBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
-    public abstract void cancelVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
 
+    public abstract void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void listVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFileWithAutoChunkingStrategy(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFileWithStaticChunkingStrategy(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void throwExceptionWhenOverrideExistChunkStrategy(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void getVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void listVectorStoreFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void deleteVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFileBatchWithAutoChunkingStrategy(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void createVectorStoreFileBatchWithStaticChunkingStrategy(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void throwExceptionWhenOverrideExistChunkStrategyInBatch(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion);
+
+    public abstract void getVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void listVectorStoreFilesBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
+
+    public abstract void cancelVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
 
     void assertVectorStoreFile(VectorStoreFile vectorStoreFile) {
         assertNotNull(vectorStoreFile);
@@ -47,8 +68,8 @@ public abstract class VectorStoreTestBase extends AssistantsClientTestBase {
     }
 
     void assertStaticChunkingStrategy(VectorStoreFile vectorStoreFile, int maxChunkSizeTokens, int chunkOverlapTokens) {
-        VectorStoreStaticChunkingStrategyResponse chunkingStrategy = (VectorStoreStaticChunkingStrategyResponse)
-            vectorStoreFile.getChunkingStrategy();
+        VectorStoreStaticChunkingStrategyResponse chunkingStrategy
+            = (VectorStoreStaticChunkingStrategyResponse) vectorStoreFile.getChunkingStrategy();
         VectorStoreStaticChunkingStrategyOptions staticProperty = chunkingStrategy.getStaticProperty();
         assertNotNull(staticProperty);
         assertEquals(maxChunkSizeTokens, staticProperty.getMaxChunkSizeTokens());

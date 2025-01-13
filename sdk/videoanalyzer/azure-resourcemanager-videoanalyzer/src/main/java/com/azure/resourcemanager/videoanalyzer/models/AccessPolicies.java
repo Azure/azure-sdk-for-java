@@ -63,8 +63,8 @@ public interface AccessPolicies {
      * @return access policies help define the authentication rules, and control access to specific video resources
      *     along with {@link Response}.
      */
-    Response<AccessPolicyEntity> getWithResponse(
-        String resourceGroupName, String accountName, String accessPolicyName, Context context);
+    Response<AccessPolicyEntity> getWithResponse(String resourceGroupName, String accountName, String accessPolicyName,
+        Context context);
 
     /**
      * Deletes an existing access policy resource with the given name.
@@ -90,8 +90,8 @@ public interface AccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String accessPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String accessPolicyName,
+        Context context);
 
     /**
      * Retrieves an existing access policy resource with the given name.

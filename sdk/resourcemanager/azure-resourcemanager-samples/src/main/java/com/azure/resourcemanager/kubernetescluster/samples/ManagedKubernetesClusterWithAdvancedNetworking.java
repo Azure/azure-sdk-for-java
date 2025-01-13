@@ -45,16 +45,17 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             // Create a virtual network with two subnets.
             System.out.println("Create a virtual network with two subnets: subnet1 and subnet2");
 
-            Network virtualNetwork = azureResourceManager.networks().define(vnetName)
+            Network virtualNetwork = azureResourceManager.networks()
+                .define(vnetName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("192.168.0.0/16")
                 .defineSubnet("subnet1")
-                    .withAddressPrefix("192.168.1.0/24")
-                    .attach()
+                .withAddressPrefix("192.168.1.0/24")
+                .attach()
                 .defineSubnet("subnet2")
-                    .withAddressPrefix("192.168.2.0/24")
-                    .attach()
+                .withAddressPrefix("192.168.2.0/24")
+                .attach()
                 .create();
 
             System.out.println("Created a virtual network");
@@ -68,27 +69,29 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
 
             Date t1 = new Date();
 
-            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
+                .define(aksName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withDefaultVersion()
                 .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withVirtualNetwork(virtualNetwork.id(), "subnet1")
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withVirtualNetwork(virtualNetwork.id(), "subnet1")
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
                 .withDnsPrefix("dns-" + aksName)
                 .defineNetworkProfile()
-                    .withNetworkPlugin(NetworkPlugin.AZURE)
-                    .withServiceCidr("10.0.0.0/16")
-                    .withDnsServiceIP("10.0.0.10")
-                    .attach()
+                .withNetworkPlugin(NetworkPlugin.AZURE)
+                .withServiceCidr("10.0.0.0/16")
+                .withDnsServiceIP("10.0.0.10")
+                .attach()
                 .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Service (AKS) resource: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
+            System.out.println("Created Azure Container Service (AKS) resource: (took "
+                + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
             Utils.print(kubernetesCluster);
 
             //=============================================================
@@ -100,12 +103,13 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
 
             kubernetesCluster.update()
                 .updateAgentPool("agentpool")
-                    .withAgentPoolVirtualMachineCount(2)
-                    .parent()
+                .withAgentPoolVirtualMachineCount(2)
+                .parent()
                 .apply();
 
             t2 = new Date();
-            System.out.println("Updated Azure Container Service (AKS) resource: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
+            System.out.println("Updated Azure Container Service (AKS) resource: (took "
+                + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
             Utils.print(kubernetesCluster);
 
             return true;
@@ -137,8 +141,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

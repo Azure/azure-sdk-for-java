@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Evaluation details of policy language expressions. */
+/**
+ * Evaluation details of policy language expressions.
+ */
 @Fluent
-public final class ExpressionEvaluationDetails {
+public final class ExpressionEvaluationDetails implements JsonSerializable<ExpressionEvaluationDetails> {
     /*
      * Evaluation result.
      */
-    @JsonProperty(value = "result")
     private String result;
 
     /*
      * Expression evaluated.
      */
-    @JsonProperty(value = "expression")
     private String expression;
 
     /*
      * The kind of expression that was evaluated.
      */
-    @JsonProperty(value = "expressionKind", access = JsonProperty.Access.WRITE_ONLY)
     private String expressionKind;
 
     /*
      * Property path if the expression is a field or an alias.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Value of the expression.
      */
-    @JsonProperty(value = "expressionValue")
     private Object expressionValue;
 
     /*
      * Target value to be compared with the expression value.
      */
-    @JsonProperty(value = "targetValue")
     private Object targetValue;
 
     /*
      * Operator to compare the expression value and the target value.
      */
-    @JsonProperty(value = "operator")
     private String operator;
 
-    /** Creates an instance of ExpressionEvaluationDetails class. */
+    /**
+     * Creates an instance of ExpressionEvaluationDetails class.
+     */
     public ExpressionEvaluationDetails() {
     }
 
     /**
      * Get the result property: Evaluation result.
-     *
+     * 
      * @return the result value.
      */
     public String result() {
@@ -67,7 +68,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the result property: Evaluation result.
-     *
+     * 
      * @param result the result value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -78,7 +79,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the expression property: Expression evaluated.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -87,7 +88,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the expression property: Expression evaluated.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -98,7 +99,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the expressionKind property: The kind of expression that was evaluated.
-     *
+     * 
      * @return the expressionKind value.
      */
     public String expressionKind() {
@@ -107,7 +108,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the path property: Property path if the expression is a field or an alias.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -116,7 +117,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the path property: Property path if the expression is a field or an alias.
-     *
+     * 
      * @param path the path value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -127,7 +128,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the expressionValue property: Value of the expression.
-     *
+     * 
      * @return the expressionValue value.
      */
     public Object expressionValue() {
@@ -136,7 +137,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the expressionValue property: Value of the expression.
-     *
+     * 
      * @param expressionValue the expressionValue value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -147,7 +148,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the targetValue property: Target value to be compared with the expression value.
-     *
+     * 
      * @return the targetValue value.
      */
     public Object targetValue() {
@@ -156,7 +157,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the targetValue property: Target value to be compared with the expression value.
-     *
+     * 
      * @param targetValue the targetValue value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -167,7 +168,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Get the operator property: Operator to compare the expression value and the target value.
-     *
+     * 
      * @return the operator value.
      */
     public String operator() {
@@ -176,7 +177,7 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Set the operator property: Operator to compare the expression value and the target value.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ExpressionEvaluationDetails object itself.
      */
@@ -187,9 +188,62 @@ public final class ExpressionEvaluationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("result", this.result);
+        jsonWriter.writeStringField("expression", this.expression);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeUntypedField("expressionValue", this.expressionValue);
+        jsonWriter.writeUntypedField("targetValue", this.targetValue);
+        jsonWriter.writeStringField("operator", this.operator);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressionEvaluationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressionEvaluationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressionEvaluationDetails.
+     */
+    public static ExpressionEvaluationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressionEvaluationDetails deserializedExpressionEvaluationDetails = new ExpressionEvaluationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("result".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.result = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.expression = reader.getString();
+                } else if ("expressionKind".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.expressionKind = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.path = reader.getString();
+                } else if ("expressionValue".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.expressionValue = reader.readUntyped();
+                } else if ("targetValue".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.targetValue = reader.readUntyped();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedExpressionEvaluationDetails.operator = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressionEvaluationDetails;
+        });
     }
 }

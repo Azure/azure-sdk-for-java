@@ -32,19 +32,21 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
 final class V2StackSupport {
     private static final String V2_STACK_KEY = "com.azure.messaging.eventhubs.v2";
-    private static final ConfigurationProperty<Boolean> V2_STACK_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(V2_STACK_KEY)
-        .environmentVariableName(V2_STACK_KEY)
-        .defaultValue(false)
-        .shared(true)
-        .build();
+    private static final ConfigurationProperty<Boolean> V2_STACK_PROPERTY
+        = ConfigurationPropertyBuilder.ofBoolean(V2_STACK_KEY)
+            .environmentVariableName(V2_STACK_KEY)
+            .defaultValue(true)
+            .shared(true)
+            .build();
     private final AtomicReference<Boolean> v2StackFlag = new AtomicReference<>();
 
     private static final String SESSION_CHANNEL_CACHE_KEY = "com.azure.core.amqp.cache";
-    private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
-        .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
-        .defaultValue(false) // "SessionCache" and "RequestResponseChannelCache" requires explicit opt in along with v2 stack opt in.
-        .shared(true)
-        .build();
+    private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY
+        = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
+            .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
+            .defaultValue(true) // "SessionCache" and "RequestResponseChannelCache" are enabled by default if v2 stack is opted in.
+            .shared(true)
+            .build();
     private final AtomicReference<Boolean> sessionChannelCacheFlag = new AtomicReference<>();
 
     private final ClientLogger logger;
@@ -60,21 +62,22 @@ final class V2StackSupport {
      * @return true if the clients should use the v2 stack.
      */
     boolean isV2StackEnabled(Configuration configuration) {
-        return isOptedIn(configuration, V2_STACK_PROPERTY, v2StackFlag);
+        return !isOptedOut(configuration, V2_STACK_PROPERTY, v2StackFlag);
     }
 
     /**
-     * SessionCache and RequestResponseChannelCache not opted-in default, the application may opt in but only when
-     * v2 stack is also enabled via 'com.azure.messaging.eventhubs.v2'.
+     * SessionCache and RequestResponseChannelCache are enabled by default if the v2 stack is opted in via
+     * 'com.azure.messaging.eventhubs.v2', but application may opt out these two caches by setting
+     * 'com.azure.core.amqp.cache' to false.
      *
      * @param configuration the client configuration.
-     * @return true if SessionCache and RequestResponseChannelCache is opted-in.
+     * @return true if SessionCache and RequestResponseChannelCache are enabled.
      */
     boolean isSessionChannelCacheEnabled(Configuration configuration) {
         if (!isV2StackEnabled(configuration)) {
             return false;
         }
-        return isOptedIn(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
+        return !isOptedOut(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
     }
 
     private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
@@ -102,58 +105,34 @@ final class V2StackSupport {
         if (choiceFlag.compareAndSet(null, isOptedOut)) {
             logger.verbose("Selected configuration {}={}", propName, isOptedOut);
             if (isOptedOut) {
-                final String logMessage = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
+                final String logMessage
+                    = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
                 logger.info(logMessage, propName);
             }
         }
         return choiceFlag.get();
     }
 
-    private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-        AtomicReference<Boolean> choiceFlag) {
-        final Boolean flag = choiceFlag.get();
-        if (flag != null) {
-            return flag;
-        }
-
-        final String propName = configProperty.getName();
-        final boolean isOptedIn;
-        if (configuration != null) {
-            isOptedIn = configuration.get(configProperty);
-        } else {
-            assert !CoreUtils.isNullOrEmpty(propName);
-            if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
-                isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
-            } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
-                isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
-            } else {
-                isOptedIn = false;
-            }
-        }
-        if (choiceFlag.compareAndSet(null, isOptedIn)) {
-            logger.verbose("Selected configuration {}={}", propName, isOptedIn);
-        }
-        return choiceFlag.get();
-    }
-
     ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter, boolean useSessionChannelCache) {
+        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter,
+        boolean useSessionChannelCache) {
         final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
             final String connectionId = StringUtil.getRandomString("MF");
-            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getAuthorizationScope());
+            final TokenManagerProvider tokenManagerProvider
+                = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
+                    connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope());
             final ReactorProvider provider = new ReactorProvider();
             final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
             final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
-            return new EventHubReactorAmqpConnection(connectionId,
-                connectionOptions, eventHubNameSupplier.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
-                serializer, true, useSessionChannelCache);
+            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, eventHubNameSupplier.get(),
+                provider, handlerProvider, linkProvider, tokenManagerProvider, serializer, true,
+                useSessionChannelCache);
         };
         final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         final String entityPath = eventHubNameSupplier.get();
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
-        return new ReactorConnectionCache<>(connectionSupplier, fullyQualifiedNamespace, entityPath, retryPolicy, loggingContext);
+        return new ReactorConnectionCache<>(connectionSupplier, fullyQualifiedNamespace, entityPath, retryPolicy,
+            loggingContext);
     }
 }

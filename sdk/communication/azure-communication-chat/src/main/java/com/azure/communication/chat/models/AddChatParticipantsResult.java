@@ -24,6 +24,7 @@ public final class AddChatParticipantsResult implements JsonSerializable<AddChat
     private List<ChatError> invalidParticipants;
 
     /**
+     * Creates a new instance of {@link AddChatParticipantsResult}.
      *
      * @param invalidParticipants List of errors relating to invalid participants
      */

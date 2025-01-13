@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DimensionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DimensionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"bxmubyynt\",\"filterEnabled\":false,\"groupingEnabled\":false,\"data\":[\"oievseotgqrlltm\",\"wlauwzizxbmpg\"],\"total\":904231635,\"category\":\"u\",\"usageStart\":\"2021-07-24T11:16:02Z\",\"usageEnd\":\"2021-05-22T02:28:39Z\",\"nextLink\":\"ttdumorppxebmnzb\"}")
-                .toObject(DimensionProperties.class);
-        Assertions.assertEquals("oievseotgqrlltm", model.data().get(0));
+        DimensionProperties model = BinaryData.fromString(
+            "{\"description\":\"fuojrngif\",\"filterEnabled\":false,\"groupingEnabled\":false,\"data\":[\"cb\",\"uimzdlyjd\",\"qwmkyoquf\",\"vruzslzojhpctfnm\"],\"total\":1889500647,\"category\":\"ngfdgugeyzihgrky\",\"usageStart\":\"2021-10-28T01:16:30Z\",\"usageEnd\":\"2021-02-21T09:37:08Z\",\"nextLink\":\"nmfpp\"}")
+            .toObject(DimensionProperties.class);
+        Assertions.assertEquals("cb", model.data().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DimensionProperties model =
-            new DimensionProperties().withData(Arrays.asList("oievseotgqrlltm", "wlauwzizxbmpg"));
+        DimensionProperties model
+            = new DimensionProperties().withData(Arrays.asList("cb", "uimzdlyjd", "qwmkyoquf", "vruzslzojhpctfnm"));
         model = BinaryData.fromObject(model).toObject(DimensionProperties.class);
-        Assertions.assertEquals("oievseotgqrlltm", model.data().get(0));
+        Assertions.assertEquals("cb", model.data().get(0));
     }
 }

@@ -47,7 +47,7 @@ final class ConnectionCacheWrapper implements Disposable {
     }
 
     String getFullyQualifiedNamespace() {
-        return isV2 ?  cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
+        return isV2 ? cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
     }
 
     String getEventHubName() {
@@ -65,8 +65,8 @@ final class ConnectionCacheWrapper implements Disposable {
     Mono<EventHubManagementNode> getManagementNodeWithRetries() {
         if (isV2) {
             final AmqpRetryOptions retryOptions = cache.getRetryOptions();
-            return withRetry(cache.get().flatMap(EventHubReactorAmqpConnection::getManagementNode),
-                retryOptions, "Time out creating management node.");
+            return withRetry(cache.get().flatMap(EventHubReactorAmqpConnection::getManagementNode), retryOptions,
+                "Time out creating management node.");
         } else {
             return processor.getManagementNodeWithRetries();
         }

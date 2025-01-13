@@ -36,8 +36,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
 
-        com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
-            new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
+        com.azure.search.documents.models.IndexAction<Map<String, Object>> action
+            = new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
@@ -52,8 +52,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
 
-        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
-            new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
+        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action
+            = new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
@@ -68,8 +68,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
             .build();
 
-        com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
-            new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
+        com.azure.search.documents.models.IndexAction<Map<String, Object>> action
+            = new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
@@ -84,8 +84,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
             .build();
 
-        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
-            new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
+        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action
+            = new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 

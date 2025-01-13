@@ -6,79 +6,46 @@ package com.azure.resourcemanager.attestation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.attestation.AttestationManager;
 import com.azure.resourcemanager.attestation.models.PrivateEndpoint;
 import com.azure.resourcemanager.attestation.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.attestation.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.attestation.models.PrivateLinkServiceConnectionState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"usdsttwv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"bejdcn\",\"actionsRequired\":\"qmoa\"},\"provisioningState\":\"Deleting\"},\"id\":\"gm\",\"name\":\"zr\",\"type\":\"rdgrtw\"}";
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"xzvlvqhjkbegib\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"iebwwaloayqcgwrt\",\"actionsRequired\":\"uzgwyzmhtx\"},\"provisioningState\":\"Failed\"},\"id\":\"mtsavjcbpwxqp\",\"name\":\"rknftguvriuhprwm\",\"type\":\"yvxqtayriwwroy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AttestationManager manager = AttestationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("qgsfraoyzkoow")
+            .withExistingAttestationProvider("gokdwbwhks", "zcmrvexztvb")
+            .withPrivateEndpoint(new PrivateEndpoint())
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("fobwy")
+                    .withActionsRequired("kby"))
+            .create();
 
-        AttestationManager manager =
-            AttestationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("l")
-                .withExistingAttestationProvider("hniskxfbkpyc", "klwndnhjdauwhv")
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("rzqlveu")
-                        .withActionsRequired("upjm"))
-                .create();
-
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("iebwwaloayqcgwrt", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("uzgwyzmhtx", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("bejdcn", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qmoa", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

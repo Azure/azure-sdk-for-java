@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the IP address allocation, defaulted to "DualStack". */
+/**
+ * The type of the IP address allocation, defaulted to "DualStack".
+ */
 public final class IpAllocationType extends ExpandableStringEnum<IpAllocationType> {
-    /** Static value IPV4 for IpAllocationType. */
+    /**
+     * Static value IPV4 for IpAllocationType.
+     */
     public static final IpAllocationType IPV4 = fromString("IPV4");
 
-    /** Static value IPV6 for IpAllocationType. */
+    /**
+     * Static value IPV6 for IpAllocationType.
+     */
     public static final IpAllocationType IPV6 = fromString("IPV6");
 
-    /** Static value DualStack for IpAllocationType. */
+    /**
+     * Static value DualStack for IpAllocationType.
+     */
     public static final IpAllocationType DUAL_STACK = fromString("DualStack");
 
     /**
      * Creates a new instance of IpAllocationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class IpAllocationType extends ExpandableStringEnum<IpAllocationTyp
 
     /**
      * Creates or finds a IpAllocationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpAllocationType.
      */
-    @JsonCreator
     public static IpAllocationType fromString(String name) {
         return fromString(name, IpAllocationType.class);
     }
 
     /**
      * Gets known IpAllocationType values.
-     *
+     * 
      * @return known IpAllocationType values.
      */
     public static Collection<IpAllocationType> values() {

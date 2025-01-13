@@ -5,15 +5,19 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The PhoneNumberIdentifierModel model. */
 @Fluent
-public final class PhoneNumberIdentifierModel {
+public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneNumberIdentifierModel> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -34,5 +38,37 @@ public final class PhoneNumberIdentifierModel {
     public PhoneNumberIdentifierModel setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject().writeStringField("value", value).writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link PhoneNumberIdentifierModel} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read from.
+     * @return An instance of {@link PhoneNumberIdentifierModel}, or null if the {@link JsonReader} was pointing
+     * to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PhoneNumberIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PhoneNumberIdentifierModel model = new PhoneNumberIdentifierModel();
+
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    model.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return model;
+        });
     }
 }

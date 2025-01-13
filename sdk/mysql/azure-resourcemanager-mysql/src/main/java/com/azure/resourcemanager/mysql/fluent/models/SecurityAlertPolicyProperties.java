@@ -14,7 +14,8 @@ import java.util.List;
 /** Properties of a security alert policy. */
 @Fluent
 public final class SecurityAlertPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityAlertPolicyProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SecurityAlertPolicyProperties.class);
 
     /*
      * Specifies the state of the policy, whether it is enabled or disabled.
@@ -215,10 +216,8 @@ public final class SecurityAlertPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SecurityAlertPolicyProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property state in model SecurityAlertPolicyProperties"));
         }
     }
 }

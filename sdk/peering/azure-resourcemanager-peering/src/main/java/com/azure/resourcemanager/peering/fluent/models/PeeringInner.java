@@ -7,56 +7,71 @@ package com.azure.resourcemanager.peering.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesExchange;
 import com.azure.resourcemanager.peering.models.PeeringSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location. */
+/**
+ * Peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
+ */
 @Fluent
 public final class PeeringInner extends ProxyResource {
     /*
      * The SKU that defines the tier and kind of the peering.
      */
-    @JsonProperty(value = "sku", required = true)
     private PeeringSku sku;
 
     /*
      * The kind of the peering.
      */
-    @JsonProperty(value = "kind", required = true)
     private Kind kind;
 
     /*
      * The properties that define a peering.
      */
-    @JsonProperty(value = "properties")
     private PeeringProperties innerProperties;
 
     /*
      * The location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PeeringInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PeeringInner class.
+     */
     public PeeringInner() {
     }
 
     /**
      * Get the sku property: The SKU that defines the tier and kind of the peering.
-     *
+     * 
      * @return the sku value.
      */
     public PeeringSku sku() {
@@ -65,7 +80,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the sku property: The SKU that defines the tier and kind of the peering.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PeeringInner object itself.
      */
@@ -76,7 +91,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the kind property: The kind of the peering.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -85,7 +100,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the kind property: The kind of the peering.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the PeeringInner object itself.
      */
@@ -96,7 +111,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties that define a peering.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PeeringProperties innerProperties() {
@@ -105,7 +120,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -114,7 +129,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the PeeringInner object itself.
      */
@@ -125,7 +140,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -134,7 +149,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the tags property: The resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PeeringInner object itself.
      */
@@ -144,8 +159,38 @@ public final class PeeringInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the direct property: The properties that define a direct peering.
-     *
+     * 
      * @return the direct value.
      */
     public PeeringPropertiesDirect direct() {
@@ -154,7 +199,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the direct property: The properties that define a direct peering.
-     *
+     * 
      * @param direct the direct value to set.
      * @return the PeeringInner object itself.
      */
@@ -168,7 +213,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the exchange property: The properties that define an exchange peering.
-     *
+     * 
      * @return the exchange value.
      */
     public PeeringPropertiesExchange exchange() {
@@ -177,7 +222,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the exchange property: The properties that define an exchange peering.
-     *
+     * 
      * @param exchange the exchange value to set.
      * @return the PeeringInner object itself.
      */
@@ -191,7 +236,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the peeringLocation property: The location of the peering.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -200,7 +245,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Set the peeringLocation property: The location of the peering.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the PeeringInner object itself.
      */
@@ -214,7 +259,7 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -223,31 +268,84 @@ public final class PeeringInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model PeeringInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model PeeringInner"));
         } else {
             sku().validate();
         }
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model PeeringInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model PeeringInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model PeeringInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model PeeringInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PeeringInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringInner.
+     */
+    public static PeeringInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringInner deserializedPeeringInner = new PeeringInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPeeringInner.sku = PeeringSku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPeeringInner.kind = Kind.fromString(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedPeeringInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringInner.innerProperties = PeeringProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPeeringInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringInner;
+        });
+    }
 }

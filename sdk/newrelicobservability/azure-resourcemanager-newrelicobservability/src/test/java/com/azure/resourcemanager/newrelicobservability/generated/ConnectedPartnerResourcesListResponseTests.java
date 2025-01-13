@@ -26,18 +26,24 @@ public final class ConnectedPartnerResourcesListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedPartnerResourcesListResponse model = new ConnectedPartnerResourcesListResponse()
-            .withValue(Arrays.asList(
-                new ConnectedPartnerResourcesListFormatInner().withProperties(
-                    new ConnectedPartnerResourceProperties().withAccountName("ggd").withAccountId("ixhbkuofqweykhm")
-                        .withAzureResourceId("evfyexfwhybcib").withLocation("vdcsitynn")),
+        ConnectedPartnerResourcesListResponse model
+            = new ConnectedPartnerResourcesListResponse().withValue(Arrays.asList(
+                new ConnectedPartnerResourcesListFormatInner()
+                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("ggd")
+                        .withAccountId("ixhbkuofqweykhm")
+                        .withAzureResourceId("evfyexfwhybcib")
+                        .withLocation("vdcsitynn")),
                 new ConnectedPartnerResourcesListFormatInner()
                     .withProperties(new ConnectedPartnerResourceProperties().withAccountName("dectehfiqsc")
-                        .withAccountId("ypvhezrkg").withAzureResourceId("c").withLocation("efovgmk")),
+                        .withAccountId("ypvhezrkg")
+                        .withAzureResourceId("c")
+                        .withLocation("efovgmk")),
                 new ConnectedPartnerResourcesListFormatInner()
                     .withProperties(new ConnectedPartnerResourceProperties().withAccountName("eyyvxyqjpkcat")
-                        .withAccountId("ngj").withAzureResourceId("cczsq").withLocation("hvmdajvnysounq"))))
-            .withNextLink("a");
+                        .withAccountId("ngj")
+                        .withAzureResourceId("cczsq")
+                        .withLocation("hvmdajvnysounq"))))
+                .withNextLink("a");
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourcesListResponse.class);
         Assertions.assertEquals("ggd", model.value().get(0).properties().accountName());
         Assertions.assertEquals("ixhbkuofqweykhm", model.value().get(0).properties().accountId());

@@ -79,8 +79,8 @@ public interface WorkspacesClient {
      * @return batch AI Workspace information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreate(
-        String resourceGroupName, String workspaceName, WorkspaceCreateParameters parameters);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreate(String resourceGroupName, String workspaceName,
+        WorkspaceCreateParameters parameters);
 
     /**
      * Creates a Workspace.
@@ -96,8 +96,8 @@ public interface WorkspacesClient {
      * @return batch AI Workspace information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreate(
-        String resourceGroupName, String workspaceName, WorkspaceCreateParameters parameters, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreate(String resourceGroupName, String workspaceName,
+        WorkspaceCreateParameters parameters, Context context);
 
     /**
      * Creates a Workspace.
@@ -128,8 +128,8 @@ public interface WorkspacesClient {
      * @return batch AI Workspace information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner create(
-        String resourceGroupName, String workspaceName, WorkspaceCreateParameters parameters, Context context);
+    WorkspaceInner create(String resourceGroupName, String workspaceName, WorkspaceCreateParameters parameters,
+        Context context);
 
     /**
      * Updates properties of a Workspace.
@@ -160,8 +160,8 @@ public interface WorkspacesClient {
      * @return batch AI Workspace information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> updateWithResponse(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters, Context context);
+    Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceUpdateParameters parameters, Context context);
 
     /**
      * Deletes a Workspace.
@@ -246,6 +246,6 @@ public interface WorkspacesClient {
      * @return information about a Workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

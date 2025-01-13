@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "Description", "Description_fr", "Type", "BaseRate", "BedOptions", "BedOptions", "SleepsCount",
-})
+@JsonPropertyOrder({ "Description", "Description_fr", "Type", "BaseRate", "BedOptions", "BedOptions", "SleepsCount", })
 public class HotelRoom {
     @JsonProperty(value = "Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,7 +40,6 @@ public class HotelRoom {
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String[] tags;
-
 
     public String description() {
         return this.description;

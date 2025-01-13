@@ -97,6 +97,9 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

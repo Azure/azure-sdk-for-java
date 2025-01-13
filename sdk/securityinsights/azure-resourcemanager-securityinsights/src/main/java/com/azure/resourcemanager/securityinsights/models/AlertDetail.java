@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Alert detail. */
+/**
+ * Alert detail.
+ */
 public final class AlertDetail extends ExpandableStringEnum<AlertDetail> {
-    /** Static value DisplayName for AlertDetail. */
+    /**
+     * Static value DisplayName for AlertDetail.
+     */
     public static final AlertDetail DISPLAY_NAME = fromString("DisplayName");
 
-    /** Static value Severity for AlertDetail. */
+    /**
+     * Static value Severity for AlertDetail.
+     */
     public static final AlertDetail SEVERITY = fromString("Severity");
 
     /**
+     * Creates a new instance of AlertDetail value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertDetail() {
+    }
+
+    /**
      * Creates or finds a AlertDetail from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertDetail.
      */
-    @JsonCreator
     public static AlertDetail fromString(String name) {
         return fromString(name, AlertDetail.class);
     }
 
     /**
      * Gets known AlertDetail values.
-     *
+     * 
      * @return known AlertDetail values.
      */
     public static Collection<AlertDetail> values() {

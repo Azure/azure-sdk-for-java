@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
  * Entry point to namespace authorization rules management API.
  */
 @Fluent
-public interface NamespaceAuthorizationRules extends
-    AuthorizationRules<NamespaceAuthorizationRule>,
+public interface NamespaceAuthorizationRules extends AuthorizationRules<NamespaceAuthorizationRule>,
     SupportsCreating<NamespaceAuthorizationRule.DefinitionStages.Blank> {
 }

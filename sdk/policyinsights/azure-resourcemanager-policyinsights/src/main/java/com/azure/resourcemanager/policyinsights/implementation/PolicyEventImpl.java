@@ -17,8 +17,8 @@ public final class PolicyEventImpl implements PolicyEvent {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    PolicyEventImpl(
-        PolicyEventInner innerObject, com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
+    PolicyEventImpl(PolicyEventInner innerObject,
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

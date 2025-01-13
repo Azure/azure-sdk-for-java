@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"a\",\"description\":\"twieopexelxqdwr\",\"recipients\":{\"emails\":[\"ljpibkgxyxyauxre\",\"do\"],\"users\":[\"n\"]}}")
-                .toObject(NotificationContractProperties.class);
+        NotificationContractProperties model = BinaryData.fromString(
+            "{\"title\":\"a\",\"description\":\"twieopexelxqdwr\",\"recipients\":{\"emails\":[\"ljpibkgxyxyauxre\",\"do\"],\"users\":[\"n\"]}}")
+            .toObject(NotificationContractProperties.class);
         Assertions.assertEquals("a", model.title());
         Assertions.assertEquals("twieopexelxqdwr", model.description());
         Assertions.assertEquals("ljpibkgxyxyauxre", model.recipients().emails().get(0));
@@ -26,14 +24,10 @@ public final class NotificationContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationContractProperties model =
-            new NotificationContractProperties()
-                .withTitle("a")
-                .withDescription("twieopexelxqdwr")
-                .withRecipients(
-                    new RecipientsContractProperties()
-                        .withEmails(Arrays.asList("ljpibkgxyxyauxre", "do"))
-                        .withUsers(Arrays.asList("n")));
+        NotificationContractProperties model = new NotificationContractProperties().withTitle("a")
+            .withDescription("twieopexelxqdwr")
+            .withRecipients(new RecipientsContractProperties().withEmails(Arrays.asList("ljpibkgxyxyauxre", "do"))
+                .withUsers(Arrays.asList("n")));
         model = BinaryData.fromObject(model).toObject(NotificationContractProperties.class);
         Assertions.assertEquals("a", model.title());
         Assertions.assertEquals("twieopexelxqdwr", model.description());

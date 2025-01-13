@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Describes the properties of a VM size. */
 @Fluent
 public final class VirtualMachineSize {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSize.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineSize.class);
 
     /*
      * The name of the virtual machine size.

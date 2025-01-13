@@ -7,19 +7,21 @@ package com.azure.resourcemanager.healthbot.generated;
 import com.azure.resourcemanager.healthbot.models.Sku;
 import com.azure.resourcemanager.healthbot.models.SkuName;
 
-/** Samples for Bots Create. */
+/**
+ * Samples for Bots Create.
+ */
 public final class BotsCreateSamples {
     /*
-     * x-ms-original-file: specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2020-12-08/examples/ResourceCreationPut.json
+     * x-ms-original-file:
+     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2020-12-08/examples/ResourceCreationPut.json
      */
     /**
      * Sample code: BotCreate.
-     *
+     * 
      * @param manager Entry point to HealthbotManager.
      */
     public static void botCreate(com.azure.resourcemanager.healthbot.HealthbotManager manager) {
-        manager
-            .bots()
+        manager.bots()
             .define("samplebotname")
             .withRegion("East US")
             .withExistingResourceGroup("healthbotClient")

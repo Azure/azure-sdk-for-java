@@ -5,101 +5,106 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The VM inventory item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inventoryType")
-@JsonTypeName("VirtualMachine")
+/**
+ * The VM inventory item.
+ */
 @Fluent
 public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.VIRTUAL_MACHINE;
+
+    /*
      * Gets or sets the type of the os.
      */
-    @JsonProperty(value = "osType")
     private OsType osType;
 
     /*
      * Gets or sets os name.
      */
-    @JsonProperty(value = "osName")
     private String osName;
 
     /*
      * Gets or sets the nic ip addresses.
      */
-    @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
     /*
      * Gets or sets the folder path of the vm.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * Host inventory resource details.
      */
-    @JsonProperty(value = "host")
     private InventoryItemDetails host;
 
     /*
      * ResourcePool inventory resource details.
      */
-    @JsonProperty(value = "resourcePool")
     private InventoryItemDetails resourcePool;
 
     /*
      * Cluster inventory resource details.
      */
-    @JsonProperty(value = "cluster")
     private InventoryItemDetails cluster;
 
     /*
      * Gets or sets the instance uuid of the vm.
      */
-    @JsonProperty(value = "instanceUuid")
     private String instanceUuid;
 
     /*
      * Gets or sets the SMBIOS UUID of the vm.
      */
-    @JsonProperty(value = "smbiosUuid")
     private String smbiosUuid;
 
     /*
      * Gets the power state of the virtual machine.
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private String powerState;
 
     /*
      * Gets or sets the current running status of VMware Tools running in the guest operating system.
      */
-    @JsonProperty(value = "toolsRunningStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsRunningStatus;
 
     /*
      * Gets or sets the current version status of VMware Tools installed in the guest operating system.
      */
-    @JsonProperty(value = "toolsVersionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersionStatus;
 
     /*
      * Gets or sets the current version of VMware Tools.
      */
-    @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersion;
 
-    /** Creates an instance of VirtualMachineInventoryItem class. */
+    /**
+     * Creates an instance of VirtualMachineInventoryItem class.
+     */
     public VirtualMachineInventoryItem() {
     }
 
     /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    @Override
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
      * Get the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -108,7 +113,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -119,7 +124,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the osName property: Gets or sets os name.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -128,7 +133,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the osName property: Gets or sets os name.
-     *
+     * 
      * @param osName the osName value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -139,7 +144,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the ipAddresses property: Gets or sets the nic ip addresses.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -148,7 +153,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the ipAddresses property: Gets or sets the nic ip addresses.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -159,7 +164,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the folderPath property: Gets or sets the folder path of the vm.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -168,7 +173,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the folderPath property: Gets or sets the folder path of the vm.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -179,7 +184,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the host property: Host inventory resource details.
-     *
+     * 
      * @return the host value.
      */
     public InventoryItemDetails host() {
@@ -188,7 +193,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the host property: Host inventory resource details.
-     *
+     * 
      * @param host the host value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -199,7 +204,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the resourcePool property: ResourcePool inventory resource details.
-     *
+     * 
      * @return the resourcePool value.
      */
     public InventoryItemDetails resourcePool() {
@@ -208,7 +213,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the resourcePool property: ResourcePool inventory resource details.
-     *
+     * 
      * @param resourcePool the resourcePool value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -219,7 +224,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the cluster property: Cluster inventory resource details.
-     *
+     * 
      * @return the cluster value.
      */
     public InventoryItemDetails cluster() {
@@ -228,7 +233,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the cluster property: Cluster inventory resource details.
-     *
+     * 
      * @param cluster the cluster value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -239,7 +244,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the instanceUuid property: Gets or sets the instance uuid of the vm.
-     *
+     * 
      * @return the instanceUuid value.
      */
     public String instanceUuid() {
@@ -248,7 +253,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the instanceUuid property: Gets or sets the instance uuid of the vm.
-     *
+     * 
      * @param instanceUuid the instanceUuid value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -259,7 +264,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the smbiosUuid property: Gets or sets the SMBIOS UUID of the vm.
-     *
+     * 
      * @return the smbiosUuid value.
      */
     public String smbiosUuid() {
@@ -268,7 +273,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the smbiosUuid property: Gets or sets the SMBIOS UUID of the vm.
-     *
+     * 
      * @param smbiosUuid the smbiosUuid value to set.
      * @return the VirtualMachineInventoryItem object itself.
      */
@@ -279,7 +284,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the powerState property: Gets the power state of the virtual machine.
-     *
+     * 
      * @return the powerState value.
      */
     public String powerState() {
@@ -289,7 +294,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     /**
      * Get the toolsRunningStatus property: Gets or sets the current running status of VMware Tools running in the guest
      * operating system.
-     *
+     * 
      * @return the toolsRunningStatus value.
      */
     public String toolsRunningStatus() {
@@ -299,7 +304,7 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     /**
      * Get the toolsVersionStatus property: Gets or sets the current version status of VMware Tools installed in the
      * guest operating system.
-     *
+     * 
      * @return the toolsVersionStatus value.
      */
     public String toolsVersionStatus() {
@@ -308,28 +313,34 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the toolsVersion property: Gets or sets the current version of VMware Tools.
-     *
+     * 
      * @return the toolsVersion value.
      */
     public String toolsVersion() {
         return this.toolsVersion;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineInventoryItem withManagedResourceId(String managedResourceId) {
         super.withManagedResourceId(managedResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineInventoryItem withMoRefId(String moRefId) {
         super.withMoRefId(moRefId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineInventoryItem withMoName(String moName) {
         super.withMoName(moName);
@@ -338,12 +349,11 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (host() != null) {
             host().validate();
         }
@@ -353,5 +363,90 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
         if (cluster() != null) {
             cluster().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceId", managedResourceId());
+        jsonWriter.writeStringField("moRefId", moRefId());
+        jsonWriter.writeStringField("moName", moName());
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("osName", this.osName);
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeJsonField("host", this.host);
+        jsonWriter.writeJsonField("resourcePool", this.resourcePool);
+        jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeStringField("instanceUuid", this.instanceUuid);
+        jsonWriter.writeStringField("smbiosUuid", this.smbiosUuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInventoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInventoryItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineInventoryItem.
+     */
+    public static VirtualMachineInventoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInventoryItem deserializedVirtualMachineInventoryItem = new VirtualMachineInventoryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceId".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.withManagedResourceId(reader.getString());
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.withMoRefId(reader.getString());
+                } else if ("moName".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.withMoName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.inventoryType
+                        = InventoryType.fromString(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.osType = OsType.fromString(reader.getString());
+                } else if ("osName".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.osName = reader.getString();
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInventoryItem.ipAddresses = ipAddresses;
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.folderPath = reader.getString();
+                } else if ("host".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.host = InventoryItemDetails.fromJson(reader);
+                } else if ("resourcePool".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.resourcePool = InventoryItemDetails.fromJson(reader);
+                } else if ("cluster".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.cluster = InventoryItemDetails.fromJson(reader);
+                } else if ("instanceUuid".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.instanceUuid = reader.getString();
+                } else if ("smbiosUuid".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.smbiosUuid = reader.getString();
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.powerState = reader.getString();
+                } else if ("toolsRunningStatus".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.toolsRunningStatus = reader.getString();
+                } else if ("toolsVersionStatus".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.toolsVersionStatus = reader.getString();
+                } else if ("toolsVersion".equals(fieldName)) {
+                    deserializedVirtualMachineInventoryItem.toolsVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInventoryItem;
+        });
     }
 }

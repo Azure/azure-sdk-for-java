@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.ResiliencyModel;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
@@ -59,14 +60,14 @@ public final class VirtualNetworkGatewayInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VirtualNetworkGatewayInner class.
@@ -153,16 +154,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -170,6 +161,16 @@ public final class VirtualNetworkGatewayInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -746,6 +747,31 @@ public final class VirtualNetworkGatewayInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
         this.innerProperties().withAdminState(adminState);
+        return this;
+    }
+
+    /**
+     * Get the resiliencyModel property: Property to indicate if the Express Route Gateway has resiliency model of
+     * MultiHomed or SingleHomed.
+     * 
+     * @return the resiliencyModel value.
+     */
+    public ResiliencyModel resiliencyModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().resiliencyModel();
+    }
+
+    /**
+     * Set the resiliencyModel property: Property to indicate if the Express Route Gateway has resiliency model of
+     * MultiHomed or SingleHomed.
+     * 
+     * @param resiliencyModel the resiliencyModel value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withResiliencyModel(ResiliencyModel resiliencyModel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withResiliencyModel(resiliencyModel);
         return this;
     }
 

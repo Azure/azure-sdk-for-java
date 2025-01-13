@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Azure Storage account properties to use when updating an Azure Storage account. */
+/**
+ * The Azure Storage account properties to use when updating an Azure Storage account.
+ */
 @Fluent
-public final class UpdateStorageAccountProperties {
+public final class UpdateStorageAccountProperties implements JsonSerializable<UpdateStorageAccountProperties> {
     /*
      * The updated access key associated with this Azure Storage account that will be used to connect to it.
      */
-    @JsonProperty(value = "accessKey")
     private String accessKey;
 
     /*
      * The optional suffix for the storage account.
      */
-    @JsonProperty(value = "suffix")
     private String suffix;
 
-    /** Creates an instance of UpdateStorageAccountProperties class. */
+    /**
+     * Creates an instance of UpdateStorageAccountProperties class.
+     */
     public UpdateStorageAccountProperties() {
     }
 
     /**
      * Get the accessKey property: The updated access key associated with this Azure Storage account that will be used
      * to connect to it.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -39,7 +45,7 @@ public final class UpdateStorageAccountProperties {
     /**
      * Set the accessKey property: The updated access key associated with this Azure Storage account that will be used
      * to connect to it.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the UpdateStorageAccountProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class UpdateStorageAccountProperties {
 
     /**
      * Get the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
@@ -59,7 +65,7 @@ public final class UpdateStorageAccountProperties {
 
     /**
      * Set the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the UpdateStorageAccountProperties object itself.
      */
@@ -70,9 +76,49 @@ public final class UpdateStorageAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("suffix", this.suffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateStorageAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateStorageAccountProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateStorageAccountProperties.
+     */
+    public static UpdateStorageAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateStorageAccountProperties deserializedUpdateStorageAccountProperties
+                = new UpdateStorageAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessKey".equals(fieldName)) {
+                    deserializedUpdateStorageAccountProperties.accessKey = reader.getString();
+                } else if ("suffix".equals(fieldName)) {
+                    deserializedUpdateStorageAccountProperties.suffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateStorageAccountProperties;
+        });
     }
 }

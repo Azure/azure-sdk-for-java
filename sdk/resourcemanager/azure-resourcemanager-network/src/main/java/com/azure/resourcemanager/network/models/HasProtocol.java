@@ -11,7 +11,11 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent()
 public interface HasProtocol<ProtocolT> {
-    /** @return the protocol */
+    /**
+     * Gets the protocol.
+     *
+     * @return the protocol
+     */
     ProtocolT protocol();
 
     /** Grouping of definition stages involving specifying the protocol. */

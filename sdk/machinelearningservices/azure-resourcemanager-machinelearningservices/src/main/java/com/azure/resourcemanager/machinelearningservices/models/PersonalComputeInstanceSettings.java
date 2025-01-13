@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Settings for a personal compute instance. */
 @Fluent
 public final class PersonalComputeInstanceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PersonalComputeInstanceSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PersonalComputeInstanceSettings.class);
 
     /*
      * A user explicitly assigned to a personal compute instance.

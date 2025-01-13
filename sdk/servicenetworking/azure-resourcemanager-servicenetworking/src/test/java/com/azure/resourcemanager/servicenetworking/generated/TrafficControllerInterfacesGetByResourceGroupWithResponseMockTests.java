@@ -6,52 +6,37 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"configurationEndpoints\":[\"sxazjpq\",\"e\",\"ualhbxxhejj\",\"zvdudgwdslfhotwm\"],\"frontends\":[{\"id\":\"pwlbjnpg\"},{\"id\":\"cftadeh\"},{\"id\":\"nltyfsoppusuesnz\"}],\"associations\":[{\"id\":\"jbavorxzdm\"}],\"provisioningState\":\"Failed\"},\"location\":\"bqvudwxdndn\",\"tags\":{\"lazjdyggdtjixhbk\":\"gujjugwdkcglh\"},\"id\":\"ofqweykhmenevfye\",\"name\":\"fwhybcibvy\",\"type\":\"dcsi\"}";
+            = "{\"properties\":{\"configurationEndpoints\":[\"onpc\",\"hocohslkev\",\"eggzfb\"],\"frontends\":[{\"id\":\"mvfaxkffeiith\"},{\"id\":\"vmezy\"},{\"id\":\"shxmzsbbzoggigrx\"},{\"id\":\"burvjxxjnspy\"}],\"associations\":[{\"id\":\"koen\"}],\"securityPolicies\":[{\"id\":\"knvudwtiukb\"},{\"id\":\"dng\"},{\"id\":\"pocipazyxoegu\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"npiucgygevqznty\"}},\"provisioningState\":\"Canceled\"},\"location\":\"p\",\"tags\":{\"nfyhx\":\"drqjsdpy\"},\"id\":\"eoejzic\",\"name\":\"ifsjttgzfbishcb\",\"type\":\"hajdeyeamdpha\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TrafficControllerManager manager = TrafficControllerManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TrafficController response = manager.trafficControllerInterfaces()
-            .getByResourceGroupWithResponse("enjbdlwtgrhp", "jp", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("byao", "v", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("bqvudwxdndn", response.location());
-        Assertions.assertEquals("gujjugwdkcglh", response.tags().get("lazjdyggdtjixhbk"));
+        Assertions.assertEquals("p", response.location());
+        Assertions.assertEquals("drqjsdpy", response.tags().get("nfyhx"));
+        Assertions.assertEquals("npiucgygevqznty",
+            response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 }

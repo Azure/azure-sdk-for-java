@@ -21,8 +21,7 @@ public final class AzureBareMetalInstanceImpl implements AzureBareMetalInstance 
 
     private final com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager;
 
-    AzureBareMetalInstanceImpl(
-        AzureBareMetalInstanceInner innerObject,
+    AzureBareMetalInstanceImpl(AzureBareMetalInstanceInner innerObject,
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

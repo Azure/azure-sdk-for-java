@@ -13,30 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentNetworkEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentNetworkEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"accessibility\":\"NotAvailable\",\"domainName\":\"z\",\"ports\":[\"izehtdhgbjk\",\"reljeamur\",\"zmlovuanash\"]}")
-                .toObject(IntegrationServiceEnvironmentNetworkEndpoint.class);
-        Assertions
-            .assertEquals(
-                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_AVAILABLE, model.accessibility());
-        Assertions.assertEquals("z", model.domainName());
-        Assertions.assertEquals("izehtdhgbjk", model.ports().get(0));
+        IntegrationServiceEnvironmentNetworkEndpoint model = BinaryData
+            .fromString("{\"accessibility\":\"NotSpecified\",\"domainName\":\"qyggagfl\",\"ports\":[\"mtrwah\"]}")
+            .toObject(IntegrationServiceEnvironmentNetworkEndpoint.class);
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED,
+            model.accessibility());
+        Assertions.assertEquals("qyggagfl", model.domainName());
+        Assertions.assertEquals("mtrwah", model.ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentNetworkEndpoint model =
-            new IntegrationServiceEnvironmentNetworkEndpoint()
-                .withAccessibility(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_AVAILABLE)
-                .withDomainName("z")
-                .withPorts(Arrays.asList("izehtdhgbjk", "reljeamur", "zmlovuanash"));
+        IntegrationServiceEnvironmentNetworkEndpoint model = new IntegrationServiceEnvironmentNetworkEndpoint()
+            .withAccessibility(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED)
+            .withDomainName("qyggagfl")
+            .withPorts(Arrays.asList("mtrwah"));
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentNetworkEndpoint.class);
-        Assertions
-            .assertEquals(
-                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_AVAILABLE, model.accessibility());
-        Assertions.assertEquals("z", model.domainName());
-        Assertions.assertEquals("izehtdhgbjk", model.ports().get(0));
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED,
+            model.accessibility());
+        Assertions.assertEquals("qyggagfl", model.domainName());
+        Assertions.assertEquals("mtrwah", model.ports().get(0));
     }
 }

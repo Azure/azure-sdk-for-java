@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.models.OperationDisplayInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The operations supported by Bot Service Management. */
+/**
+ * The operations supported by Bot Service Management.
+ */
 @Fluent
-public final class OperationEntityInner {
+public final class OperationEntityInner implements JsonSerializable<OperationEntityInner> {
     /*
      * Operation name: {provider}/{resource}/{operation}.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The operation supported by Bot Service Management.
      */
-    @JsonProperty(value = "display")
     private OperationDisplayInfo display;
 
     /*
      * The origin of the operation.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * Additional properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
+     * Creates an instance of OperationEntityInner class.
+     */
+    public OperationEntityInner() {
+    }
+
+    /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +54,7 @@ public final class OperationEntityInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationEntityInner object itself.
      */
@@ -57,7 +65,7 @@ public final class OperationEntityInner {
 
     /**
      * Get the display property: The operation supported by Bot Service Management.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplayInfo display() {
@@ -66,7 +74,7 @@ public final class OperationEntityInner {
 
     /**
      * Set the display property: The operation supported by Bot Service Management.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationEntityInner object itself.
      */
@@ -77,7 +85,7 @@ public final class OperationEntityInner {
 
     /**
      * Get the origin property: The origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -86,7 +94,7 @@ public final class OperationEntityInner {
 
     /**
      * Set the origin property: The origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationEntityInner object itself.
      */
@@ -97,7 +105,7 @@ public final class OperationEntityInner {
 
     /**
      * Get the properties property: Additional properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -106,7 +114,7 @@ public final class OperationEntityInner {
 
     /**
      * Set the properties property: Additional properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationEntityInner object itself.
      */
@@ -117,12 +125,57 @@ public final class OperationEntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationEntityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationEntityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationEntityInner.
+     */
+    public static OperationEntityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationEntityInner deserializedOperationEntityInner = new OperationEntityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationEntityInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationEntityInner.display = OperationDisplayInfo.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationEntityInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationEntityInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationEntityInner;
+        });
     }
 }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.TrackedResourceModificationDetails;
-import org.junit.jupiter.api.Test;
 
 public final class TrackedResourceModificationDetailsTests {
-    @Test
-    public void testDeserialize() {
-        TrackedResourceModificationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"policyDetails\":{\"policyDefinitionId\":\"zitonpeqfpjkjl\",\"policyAssignmentId\":\"fpdvhpfxxypi\",\"policyAssignmentDisplayName\":\"nmayhuybb\",\"policyAssignmentScope\":\"odepoogin\",\"policySetDefinitionId\":\"amiheognarxz\",\"policyDefinitionReferenceId\":\"heotusiv\"},\"deploymentId\":\"v\",\"deploymentTime\":\"2021-06-21T12:11:26Z\"}")
-                .toObject(TrackedResourceModificationDetails.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TrackedResourceModificationDetails model = BinaryData.fromString(
+            "{\"policyDetails\":{\"policyDefinitionId\":\"sgcbac\",\"policyAssignmentId\":\"ejk\",\"policyAssignmentDisplayName\":\"ynqgoulzndlikwyq\",\"policyAssignmentScope\":\"fgibmadgakeq\",\"policySetDefinitionId\":\"xybz\",\"policyDefinitionReferenceId\":\"e\"},\"deploymentId\":\"ytb\",\"deploymentTime\":\"2021-07-06T13:26:28Z\"}")
+            .toObject(TrackedResourceModificationDetails.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrackedResourceModificationDetails model = new TrackedResourceModificationDetails();
         model = BinaryData.fromObject(model).toObject(TrackedResourceModificationDetails.class);
     }

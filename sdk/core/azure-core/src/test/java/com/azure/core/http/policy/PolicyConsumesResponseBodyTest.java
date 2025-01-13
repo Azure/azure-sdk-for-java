@@ -7,7 +7,16 @@ import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -29,8 +38,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static com.azure.core.http.HttpHeaderName.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.azure.core.http.HttpHeaderName.CONTENT_LENGTH;
+import static com.azure.core.http.HttpHeaderName.LOCATION;
+import static com.azure.core.http.HttpHeaderName.WWW_AUTHENTICATE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PolicyConsumesResponseBodyTest {
 
@@ -117,8 +131,8 @@ public class PolicyConsumesResponseBodyTest {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://fake");
-        HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
 
         assertEquals(200, response.getStatusCode());
 
@@ -145,8 +159,8 @@ public class PolicyConsumesResponseBodyTest {
             })).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://fake");
-        HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
 
         assertEquals(200, response.getStatusCode());
 
@@ -174,8 +188,8 @@ public class PolicyConsumesResponseBodyTest {
             })).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://fake");
-        HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
 
         assertEquals(200, response.getStatusCode());
 
@@ -200,8 +214,8 @@ public class PolicyConsumesResponseBodyTest {
             })).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://fake");
-        HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
 
         assertEquals(200, response.getStatusCode());
 
@@ -228,8 +242,8 @@ public class PolicyConsumesResponseBodyTest {
             })).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://fake");
-        HttpResponse response = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
 
         assertEquals(200, response.getStatusCode());
 

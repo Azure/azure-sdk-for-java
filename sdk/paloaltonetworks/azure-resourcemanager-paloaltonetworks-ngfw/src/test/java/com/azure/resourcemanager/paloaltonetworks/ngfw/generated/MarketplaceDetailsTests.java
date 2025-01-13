@@ -22,7 +22,8 @@ public final class MarketplaceDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceDetails model = new MarketplaceDetails().withOfferId("wubxc").withPublisherId("ihwqknfdntwjchr")
+        MarketplaceDetails model = new MarketplaceDetails().withOfferId("wubxc")
+            .withPublisherId("ihwqknfdntwjchr")
             .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.NOT_STARTED);
         model = BinaryData.fromObject(model).toObject(MarketplaceDetails.class);
         Assertions.assertEquals("wubxc", model.offerId());

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -46,64 +45,67 @@ public final class ManageExpressRoute {
             //============================================================
             // create Express Route Circuit
             System.out.println("Creating express route circuit...");
-            ExpressRouteCircuit erc = azureResourceManager.expressRouteCircuits().define(ercName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withServiceProvider("Equinix")
-                    .withPeeringLocation("Silicon Valley")
-                    .withBandwidthInMbps(50)
-                    .withSku(ExpressRouteCircuitSkuType.PREMIUM_METEREDDATA)
-                    .create();
+            ExpressRouteCircuit erc = azureResourceManager.expressRouteCircuits()
+                .define(ercName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withServiceProvider("Equinix")
+                .withPeeringLocation("Silicon Valley")
+                .withBandwidthInMbps(50)
+                .withSku(ExpressRouteCircuitSkuType.PREMIUM_METEREDDATA)
+                .create();
             System.out.println("Created express route circuit");
 
             //============================================================
             // Create Express Route circuit peering. Please note: express route circuit should be provisioned by connectivity provider before this step.
             System.out.println("Creating express route circuit peering...");
-            erc.peerings().defineAzurePrivatePeering()
-                    .withPrimaryPeerAddressPrefix("123.0.0.0/30")
-                    .withSecondaryPeerAddressPrefix("123.0.0.4/30")
-                    .withVlanId(200)
-                    .withPeerAsn(100)
-                    .create();
+            erc.peerings()
+                .defineAzurePrivatePeering()
+                .withPrimaryPeerAddressPrefix("123.0.0.0/30")
+                .withSecondaryPeerAddressPrefix("123.0.0.4/30")
+                .withVlanId(200)
+                .withPeerAsn(100)
+                .create();
             System.out.println("Created express route circuit peering");
 
             //============================================================
             // Adding authorization to express route circuit
-            erc.update()
-                    .withAuthorization("myAuthorization")
-                    .apply();
+            erc.update().withAuthorization("myAuthorization").apply();
 
             //============================================================
             // Create virtual network to be associated with virtual network gateway
             System.out.println("Creating virtual network...");
-            Network network = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withAddressSpace("192.168.0.0/16")
-                    .withSubnet("GatewaySubnet", "192.168.200.0/26")
-                    .withSubnet("FrontEnd", "192.168.1.0/24")
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("192.168.0.0/16")
+                .withSubnet("GatewaySubnet", "192.168.200.0/26")
+                .withSubnet("FrontEnd", "192.168.1.0/24")
+                .create();
 
             //============================================================
             // Create virtual network gateway
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways().define(gatewayName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withExistingNetwork(network)
-                    .withExpressRoute()
-                    .withSku(VirtualNetworkGatewaySkuName.STANDARD)
-                    .create();
+            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways()
+                .define(gatewayName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withExistingNetwork(network)
+                .withExpressRoute()
+                .withSku(VirtualNetworkGatewaySkuName.STANDARD)
+                .create();
             System.out.println("Created virtual network gateway");
 
             //============================================================
             // Create virtual network gateway connection
             System.out.println("Creating virtual network gateway connection...");
-            vngw1.connections().define(connectionName)
-                    .withExpressRoute(erc)
-                    // Note: authorization key is required only in case express route circuit and virtual network gateway are in different subscriptions
-                    // .withAuthorization(erc.inner().authorizations().get(0).authorizationKey())
-                    .create();
+            vngw1.connections()
+                .define(connectionName)
+                .withExpressRoute(erc)
+                // Note: authorization key is required only in case express route circuit and virtual network gateway are in different subscriptions
+                // .withAuthorization(erc.inner().authorizations().get(0).authorizationKey())
+                .create();
             System.out.println("Created virtual network gateway connection");
 
             return true;
@@ -133,8 +135,7 @@ public final class ManageExpressRoute {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

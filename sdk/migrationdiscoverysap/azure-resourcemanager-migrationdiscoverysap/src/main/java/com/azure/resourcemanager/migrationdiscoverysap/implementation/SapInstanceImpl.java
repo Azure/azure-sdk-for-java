@@ -87,14 +87,16 @@ public final class SapInstanceImpl implements SapInstance, SapInstance.Definitio
     }
 
     public SapInstance create() {
-        this.innerObject = serviceManager.serviceClient().getSapInstances().create(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
+            .create(resourceGroupName, sapDiscoverySiteName, sapInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapInstance create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapInstances().create(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
+            .create(resourceGroupName, sapDiscoverySiteName, sapInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -111,13 +113,17 @@ public final class SapInstanceImpl implements SapInstance, SapInstance.Definitio
     }
 
     public SapInstance apply() {
-        this.innerObject = serviceManager.serviceClient().getSapInstances().updateWithResponse(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
+            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, updateProperties,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapInstance apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapInstances()
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
             .updateWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, updateProperties, context)
             .getValue();
         return this;
@@ -133,14 +139,18 @@ public final class SapInstanceImpl implements SapInstance, SapInstance.Definitio
     }
 
     public SapInstance refresh() {
-        this.innerObject = serviceManager.serviceClient().getSapInstances()
-            .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
+            .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapInstance refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapInstances()
-            .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapInstances()
+            .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, context)
+            .getValue();
         return this;
     }
 

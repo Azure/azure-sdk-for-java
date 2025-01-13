@@ -5,55 +5,56 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connector mapping property format. */
+/**
+ * Connector mapping property format.
+ */
 @Fluent
-public final class ConnectorMappingFormat {
+public final class ConnectorMappingFormat implements JsonSerializable<ConnectorMappingFormat> {
     /*
      * The type mapping format.
      */
-    @JsonProperty(value = "formatType", required = true)
     private String formatType = "TextFormat";
 
     /*
      * The character that signifies a break between columns.
      */
-    @JsonProperty(value = "columnDelimiter")
     private String columnDelimiter;
 
     /*
      * The oData language.
      */
-    @JsonProperty(value = "acceptLanguage")
     private String acceptLanguage;
 
     /*
      * Quote character, used to indicate enquoted fields.
      */
-    @JsonProperty(value = "quoteCharacter")
     private String quoteCharacter;
 
     /*
      * Escape character for quotes, can be the same as the quoteCharacter.
      */
-    @JsonProperty(value = "quoteEscapeCharacter")
     private String quoteEscapeCharacter;
 
     /*
      * Character separating array elements.
      */
-    @JsonProperty(value = "arraySeparator")
     private String arraySeparator;
 
-    /** Creates an instance of ConnectorMappingFormat class. */
+    /**
+     * Creates an instance of ConnectorMappingFormat class.
+     */
     public ConnectorMappingFormat() {
-        formatType = "TextFormat";
     }
 
     /**
      * Get the formatType property: The type mapping format.
-     *
+     * 
      * @return the formatType value.
      */
     public String formatType() {
@@ -62,7 +63,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the formatType property: The type mapping format.
-     *
+     * 
      * @param formatType the formatType value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -73,7 +74,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Get the columnDelimiter property: The character that signifies a break between columns.
-     *
+     * 
      * @return the columnDelimiter value.
      */
     public String columnDelimiter() {
@@ -82,7 +83,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the columnDelimiter property: The character that signifies a break between columns.
-     *
+     * 
      * @param columnDelimiter the columnDelimiter value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -93,7 +94,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Get the acceptLanguage property: The oData language.
-     *
+     * 
      * @return the acceptLanguage value.
      */
     public String acceptLanguage() {
@@ -102,7 +103,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the acceptLanguage property: The oData language.
-     *
+     * 
      * @param acceptLanguage the acceptLanguage value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -113,7 +114,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Get the quoteCharacter property: Quote character, used to indicate enquoted fields.
-     *
+     * 
      * @return the quoteCharacter value.
      */
     public String quoteCharacter() {
@@ -122,7 +123,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the quoteCharacter property: Quote character, used to indicate enquoted fields.
-     *
+     * 
      * @param quoteCharacter the quoteCharacter value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -133,7 +134,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Get the quoteEscapeCharacter property: Escape character for quotes, can be the same as the quoteCharacter.
-     *
+     * 
      * @return the quoteEscapeCharacter value.
      */
     public String quoteEscapeCharacter() {
@@ -142,7 +143,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the quoteEscapeCharacter property: Escape character for quotes, can be the same as the quoteCharacter.
-     *
+     * 
      * @param quoteEscapeCharacter the quoteEscapeCharacter value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -153,7 +154,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Get the arraySeparator property: Character separating array elements.
-     *
+     * 
      * @return the arraySeparator value.
      */
     public String arraySeparator() {
@@ -162,7 +163,7 @@ public final class ConnectorMappingFormat {
 
     /**
      * Set the arraySeparator property: Character separating array elements.
-     *
+     * 
      * @param arraySeparator the arraySeparator value to set.
      * @return the ConnectorMappingFormat object itself.
      */
@@ -173,9 +174,59 @@ public final class ConnectorMappingFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("formatType", this.formatType);
+        jsonWriter.writeStringField("columnDelimiter", this.columnDelimiter);
+        jsonWriter.writeStringField("acceptLanguage", this.acceptLanguage);
+        jsonWriter.writeStringField("quoteCharacter", this.quoteCharacter);
+        jsonWriter.writeStringField("quoteEscapeCharacter", this.quoteEscapeCharacter);
+        jsonWriter.writeStringField("arraySeparator", this.arraySeparator);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMappingFormat.
+     */
+    public static ConnectorMappingFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingFormat deserializedConnectorMappingFormat = new ConnectorMappingFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columnDelimiter".equals(fieldName)) {
+                    deserializedConnectorMappingFormat.columnDelimiter = reader.getString();
+                } else if ("acceptLanguage".equals(fieldName)) {
+                    deserializedConnectorMappingFormat.acceptLanguage = reader.getString();
+                } else if ("quoteCharacter".equals(fieldName)) {
+                    deserializedConnectorMappingFormat.quoteCharacter = reader.getString();
+                } else if ("quoteEscapeCharacter".equals(fieldName)) {
+                    deserializedConnectorMappingFormat.quoteEscapeCharacter = reader.getString();
+                } else if ("arraySeparator".equals(fieldName)) {
+                    deserializedConnectorMappingFormat.arraySeparator = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingFormat;
+        });
     }
 }

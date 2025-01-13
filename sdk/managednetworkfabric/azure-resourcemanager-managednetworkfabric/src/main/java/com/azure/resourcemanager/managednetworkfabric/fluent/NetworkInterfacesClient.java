@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInter
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in NetworkInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkInterfacesClient.
+ */
 public interface NetworkInterfacesClient {
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -33,14 +35,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreate(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, NetworkInterfaceInner body);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, NetworkInterfaceInner body);
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -52,18 +54,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreate(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        NetworkInterfaceInner body,
-        Context context);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, NetworkInterfaceInner body, Context context);
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -74,14 +72,14 @@ public interface NetworkInterfacesClient {
      * @return defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner create(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, NetworkInterfaceInner body);
+    NetworkInterfaceInner create(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+        NetworkInterfaceInner body);
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -93,18 +91,14 @@ public interface NetworkInterfacesClient {
      * @return defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner create(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        NetworkInterfaceInner body,
-        Context context);
+    NetworkInterfaceInner create(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+        NetworkInterfaceInner body, Context context);
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -115,14 +109,14 @@ public interface NetworkInterfacesClient {
      * @return the Network Interface resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getWithResponse(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
+    Response<NetworkInterfaceInner> getWithResponse(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, Context context);
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -136,9 +130,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -149,14 +143,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, NetworkInterfacePatch body);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, NetworkInterfacePatch body);
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -168,18 +162,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        NetworkInterfacePatch body,
-        Context context);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, NetworkInterfacePatch body, Context context);
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -190,14 +180,14 @@ public interface NetworkInterfacesClient {
      * @return defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner update(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, NetworkInterfacePatch body);
+    NetworkInterfaceInner update(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+        NetworkInterfacePatch body);
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -209,18 +199,14 @@ public interface NetworkInterfacesClient {
      * @return defines the NetworkInterface resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner update(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        NetworkInterfacePatch body,
-        Context context);
+    NetworkInterfaceInner update(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+        NetworkInterfacePatch body, Context context);
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -230,14 +216,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName);
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -248,14 +234,14 @@ public interface NetworkInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, Context context);
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -268,9 +254,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -284,9 +270,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,9 +285,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -311,14 +297,14 @@ public interface NetworkInterfacesClient {
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listByNetworkDevice(
-        String resourceGroupName, String networkDeviceName, Context context);
+    PagedIterable<NetworkInterfaceInner> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -330,17 +316,14 @@ public interface NetworkInterfacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String networkDeviceName,
-            String networkInterfaceName,
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
             UpdateAdministrativeState body);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -353,18 +336,14 @@ public interface NetworkInterfacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String networkDeviceName,
-            String networkInterfaceName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -375,17 +354,14 @@ public interface NetworkInterfacesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, UpdateAdministrativeState body);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -397,10 +373,6 @@ public interface NetworkInterfacesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, UpdateAdministrativeState body, Context context);
 }

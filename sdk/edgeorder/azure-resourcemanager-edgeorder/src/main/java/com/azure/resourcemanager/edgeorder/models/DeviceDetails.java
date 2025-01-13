@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Device details. */
+/**
+ * Device details.
+ */
 @Immutable
-public final class DeviceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceDetails.class);
-
+public final class DeviceDetails implements JsonSerializable<DeviceDetails> {
     /*
      * device serial number
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Management Resource Id
      */
-    @JsonProperty(value = "managementResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String managementResourceId;
 
     /*
      * Management Resource Tenant ID
      */
-    @JsonProperty(value = "managementResourceTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String managementResourceTenantId;
 
     /**
+     * Creates an instance of DeviceDetails class.
+     */
+    public DeviceDetails() {
+    }
+
+    /**
      * Get the serialNumber property: device serial number.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -43,7 +48,7 @@ public final class DeviceDetails {
 
     /**
      * Get the managementResourceId property: Management Resource Id.
-     *
+     * 
      * @return the managementResourceId value.
      */
     public String managementResourceId() {
@@ -52,7 +57,7 @@ public final class DeviceDetails {
 
     /**
      * Get the managementResourceTenantId property: Management Resource Tenant ID.
-     *
+     * 
      * @return the managementResourceTenantId value.
      */
     public String managementResourceTenantId() {
@@ -61,9 +66,48 @@ public final class DeviceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceDetails.
+     */
+    public static DeviceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceDetails deserializedDeviceDetails = new DeviceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialNumber".equals(fieldName)) {
+                    deserializedDeviceDetails.serialNumber = reader.getString();
+                } else if ("managementResourceId".equals(fieldName)) {
+                    deserializedDeviceDetails.managementResourceId = reader.getString();
+                } else if ("managementResourceTenantId".equals(fieldName)) {
+                    deserializedDeviceDetails.managementResourceTenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceDetails;
+        });
     }
 }

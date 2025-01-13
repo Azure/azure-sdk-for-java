@@ -11,19 +11,19 @@ public final class EloquaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EloquaSource model = BinaryData.fromString(
-            "{\"type\":\"EloquaSource\",\"query\":\"dataxtkmknacnfzcy\",\"queryTimeout\":\"datahdjpagwszm\",\"additionalColumns\":\"datagzfeyexbg\",\"sourceRetryCount\":\"datayo\",\"sourceRetryWait\":\"datawigvqgc\",\"maxConcurrentConnections\":\"datacqjg\",\"disableMetricsCollection\":\"dataxpbpj\",\"\":{\"ohehhtl\":\"datanvdabaodiytxq\"}}")
+            "{\"type\":\"EloquaSource\",\"query\":\"datawbqaibkyeysf\",\"queryTimeout\":\"datahdydyybztlylh\",\"additionalColumns\":\"datacjq\",\"sourceRetryCount\":\"datacie\",\"sourceRetryWait\":\"datak\",\"maxConcurrentConnections\":\"dataxf\",\"disableMetricsCollection\":\"datahvecjhbttmhneqd\",\"\":{\"kna\":\"dataeyxxidabqla\",\"ljsfcryqrrsjqt\":\"datacseqo\"}}")
             .toObject(EloquaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaSource model = new EloquaSource().withSourceRetryCount("datayo")
-            .withSourceRetryWait("datawigvqgc")
-            .withMaxConcurrentConnections("datacqjg")
-            .withDisableMetricsCollection("dataxpbpj")
-            .withQueryTimeout("datahdjpagwszm")
-            .withAdditionalColumns("datagzfeyexbg")
-            .withQuery("dataxtkmknacnfzcy");
+        EloquaSource model = new EloquaSource().withSourceRetryCount("datacie")
+            .withSourceRetryWait("datak")
+            .withMaxConcurrentConnections("dataxf")
+            .withDisableMetricsCollection("datahvecjhbttmhneqd")
+            .withQueryTimeout("datahdydyybztlylh")
+            .withAdditionalColumns("datacjq")
+            .withQuery("datawbqaibkyeysf");
         model = BinaryData.fromObject(model).toObject(EloquaSource.class);
     }
 }

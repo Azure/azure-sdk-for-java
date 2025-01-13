@@ -29,7 +29,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
     /*
      * The recordingKind property.
      */
-    private RecordingKind recordingKind;
+    private RecordingKindInternal recordingKind;
 
     /**
      * Creates an instance of RecordingStateResponseInternal class.
@@ -82,7 +82,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * 
      * @return the recordingKind value.
      */
-    public RecordingKind getRecordingKind() {
+    public RecordingKindInternal getRecordingKind() {
         return this.recordingKind;
     }
 
@@ -92,7 +92,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
      * @param recordingKind the recordingKind value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
-    public RecordingStateResponseInternal setRecordingKind(RecordingKind recordingKind) {
+    public RecordingStateResponseInternal setRecordingKind(RecordingKindInternal recordingKind) {
         this.recordingKind = recordingKind;
         return this;
     }
@@ -133,7 +133,7 @@ public final class RecordingStateResponseInternal implements JsonSerializable<Re
                         = RecordingStateInternal.fromString(reader.getString());
                 } else if ("recordingKind".equals(fieldName)) {
                     deserializedRecordingStateResponseInternal.recordingKind
-                        = RecordingKind.fromString(reader.getString());
+                        = RecordingKindInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

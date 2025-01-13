@@ -5,15 +5,19 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The Communication Services error response. */
 @Fluent
-public final class CommunicationErrorResponse {
+public final class CommunicationErrorResponse implements JsonSerializable<CommunicationErrorResponse> {
     /*
      * The error property.
      */
-    @JsonProperty(value = "error", required = true)
     private CommunicationError error;
 
     /**
@@ -34,5 +38,37 @@ public final class CommunicationErrorResponse {
     public CommunicationErrorResponse setError(CommunicationError error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject().writeJsonField("error", error).writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CommunicationErrorResponse} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link CommunicationErrorResponse}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CommunicationErrorResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationErrorResponse response = new CommunicationErrorResponse();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    response.error = CommunicationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return response;
+        });
     }
 }

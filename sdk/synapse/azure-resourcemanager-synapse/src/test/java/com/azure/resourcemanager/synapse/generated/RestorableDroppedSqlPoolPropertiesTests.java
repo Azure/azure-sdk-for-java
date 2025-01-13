@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorableDroppedSqlPoolP
 public final class RestorableDroppedSqlPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorableDroppedSqlPoolProperties model =
-            BinaryData
-                .fromString(
-                    "{\"databaseName\":\"dvjdhttza\",\"edition\":\"edxihchrphkmcrj\",\"maxSizeBytes\":\"nsdfzpbgtgky\",\"serviceLevelObjective\":\"dgh\",\"elasticPoolName\":\"euutlwxezwzh\",\"creationDate\":\"2021-10-29T09:06Z\",\"deletionDate\":\"2021-09-18T08:14:23Z\",\"earliestRestoreDate\":\"2021-06-26T10:05:09Z\"}")
-                .toObject(RestorableDroppedSqlPoolProperties.class);
+        RestorableDroppedSqlPoolProperties model = BinaryData.fromString(
+            "{\"databaseName\":\"yoxoy\",\"edition\":\"k\",\"maxSizeBytes\":\"aimmoiroqb\",\"serviceLevelObjective\":\"hbragapyyr\",\"elasticPoolName\":\"svbpavbopfppdbwn\",\"creationDate\":\"2020-12-31T10:46:47Z\",\"deletionDate\":\"2021-06-30T02:41:40Z\",\"earliestRestoreDate\":\"2021-01-01T09:29:45Z\"}")
+            .toObject(RestorableDroppedSqlPoolProperties.class);
     }
 
     @org.junit.jupiter.api.Test

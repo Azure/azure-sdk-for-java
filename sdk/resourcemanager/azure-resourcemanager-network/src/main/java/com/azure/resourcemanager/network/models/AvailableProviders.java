@@ -13,17 +13,23 @@ import java.util.Map;
 @Fluent
 public interface AvailableProviders
     extends Executable<AvailableProviders>, HasInnerModel<AvailableProvidersListInner>, HasParent<NetworkWatcher> {
-    /** @return parameters used to query available internet providers */
+    /**
+     * Gets parameters used to query available internet providers.
+     *
+     * @return parameters used to query available internet providers
+     */
     AvailableProvidersListParameters availableProvidersParameters();
 
-    /** @return read-only map of available internet providers, indexed by country */
+    /**
+     * Gets read-only map of available internet providers.
+     *
+     * @return read-only map of available internet providers, indexed by country
+     */
     Map<String, AvailableProvidersListCountry> providersByCountry();
 
     /** The entirety of available providers parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithExecuteAndCountry,
-            DefinitionStages.WithExecuteAndState,
-            DefinitionStages.WithExecuteAndCity {
+    interface Definition extends DefinitionStages.WithExecuteAndCountry, DefinitionStages.WithExecuteAndState,
+        DefinitionStages.WithExecuteAndCity {
     }
 
     /** Grouping of available providers parameters definition stages. */
@@ -57,6 +63,8 @@ public interface AvailableProviders
         /** The stage of the definition which allows to specify country or execute the query. */
         interface WithExecuteAndCountry extends WithExecute {
             /**
+             * Specifies the country for available providers list.
+             *
              * @param country the country for available providers list
              * @return the next stage of the definition
              */
@@ -66,6 +74,8 @@ public interface AvailableProviders
         /** The stage of the definition which allows to specify state or execute the query. */
         interface WithExecuteAndState extends WithExecute {
             /**
+             * Specifies the state for available providers list.
+             *
              * @param state the state for available providers list
              * @return the next stage of the definition
              */
@@ -75,6 +85,8 @@ public interface AvailableProviders
         /** The stage of the definition which allows to specify city or execute the query. */
         interface WithExecuteAndCity extends WithExecute {
             /**
+             * Specifies the city or town for available providers list.
+             *
              * @param city the city or town for available providers list
              * @return the next stage of the definition
              */

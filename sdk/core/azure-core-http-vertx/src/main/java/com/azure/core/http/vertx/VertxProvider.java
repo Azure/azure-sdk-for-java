@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
 
 /**
  * Service provider interface providing platforms and applications the means to have their own managed {@link Vertx} be
- * resolved by the {@link VertxAsyncHttpClientBuilder}.
+ * resolved by the {@link VertxHttpClientBuilder}.
  */
 public interface VertxProvider {
 

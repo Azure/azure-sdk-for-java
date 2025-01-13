@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2024-03-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void operationsList(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {

@@ -32,29 +32,25 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS", matches =
-        ".*ShadAccessSignature .*")
+    @EnabledIfEnvironmentVariable(
+        named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS",
+        matches = ".*ShadAccessSignature .*")
     void sendWithSasConnectionString() {
         final String eventHubName = TestUtils.getEventHubName();
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
 
-        final EventHubProducerAsyncClient eventHubAsyncClient = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString(true))
-            .eventHubName(eventHubName)
-            .buildAsyncProducerClient());
+        final EventHubProducerAsyncClient eventHubAsyncClient
+            = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString(true))
+                .eventHubName(eventHubName)
+                .buildAsyncProducerClient());
 
-        StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(eventHubAsyncClient.getEventHubProperties()).assertNext(properties -> {
+            Assertions.assertEquals(getEventHubName(), properties.getName());
+            Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+        }).expectComplete().verify(TIMEOUT);
 
-        StepVerifier.create(eventHubAsyncClient.send(event, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(eventHubAsyncClient.send(event, options)).expectComplete().verify(TIMEOUT);
     }
 
     @Test
@@ -70,16 +66,13 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
         final EventData testData = new EventData("test-contents".getBytes(UTF_8));
 
         EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureSasCredential(sharedAccessSignature))
+            .credential(fullyQualifiedNamespace, eventHubName, new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
             assertTrue(batch.tryAdd(testData));
             return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
+        })).expectComplete().verify(TIMEOUT);
     }
 
     @Test
@@ -92,17 +85,16 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
 
         final EventData testData = new EventData("items".getBytes(UTF_8));
 
-        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-            .buildAsyncProducerClient());
+        EventHubProducerAsyncClient asyncProducerClient = toClose(
+            new EventHubClientBuilder()
+                .credential(fullyQualifiedNamespace, eventHubName,
+                    new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+                .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
             assertTrue(batch.tryAdd(testData));
             return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
+        })).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -112,24 +104,22 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     public void getPartitionPropertiesInvalidToken() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
+        final TokenCredential invalidTokenCredential
+            = new EventHubSharedKeyCredential(original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
         final String eventHubName = TestUtils.getEventHubName();
 
         // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), eventHubName, invalidTokenCredential)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getProperties())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
+        try (EventHubAsyncClient invalidClient
+            = createBuilder().credential(original.getEndpoint().getHost(), eventHubName, invalidTokenCredential)
+                .buildAsyncClient()) {
+            StepVerifier.create(invalidClient.getProperties()).expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
 
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+            }).verify(TIMEOUT);
         }
     }
 
@@ -140,23 +130,21 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential validCredentials = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
+        final TokenCredential validCredentials = new EventHubSharedKeyCredential(original.getSharedAccessKeyName(),
+            original.getSharedAccessKey(), TIMEOUT);
 
         // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getPartitionIds())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
+        try (EventHubAsyncClient invalidClient
+            = createBuilder().credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
+                .buildAsyncClient()) {
+            StepVerifier.create(invalidClient.getPartitionIds()).expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
 
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+            }).verify(TIMEOUT);
         }
     }
 

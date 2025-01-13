@@ -19,38 +19,33 @@ public final class ConcurObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConcurObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"ConcurObject\",\"typeProperties\":{\"tableName\":\"datadfvjsknrbxzepirt\"},\"description\":\"piqdqbvxqto\",\"structure\":\"datawbopvhcbtza\",\"schema\":\"datajxcontickfk\",\"linkedServiceName\":{\"referenceName\":\"thueocsgvuqzgbjw\",\"parameters\":{\"abes\":\"datadmpwewpmiolea\",\"ecmbaaj\":\"datayzwphbjks\",\"zkfekdesb\":\"datafwrdkql\",\"b\":\"datajqtl\"}},\"parameters\":{\"rr\":{\"type\":\"Array\",\"defaultValue\":\"datauibs\"},\"rcpzhbwcxybtdzyc\":{\"type\":\"String\",\"defaultValue\":\"dataeqrypyurvshhovtu\"},\"wczsrazcbybic\":{\"type\":\"Bool\",\"defaultValue\":\"dataoegjzgpljb\"},\"pua\":{\"type\":\"SecureString\",\"defaultValue\":\"datah\"}},\"annotations\":[\"datai\"],\"folder\":{\"name\":\"mu\"},\"\":{\"enndzgthdzit\":\"datawuycuo\",\"vswtwonadezm\":\"datazffpherwj\"}}")
+            "{\"type\":\"ConcurObject\",\"typeProperties\":{\"tableName\":\"dataf\"},\"description\":\"cnqbblr\",\"structure\":\"dataofzghfuifwxu\",\"schema\":\"datanoh\",\"linkedServiceName\":{\"referenceName\":\"cqxu\",\"parameters\":{\"fbplv\":\"dataugdcr\",\"qe\":\"datamhurosdjlzbdmddg\",\"orservpvesors\":\"datay\"}},\"parameters\":{\"fjqzyhzydyvtuq\":{\"type\":\"SecureString\",\"defaultValue\":\"datamex\"},\"igtvjxsocsvjekej\":{\"type\":\"SecureString\",\"defaultValue\":\"datalunssky\"}},\"annotations\":[\"datazjdcwuzscyf\",\"dataixecmasjnfgn\",\"dataxaojeeyvfxbfckmo\"],\"folder\":{\"name\":\"axvwxtxuzh\"},\"\":{\"ygtc\":\"datayffwflbkjcdzu\",\"jef\":\"dataz\",\"kbhzi\":\"dataubaldjcgldryvlr\"}}")
             .toObject(ConcurObjectDataset.class);
-        Assertions.assertEquals("piqdqbvxqto", model.description());
-        Assertions.assertEquals("thueocsgvuqzgbjw", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("rr").type());
-        Assertions.assertEquals("mu", model.folder().name());
+        Assertions.assertEquals("cnqbblr", model.description());
+        Assertions.assertEquals("cqxu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("fjqzyhzydyvtuq").type());
+        Assertions.assertEquals("axvwxtxuzh", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurObjectDataset model = new ConcurObjectDataset().withDescription("piqdqbvxqto")
-            .withStructure("datawbopvhcbtza")
-            .withSchema("datajxcontickfk")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("thueocsgvuqzgbjw")
-                .withParameters(mapOf("abes", "datadmpwewpmiolea", "ecmbaaj", "datayzwphbjks", "zkfekdesb",
-                    "datafwrdkql", "b", "datajqtl")))
-            .withParameters(
-                mapOf("rr", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datauibs"),
-                    "rcpzhbwcxybtdzyc",
-                    new ParameterSpecification().withType(ParameterType.STRING)
-                        .withDefaultValue("dataeqrypyurvshhovtu"),
-                    "wczsrazcbybic",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataoegjzgpljb"), "pua",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datah")))
-            .withAnnotations(Arrays.asList("datai"))
-            .withFolder(new DatasetFolder().withName("mu"))
-            .withTableName("datadfvjsknrbxzepirt");
+        ConcurObjectDataset model = new ConcurObjectDataset().withDescription("cnqbblr")
+            .withStructure("dataofzghfuifwxu")
+            .withSchema("datanoh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cqxu")
+                .withParameters(mapOf("fbplv", "dataugdcr", "qe", "datamhurosdjlzbdmddg", "orservpvesors", "datay")))
+            .withParameters(mapOf("fjqzyhzydyvtuq",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datamex"),
+                "igtvjxsocsvjekej",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datalunssky")))
+            .withAnnotations(Arrays.asList("datazjdcwuzscyf", "dataixecmasjnfgn", "dataxaojeeyvfxbfckmo"))
+            .withFolder(new DatasetFolder().withName("axvwxtxuzh"))
+            .withTableName("dataf");
         model = BinaryData.fromObject(model).toObject(ConcurObjectDataset.class);
-        Assertions.assertEquals("piqdqbvxqto", model.description());
-        Assertions.assertEquals("thueocsgvuqzgbjw", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("rr").type());
-        Assertions.assertEquals("mu", model.folder().name());
+        Assertions.assertEquals("cnqbblr", model.description());
+        Assertions.assertEquals("cqxu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("fjqzyhzydyvtuq").type());
+        Assertions.assertEquals("axvwxtxuzh", model.folder().name());
     }
 
     // Use "Map.of" if available

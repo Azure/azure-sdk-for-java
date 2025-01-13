@@ -67,7 +67,8 @@ import java.util.Collections;
  *  - Assign custom domain to gateway endpoint
  */
 public class ManageSpringCloud {
-    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String PIGGYMETRICS_TAR_GZ_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
     private static final String SPRING_CLOUD_SERVICE_PRINCIPAL = "03b39d0f-4213-4864-a245-b1476ec03169";
 
     /**
@@ -77,25 +78,25 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId)
+        throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
-        final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
+        final String serviceName = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
         final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
         final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 15);
         final String certName = Utils.randomResourceName(azureResourceManager, "cert", 15);
 
         try {
-            azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(region)
-                .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
             //============================================================
             // Create a spring cloud service with 3 apps: gateway, auth-service, account-service
 
             System.out.printf("Creating spring cloud service %s in resource group %s ...%n", serviceName, rgName);
 
-            SpringService service = azureResourceManager.springServices().define(serviceName)
+            SpringService service = azureResourceManager.springServices()
+                .define(serviceName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
@@ -109,7 +110,7 @@ public class ManageSpringCloud {
                 HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
                 connection.connect();
                 try (InputStream inputStream = connection.getInputStream();
-                     OutputStream outputStream = new FileOutputStream(gzFile)) {
+                    OutputStream outputStream = new FileOutputStream(gzFile)) {
                     IOUtils.copy(inputStream, outputStream);
                 }
                 connection.disconnect();
@@ -119,11 +120,12 @@ public class ManageSpringCloud {
             // Create spring cloud app: gateway
 
             System.out.printf("Creating spring cloud app gateway in resource group %s ...%n", rgName);
-            SpringApp gateway = service.apps().define("gateway")
+            SpringApp gateway = service.apps()
+                .define("gateway")
                 .defineActiveDeployment("default")
-                    .withSourceCodeTarGzFile(gzFile)
-                    .withTargetModule("gateway")
-                    .attach()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("gateway")
+                .attach()
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
                 .create();
@@ -135,11 +137,12 @@ public class ManageSpringCloud {
             // Create spring cloud app: auth-service
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
-            SpringApp authService = service.apps().define("auth-service")
+            SpringApp authService = service.apps()
+                .define("auth-service")
                 .defineActiveDeployment("default")
-                    .withSourceCodeTarGzFile(gzFile)
-                    .withTargetModule("auth-service")
-                    .attach()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("auth-service")
+                .attach()
                 .create();
 
             System.out.println("Created spring cloud service auth-service");
@@ -149,11 +152,12 @@ public class ManageSpringCloud {
             // Create spring cloud app: account-service
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
-            SpringApp accountService = service.apps().define("account-service")
+            SpringApp accountService = service.apps()
+                .define("account-service")
                 .defineActiveDeployment("default")
-                    .withSourceCodeTarGzFile(gzFile)
-                    .withTargetModule("account-service")
-                    .attach()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("account-service")
+                .attach()
                 .create();
 
             System.out.println("Created spring cloud service account-service");
@@ -164,20 +168,21 @@ public class ManageSpringCloud {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
+            AppServiceDomain domain = azureResourceManager.appServiceDomains()
+                .define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryIsoCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                .withFirstName("Jon")
+                .withLastName("Doe")
+                .withEmail("jondoe@contoso.com")
+                .withAddressLine1("123 4th Ave")
+                .withCity("Redmond")
+                .withStateOrProvince("WA")
+                .withCountry(CountryIsoCode.UNITED_STATES)
+                .withPostalCode("98052")
+                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                .withPhoneNumber("4258828080")
+                .attach()
                 .withDomainPrivacyEnabled(true)
                 .withAutoRenewEnabled(false)
                 .create();
@@ -188,9 +193,7 @@ public class ManageSpringCloud {
             gateway.refresh();
 
             System.out.printf("Updating dns with CNAME ssl.%s to %s%n", domainName, gateway.fqdn());
-            dnsZone.update()
-                .withCNameRecordSet("ssl", gateway.fqdn())
-                .apply();
+            dnsZone.update().withCNameRecordSet("ssl", gateway.fqdn()).apply();
 
             // Please use a trusted certificate for actual use
             System.out.printf("Generate a self-signed certificate for ssl.%s %n", domainName);
@@ -198,59 +201,55 @@ public class ManageSpringCloud {
             String cerPassword = Utils.password();
             String cerPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".cer";
             String pfxPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".pfx";
-            Utils.createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName,
+                "ssl." + domainName);
 
             byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
 
             KeyStore store = KeyStore.getInstance("PKCS12");
             store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
             String alias = Collections.list(store.aliases()).get(0);
-            String thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
+            String thumbprint = DatatypeConverter
+                .printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
 
             System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
-            System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
-            Vault vault = azureResourceManager.vaults().define(vaultName)
+            System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId,
+                SPRING_CLOUD_SERVICE_PRINCIPAL);
+            Vault vault = azureResourceManager.vaults()
+                .define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowSecretAllPermissions()
-                    .allowCertificateAllPermissions()
-                    .attach()
+                .forServicePrincipal(clientId)
+                .allowSecretAllPermissions()
+                .allowCertificateAllPermissions()
+                .attach()
                 .defineAccessPolicy()
-                    .forServicePrincipal(SPRING_CLOUD_SERVICE_PRINCIPAL)
-                    .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
-                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
-                    .attach()
+                .forServicePrincipal(SPRING_CLOUD_SERVICE_PRINCIPAL)
+                .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
+                .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
+                .attach()
                 .create();
             System.out.printf("Created key vault %s%n", vault.name());
             Utils.print(vault);
 
             // upload certificate
-            CertificateClient certificateClient = new CertificateClientBuilder()
-                .vaultUrl(vault.vaultUri())
+            CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vault.vaultUri())
                 .pipeline(service.manager().httpPipeline())
                 .buildClient();
 
             System.out.printf("Uploading certificate to %s in key vault ...%n", certName);
             certificateClient.importCertificate(
-                new ImportCertificateOptions(certName, certificate)
-                    .setPassword(cerPassword)
-                    .setEnabled(true)
-            );
+                new ImportCertificateOptions(certName, certificate).setPassword(cerPassword).setEnabled(true));
 
             //============================================================
             // Update Certificate and Custom Domain for Spring Cloud
             System.out.println("Updating Spring Cloud Service with certificate ...");
-            service.update()
-                .withCertificate(certName, vault.vaultUri(), certName)
-                .apply();
+            service.update().withCertificate(certName, vault.vaultUri(), certName).apply();
 
             System.out.printf("Updating Spring Cloud App with domain ssl.%s ...%n", domainName);
-            gateway.update()
-                .withCustomDomain(String.format("ssl.%s", domainName), thumbprint)
-                .apply();
+            gateway.update().withCustomDomain(String.format("ssl.%s", domainName), thumbprint).apply();
 
             System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
@@ -281,8 +280,7 @@ public class ManageSpringCloud {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -290,7 +288,8 @@ public class ManageSpringCloud {
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azureResourceManager, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            runSample(azureResourceManager,
+                Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -300,7 +299,8 @@ public class ManageSpringCloud {
     public static void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
-        try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
+        try (TarArchiveInputStream inputStream
+            = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
             TarArchiveEntry entry;
             while ((entry = inputStream.getNextTarEntry()) != null) {
                 if (entry.isDirectory()) {
@@ -336,19 +336,17 @@ public class ManageSpringCloud {
     }
 
     private static void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustManager[] trustAllCerts = new TrustManager[]{
-            new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[0];
-                }
-                public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
-                public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
             }
-        };
+
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
+
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
+        } };
         SSLContext sslContext = SSLContext.getInstance("SSL");
         sslContext.init(null, trustAllCerts, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());

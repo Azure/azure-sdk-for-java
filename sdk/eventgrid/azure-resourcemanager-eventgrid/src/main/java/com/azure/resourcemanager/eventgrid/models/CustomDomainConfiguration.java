@@ -6,50 +6,56 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A custom domain configuration that allows users to publish to their own domain name.
  */
 @Fluent
-public final class CustomDomainConfiguration {
+public final class CustomDomainConfiguration implements JsonSerializable<CustomDomainConfiguration> {
     /*
      * Fully Qualified Domain Name (FQDN) for the custom domain.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", required = true)
     private String fullyQualifiedDomainName;
 
     /*
-     * Validation state for the custom domain. This is a read only property and is initially set to 'Pending' and will be updated to 'Approved' by Event Grid only after ownership of the domain name has been successfully validated.
+     * Validation state for the custom domain. This is a read only property and is initially set to 'Pending' and will
+     * be updated to 'Approved' by Event Grid only after ownership of the domain name has been successfully validated.
      */
-    @JsonProperty(value = "validationState")
     private CustomDomainValidationState validationState;
 
     /*
-     * Identity info for accessing the certificate for the custom domain. This identity info must match an identity that has been set on the namespace.
+     * Identity info for accessing the certificate for the custom domain. This identity info must match an identity that
+     * has been set on the namespace.
      */
-    @JsonProperty(value = "identity")
     private CustomDomainIdentity identity;
 
     /*
-     * The URL for the certificate that is used for publishing to the custom domain. We currently support certificates stored in Azure Key Vault only. While certificate URL can be either
-     * versioned URL of the following format https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{version-id}, or unversioned URL of the following format (e.g.,
-     * https://contosovault.vault.azure.net/certificates/contosocert, we support unversioned certificate URL only (e.g., https://contosovault.vault.azure.net/certificates/contosocert)
+     * The URL for the certificate that is used for publishing to the custom domain. We currently support certificates
+     * stored in Azure Key Vault only. While certificate URL can be either
+     * versioned URL of the following format
+     * https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{version-id}, or unversioned URL of the
+     * following format (e.g.,
+     * https://contosovault.vault.azure.net/certificates/contosocert, we support unversioned certificate URL only (e.g.,
+     * https://contosovault.vault.azure.net/certificates/contosocert)
      */
-    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /*
-     * Expected DNS TXT record name. Event Grid will check for a TXT record with this name in the DNS record set of the custom domain name to prove ownership over the domain.
+     * Expected DNS TXT record name. Event Grid will check for a TXT record with this name in the DNS record set of the
+     * custom domain name to prove ownership over the domain.
      * The values under this TXT record must contain the expected TXT record value.
      */
-    @JsonProperty(value = "expectedTxtRecordName")
     private String expectedTxtRecordName;
 
     /*
-     * Expected DNS TXT record value. Event Grid will check for a TXT record with this value in the DNS record set of the custom domain name to prove ownership over the domain.
+     * Expected DNS TXT record value. Event Grid will check for a TXT record with this value in the DNS record set of
+     * the custom domain name to prove ownership over the domain.
      */
-    @JsonProperty(value = "expectedTxtRecordValue")
     private String expectedTxtRecordValue;
 
     /**
@@ -219,4 +225,58 @@ public final class CustomDomainConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomainConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fullyQualifiedDomainName", this.fullyQualifiedDomainName);
+        jsonWriter.writeStringField("validationState",
+            this.validationState == null ? null : this.validationState.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        jsonWriter.writeStringField("expectedTxtRecordName", this.expectedTxtRecordName);
+        jsonWriter.writeStringField("expectedTxtRecordValue", this.expectedTxtRecordValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomainConfiguration.
+     */
+    public static CustomDomainConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainConfiguration deserializedCustomDomainConfiguration = new CustomDomainConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.fullyQualifiedDomainName = reader.getString();
+                } else if ("validationState".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.validationState
+                        = CustomDomainValidationState.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.identity = CustomDomainIdentity.fromJson(reader);
+                } else if ("certificateUrl".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.certificateUrl = reader.getString();
+                } else if ("expectedTxtRecordName".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.expectedTxtRecordName = reader.getString();
+                } else if ("expectedTxtRecordValue".equals(fieldName)) {
+                    deserializedCustomDomainConfiguration.expectedTxtRecordValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainConfiguration;
+        });
+    }
 }

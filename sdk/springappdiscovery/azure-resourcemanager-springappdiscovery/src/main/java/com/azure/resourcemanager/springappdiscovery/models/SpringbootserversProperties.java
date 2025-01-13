@@ -6,60 +6,56 @@ package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The springbootservers resource definition.
  */
 @Fluent
-public final class SpringbootserversProperties {
+public final class SpringbootserversProperties implements JsonSerializable<SpringbootserversProperties> {
     /*
      * Target server port for remote login
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * Server is the target server name or ip address to discover of SpringBootServer.
      */
-    @JsonProperty(value = "server", required = true)
     private String server;
 
     /*
      * The alternative FQDN or IP addresses to discover for this server
      */
-    @JsonProperty(value = "fqdnAndIpAddressList")
     private List<String> fqdnAndIpAddressList;
 
     /*
      * The machine Id from ARM
      */
-    @JsonProperty(value = "machineArmId")
     private String machineArmId;
 
     /*
      * The total number of apps been discovered
      */
-    @JsonProperty(value = "totalApps")
     private Integer totalApps;
 
     /*
      * The total number of spring boot apps been discovered
      */
-    @JsonProperty(value = "springBootApps")
     private Integer springBootApps;
 
     /*
      * The list of errors.
      */
-    @JsonProperty(value = "errors")
     private List<Error> errors;
 
     /*
      * The resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -235,8 +231,9 @@ public final class SpringbootserversProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property server in model SpringbootserversProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model SpringbootserversProperties"));
         }
         if (errors() != null) {
             errors().forEach(e -> e.validate());
@@ -244,4 +241,67 @@ public final class SpringbootserversProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SpringbootserversProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeArrayField("fqdnAndIpAddressList", this.fqdnAndIpAddressList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("machineArmId", this.machineArmId);
+        jsonWriter.writeNumberField("totalApps", this.totalApps);
+        jsonWriter.writeNumberField("springBootApps", this.springBootApps);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpringbootserversProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpringbootserversProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpringbootserversProperties.
+     */
+    public static SpringbootserversProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpringbootserversProperties deserializedSpringbootserversProperties = new SpringbootserversProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.server = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("fqdnAndIpAddressList".equals(fieldName)) {
+                    List<String> fqdnAndIpAddressList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootserversProperties.fqdnAndIpAddressList = fqdnAndIpAddressList;
+                } else if ("machineArmId".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.machineArmId = reader.getString();
+                } else if ("totalApps".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.totalApps = reader.getNullable(JsonReader::getInt);
+                } else if ("springBootApps".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.springBootApps = reader.getNullable(JsonReader::getInt);
+                } else if ("errors".equals(fieldName)) {
+                    List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
+                    deserializedSpringbootserversProperties.errors = errors;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSpringbootserversProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpringbootserversProperties;
+        });
+    }
 }

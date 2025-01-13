@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Fluent credential builder for instantiating a {@link AzureApplicationCredential}.
@@ -39,7 +38,6 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
         this.identityClientOptions.setAuthorityHost(authorityHost);
         return this;
     }
-
 
     /**
      * Specifies the client ID of user assigned or system assigned identity, when this credential is running
@@ -72,9 +70,9 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
-     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
-     * requests might starve and setting up this executor service should be considered.
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
      * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
@@ -95,8 +93,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      */
     public AzureApplicationCredential build() {
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
 
         return new AzureApplicationCredential(getCredentialsChain());
@@ -105,8 +103,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
+            identityClientOptions));
         return output;
     }
 }
-

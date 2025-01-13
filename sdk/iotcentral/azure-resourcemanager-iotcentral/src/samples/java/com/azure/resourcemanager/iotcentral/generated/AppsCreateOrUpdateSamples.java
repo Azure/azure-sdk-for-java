@@ -9,19 +9,22 @@ import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
 import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity;
 import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentityType;
 
-/** Samples for Apps CreateOrUpdate. */
+/**
+ * Samples for Apps CreateOrUpdate.
+ */
 public final class AppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/
+     * Apps_CreateOrUpdate.json
      */
     /**
      * Sample code: Apps_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to IotCentralManager.
      */
     public static void appsCreateOrUpdate(com.azure.resourcemanager.iotcentral.IotCentralManager manager) {
-        manager
-            .apps()
+        manager.apps()
             .define("myIoTCentralApp")
             .withRegion("westus")
             .withExistingResourceGroup("resRg")

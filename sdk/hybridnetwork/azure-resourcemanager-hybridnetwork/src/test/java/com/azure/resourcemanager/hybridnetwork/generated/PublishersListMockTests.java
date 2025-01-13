@@ -6,50 +6,32 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridnetwork.models.Publisher;
 import com.azure.resourcemanager.hybridnetwork.models.PublisherScope;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PublishersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"201daee1-59b0-43a9-9416-7ddfc72962b6\",\"tenantId\":\"81547db3-75ed-4ed8-9f40-42ad04041139\",\"type\":\"None\",\"userAssignedIdentities\":{\"ulpzealb\":{\"principalId\":\"73badc00-e41f-45e2-b258-c9cd32a861d2\",\"clientId\":\"5356fc68-cafa-4541-a915-12814c8e7473\"}}},\"location\":\"kyojwyvfk\",\"tags\":{\"sgxjc\":\"suah\"},\"id\":\"mzrrscubiwsdrn\",\"name\":\"xqw\",\"type\":\"diffjxcjrmmuab\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"7cede3ed-d9ca-4f89-a803-bea216a3f17a\",\"tenantId\":\"f240d480-b494-4b56-bb46-1a428abf6e0e\",\"type\":\"None\",\"userAssignedIdentities\":{\"ulpzealb\":{\"principalId\":\"c426be31-9d4a-4af1-ad27-558cae12b393\",\"clientId\":\"ca0c7912-e86d-4678-9c7d-ea77be4f66b8\"}}},\"location\":\"kyojwyvfk\",\"tags\":{\"sgxjc\":\"suah\"},\"id\":\"mzrrscubiwsdrn\",\"name\":\"xqw\",\"type\":\"diffjxcjrmmuab\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Publisher> response = manager.publishers().list(com.azure.core.util.Context.NONE);
 

@@ -211,8 +211,8 @@ public final class AzureChatExtensionRetrievedDocument
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("filepath", this.filepath);
         jsonWriter.writeStringField("chunk_id", this.chunkId);
-        jsonWriter.writeNumberField("original_search_score", this.originalSearchScore);
         jsonWriter.writeNumberField("rerank_score", this.rerankScore);
+        jsonWriter.writeNumberField("original_search_score", this.originalSearchScore);
         jsonWriter.writeStringField("filter_reason", this.filterReason == null ? null : this.filterReason.toString());
         return jsonWriter.writeEndObject();
     }
@@ -236,8 +236,8 @@ public final class AzureChatExtensionRetrievedDocument
             String url = null;
             String filepath = null;
             String chunkId = null;
-            Double originalSearchScore = null;
             Double rerankScore = null;
+            Double originalSearchScore = null;
             AzureChatExtensionRetrieveDocumentFilterReason filterReason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -256,10 +256,10 @@ public final class AzureChatExtensionRetrievedDocument
                     filepath = reader.getString();
                 } else if ("chunk_id".equals(fieldName)) {
                     chunkId = reader.getString();
-                } else if ("original_search_score".equals(fieldName)) {
-                    originalSearchScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("rerank_score".equals(fieldName)) {
                     rerankScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("original_search_score".equals(fieldName)) {
+                    originalSearchScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("filter_reason".equals(fieldName)) {
                     filterReason = AzureChatExtensionRetrieveDocumentFilterReason.fromString(reader.getString());
                 } else {
@@ -272,8 +272,8 @@ public final class AzureChatExtensionRetrievedDocument
             deserializedAzureChatExtensionRetrievedDocument.url = url;
             deserializedAzureChatExtensionRetrievedDocument.filepath = filepath;
             deserializedAzureChatExtensionRetrievedDocument.chunkId = chunkId;
-            deserializedAzureChatExtensionRetrievedDocument.originalSearchScore = originalSearchScore;
             deserializedAzureChatExtensionRetrievedDocument.rerankScore = rerankScore;
+            deserializedAzureChatExtensionRetrievedDocument.originalSearchScore = originalSearchScore;
             deserializedAzureChatExtensionRetrievedDocument.filterReason = filterReason;
             return deserializedAzureChatExtensionRetrievedDocument;
         });

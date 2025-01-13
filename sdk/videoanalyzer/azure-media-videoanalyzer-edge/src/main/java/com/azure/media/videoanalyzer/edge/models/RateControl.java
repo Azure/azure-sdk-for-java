@@ -5,40 +5,47 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing the video's rate control. */
+/**
+ * Class representing the video's rate control.
+ */
 @Fluent
-public final class RateControl {
+public final class RateControl implements JsonSerializable<RateControl> {
     /*
      * the maximum output bitrate in kbps.
      */
-    @JsonProperty(value = "bitRateLimit")
     private Float bitRateLimit;
 
     /*
      * Interval at which images are encoded and transmitted.
      */
-    @JsonProperty(value = "encodingInterval")
     private Float encodingInterval;
 
     /*
      * Maximum output framerate in fps.
      */
-    @JsonProperty(value = "frameRateLimit")
     private Float frameRateLimit;
 
     /*
-     * A value of true indicates that frame rate is a fixed value rather than
-     * an upper limit, and that the video encoder shall prioritize frame rate
-     * over all other adaptable configuration values such as bitrate.
+     * A value of true indicates that frame rate is a fixed value rather than an upper limit, and that the video encoder
+     * shall prioritize frame rate over all other adaptable configuration values such as bitrate.
      */
-    @JsonProperty(value = "guaranteedFrameRate")
     private Boolean guaranteedFrameRate;
 
     /**
+     * Creates an instance of RateControl class.
+     */
+    public RateControl() {
+    }
+
+    /**
      * Get the bitRateLimit property: the maximum output bitrate in kbps.
-     *
+     * 
      * @return the bitRateLimit value.
      */
     public Float getBitRateLimit() {
@@ -47,7 +54,7 @@ public final class RateControl {
 
     /**
      * Set the bitRateLimit property: the maximum output bitrate in kbps.
-     *
+     * 
      * @param bitRateLimit the bitRateLimit value to set.
      * @return the RateControl object itself.
      */
@@ -58,7 +65,7 @@ public final class RateControl {
 
     /**
      * Get the encodingInterval property: Interval at which images are encoded and transmitted.
-     *
+     * 
      * @return the encodingInterval value.
      */
     public Float getEncodingInterval() {
@@ -67,7 +74,7 @@ public final class RateControl {
 
     /**
      * Set the encodingInterval property: Interval at which images are encoded and transmitted.
-     *
+     * 
      * @param encodingInterval the encodingInterval value to set.
      * @return the RateControl object itself.
      */
@@ -78,7 +85,7 @@ public final class RateControl {
 
     /**
      * Get the frameRateLimit property: Maximum output framerate in fps.
-     *
+     * 
      * @return the frameRateLimit value.
      */
     public Float getFrameRateLimit() {
@@ -87,7 +94,7 @@ public final class RateControl {
 
     /**
      * Set the frameRateLimit property: Maximum output framerate in fps.
-     *
+     * 
      * @param frameRateLimit the frameRateLimit value to set.
      * @return the RateControl object itself.
      */
@@ -100,7 +107,7 @@ public final class RateControl {
      * Get the guaranteedFrameRate property: A value of true indicates that frame rate is a fixed value rather than an
      * upper limit, and that the video encoder shall prioritize frame rate over all other adaptable configuration values
      * such as bitrate.
-     *
+     * 
      * @return the guaranteedFrameRate value.
      */
     public Boolean isGuaranteedFrameRate() {
@@ -111,12 +118,57 @@ public final class RateControl {
      * Set the guaranteedFrameRate property: A value of true indicates that frame rate is a fixed value rather than an
      * upper limit, and that the video encoder shall prioritize frame rate over all other adaptable configuration values
      * such as bitrate.
-     *
+     * 
      * @param guaranteedFrameRate the guaranteedFrameRate value to set.
      * @return the RateControl object itself.
      */
     public RateControl setGuaranteedFrameRate(Boolean guaranteedFrameRate) {
         this.guaranteedFrameRate = guaranteedFrameRate;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("bitRateLimit", this.bitRateLimit);
+        jsonWriter.writeNumberField("encodingInterval", this.encodingInterval);
+        jsonWriter.writeNumberField("frameRateLimit", this.frameRateLimit);
+        jsonWriter.writeBooleanField("guaranteedFrameRate", this.guaranteedFrameRate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RateControl from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RateControl if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RateControl.
+     */
+    public static RateControl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RateControl deserializedRateControl = new RateControl();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bitRateLimit".equals(fieldName)) {
+                    deserializedRateControl.bitRateLimit = reader.getNullable(JsonReader::getFloat);
+                } else if ("encodingInterval".equals(fieldName)) {
+                    deserializedRateControl.encodingInterval = reader.getNullable(JsonReader::getFloat);
+                } else if ("frameRateLimit".equals(fieldName)) {
+                    deserializedRateControl.frameRateLimit = reader.getNullable(JsonReader::getFloat);
+                } else if ("guaranteedFrameRate".equals(fieldName)) {
+                    deserializedRateControl.guaranteedFrameRate = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRateControl;
+        });
     }
 }

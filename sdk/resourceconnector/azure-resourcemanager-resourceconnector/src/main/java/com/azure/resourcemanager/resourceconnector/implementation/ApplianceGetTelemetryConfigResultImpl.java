@@ -12,8 +12,7 @@ public final class ApplianceGetTelemetryConfigResultImpl implements ApplianceGet
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    ApplianceGetTelemetryConfigResultImpl(
-        ApplianceGetTelemetryConfigResultInner innerObject,
+    ApplianceGetTelemetryConfigResultImpl(ApplianceGetTelemetryConfigResultInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

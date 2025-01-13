@@ -78,13 +78,13 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(2000)
-            .buildAsyncConsumerClient());
+        consumer = toClose(
+            createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).prefetchCount(2000).buildAsyncConsumerClient());
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
-            .filter(x -> isMatchingEvent(x, testData.getMessageId())))
+        StepVerifier
+            .create(consumer.receiveFromPartition(PARTITION_ID, position)
+                .filter(x -> isMatchingEvent(x, testData.getMessageId())))
             .expectNextCount(NUMBER_OF_EVENTS)
             .thenCancel()
             .verify(Duration.ofMinutes(2));
@@ -100,17 +100,12 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(11)
-            .buildAsyncConsumerClient());
+        consumer = toClose(
+            createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).prefetchCount(11).buildAsyncConsumerClient());
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
             .filter(x -> isMatchingEvent(x, testData.getMessageId()))
-            .take(eventCount))
-            .expectNextCount(eventCount)
-            .expectComplete()
-            .verify(TIMEOUT);
+            .take(eventCount)).expectNextCount(eventCount).expectComplete().verify(TIMEOUT);
     }
 }

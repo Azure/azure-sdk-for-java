@@ -59,8 +59,8 @@ public class TasksStateTasksEntityRecognitionTasksItem extends TaskState {
      */
     public static TasksStateTasksEntityRecognitionTasksItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TasksStateTasksEntityRecognitionTasksItem deserializedTasksStateTasksEntityRecognitionTasksItem =
-                    new TasksStateTasksEntityRecognitionTasksItem();
+            TasksStateTasksEntityRecognitionTasksItem deserializedTasksStateTasksEntityRecognitionTasksItem
+                = new TasksStateTasksEntityRecognitionTasksItem();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

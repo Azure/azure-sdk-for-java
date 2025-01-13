@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An object that represents the status of the environment, and its internal state in the Time Series Insights service.
  */
 @Immutable
-public final class EnvironmentStatus {
+public final class EnvironmentStatus implements JsonSerializable<EnvironmentStatus> {
     /*
      * An object that represents the status of ingress on an environment.
      */
-    @JsonProperty(value = "ingress", access = JsonProperty.Access.WRITE_ONLY)
     private IngressEnvironmentStatus ingress;
 
     /*
      * An object that represents the status of warm storage on an environment.
      */
-    @JsonProperty(value = "warmStorage", access = JsonProperty.Access.WRITE_ONLY)
     private WarmStorageEnvironmentStatus warmStorage;
 
-    /** Creates an instance of EnvironmentStatus class. */
+    /**
+     * Creates an instance of EnvironmentStatus class.
+     */
     public EnvironmentStatus() {
     }
 
     /**
      * Get the ingress property: An object that represents the status of ingress on an environment.
-     *
+     * 
      * @return the ingress value.
      */
     public IngressEnvironmentStatus ingress() {
@@ -39,7 +43,7 @@ public final class EnvironmentStatus {
 
     /**
      * Get the warmStorage property: An object that represents the status of warm storage on an environment.
-     *
+     * 
      * @return the warmStorage value.
      */
     public WarmStorageEnvironmentStatus warmStorage() {
@@ -48,7 +52,7 @@ public final class EnvironmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -58,5 +62,42 @@ public final class EnvironmentStatus {
         if (warmStorage() != null) {
             warmStorage().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentStatus.
+     */
+    public static EnvironmentStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentStatus deserializedEnvironmentStatus = new EnvironmentStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ingress".equals(fieldName)) {
+                    deserializedEnvironmentStatus.ingress = IngressEnvironmentStatus.fromJson(reader);
+                } else if ("warmStorage".equals(fieldName)) {
+                    deserializedEnvironmentStatus.warmStorage = WarmStorageEnvironmentStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentStatus;
+        });
     }
 }

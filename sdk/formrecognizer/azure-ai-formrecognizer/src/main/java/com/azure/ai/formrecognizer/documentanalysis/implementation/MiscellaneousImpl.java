@@ -251,9 +251,7 @@ public final class MiscellaneousImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationDetails>> getOperationWithResponseAsync(String operationId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), operationId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getOperationWithResponseAsync(operationId, context));
     }
 
     /**
@@ -343,9 +341,7 @@ public final class MiscellaneousImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceDetails>> getResourceInfoWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getResourceInfo(this.client.getEndpoint(),
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getResourceInfoWithResponseAsync(context));
     }
 
     /**
@@ -420,9 +416,7 @@ public final class MiscellaneousImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,9 +435,7 @@ public final class MiscellaneousImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -462,9 +454,7 @@ public final class MiscellaneousImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -482,9 +472,7 @@ public final class MiscellaneousImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

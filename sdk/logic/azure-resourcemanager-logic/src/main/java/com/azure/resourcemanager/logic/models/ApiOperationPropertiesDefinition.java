@@ -5,93 +5,87 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The api operations properties. */
+/**
+ * The api operations properties.
+ */
 @Fluent
-public final class ApiOperationPropertiesDefinition {
+public final class ApiOperationPropertiesDefinition implements JsonSerializable<ApiOperationPropertiesDefinition> {
     /*
      * The summary of the api operation.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * The description of the api operation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The visibility of the api operation.
      */
-    @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
      * The trigger type of api operation.
      */
-    @JsonProperty(value = "trigger")
     private String trigger;
 
     /*
      * The trigger hint for the api operation.
      */
-    @JsonProperty(value = "triggerHint")
     private String triggerHint;
 
     /*
      * Indicates whether the api operation is pageable.
      */
-    @JsonProperty(value = "pageable")
     private Boolean pageable;
 
     /*
      * The annotation of api operation.
      */
-    @JsonProperty(value = "annotation")
     private ApiOperationAnnotation annotation;
 
     /*
      * The api reference.
      */
-    @JsonProperty(value = "api")
     private ApiReference api;
 
     /*
      * The operation inputs definition schema.
      */
-    @JsonProperty(value = "inputsDefinition")
     private SwaggerSchema inputsDefinition;
 
     /*
      * The operation responses definition schemas.
      */
-    @JsonProperty(value = "responsesDefinition")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerSchema> responsesDefinition;
 
     /*
      * Indicates whether the API operation is webhook or not.
      */
-    @JsonProperty(value = "isWebhook")
     private Boolean isWebhook;
 
     /*
      * Indicates whether the API operation is notification or not.
      */
-    @JsonProperty(value = "isNotification")
     private Boolean isNotification;
 
-    /** Creates an instance of ApiOperationPropertiesDefinition class. */
+    /**
+     * Creates an instance of ApiOperationPropertiesDefinition class.
+     */
     public ApiOperationPropertiesDefinition() {
     }
 
     /**
      * Get the summary property: The summary of the api operation.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -100,7 +94,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the summary property: The summary of the api operation.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -111,7 +105,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the description property: The description of the api operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -120,7 +114,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the description property: The description of the api operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -131,7 +125,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the visibility property: The visibility of the api operation.
-     *
+     * 
      * @return the visibility value.
      */
     public String visibility() {
@@ -140,7 +134,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the visibility property: The visibility of the api operation.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -151,7 +145,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the trigger property: The trigger type of api operation.
-     *
+     * 
      * @return the trigger value.
      */
     public String trigger() {
@@ -160,7 +154,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the trigger property: The trigger type of api operation.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -171,7 +165,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the triggerHint property: The trigger hint for the api operation.
-     *
+     * 
      * @return the triggerHint value.
      */
     public String triggerHint() {
@@ -180,7 +174,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the triggerHint property: The trigger hint for the api operation.
-     *
+     * 
      * @param triggerHint the triggerHint value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -191,7 +185,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the pageable property: Indicates whether the api operation is pageable.
-     *
+     * 
      * @return the pageable value.
      */
     public Boolean pageable() {
@@ -200,7 +194,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the pageable property: Indicates whether the api operation is pageable.
-     *
+     * 
      * @param pageable the pageable value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -211,7 +205,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the annotation property: The annotation of api operation.
-     *
+     * 
      * @return the annotation value.
      */
     public ApiOperationAnnotation annotation() {
@@ -220,7 +214,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the annotation property: The annotation of api operation.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -231,7 +225,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the api property: The api reference.
-     *
+     * 
      * @return the api value.
      */
     public ApiReference api() {
@@ -240,7 +234,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the api property: The api reference.
-     *
+     * 
      * @param api the api value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -251,7 +245,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the inputsDefinition property: The operation inputs definition schema.
-     *
+     * 
      * @return the inputsDefinition value.
      */
     public SwaggerSchema inputsDefinition() {
@@ -260,7 +254,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the inputsDefinition property: The operation inputs definition schema.
-     *
+     * 
      * @param inputsDefinition the inputsDefinition value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -271,7 +265,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the responsesDefinition property: The operation responses definition schemas.
-     *
+     * 
      * @return the responsesDefinition value.
      */
     public Map<String, SwaggerSchema> responsesDefinition() {
@@ -280,7 +274,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the responsesDefinition property: The operation responses definition schemas.
-     *
+     * 
      * @param responsesDefinition the responsesDefinition value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -291,7 +285,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the isWebhook property: Indicates whether the API operation is webhook or not.
-     *
+     * 
      * @return the isWebhook value.
      */
     public Boolean isWebhook() {
@@ -300,7 +294,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the isWebhook property: Indicates whether the API operation is webhook or not.
-     *
+     * 
      * @param isWebhook the isWebhook value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -311,7 +305,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Get the isNotification property: Indicates whether the API operation is notification or not.
-     *
+     * 
      * @return the isNotification value.
      */
     public Boolean isNotification() {
@@ -320,7 +314,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Set the isNotification property: Indicates whether the API operation is notification or not.
-     *
+     * 
      * @param isNotification the isNotification value to set.
      * @return the ApiOperationPropertiesDefinition object itself.
      */
@@ -331,7 +325,7 @@ public final class ApiOperationPropertiesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -345,14 +339,85 @@ public final class ApiOperationPropertiesDefinition {
             inputsDefinition().validate();
         }
         if (responsesDefinition() != null) {
-            responsesDefinition()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            responsesDefinition().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("visibility", this.visibility);
+        jsonWriter.writeStringField("trigger", this.trigger);
+        jsonWriter.writeStringField("triggerHint", this.triggerHint);
+        jsonWriter.writeBooleanField("pageable", this.pageable);
+        jsonWriter.writeJsonField("annotation", this.annotation);
+        jsonWriter.writeJsonField("api", this.api);
+        jsonWriter.writeJsonField("inputsDefinition", this.inputsDefinition);
+        jsonWriter.writeMapField("responsesDefinition", this.responsesDefinition,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isWebhook", this.isWebhook);
+        jsonWriter.writeBooleanField("isNotification", this.isNotification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationPropertiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationPropertiesDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiOperationPropertiesDefinition.
+     */
+    public static ApiOperationPropertiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationPropertiesDefinition deserializedApiOperationPropertiesDefinition
+                = new ApiOperationPropertiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.summary = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.description = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.visibility = reader.getString();
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.trigger = reader.getString();
+                } else if ("triggerHint".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.triggerHint = reader.getString();
+                } else if ("pageable".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.pageable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("annotation".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.annotation = ApiOperationAnnotation.fromJson(reader);
+                } else if ("api".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.api = ApiReference.fromJson(reader);
+                } else if ("inputsDefinition".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.inputsDefinition = SwaggerSchema.fromJson(reader);
+                } else if ("responsesDefinition".equals(fieldName)) {
+                    Map<String, SwaggerSchema> responsesDefinition
+                        = reader.readMap(reader1 -> SwaggerSchema.fromJson(reader1));
+                    deserializedApiOperationPropertiesDefinition.responsesDefinition = responsesDefinition;
+                } else if ("isWebhook".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.isWebhook = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isNotification".equals(fieldName)) {
+                    deserializedApiOperationPropertiesDefinition.isNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationPropertiesDefinition;
+        });
     }
 }

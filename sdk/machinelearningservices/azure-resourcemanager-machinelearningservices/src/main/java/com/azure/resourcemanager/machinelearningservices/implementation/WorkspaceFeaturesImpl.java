@@ -14,14 +14,14 @@ import com.azure.resourcemanager.machinelearningservices.models.WorkspaceFeature
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceFeaturesImpl implements WorkspaceFeatures {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceFeaturesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceFeaturesImpl.class);
 
     private final WorkspaceFeaturesClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public WorkspaceFeaturesImpl(
-        WorkspaceFeaturesClient innerClient,
+    public WorkspaceFeaturesImpl(WorkspaceFeaturesClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

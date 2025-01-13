@@ -7,37 +7,60 @@ package com.azure.resourcemanager.extendedlocation.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocationPropertiesAuthentication;
 import com.azure.resourcemanager.extendedlocation.models.HostType;
 import com.azure.resourcemanager.extendedlocation.models.Identity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Custom Locations definition. */
+/**
+ * Custom Locations definition.
+ */
 @Fluent
 public final class CustomLocationInner extends Resource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The set of properties specific to a Custom Location
      */
-    @JsonProperty(value = "properties")
     private CustomLocationProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomLocationInner class.
+     */
+    public CustomLocationInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -46,7 +69,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -57,7 +80,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the innerProperties property: The set of properties specific to a Custom Location.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomLocationProperties innerProperties() {
@@ -66,21 +89,55 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLocationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLocationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -90,7 +147,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Get the authentication property: This is optional input that contains the authentication that should be used to
      * generate the namespace.
-     *
+     * 
      * @return the authentication value.
      */
     public CustomLocationPropertiesAuthentication authentication() {
@@ -100,7 +157,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Set the authentication property: This is optional input that contains the authentication that should be used to
      * generate the namespace.
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -115,7 +172,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Get the clusterExtensionIds property: Contains the reference to the add-on that contains charts to deploy CRDs
      * and operators.
-     *
+     * 
      * @return the clusterExtensionIds value.
      */
     public List<String> clusterExtensionIds() {
@@ -125,7 +182,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Set the clusterExtensionIds property: Contains the reference to the add-on that contains charts to deploy CRDs
      * and operators.
-     *
+     * 
      * @param clusterExtensionIds the clusterExtensionIds value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -139,7 +196,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the displayName property: Display name for the Custom Locations location.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -148,7 +205,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Set the displayName property: Display name for the Custom Locations location.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -163,7 +220,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Get the hostResourceId property: Connected Cluster or AKS Cluster. The Custom Locations RP will perform a
      * checkAccess API for listAdminCredentials permissions.
-     *
+     * 
      * @return the hostResourceId value.
      */
     public String hostResourceId() {
@@ -173,7 +230,7 @@ public final class CustomLocationInner extends Resource {
     /**
      * Set the hostResourceId property: Connected Cluster or AKS Cluster. The Custom Locations RP will perform a
      * checkAccess API for listAdminCredentials permissions.
-     *
+     * 
      * @param hostResourceId the hostResourceId value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -187,7 +244,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the hostType property: Type of host the Custom Locations is referencing (Kubernetes, etc...).
-     *
+     * 
      * @return the hostType value.
      */
     public HostType hostType() {
@@ -196,7 +253,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Set the hostType property: Type of host the Custom Locations is referencing (Kubernetes, etc...).
-     *
+     * 
      * @param hostType the hostType value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -210,7 +267,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the namespace property: Kubernetes namespace that will be created on the specified cluster.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -219,7 +276,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Set the namespace property: Kubernetes namespace that will be created on the specified cluster.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -233,7 +290,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning State for the Custom Location.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -242,7 +299,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Set the provisioningState property: Provisioning State for the Custom Location.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the CustomLocationInner object itself.
      */
@@ -256,7 +313,7 @@ public final class CustomLocationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -266,5 +323,60 @@ public final class CustomLocationInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomLocationInner.
+     */
+    public static CustomLocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationInner deserializedCustomLocationInner = new CustomLocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomLocationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomLocationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomLocationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCustomLocationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomLocationInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCustomLocationInner.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomLocationInner.innerProperties = CustomLocationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomLocationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationInner;
+        });
     }
 }

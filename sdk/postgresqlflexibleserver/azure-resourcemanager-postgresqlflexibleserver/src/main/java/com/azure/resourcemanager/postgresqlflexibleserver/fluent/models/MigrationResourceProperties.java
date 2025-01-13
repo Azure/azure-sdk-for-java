@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
@@ -18,163 +23,146 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TriggerCutoverEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Migration resource properties.
  */
 @Fluent
-public final class MigrationResourceProperties {
+public final class MigrationResourceProperties implements JsonSerializable<MigrationResourceProperties> {
     /*
      * ID for migration, a GUID.
      */
-    @JsonProperty(value = "migrationId", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationId;
 
     /*
      * Current status of migration
      */
-    @JsonProperty(value = "currentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationStatus currentStatus;
 
     /*
      * ResourceId of the private endpoint migration instance
      */
-    @JsonProperty(value = "migrationInstanceResourceId")
     private String migrationInstanceResourceId;
 
     /*
      * There are two types of migration modes Online and Offline
      */
-    @JsonProperty(value = "migrationMode")
     private MigrationMode migrationMode;
 
     /*
      * This indicates the supported Migration option for the migration
      */
-    @JsonProperty(value = "migrationOption")
     private MigrationOption migrationOption;
 
     /*
-     * migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB
+     * migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWS_RDS, AWS_AURORA,
+     * AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB
      */
-    @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
-     * SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source types
+     * SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source
+     * types
      */
-    @JsonProperty(value = "sslMode")
     private SslMode sslMode;
 
     /*
      * Metadata of the source database server
      */
-    @JsonProperty(value = "sourceDbServerMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private DbServerMetadata sourceDbServerMetadata;
 
     /*
      * Metadata of the target database server
      */
-    @JsonProperty(value = "targetDbServerMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private DbServerMetadata targetDbServerMetadata;
 
     /*
-     * ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username
+     * ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types
+     * this should be ipaddress:port@username or hostname:port@username
      */
-    @JsonProperty(value = "sourceDbServerResourceId")
     private String sourceDbServerResourceId;
 
     /*
-     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
+     * Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it,
+     * migration service will always use it for connection
      */
-    @JsonProperty(value = "sourceDbServerFullyQualifiedDomainName")
     private String sourceDbServerFullyQualifiedDomainName;
 
     /*
      * ResourceId of the source database server
      */
-    @JsonProperty(value = "targetDbServerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetDbServerResourceId;
 
     /*
-     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
+     * Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it,
+     * migration service will always use it for connection
      */
-    @JsonProperty(value = "targetDbServerFullyQualifiedDomainName")
     private String targetDbServerFullyQualifiedDomainName;
 
     /*
      * Migration secret parameters
      */
-    @JsonProperty(value = "secretParameters")
     private MigrationSecretParameters secretParameters;
 
     /*
      * Number of databases to migrate
      */
-    @JsonProperty(value = "dbsToMigrate")
     private List<String> dbsToMigrate;
 
     /*
      * Indicates whether to setup LogicalReplicationOnSourceDb, if needed
      */
-    @JsonProperty(value = "setupLogicalReplicationOnSourceDbIfNeeded")
     private LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded;
 
     /*
-     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the database already exists.
+     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the
+     * migration workflow will wait for a confirmation, if it detects that the database already exists.
      */
-    @JsonProperty(value = "overwriteDbsInTarget")
     private OverwriteDbsInTargetEnum overwriteDbsInTarget;
 
     /*
      * Start time in UTC for migration window
      */
-    @JsonProperty(value = "migrationWindowStartTimeInUtc")
     private OffsetDateTime migrationWindowStartTimeInUtc;
 
     /*
      * End time in UTC for migration window
      */
-    @JsonProperty(value = "migrationWindowEndTimeInUtc")
     private OffsetDateTime migrationWindowEndTimeInUtc;
 
     /*
      * To migrate roles and permissions we need to send this flag as True
      */
-    @JsonProperty(value = "migrateRoles")
     private MigrateRolesEnum migrateRoles;
 
     /*
      * Indicates whether the data migration should start right away
      */
-    @JsonProperty(value = "startDataMigration")
     private StartDataMigrationEnum startDataMigration;
 
     /*
      * To trigger cutover for entire migration we need to send this flag as True
      */
-    @JsonProperty(value = "triggerCutover")
     private TriggerCutoverEnum triggerCutover;
 
     /*
-     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
+     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in
+     * this array
      */
-    @JsonProperty(value = "dbsToTriggerCutoverOn")
     private List<String> dbsToTriggerCutoverOn;
 
     /*
      * To trigger cancel for entire migration we need to send this flag as True
      */
-    @JsonProperty(value = "cancel")
     private CancelEnum cancel;
 
     /*
      * When you want to trigger cancel for specific databases send cancel flag as True and database names in this array
      */
-    @JsonProperty(value = "dbsToCancelMigrationOn")
     private List<String> dbsToCancelMigrationOn;
 
     /**
@@ -348,8 +336,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -358,8 +346,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.
@@ -380,8 +368,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -390,8 +378,8 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.
@@ -671,5 +659,138 @@ public final class MigrationResourceProperties {
         if (secretParameters() != null) {
             secretParameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("migrationInstanceResourceId", this.migrationInstanceResourceId);
+        jsonWriter.writeStringField("migrationMode", this.migrationMode == null ? null : this.migrationMode.toString());
+        jsonWriter.writeStringField("migrationOption",
+            this.migrationOption == null ? null : this.migrationOption.toString());
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("sslMode", this.sslMode == null ? null : this.sslMode.toString());
+        jsonWriter.writeStringField("sourceDbServerResourceId", this.sourceDbServerResourceId);
+        jsonWriter.writeStringField("sourceDbServerFullyQualifiedDomainName",
+            this.sourceDbServerFullyQualifiedDomainName);
+        jsonWriter.writeStringField("targetDbServerFullyQualifiedDomainName",
+            this.targetDbServerFullyQualifiedDomainName);
+        jsonWriter.writeJsonField("secretParameters", this.secretParameters);
+        jsonWriter.writeArrayField("dbsToMigrate", this.dbsToMigrate, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("setupLogicalReplicationOnSourceDbIfNeeded",
+            this.setupLogicalReplicationOnSourceDbIfNeeded == null
+                ? null
+                : this.setupLogicalReplicationOnSourceDbIfNeeded.toString());
+        jsonWriter.writeStringField("overwriteDbsInTarget",
+            this.overwriteDbsInTarget == null ? null : this.overwriteDbsInTarget.toString());
+        jsonWriter.writeStringField("migrationWindowStartTimeInUtc",
+            this.migrationWindowStartTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.migrationWindowStartTimeInUtc));
+        jsonWriter.writeStringField("migrationWindowEndTimeInUtc",
+            this.migrationWindowEndTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.migrationWindowEndTimeInUtc));
+        jsonWriter.writeStringField("migrateRoles", this.migrateRoles == null ? null : this.migrateRoles.toString());
+        jsonWriter.writeStringField("startDataMigration",
+            this.startDataMigration == null ? null : this.startDataMigration.toString());
+        jsonWriter.writeStringField("triggerCutover",
+            this.triggerCutover == null ? null : this.triggerCutover.toString());
+        jsonWriter.writeArrayField("dbsToTriggerCutoverOn", this.dbsToTriggerCutoverOn,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("cancel", this.cancel == null ? null : this.cancel.toString());
+        jsonWriter.writeArrayField("dbsToCancelMigrationOn", this.dbsToCancelMigrationOn,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationResourceProperties.
+     */
+    public static MigrationResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationResourceProperties deserializedMigrationResourceProperties = new MigrationResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationId".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationId = reader.getString();
+                } else if ("currentStatus".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.currentStatus = MigrationStatus.fromJson(reader);
+                } else if ("migrationInstanceResourceId".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationInstanceResourceId = reader.getString();
+                } else if ("migrationMode".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationMode
+                        = MigrationMode.fromString(reader.getString());
+                } else if ("migrationOption".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationOption
+                        = MigrationOption.fromString(reader.getString());
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.sourceType = SourceType.fromString(reader.getString());
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.sslMode = SslMode.fromString(reader.getString());
+                } else if ("sourceDbServerMetadata".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.sourceDbServerMetadata = DbServerMetadata.fromJson(reader);
+                } else if ("targetDbServerMetadata".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.targetDbServerMetadata = DbServerMetadata.fromJson(reader);
+                } else if ("sourceDbServerResourceId".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.sourceDbServerResourceId = reader.getString();
+                } else if ("sourceDbServerFullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.sourceDbServerFullyQualifiedDomainName = reader.getString();
+                } else if ("targetDbServerResourceId".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.targetDbServerResourceId = reader.getString();
+                } else if ("targetDbServerFullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.targetDbServerFullyQualifiedDomainName = reader.getString();
+                } else if ("secretParameters".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.secretParameters
+                        = MigrationSecretParameters.fromJson(reader);
+                } else if ("dbsToMigrate".equals(fieldName)) {
+                    List<String> dbsToMigrate = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigrationResourceProperties.dbsToMigrate = dbsToMigrate;
+                } else if ("setupLogicalReplicationOnSourceDbIfNeeded".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.setupLogicalReplicationOnSourceDbIfNeeded
+                        = LogicalReplicationOnSourceDbEnum.fromString(reader.getString());
+                } else if ("overwriteDbsInTarget".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.overwriteDbsInTarget
+                        = OverwriteDbsInTargetEnum.fromString(reader.getString());
+                } else if ("migrationWindowStartTimeInUtc".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationWindowStartTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("migrationWindowEndTimeInUtc".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrationWindowEndTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("migrateRoles".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.migrateRoles
+                        = MigrateRolesEnum.fromString(reader.getString());
+                } else if ("startDataMigration".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.startDataMigration
+                        = StartDataMigrationEnum.fromString(reader.getString());
+                } else if ("triggerCutover".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.triggerCutover
+                        = TriggerCutoverEnum.fromString(reader.getString());
+                } else if ("dbsToTriggerCutoverOn".equals(fieldName)) {
+                    List<String> dbsToTriggerCutoverOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigrationResourceProperties.dbsToTriggerCutoverOn = dbsToTriggerCutoverOn;
+                } else if ("cancel".equals(fieldName)) {
+                    deserializedMigrationResourceProperties.cancel = CancelEnum.fromString(reader.getString());
+                } else if ("dbsToCancelMigrationOn".equals(fieldName)) {
+                    List<String> dbsToCancelMigrationOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigrationResourceProperties.dbsToCancelMigrationOn = dbsToCancelMigrationOn;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationResourceProperties;
+        });
     }
 }

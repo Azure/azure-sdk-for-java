@@ -25,7 +25,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"dbodacizsjqlhkrr\",\"groups\":[{\"name\":\"eibq\"},{\"name\":\"p\"}],\"afterStageWaitInSeconds\":1566726508}]}},\"eTag\":\"vxndz\",\"id\":\"krefajpjo\",\"name\":\"wkqnyhg\",\"type\":\"ij\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"cofudflvkgjub\",\"groups\":[{\"name\":\"nnqvsa\"},{\"name\":\"nqntorudsgsahm\"},{\"name\":\"yc\"}],\"afterStageWaitInSeconds\":698533794},{\"name\":\"uwjuetaeburuvdmo\",\"groups\":[{\"name\":\"zlxwabmqoefkifr\"}],\"afterStageWaitInSeconds\":1599154818}]}},\"eTag\":\"qujmqlgkf\",\"id\":\"ndo\",\"name\":\"ongbjcnt\",\"type\":\"jitcjedftwwaez\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,32 +35,28 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FleetUpdateStrategy response = manager.fleetUpdateStrategies()
-            .define("scywuggwoluhc")
-            .withExistingFleet("piyylhalnswhccsp", "kaivwit")
+            .define("kdlfoa")
+            .withExistingFleet("ujhemmsbvdkcrodt", "infwjlfltkacjve")
             .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
-                new UpdateStage().withName("hairsbrgzdwms")
-                    .withGroups(Arrays.asList(new UpdateGroup().withName("pqwd"),
-                        new UpdateGroup().withName("ggicccnxqhue"), new UpdateGroup().withName("mkttlstvlzywem")))
-                    .withAfterStageWaitInSeconds(218184123),
-                new UpdateStage().withName("ncsdtclusiyp")
-                    .withGroups(Arrays.asList(new UpdateGroup().withName("gytguslfead"),
-                        new UpdateGroup().withName("ygqukyhejh"), new UpdateGroup().withName("isxgfp"),
-                        new UpdateGroup().withName("lolp")))
-                    .withAfterStageWaitInSeconds(1515177914),
-                new UpdateStage().withName("srp")
+                new UpdateStage().withName("pagao")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("lpqblylsyxk"),
+                        new UpdateGroup().withName("jnsjervtiagxsd"), new UpdateGroup().withName("zuempsbzkf"),
+                        new UpdateGroup().withName("beyvpnqicvinvkjj")))
+                    .withAfterStageWaitInSeconds(602936654),
+                new UpdateStage().withName("rbuukzclewyhmlwp")
                     .withGroups(
-                        Arrays.asList(new UpdateGroup().withName("jzraehtwdwrf"), new UpdateGroup().withName("swibyr")))
-                    .withAfterStageWaitInSeconds(66676019),
-                new UpdateStage().withName("bhshfwpracstwity")
-                    .withGroups(Arrays.asList(new UpdateGroup().withName("vxccedcp"), new UpdateGroup().withName("md"),
-                        new UpdateGroup().withName("odn")))
-                    .withAfterStageWaitInSeconds(987064963))))
-            .withIfMatch("wlmdjrkv")
-            .withIfNoneMatch("g")
+                        Arrays.asList(new UpdateGroup().withName("zpof"), new UpdateGroup().withName("cckwyfzqwhxxbu"),
+                            new UpdateGroup().withName("qa"), new UpdateGroup().withName("zfeqztppri")))
+                    .withAfterStageWaitInSeconds(2094175875),
+                new UpdateStage().withName("or")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("tolmncwsobqw")))
+                    .withAfterStageWaitInSeconds(1051180868))))
+            .withIfMatch("udutnco")
+            .withIfNoneMatch("mr")
             .create();
 
-        Assertions.assertEquals("dbodacizsjqlhkrr", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("eibq", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1566726508, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("cofudflvkgjub", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("nnqvsa", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(698533794, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

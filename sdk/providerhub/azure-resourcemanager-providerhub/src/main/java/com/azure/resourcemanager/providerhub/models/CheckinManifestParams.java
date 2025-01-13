@@ -6,30 +6,36 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CheckinManifestParams model. */
+/**
+ * The CheckinManifestParams model.
+ */
 @Fluent
-public final class CheckinManifestParams {
+public final class CheckinManifestParams implements JsonSerializable<CheckinManifestParams> {
     /*
      * The environment supplied to the checkin manifest operation.
      */
-    @JsonProperty(value = "environment", required = true)
     private String environment;
 
     /*
      * The baseline ARM manifest location supplied to the checkin manifest operation.
      */
-    @JsonProperty(value = "baselineArmManifestLocation", required = true)
     private String baselineArmManifestLocation;
 
-    /** Creates an instance of CheckinManifestParams class. */
+    /**
+     * Creates an instance of CheckinManifestParams class.
+     */
     public CheckinManifestParams() {
     }
 
     /**
      * Get the environment property: The environment supplied to the checkin manifest operation.
-     *
+     * 
      * @return the environment value.
      */
     public String environment() {
@@ -38,7 +44,7 @@ public final class CheckinManifestParams {
 
     /**
      * Set the environment property: The environment supplied to the checkin manifest operation.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the CheckinManifestParams object itself.
      */
@@ -50,7 +56,7 @@ public final class CheckinManifestParams {
     /**
      * Get the baselineArmManifestLocation property: The baseline ARM manifest location supplied to the checkin manifest
      * operation.
-     *
+     * 
      * @return the baselineArmManifestLocation value.
      */
     public String baselineArmManifestLocation() {
@@ -60,7 +66,7 @@ public final class CheckinManifestParams {
     /**
      * Set the baselineArmManifestLocation property: The baseline ARM manifest location supplied to the checkin manifest
      * operation.
-     *
+     * 
      * @param baselineArmManifestLocation the baselineArmManifestLocation value to set.
      * @return the CheckinManifestParams object itself.
      */
@@ -71,23 +77,61 @@ public final class CheckinManifestParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (environment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property environment in model CheckinManifestParams"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property environment in model CheckinManifestParams"));
         }
         if (baselineArmManifestLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baselineArmManifestLocation in model CheckinManifestParams"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property baselineArmManifestLocation in model CheckinManifestParams"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckinManifestParams.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environment", this.environment);
+        jsonWriter.writeStringField("baselineArmManifestLocation", this.baselineArmManifestLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckinManifestParams from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckinManifestParams if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckinManifestParams.
+     */
+    public static CheckinManifestParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckinManifestParams deserializedCheckinManifestParams = new CheckinManifestParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environment".equals(fieldName)) {
+                    deserializedCheckinManifestParams.environment = reader.getString();
+                } else if ("baselineArmManifestLocation".equals(fieldName)) {
+                    deserializedCheckinManifestParams.baselineArmManifestLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckinManifestParams;
+        });
+    }
 }

@@ -3,22 +3,22 @@
 
 package com.azure.ai.translation.document;
 
-import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.DocumentFilter;
-import com.azure.ai.translation.document.models.Glossary;
-import com.azure.ai.translation.document.models.SourceInput;
-import com.azure.ai.translation.document.models.StartTranslationDetails;
-import com.azure.ai.translation.document.models.StorageSource;
-import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.ai.translation.document.models.DocumentTranslationInput;
+import com.azure.ai.translation.document.models.TranslationGlossary;
+import com.azure.ai.translation.document.models.TranslationSource;
+import com.azure.ai.translation.document.models.TranslationBatch;
+import com.azure.ai.translation.document.models.TranslationStorageSource;
+import com.azure.ai.translation.document.models.TranslationTarget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class TestHelper {
-    
-    
-    public static SourceInput createSourceInput(String sourceUrl, DocumentFilter filter, String sourceLanguage, StorageSource storageSource) {
-        SourceInput sourceInput = new SourceInput(sourceUrl);
+
+    public static TranslationSource createSourceInput(String sourceUrl, DocumentFilter filter, String sourceLanguage,
+        TranslationStorageSource storageSource) {
+        TranslationSource sourceInput = new TranslationSource(sourceUrl);
         if (filter != null) {
             sourceInput.setFilter(filter);
         }
@@ -30,10 +30,11 @@ public class TestHelper {
         }
         return sourceInput;
     }
-    
-    public static TargetInput createTargetInput(String targetUrl, String targetLanguageCode, String category, List<Glossary> glossaries, StorageSource storageSource) {
-        TargetInput targetInput = new TargetInput(targetUrl, targetLanguageCode);
-        if (glossaries != null) {   
+
+    public static TranslationTarget createTargetInput(String targetUrl, String targetLanguageCode, String category,
+        List<TranslationGlossary> glossaries, TranslationStorageSource storageSource) {
+        TranslationTarget targetInput = new TranslationTarget(targetUrl, targetLanguageCode);
+        if (glossaries != null) {
             targetInput.setGlossaries(glossaries);
         }
         if (category != null) {
@@ -41,17 +42,12 @@ public class TestHelper {
         }
         if (storageSource != null) {
             targetInput.setStorageSource(storageSource);
-        }         
+        }
         return targetInput;
     }
-            
-    public static StartTranslationDetails getStartTranslationDetails(BatchRequest... batchRequests) {          
-        List<BatchRequest> inputs = new ArrayList<>();
-        inputs.addAll(Arrays.asList(batchRequests));        
 
-        StartTranslationDetails startTranslationDetails = new StartTranslationDetails(inputs);
-
-        return  startTranslationDetails;
+    public static TranslationBatch getStartTranslationDetails(DocumentTranslationInput... batchRequests) {
+        return new TranslationBatch(new ArrayList<>(Arrays.asList(batchRequests)));
     }
-    
+
 }

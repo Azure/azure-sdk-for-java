@@ -10,17 +10,15 @@ import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbFo
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"mfpgv\",\"actionableMessage\":\"ipaslthaqfxssmwu\",\"filePath\":\"bdsrez\",\"lineNumber\":\"rhneuyowq\",\"hResult\":638872994,\"stackTrace\":\"t\"},\"id\":\"ib\"}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model = BinaryData.fromString(
+            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"aehtwd\",\"actionableMessage\":\"ftswibyrcdlbhsh\",\"filePath\":\"p\",\"lineNumber\":\"cstwity\",\"hResult\":56359046,\"stackTrace\":\"xccedcpnmdyodn\"},\"id\":\"xltjcvnhltiu\"}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError();
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError();
         model = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
     }
 }

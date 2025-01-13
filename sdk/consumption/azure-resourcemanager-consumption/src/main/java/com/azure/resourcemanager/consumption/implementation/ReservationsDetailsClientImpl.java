@@ -25,30 +25,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.ReservationsDetailsClient;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationDetailInner;
 import com.azure.resourcemanager.consumption.models.ReservationDetailsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReservationsDetailsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationsDetailsClient.
+ */
 public final class ReservationsDetailsClientImpl implements ReservationsDetailsClient {
-    private final ClientLogger logger = new ClientLogger(ReservationsDetailsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReservationsDetailsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConsumptionManagementClientImpl client;
 
     /**
      * Initializes an instance of ReservationsDetailsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReservationsDetailsClientImpl(ConsumptionManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ReservationsDetailsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ReservationsDetailsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,102 +61,80 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConsumptionManagemen")
-    private interface ReservationsDetailsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption"
-                + "/reservationDetails")
-        @ExpectedResponses({200})
+    public interface ReservationsDetailsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationDetailsListResult>> listByReservationOrder(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReservationDetailsListResult>> listByReservationOrder(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}"
-                + "/providers/Microsoft.Consumption/reservationDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationDetailsListResult>> listByReservationOrderAndReservation(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("reservationOrderId") String reservationOrderId,
+            @PathParam("reservationId") String reservationId, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get("/{scope}/providers/Microsoft.Consumption/reservationDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceScope}/providers/Microsoft.Consumption/reservationDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationDetailsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate,
-            @QueryParam("$filter") String filter,
-            @QueryParam("reservationId") String reservationId,
-            @QueryParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReservationDetailsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam(value = "resourceScope", encoded = true) String resourceScope,
+            @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate,
+            @QueryParam("$filter") String filter, @QueryParam("reservationId") String reservationId,
+            @QueryParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationDetailsListResult>> listByReservationOrderNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationDetailsListResult>> listByReservationOrderAndReservationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationDetailsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderSinglePageAsync(
-        String reservationOrderId, String filter) {
+    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderSinglePageAsync(String reservationOrderId,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -164,48 +145,34 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReservationOrder(
-                            this.client.getEndpoint(),
-                            reservationOrderId,
-                            filter,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReservationOrder(this.client.getEndpoint(), reservationOrderId,
+                filter, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderSinglePageAsync(
-        String reservationOrderId, String filter, Context context) {
+    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderSinglePageAsync(String reservationOrderId,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -217,67 +184,64 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReservationOrder(
-                this.client.getEndpoint(), reservationOrderId, filter, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByReservationOrder(this.client.getEndpoint(), reservationOrderId, filter, this.client.getApiVersion(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationDetailInner> listByReservationOrderAsync(String reservationOrderId, String filter) {
-        return new PagedFlux<>(
-            () -> listByReservationOrderSinglePageAsync(reservationOrderId, filter),
+        return new PagedFlux<>(() -> listByReservationOrderSinglePageAsync(reservationOrderId, filter),
             nextLink -> listByReservationOrderNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listByReservationOrderAsync(
-        String reservationOrderId, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByReservationOrderSinglePageAsync(reservationOrderId, filter, context),
+    private PagedFlux<ReservationDetailInner> listByReservationOrderAsync(String reservationOrderId, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByReservationOrderSinglePageAsync(reservationOrderId, filter, context),
             nextLink -> listByReservationOrderNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter) {
@@ -285,43 +249,46 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationDetailInner> listByReservationOrder(
-        String reservationOrderId, String filter, Context context) {
+    public PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter,
+        Context context) {
         return new PagedIterable<>(listByReservationOrderAsync(reservationOrderId, filter, context));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderAndReservationSinglePageAsync(
         String reservationOrderId, String reservationId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -335,50 +302,35 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReservationOrderAndReservation(
-                            this.client.getEndpoint(),
-                            reservationOrderId,
-                            reservationId,
-                            filter,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReservationOrderAndReservation(this.client.getEndpoint(),
+                reservationOrderId, reservationId, filter, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderAndReservationSinglePageAsync(
         String reservationOrderId, String reservationId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -393,391 +345,335 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReservationOrderAndReservation(
-                this.client.getEndpoint(),
-                reservationOrderId,
-                reservationId,
-                filter,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByReservationOrderAndReservation(this.client.getEndpoint(), reservationOrderId, reservationId, filter,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listByReservationOrderAndReservationAsync(
-        String reservationOrderId, String reservationId, String filter) {
+    private PagedFlux<ReservationDetailInner> listByReservationOrderAndReservationAsync(String reservationOrderId,
+        String reservationId, String filter) {
         return new PagedFlux<>(
             () -> listByReservationOrderAndReservationSinglePageAsync(reservationOrderId, reservationId, filter),
             nextLink -> listByReservationOrderAndReservationNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listByReservationOrderAndReservationAsync(
-        String reservationOrderId, String reservationId, String filter, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByReservationOrderAndReservationSinglePageAsync(reservationOrderId, reservationId, filter, context),
+    private PagedFlux<ReservationDetailInner> listByReservationOrderAndReservationAsync(String reservationOrderId,
+        String reservationId, String filter, Context context) {
+        return new PagedFlux<>(() -> listByReservationOrderAndReservationSinglePageAsync(reservationOrderId,
+            reservationId, filter, context),
             nextLink -> listByReservationOrderAndReservationNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(
-        String reservationOrderId, String reservationId, String filter) {
+    public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
+        String reservationId, String filter) {
         return new PagedIterable<>(
             listByReservationOrderAndReservationAsync(reservationOrderId, reservationId, filter));
     }
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(
-        String reservationOrderId, String reservationId, String filter, Context context) {
+    public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
+        String reservationId, String filter, Context context) {
         return new PagedIterable<>(
             listByReservationOrderAndReservationAsync(reservationOrderId, reservationId, filter, context));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @param startDate Start date. Only applicable when querying with billing profile.
      * @param endDate End date. Only applicable when querying with billing profile.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
+     * reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
+     * reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listSinglePageAsync(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId) {
+    private Mono<PagedResponse<ReservationDetailInner>> listSinglePageAsync(String resourceScope, String startDate,
+        String endDate, String filter, String reservationId, String reservationOrderId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        if (resourceScope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceScope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            scope,
-                            startDate,
-                            endDate,
-                            filter,
-                            reservationId,
-                            reservationOrderId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceScope, startDate, endDate, filter,
+                reservationId, reservationOrderId, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @param startDate Start date. Only applicable when querying with billing profile.
      * @param endDate End date. Only applicable when querying with billing profile.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
+     * reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
+     * reservation order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listSinglePageAsync(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId,
-        Context context) {
+    private Mono<PagedResponse<ReservationDetailInner>> listSinglePageAsync(String resourceScope, String startDate,
+        String endDate, String filter, String reservationId, String reservationOrderId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        if (resourceScope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceScope is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                scope,
-                startDate,
-                endDate,
-                filter,
-                reservationId,
-                reservationOrderId,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceScope, startDate, endDate, filter, reservationId,
+                reservationOrderId, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @param startDate Start date. Only applicable when querying with billing profile.
      * @param endDate End date. Only applicable when querying with billing profile.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
+     * reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
+     * reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listAsync(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId) {
+    private PagedFlux<ReservationDetailInner> listAsync(String resourceScope, String startDate, String endDate,
+        String filter, String reservationId, String reservationOrderId) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, startDate, endDate, filter, reservationId, reservationOrderId),
+            () -> listSinglePageAsync(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listAsync(String scope) {
+    private PagedFlux<ReservationDetailInner> listAsync(String resourceScope) {
         final String startDate = null;
         final String endDate = null;
         final String filter = null;
         final String reservationId = null;
         final String reservationOrderId = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, startDate, endDate, filter, reservationId, reservationOrderId),
+            () -> listSinglePageAsync(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @param startDate Start date. Only applicable when querying with billing profile.
      * @param endDate End date. Only applicable when querying with billing profile.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
+     * reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
+     * reservation order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationDetailInner> listAsync(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId,
-        Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, startDate, endDate, filter, reservationId, reservationOrderId, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ReservationDetailInner> listAsync(String resourceScope, String startDate, String endDate,
+        String filter, String reservationId, String reservationOrderId, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceScope, startDate, endDate, filter, reservationId,
+            reservationOrderId, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationDetailInner> list(String scope) {
+    public PagedIterable<ReservationDetailInner> list(String resourceScope) {
         final String startDate = null;
         final String endDate = null;
         final String filter = null;
         final String reservationId = null;
         final String reservationOrderId = null;
-        return new PagedIterable<>(listAsync(scope, startDate, endDate, filter, reservationId, reservationOrderId));
-    }
-
-    /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
-     * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
-     * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationDetailInner> list(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId,
-        Context context) {
         return new PagedIterable<>(
-            listAsync(scope, startDate, endDate, filter, reservationId, reservationOrderId, context));
+            listAsync(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId));
+    }
+
+    /**
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
+     * @param startDate Start date. Only applicable when querying with billing profile.
+     * @param endDate End date. Only applicable when querying with billing profile.
+     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
+     * reservation.
+     * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
+     * reservation order.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ReservationDetailInner> list(String resourceScope, String startDate, String endDate,
+        String filter, String reservationId, String reservationOrderId, Context context) {
+        return new PagedIterable<>(
+            listAsync(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderNextSinglePageAsync(String nextLink) {
@@ -785,148 +681,112 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByReservationOrderNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByReservationOrderNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByReservationOrderNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderAndReservationNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ReservationDetailInner>>
+        listByReservationOrderAndReservationNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReservationOrderAndReservationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReservationOrderAndReservationNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationDetailInner>> listByReservationOrderAndReservationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReservationDetailInner>>
+        listByReservationOrderAndReservationNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByReservationOrderAndReservationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByReservationOrderAndReservationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationDetailInner>> listNextSinglePageAsync(String nextLink) {
@@ -934,35 +794,26 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationDetailInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReservationDetailInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationDetailInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -970,23 +821,13 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

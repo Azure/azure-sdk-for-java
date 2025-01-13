@@ -69,21 +69,16 @@ public final class SandboxCustomImageImpl
     }
 
     public SandboxCustomImage create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .createOrUpdate(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SandboxCustomImage create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .createOrUpdate(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .createOrUpdate(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), context);
         return this;
     }
 
@@ -98,49 +93,42 @@ public final class SandboxCustomImageImpl
     }
 
     public SandboxCustomImage apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .update(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .update(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SandboxCustomImage apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .update(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .update(resourceGroupName, clusterName, sandboxCustomImageName, this.innerModel(), context);
         return this;
     }
 
-    SandboxCustomImageImpl(
-        SandboxCustomImageInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    SandboxCustomImageImpl(SandboxCustomImageInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.sandboxCustomImageName = Utils.getValueFromIdByName(innerObject.id(), "sandboxCustomImages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.sandboxCustomImageName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sandboxCustomImages");
     }
 
     public SandboxCustomImage refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SandboxCustomImage refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSandboxCustomImages()
-                .getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSandboxCustomImages()
+            .getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, context)
+            .getValue();
         return this;
     }
 

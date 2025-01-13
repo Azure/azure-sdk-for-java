@@ -74,24 +74,19 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataSource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -106,53 +101,44 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataSource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    DataSourceImpl(
-        DataSourceInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    DataSourceImpl(DataSourceInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataSourceName = Utils.getValueFromIdByName(innerObject.id(), "dataSources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.dataSourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataSources");
     }
 
     public DataSource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .getWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .getWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataSource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataSources()
-                .getWithResponse(resourceGroupName, workspaceName, dataSourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataSources()
+            .getWithResponse(resourceGroupName, workspaceName, dataSourceName, context)
+            .getValue();
         return this;
     }
 

@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InternetGatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InternetGatewaysClient.
+ */
 public final class InternetGatewaysClientImpl implements InternetGatewaysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InternetGatewaysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of InternetGatewaysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InternetGatewaysClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(InternetGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(InternetGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,137 +72,106 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface InternetGatewaysService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("internetGatewayName") String internetGatewayName,
-            @BodyParam("application/json") InternetGatewayInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InternetGatewayInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewayInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InternetGatewayInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("internetGatewayName") String internetGatewayName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("internetGatewayName") String internetGatewayName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InternetGatewayPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("internetGatewayName") String internetGatewayName,
-            @BodyParam("application/json") InternetGatewayPatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("internetGatewayName") String internetGatewayName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways/{internetGatewayName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InternetGatewaysListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("internetGatewayName") String internetGatewayName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewaysListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/internetGateways")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewaysListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InternetGatewaysListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InternetGatewaysListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InternetGatewaysListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,26 +188,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -240,23 +205,19 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -273,23 +234,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayName, body, accept, context);
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -299,24 +252,18 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link PollerFlux} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreateAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
+    private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner>
+        beginCreateAsync(String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, internetGatewayName, body);
-        return this
-            .client
-            .<InternetGatewayInner, InternetGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayInner.class,
-                InternetGatewayInner.class,
-                this.client.getContext());
+        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InternetGatewayInner.class, InternetGatewayInner.class, this.client.getContext());
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -330,19 +277,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreateAsync(
         String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, internetGatewayName, body, context);
-        return this
-            .client
-            .<InternetGatewayInner, InternetGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InternetGatewayInner.class, InternetGatewayInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, internetGatewayName, body, context);
+        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InternetGatewayInner.class, InternetGatewayInner.class, context);
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -352,16 +297,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
+    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body) {
         return this.beginCreateAsync(resourceGroupName, internetGatewayName, body).getSyncPoller();
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -372,16 +317,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context) {
+    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, internetGatewayName, body, context).getSyncPoller();
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -391,18 +336,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayInner> createAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
-        return beginCreateAsync(resourceGroupName, internetGatewayName, body)
-            .last()
+    private Mono<InternetGatewayInner> createAsync(String resourceGroupName, String internetGatewayName,
+        InternetGatewayInner body) {
+        return beginCreateAsync(resourceGroupName, internetGatewayName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -413,18 +357,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayInner> createAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, internetGatewayName, body, context)
-            .last()
+    private Mono<InternetGatewayInner> createAsync(String resourceGroupName, String internetGatewayName,
+        InternetGatewayInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, internetGatewayName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -434,16 +377,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayInner create(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body) {
+    public InternetGatewayInner create(String resourceGroupName, String internetGatewayName,
+        InternetGatewayInner body) {
         return createAsync(resourceGroupName, internetGatewayName, body).block();
     }
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -454,38 +397,34 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayInner create(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context) {
+    public InternetGatewayInner create(String resourceGroupName, String internetGatewayName, InternetGatewayInner body,
+        Context context) {
         return createAsync(resourceGroupName, internetGatewayName, body, context).block();
     }
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String internetGatewayName) {
+    private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String internetGatewayName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -498,47 +437,35 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), internetGatewayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, Context context) {
+    private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,22 +477,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayName, accept, context);
     }
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,9 +501,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -593,16 +513,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InternetGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context) {
+    public Response<InternetGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, internetGatewayName, context).block();
     }
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,32 +537,28 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -659,26 +575,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -686,23 +592,19 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -719,23 +621,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayName, body, accept, context);
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -745,24 +639,18 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link PollerFlux} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdateAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
+    private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner>
+        beginUpdateAsync(String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, internetGatewayName, body);
-        return this
-            .client
-            .<InternetGatewayInner, InternetGatewayInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayInner.class,
-                InternetGatewayInner.class,
-                this.client.getContext());
+        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InternetGatewayInner.class, InternetGatewayInner.class, this.client.getContext());
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -776,19 +664,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     private PollerFlux<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdateAsync(
         String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, internetGatewayName, body, context);
-        return this
-            .client
-            .<InternetGatewayInner, InternetGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InternetGatewayInner.class, InternetGatewayInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, internetGatewayName, body, context);
+        return this.client.<InternetGatewayInner, InternetGatewayInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InternetGatewayInner.class, InternetGatewayInner.class, context);
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -798,16 +684,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
+    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body) {
         return this.beginUpdateAsync(resourceGroupName, internetGatewayName, body).getSyncPoller();
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -818,16 +704,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context) {
+    public SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, internetGatewayName, body, context).getSyncPoller();
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -837,18 +723,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayInner> updateAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
-        return beginUpdateAsync(resourceGroupName, internetGatewayName, body)
-            .last()
+    private Mono<InternetGatewayInner> updateAsync(String resourceGroupName, String internetGatewayName,
+        InternetGatewayPatch body) {
+        return beginUpdateAsync(resourceGroupName, internetGatewayName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -859,18 +744,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayInner> updateAsync(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, internetGatewayName, body, context)
-            .last()
+    private Mono<InternetGatewayInner> updateAsync(String resourceGroupName, String internetGatewayName,
+        InternetGatewayPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, internetGatewayName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -880,16 +764,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayInner update(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body) {
+    public InternetGatewayInner update(String resourceGroupName, String internetGatewayName,
+        InternetGatewayPatch body) {
         return updateAsync(resourceGroupName, internetGatewayName, body).block();
     }
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -900,16 +784,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayInner update(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context) {
+    public InternetGatewayInner update(String resourceGroupName, String internetGatewayName, InternetGatewayPatch body,
+        Context context) {
         return updateAsync(resourceGroupName, internetGatewayName, body, context).block();
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -918,19 +802,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String internetGatewayName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String internetGatewayName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -942,25 +822,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -970,19 +841,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String internetGatewayName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String internetGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -994,22 +861,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayName, accept, context);
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1020,17 +880,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String internetGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, internetGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -1040,21 +898,20 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String internetGatewayName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String internetGatewayName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, internetGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, internetGatewayName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,9 +926,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -1081,16 +938,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String internetGatewayName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, internetGatewayName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1100,16 +957,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String internetGatewayName) {
-        return beginDeleteAsync(resourceGroupName, internetGatewayName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, internetGatewayName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -1120,16 +976,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String internetGatewayName, Context context) {
-        return beginDeleteAsync(resourceGroupName, internetGatewayName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, internetGatewayName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1143,9 +998,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -1160,9 +1015,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1172,16 +1027,12 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1189,33 +1040,18 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<InternetGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<InternetGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1224,19 +1060,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return list of InternetGateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<InternetGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1245,29 +1077,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1276,16 +1096,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1295,16 +1114,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1318,9 +1136,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1335,9 +1153,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1345,45 +1163,27 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<InternetGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<InternetGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1393,57 +1193,42 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1452,15 +1237,15 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedIterable}.
@@ -1472,9 +1257,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1488,9 +1273,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1502,32 +1286,22 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InternetGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InternetGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1535,37 +1309,26 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return list of InternetGateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<InternetGatewayInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1577,32 +1340,22 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InternetGatewayInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InternetGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1610,29 +1363,19 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @return list of InternetGateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<InternetGatewayInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The response from the check name availability request. */
+/**
+ * The response from the check name availability request.
+ */
 @Fluent
-public final class EntityNameAvailabilityCheckOutputInner {
+public final class EntityNameAvailabilityCheckOutputInner
+    implements JsonSerializable<EntityNameAvailabilityCheckOutputInner> {
     /*
      * Specifies if the name is available.
      */
-    @JsonProperty(value = "nameAvailable", required = true)
     private boolean nameAvailable;
 
     /*
      * Specifies the reason if the name is not available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Specifies the detailed reason if the name is not available.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of EntityNameAvailabilityCheckOutputInner class. */
+    /**
+     * Creates an instance of EntityNameAvailabilityCheckOutputInner class.
+     */
     public EntityNameAvailabilityCheckOutputInner() {
     }
 
     /**
      * Get the nameAvailable property: Specifies if the name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public boolean nameAvailable() {
@@ -43,7 +49,7 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Set the nameAvailable property: Specifies if the name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the EntityNameAvailabilityCheckOutputInner object itself.
      */
@@ -54,7 +60,7 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Get the reason property: Specifies the reason if the name is not available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +69,7 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Set the reason property: Specifies the reason if the name is not available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the EntityNameAvailabilityCheckOutputInner object itself.
      */
@@ -74,7 +80,7 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Get the message property: Specifies the detailed reason if the name is not available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +89,7 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Set the message property: Specifies the detailed reason if the name is not available.
-     *
+     * 
      * @param message the message value to set.
      * @return the EntityNameAvailabilityCheckOutputInner object itself.
      */
@@ -94,9 +100,53 @@ public final class EntityNameAvailabilityCheckOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityNameAvailabilityCheckOutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityNameAvailabilityCheckOutputInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EntityNameAvailabilityCheckOutputInner.
+     */
+    public static EntityNameAvailabilityCheckOutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityNameAvailabilityCheckOutputInner deserializedEntityNameAvailabilityCheckOutputInner
+                = new EntityNameAvailabilityCheckOutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedEntityNameAvailabilityCheckOutputInner.nameAvailable = reader.getBoolean();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedEntityNameAvailabilityCheckOutputInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedEntityNameAvailabilityCheckOutputInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityNameAvailabilityCheckOutputInner;
+        });
     }
 }

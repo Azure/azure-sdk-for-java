@@ -4,11 +4,10 @@
 package io.clientcore.core.implementation.util;
 
 /**
- * Constants used as keys in semantic logging. Logging keys unify
- * how core logs HTTP requests, responses or anything else and simplify log analysis.
- *
- * When logging in client libraries, please do the best effort to stay consistent
- * with these keys, but copy the value.
+ * Constants used as keys in semantic logging. Logging keys unify how core logs HTTP requests, responses or anything
+ * else and simplify log analysis.
+ * <p>
+ * When logging in client libraries, please do the best effort to stay consistent with these keys, but copy the value.
  */
 public final class LoggingKeys {
     private LoggingKeys() {
@@ -27,24 +26,44 @@ public final class LoggingKeys {
     public static final String TRY_COUNT_KEY = "tryCount";
 
     /**
+     * Key representing time in milliseconds from request start to the moment response (headers and response code) were received,
+     * the value should be a number.
+     * <p>
+     * Depending on the implementation and content type, this time may include time to receive the body.
+     */
+    public static final String TIME_TO_RESPONSE_MS_KEY = "timeToResponseMs";
+
+    /**
      * Key representing duration of call in milliseconds, the value should be a number.
+     * <p>
+     * This time represents the most accurate duration that logging policy can record.
+     * <p>
+     * If exception was thrown, this time represents time to exception.
+     * If response was received and body logging is disabled, it represents time to get the response (headers and status code).
+     * If response was received and body logging is enabled, it represents time-to-last-byte (or, if response was closed before
+     * body was fully received, time to closure).
      */
     public static final String DURATION_MS_KEY = "durationMs";
 
     /**
-     * Key representing URL request was redirected to.
+     * Key representing URI request was redirected to.
      */
-    public static final String REDIRECT_URL_KEY = "redirectUrl";
+    public static final String REDIRECT_URI_KEY = "redirectUri";
 
     /**
-     * Key representing request URL.
+     * Key representing request URI.
      */
-    public static final String URL_KEY = "url";
+    public static final String URI_KEY = "uri";
 
     /**
      * Key representing request body content length.
      */
-    public static final String CONTENT_LENGTH_KEY = "contentLength";
+    public static final String REQUEST_CONTENT_LENGTH_KEY = "requestContentLength";
+
+    /**
+     * Key representing response body content length.
+     */
+    public static final String RESPONSE_CONTENT_LENGTH_KEY = "responseContentLength";
 
     /**
      * Key representing request body. The value should be populated conditionally

@@ -1,1 +1,7 @@
 https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
+
+# Confluent platform local addresses
+http://localhost:9021/
+http://localhost:9000/
+http://localhost:9001/
+http://localhost:9004/

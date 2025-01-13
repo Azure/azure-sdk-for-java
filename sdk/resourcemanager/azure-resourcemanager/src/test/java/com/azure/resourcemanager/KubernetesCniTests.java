@@ -37,21 +37,10 @@ public class KubernetesCniTests extends ResourceManagerTestProxyTestBase {
     private final Region region = Region.US_EAST;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -82,37 +71,41 @@ public class KubernetesCniTests extends ResourceManagerTestProxyTestBase {
         final String agentPoolName = generateRandomResourceName("ap0", 10);
         final String roleAssignmentName = generateRandomUuid();
 
-        Network vnet = azureResourceManager.networks().define(vnetName)
+        Network vnet = azureResourceManager.networks()
+            .define(vnetName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/8")
             .withSubnet(subnetName, "10.240.0.0/16")
             .create();
 
-        KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(3)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withMaxPodsCount(30)
-                .withAvailabilityZones(1, 2, 3)
-                .withVirtualNetwork(vnet.id(), subnetName)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(3)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withMaxPodsCount(30)
+            .withAvailabilityZones(1, 2, 3)
+            .withVirtualNetwork(vnet.id(), subnetName)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .defineNetworkProfile()
-                .withNetworkPlugin(NetworkPlugin.AZURE)
-                .withServiceCidr("10.0.0.0/16")
-                .withDnsServiceIP("10.0.0.10")
-                .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                .attach()
+            .withNetworkPlugin(NetworkPlugin.AZURE)
+            .withServiceCidr("10.0.0.0/16")
+            .withDnsServiceIP("10.0.0.10")
+            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+            .attach()
             .create();
 
-        azureResourceManager.accessManagement().roleAssignments().define(roleAssignmentName)
+        azureResourceManager.accessManagement()
+            .roleAssignments()
+            .define(roleAssignmentName)
             .forObjectId(kubernetesCluster.systemAssignedManagedServiceIdentityPrincipalId())
             .withBuiltInRole(BuiltInRole.NETWORK_CONTRIBUTOR)
             .withScope(vnet.subnets().get(subnetName).id())

@@ -12,19 +12,21 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeStoreAccountInformationInner;
 import com.azure.resourcemanager.datalakeanalytics.models.AddDataLakeStoreParameters;
 
-/** An instance of this class provides access to all the operations defined in DataLakeStoreAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataLakeStoreAccountsClient.
+ */
 public interface DataLakeStoreAccountsClient {
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response
      * includes a link to the next page, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(String resourceGroupName, String accountName);
@@ -32,41 +34,32 @@ public interface DataLakeStoreAccountsClient {
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response
      * includes a link to the next page, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(
-        String resourceGroupName,
-        String accountName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context);
+    PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(String resourceGroupName, String accountName,
+        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
 
     /**
      * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
@@ -78,16 +71,12 @@ public interface DataLakeStoreAccountsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String dataLakeStoreAccountName,
-        AddDataLakeStoreParameters parameters,
-        Context context);
+    Response<Void> addWithResponse(String resourceGroupName, String accountName, String dataLakeStoreAccountName,
+        AddDataLakeStoreParameters parameters, Context context);
 
     /**
      * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
@@ -100,7 +89,7 @@ public interface DataLakeStoreAccountsClient {
 
     /**
      * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve.
@@ -109,15 +98,15 @@ public interface DataLakeStoreAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataLakeStoreAccountInformationInner> getWithResponse(
-        String resourceGroupName, String accountName, String dataLakeStoreAccountName, Context context);
+    Response<DataLakeStoreAccountInformationInner> getWithResponse(String resourceGroupName, String accountName,
+        String dataLakeStoreAccountName, Context context);
 
     /**
      * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve.
@@ -127,12 +116,12 @@ public interface DataLakeStoreAccountsClient {
      * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataLakeStoreAccountInformationInner get(
-        String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+    DataLakeStoreAccountInformationInner get(String resourceGroupName, String accountName,
+        String dataLakeStoreAccountName);
 
     /**
      * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove.
@@ -143,12 +132,12 @@ public interface DataLakeStoreAccountsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String dataLakeStoreAccountName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String dataLakeStoreAccountName,
+        Context context);
 
     /**
      * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove.

@@ -25,8 +25,8 @@ public interface OperationStatusesClient {
      * @return private endpoint connection operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VideoAnalyzerPrivateEndpointConnectionOperationStatusInner get(
-        String resourceGroupName, String accountName, String name, String operationId);
+    VideoAnalyzerPrivateEndpointConnectionOperationStatusInner get(String resourceGroupName, String accountName,
+        String name, String operationId);
 
     /**
      * Get private endpoint connection operation status.
@@ -42,6 +42,6 @@ public interface OperationStatusesClient {
      * @return private endpoint connection operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, String operationId, Context context);
+    Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> getWithResponse(String resourceGroupName,
+        String accountName, String name, String operationId, Context context);
 }

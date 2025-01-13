@@ -28,22 +28,28 @@ import com.azure.resourcemanager.purview.models.ScopeType;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DefaultAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DefaultAccountsClient.
+ */
 public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DefaultAccountsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewManagementClientImpl client;
 
     /**
      * Initializes an instance of DefaultAccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DefaultAccountsClientImpl(PurviewManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DefaultAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DefaultAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,66 +60,54 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PurviewManagementCli")
     public interface DefaultAccountsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Purview/getDefaultAccount")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DefaultAccountPayloadInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("scopeTenantId") UUID scopeTenantId,
-            @QueryParam("scopeType") ScopeType scopeType,
-            @QueryParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DefaultAccountPayloadInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("scopeTenantId") UUID scopeTenantId, @QueryParam("scopeType") ScopeType scopeType,
+            @QueryParam("scope") String scope, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Purview/setDefaultAccount")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DefaultAccountPayloadInner>> set(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DefaultAccountPayloadInner>> set(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DefaultAccountPayloadInner defaultAccountPayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Purview/removeDefaultAccount")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> remove(
-            @HostParam("$host") String endpoint,
-            @QueryParam("scopeTenantId") UUID scopeTenantId,
-            @QueryParam("scopeType") ScopeType scopeType,
-            @QueryParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> remove(@HostParam("$host") String endpoint,
+            @QueryParam("scopeTenantId") UUID scopeTenantId, @QueryParam("scopeType") ScopeType scopeType,
+            @QueryParam("scope") String scope, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the default account information set for the scope.
-     *
-     * <p>Get the default account for the scope.
-     *
+     * 
+     * Get the default account for the scope.
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default account for the scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(
-        UUID scopeTenantId, ScopeType scopeType, String scope) {
+    private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(UUID scopeTenantId, ScopeType scopeType,
+        String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scopeTenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeTenantId is required and cannot be null."));
@@ -123,29 +117,20 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scopeTenantId,
-                            scopeType,
-                            scope,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scopeTenantId, scopeType, scope,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the default account information set for the scope.
-     *
-     * <p>Get the default account for the scope.
-     *
+     * 
+     * Get the default account for the scope.
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -153,13 +138,11 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @return the default account for the scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+    private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(UUID scopeTenantId, ScopeType scopeType,
+        String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scopeTenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeTenantId is required and cannot be null."));
@@ -169,22 +152,15 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                scopeTenantId,
-                scopeType,
-                scope,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), scopeTenantId, scopeType, scope, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Gets the default account information set for the scope.
-     *
-     * <p>Get the default account for the scope.
-     *
+     * 
+     * Get the default account for the scope.
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,13 +176,13 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Gets the default account information set for the scope.
-     *
-     * <p>Get the default account for the scope.
-     *
+     * 
+     * Get the default account for the scope.
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -214,16 +190,16 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @return the default account for the scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DefaultAccountPayloadInner> getWithResponse(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+    public Response<DefaultAccountPayloadInner> getWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope,
+        Context context) {
         return getWithResponseAsync(scopeTenantId, scopeType, scope, context).block();
     }
 
     /**
      * Gets the default account information set for the scope.
-     *
-     * <p>Get the default account for the scope.
-     *
+     * 
+     * Get the default account for the scope.
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,22 +215,20 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Sets the default account for the scope.
-     *
+     * 
      * @param defaultAccountPayload The payload containing the default account information and the scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return payload to get and set the default account in the given scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DefaultAccountPayloadInner>> setWithResponseAsync(
-        DefaultAccountPayloadInner defaultAccountPayload) {
+    private Mono<Response<DefaultAccountPayloadInner>>
+        setWithResponseAsync(DefaultAccountPayloadInner defaultAccountPayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (defaultAccountPayload == null) {
             return Mono
@@ -264,37 +238,28 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .set(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            defaultAccountPayload,
-                            accept,
-                            context))
+            .withContext(context -> service.set(this.client.getEndpoint(), this.client.getApiVersion(),
+                defaultAccountPayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sets the default account for the scope.
-     *
+     * 
      * @param defaultAccountPayload The payload containing the default account information and the scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return payload to get and set the default account in the given scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DefaultAccountPayloadInner>> setWithResponseAsync(
-        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
+    private Mono<Response<DefaultAccountPayloadInner>>
+        setWithResponseAsync(DefaultAccountPayloadInner defaultAccountPayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (defaultAccountPayload == null) {
             return Mono
@@ -304,13 +269,13 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .set(this.client.getEndpoint(), this.client.getApiVersion(), defaultAccountPayload, accept, context);
+        return service.set(this.client.getEndpoint(), this.client.getApiVersion(), defaultAccountPayload, accept,
+            context);
     }
 
     /**
      * Sets the default account for the scope.
-     *
+     * 
      * @param defaultAccountPayload The payload containing the default account information and the scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -324,7 +289,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Sets the default account for the scope.
-     *
+     * 
      * @param defaultAccountPayload The payload containing the default account information and the scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,14 +298,14 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @return payload to get and set the default account in the given scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DefaultAccountPayloadInner> setWithResponse(
-        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
+    public Response<DefaultAccountPayloadInner> setWithResponse(DefaultAccountPayloadInner defaultAccountPayload,
+        Context context) {
         return setWithResponseAsync(defaultAccountPayload, context).block();
     }
 
     /**
      * Sets the default account for the scope.
-     *
+     * 
      * @param defaultAccountPayload The payload containing the default account information and the scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,11 +319,11 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Removes the default account from the scope.
-     *
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -367,10 +332,8 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeWithResponseAsync(UUID scopeTenantId, ScopeType scopeType, String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scopeTenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeTenantId is required and cannot be null."));
@@ -380,27 +343,18 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .remove(
-                            this.client.getEndpoint(),
-                            scopeTenantId,
-                            scopeType,
-                            scope,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.remove(this.client.getEndpoint(), scopeTenantId, scopeType, scope,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Removes the default account from the scope.
-     *
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,13 +362,11 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> removeWithResponseAsync(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+    private Mono<Response<Void>> removeWithResponseAsync(UUID scopeTenantId, ScopeType scopeType, String scope,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scopeTenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeTenantId is required and cannot be null."));
@@ -424,20 +376,13 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .remove(
-                this.client.getEndpoint(),
-                scopeTenantId,
-                scopeType,
-                scope,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.remove(this.client.getEndpoint(), scopeTenantId, scopeType, scope, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Removes the default account from the scope.
-     *
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,11 +398,11 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Removes the default account from the scope.
-     *
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
+     * subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -471,7 +416,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
 
     /**
      * Removes the default account from the scope.
-     *
+     * 
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

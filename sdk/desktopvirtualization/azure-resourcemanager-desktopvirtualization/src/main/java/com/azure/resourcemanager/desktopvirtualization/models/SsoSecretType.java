@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of single sign on Secret Type. */
+/**
+ * The type of single sign on Secret Type.
+ */
 public final class SsoSecretType extends ExpandableStringEnum<SsoSecretType> {
-    /** Static value SharedKey for SsoSecretType. */
+    /**
+     * Static value SharedKey for SsoSecretType.
+     */
     public static final SsoSecretType SHARED_KEY = fromString("SharedKey");
 
-    /** Static value Certificate for SsoSecretType. */
+    /**
+     * Static value Certificate for SsoSecretType.
+     */
     public static final SsoSecretType CERTIFICATE = fromString("Certificate");
 
-    /** Static value SharedKeyInKeyVault for SsoSecretType. */
+    /**
+     * Static value SharedKeyInKeyVault for SsoSecretType.
+     */
     public static final SsoSecretType SHARED_KEY_IN_KEY_VAULT = fromString("SharedKeyInKeyVault");
 
-    /** Static value CertificateInKeyVault for SsoSecretType. */
+    /**
+     * Static value CertificateInKeyVault for SsoSecretType.
+     */
     public static final SsoSecretType CERTIFICATE_IN_KEY_VAULT = fromString("CertificateInKeyVault");
 
     /**
      * Creates a new instance of SsoSecretType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SsoSecretType extends ExpandableStringEnum<SsoSecretType> {
 
     /**
      * Creates or finds a SsoSecretType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SsoSecretType.
      */
-    @JsonCreator
     public static SsoSecretType fromString(String name) {
         return fromString(name, SsoSecretType.class);
     }
 
     /**
      * Gets known SsoSecretType values.
-     *
+     * 
      * @return known SsoSecretType values.
      */
     public static Collection<SsoSecretType> values() {

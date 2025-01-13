@@ -19,7 +19,7 @@ public final class CapabilityTypesGetSamples {
      */
     public static void getACapabilityTypeForAVirtualMachineTargetResourceOnWestus2Location(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilityTypes().getWithResponse("westus2", "Microsoft-VirtualMachine", "Shutdown-1.0",
-            com.azure.core.util.Context.NONE);
+        manager.capabilityTypes()
+            .getWithResponse("westus2", "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }

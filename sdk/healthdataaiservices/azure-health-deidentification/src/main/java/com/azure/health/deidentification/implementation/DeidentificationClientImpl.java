@@ -356,7 +356,8 @@ public final class DeidentificationClientImpl {
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -397,7 +398,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -422,7 +424,8 @@ public final class DeidentificationClientImpl {
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -463,7 +466,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -488,7 +492,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -529,11 +534,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -574,7 +581,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -601,7 +609,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -642,11 +651,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -687,7 +698,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -713,7 +725,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -754,11 +767,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -799,7 +814,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -831,7 +847,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -872,11 +889,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -917,7 +936,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -949,7 +969,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -990,11 +1011,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1035,7 +1058,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -1068,7 +1092,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1109,11 +1134,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1154,7 +1181,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -1195,7 +1223,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1236,7 +1265,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1270,7 +1300,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1311,7 +1342,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1363,7 +1395,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1404,7 +1437,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1436,7 +1470,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1477,7 +1512,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1529,7 +1565,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1551,7 +1588,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1587,7 +1625,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1609,7 +1648,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1662,7 +1702,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1684,7 +1725,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1717,7 +1759,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1739,7 +1782,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1789,7 +1833,8 @@ public final class DeidentificationClientImpl {
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1830,7 +1875,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1859,7 +1905,8 @@ public final class DeidentificationClientImpl {
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1900,7 +1947,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1963,18 +2011,21 @@ public final class DeidentificationClientImpl {
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     outputText: String (Optional)
      *     taggerResult (Optional): {
@@ -1995,7 +2046,8 @@ public final class DeidentificationClientImpl {
      *         etag: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2020,18 +2072,21 @@ public final class DeidentificationClientImpl {
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     outputText: String (Optional)
      *     taggerResult (Optional): {
@@ -2052,7 +2107,8 @@ public final class DeidentificationClientImpl {
      *         etag: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2076,7 +2132,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -2117,7 +2174,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2144,7 +2202,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -2185,7 +2244,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2210,7 +2270,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -2232,7 +2293,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2260,7 +2322,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -2282,7 +2345,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

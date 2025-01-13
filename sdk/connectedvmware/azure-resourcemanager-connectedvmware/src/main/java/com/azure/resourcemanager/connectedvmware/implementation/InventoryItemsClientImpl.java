@@ -33,22 +33,28 @@ import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemInne
 import com.azure.resourcemanager.connectedvmware.models.InventoryItemsList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InventoryItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InventoryItemsClient.
+ */
 public final class InventoryItemsClientImpl implements InventoryItemsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InventoryItemsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of InventoryItemsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InventoryItemsClientImpl(ConnectedVMwareClientImpl client) {
-        this.service =
-            RestProxy.create(InventoryItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(InventoryItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,82 +65,60 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
     public interface InventoryItemsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InventoryItemInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InventoryItemInner>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcenterName") String vcenterName,
-            @PathParam("inventoryItemName") String inventoryItemName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") InventoryItemInner body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcenterName") String vcenterName,
+            @PathParam("inventoryItemName") String inventoryItemName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") InventoryItemInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InventoryItemInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InventoryItemInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcenterName") String vcenterName,
-            @PathParam("inventoryItemName") String inventoryItemName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcenterName") String vcenterName,
+            @PathParam("inventoryItemName") String inventoryItemName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems/{inventoryItemName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcenterName") String vcenterName,
-            @PathParam("inventoryItemName") String inventoryItemName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcenterName") String vcenterName,
+            @PathParam("inventoryItemName") String inventoryItemName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}/inventoryItems")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InventoryItemsList>> listByVCenter(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InventoryItemsList>> listByVCenter(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcenterName") String vcenterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcenterName") String vcenterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InventoryItemsList>> listByVCenterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -145,19 +129,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InventoryItemInner>> createWithResponseAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName, InventoryItemInner body) {
+    private Mono<Response<InventoryItemInner>> createWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName, InventoryItemInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,27 +155,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcenterName,
-                            inventoryItemName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcenterName, inventoryItemName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -207,23 +176,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InventoryItemInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String vcenterName,
-        String inventoryItemName,
-        InventoryItemInner body,
-        Context context) {
+    private Mono<Response<InventoryItemInner>> createWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName, InventoryItemInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -241,24 +202,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcenterName,
-                inventoryItemName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vcenterName, inventoryItemName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -268,8 +220,8 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InventoryItemInner> createAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName) {
+    private Mono<InventoryItemInner> createAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName) {
         final InventoryItemInner body = null;
         return createWithResponseAsync(resourceGroupName, vcenterName, inventoryItemName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -277,9 +229,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -291,20 +243,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InventoryItemInner> createWithResponse(
-        String resourceGroupName,
-        String vcenterName,
-        String inventoryItemName,
-        InventoryItemInner body,
-        Context context) {
+    public Response<InventoryItemInner> createWithResponse(String resourceGroupName, String vcenterName,
+        String inventoryItemName, InventoryItemInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, vcenterName, inventoryItemName, body, context).block();
     }
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -321,9 +269,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -333,19 +281,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InventoryItemInner>> getWithResponseAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName) {
+    private Mono<Response<InventoryItemInner>> getWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,26 +304,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcenterName,
-                            inventoryItemName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcenterName, inventoryItemName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -390,19 +324,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InventoryItemInner>> getWithResponseAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
+    private Mono<Response<InventoryItemInner>> getWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -417,23 +347,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcenterName,
-                inventoryItemName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vcenterName,
+            inventoryItemName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -450,9 +372,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -463,16 +385,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return defines the inventory item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InventoryItemInner> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
+    public Response<InventoryItemInner> getWithResponse(String resourceGroupName, String vcenterName,
+        String inventoryItemName, Context context) {
         return getWithResponseAsync(resourceGroupName, vcenterName, inventoryItemName, context).block();
     }
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -488,9 +410,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -500,19 +422,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -527,26 +445,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcenterName,
-                            inventoryItemName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcenterName, inventoryItemName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -557,19 +465,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcenterName,
+        String inventoryItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -584,23 +488,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcenterName,
-                inventoryItemName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vcenterName, inventoryItemName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -617,9 +513,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -630,16 +526,16 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, vcenterName, inventoryItemName, context).block();
     }
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -654,9 +550,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -665,19 +561,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return list of InventoryItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InventoryItemInner>> listByVCenterSinglePageAsync(
-        String resourceGroupName, String vcenterName) {
+    private Mono<PagedResponse<InventoryItemInner>> listByVCenterSinglePageAsync(String resourceGroupName,
+        String vcenterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -688,34 +580,18 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVCenter(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcenterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<InventoryItemInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByVCenter(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcenterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<InventoryItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
@@ -725,19 +601,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return list of InventoryItems along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InventoryItemInner>> listByVCenterSinglePageAsync(
-        String resourceGroupName, String vcenterName, Context context) {
+    private Mono<PagedResponse<InventoryItemInner>> listByVCenterSinglePageAsync(String resourceGroupName,
+        String vcenterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -749,30 +621,17 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVCenter(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcenterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByVCenter(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vcenterName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,16 +641,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InventoryItemInner> listByVCenterAsync(String resourceGroupName, String vcenterName) {
-        return new PagedFlux<>(
-            () -> listByVCenterSinglePageAsync(resourceGroupName, vcenterName),
+        return new PagedFlux<>(() -> listByVCenterSinglePageAsync(resourceGroupName, vcenterName),
             nextLink -> listByVCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
@@ -801,18 +659,17 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return list of InventoryItems as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<InventoryItemInner> listByVCenterAsync(
-        String resourceGroupName, String vcenterName, Context context) {
-        return new PagedFlux<>(
-            () -> listByVCenterSinglePageAsync(resourceGroupName, vcenterName, context),
+    private PagedFlux<InventoryItemInner> listByVCenterAsync(String resourceGroupName, String vcenterName,
+        Context context) {
+        return new PagedFlux<>(() -> listByVCenterSinglePageAsync(resourceGroupName, vcenterName, context),
             nextLink -> listByVCenterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,9 +684,9 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
@@ -839,16 +696,15 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
      * @return list of InventoryItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<InventoryItemInner> listByVCenter(
-        String resourceGroupName, String vcenterName, Context context) {
+    public PagedIterable<InventoryItemInner> listByVCenter(String resourceGroupName, String vcenterName,
+        Context context) {
         return new PagedIterable<>(listByVCenterAsync(resourceGroupName, vcenterName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,31 +716,21 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVCenterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InventoryItemInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InventoryItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -897,23 +743,13 @@ public final class InventoryItemsClientImpl implements InventoryItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByVCenterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByVCenterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

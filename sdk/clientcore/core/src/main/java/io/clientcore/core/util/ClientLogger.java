@@ -7,8 +7,8 @@ import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
 import io.clientcore.core.implementation.util.Slf4jLoggerShim;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ import static io.clientcore.core.annotation.TypeConditions.FLUENT;
  * logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
+ * {@link Configuration#PROPERTY_LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
@@ -108,7 +108,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
+        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
 
         return throwable;
     }
@@ -125,7 +125,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
+        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -140,7 +140,7 @@ public class ClientLogger {
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
+     * Creates {@link LoggingEvent} for {@code error} log level that can be
      * used to enrich log with additional context.
      * <p><strong>Code samples</strong></p>
      *
@@ -154,14 +154,14 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
-     * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
+     * @return instance of {@link LoggingEvent}  or no-op if error logging is disabled.
      */
-    public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext);
+    public LoggingEvent atError() {
+        return LoggingEvent.create(logger, LogLevel.ERROR, globalContext);
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
+     * Creates {@link LoggingEvent} for {@code warning} log level that can be
      * used to enrich log with additional context.
      * <p><strong>Code samples</strong></p>
      *
@@ -175,14 +175,14 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
      *
-     * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
+     * @return instance of {@link LoggingEvent} or no-op if warn logging is disabled.
      */
-    public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext);
+    public LoggingEvent atWarning() {
+        return LoggingEvent.create(logger, LogLevel.WARNING, globalContext);
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
+     * Creates {@link LoggingEvent} for {@code info} log level that can be
      * used to enrich log with additional context.
      *
      * <p><strong>Code samples</strong></p>
@@ -198,14 +198,14 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
      *
-     * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
+     * @return instance of {@link LoggingEvent} or no-op if info logging is disabled.
      */
-    public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContext);
+    public LoggingEvent atInfo() {
+        return LoggingEvent.create(logger, LogLevel.INFORMATIONAL, globalContext);
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
+     * Creates {@link LoggingEvent} for {@code verbose} log level that can be
      * used to enrich log with additional context.
      * <p><strong>Code samples</strong></p>
      *
@@ -219,14 +219,14 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
-     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     * @return instance of {@link LoggingEvent} or no-op if verbose logging is disabled.
      */
-    public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContext);
+    public LoggingEvent atVerbose() {
+        return LoggingEvent.create(logger, LogLevel.VERBOSE, globalContext);
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for log level that can be
+     * Creates {@link LoggingEvent} for log level that can be
      * used to enrich log with additional context.
      *
      * <p><strong>Code samples</strong></p>
@@ -244,10 +244,10 @@ public class ClientLogger {
      * <!-- end io.clientcore.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
-     * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
+     * @return instance of {@link LoggingEvent} or no-op if logging at provided level is disabled.
      */
-    public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContext);
+    public LoggingEvent atLevel(LogLevel level) {
+        return LoggingEvent.create(logger, level, globalContext);
     }
 
     private static String getClassPathFromClassName(String className) {
@@ -279,33 +279,43 @@ public class ClientLogger {
      * <!-- end io.clientcore.core.util.logging.loggingeventbuilder -->
      */
     @Metadata(conditions = FLUENT)
-    public static final class LoggingEventBuilder {
-        private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
+    public static final class LoggingEvent {
+        private static final LoggingEvent NOOP = new LoggingEvent(null, null, null, false);
 
         private final Slf4jLoggerShim logger;
         private final LogLevel level;
         private final Map<String, Object> globalPairs;
         private final boolean isEnabled;
         private Map<String, Object> keyValuePairs;
+        private String eventName;
 
         /**
-         * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
+         * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
          * If level is disabled, returns no-op instance.
          */
-        static LoggingEventBuilder create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext) {
+        static LoggingEvent create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext) {
             if (logger.canLogAtLevel(level)) {
-                return new LoggingEventBuilder(logger, level, globalContext, true);
+                return new LoggingEvent(logger, level, globalContext, true);
             }
 
             return NOOP;
         }
 
-        private LoggingEventBuilder(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
+        private LoggingEvent(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
             boolean isEnabled) {
             this.logger = logger;
             this.level = level;
             this.isEnabled = isEnabled;
             this.globalPairs = globalContext;
+        }
+
+        /**
+         * Returns true if this logging event will be logged.
+         *
+         * @return true if this logging event will be logged.
+         */
+        public boolean isEnabled() {
+            return isEnabled;
         }
 
         /**
@@ -326,9 +336,9 @@ public class ClientLogger {
          *
          * @param key String key.
          * @param value String value.
-         * @return The updated {@code LoggingEventBuilder} object.
+         * @return The updated {@code LoggingEvent} object.
          */
-        public LoggingEventBuilder addKeyValue(String key, String value) {
+        public LoggingEvent addKeyValue(String key, String value) {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
@@ -356,9 +366,9 @@ public class ClientLogger {
          *
          * @param key String key.
          * @param value Object value.
-         * @return The updated {@code LoggingEventBuilder} object.
+         * @return The updated {@code LoggingEvent} object.
          */
-        public LoggingEventBuilder addKeyValue(String key, Object value) {
+        public LoggingEvent addKeyValue(String key, Object value) {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
@@ -371,9 +381,9 @@ public class ClientLogger {
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The boolean value.
-         * @return The updated {@link LoggingEventBuilder} object.
+         * @return The updated {@link LoggingEvent} object.
          */
-        public LoggingEventBuilder addKeyValue(String key, boolean value) {
+        public LoggingEvent addKeyValue(String key, boolean value) {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
@@ -397,9 +407,9 @@ public class ClientLogger {
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The long value.
-         * @return The updated {@link LoggingEventBuilder} object.
+         * @return The updated {@link LoggingEvent} object.
          */
-        public LoggingEventBuilder addKeyValue(String key, long value) {
+        public LoggingEvent addKeyValue(String key, long value) {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
@@ -411,13 +421,32 @@ public class ClientLogger {
          *
          * @param key String key.
          * @param valueSupplier String value supplier function.
-         * @return The updated {@code LoggingEventBuilder} object.
+         * @return The updated {@code LoggingEvent} object.
          */
-        public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
+        public LoggingEvent addKeyValue(String key, Supplier<String> valueSupplier) {
             if (this.isEnabled && valueSupplier != null) {
                 this.addKeyValue(key, valueSupplier.get());
             }
             return this;
+        }
+
+        /**
+         * Sets the event name for the current log event. The event name is used to query all logs
+         * that describe the same event. It must not contain any dynamic parts.
+         *
+         * @param eventName The name of the event.
+         * @return The updated {@code LoggingEvent} object.
+         */
+        public LoggingEvent setEventName(String eventName) {
+            this.eventName = eventName;
+            return this;
+        }
+
+        /**
+         * Logs event annotated with context.
+         */
+        public void log() {
+            log(null);
         }
 
         /**
@@ -444,6 +473,7 @@ public class ClientLogger {
             if (this.isEnabled) {
                 boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
                 if (throwable != null) {
+                    addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
                     addKeyValueInternal("exception.message", throwable.getMessage());
                     if (isDebugEnabled) {
                         StringBuilder stackTrace = new StringBuilder();
@@ -461,12 +491,11 @@ public class ClientLogger {
                 message = "";
             }
 
-            int pairsCount = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null
-                                                                                       ? 0
-                                                                                       : globalPairs.size());
+            int pairsCount
+                = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
             int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
                 jsonWriter.writeStartObject().writeStringField("message", message);
 
                 if (globalPairs != null) {
@@ -479,6 +508,10 @@ public class ClientLogger {
                     for (Map.Entry<String, Object> kvp : keyValuePairs.entrySet()) {
                         jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
                     }
+                }
+
+                if (eventName != null) {
+                    jsonWriter.writeStringField("event.name", eventName);
                 }
 
                 jsonWriter.writeEndObject().flush();
@@ -499,7 +532,7 @@ public class ClientLogger {
     }
 
     /**
-     * Enum which represent logging levels used in Azure SDKs.
+     * Enum which represent logging levels used.
      */
     public enum LogLevel {
         /**
@@ -526,6 +559,7 @@ public class ClientLogger {
          * Indicates that log level is at error level.
          */
         ERROR(4, "4", "err", "error");
+
         private final int numericValue;
         private final String[] allowedLogLevelVariables;
         private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();

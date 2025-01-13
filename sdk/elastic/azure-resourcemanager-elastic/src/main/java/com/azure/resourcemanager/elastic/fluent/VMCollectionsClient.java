@@ -10,12 +10,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.models.VMCollectionUpdate;
 
-/** An instance of this class provides access to all the operations defined in VMCollectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VMCollectionsClient.
+ */
 public interface VMCollectionsClient {
     /**
      * Update the vm details that will be monitored by the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body VM resource Id.
      * @param context The context to associate with this operation.
@@ -25,13 +27,13 @@ public interface VMCollectionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName, String monitorName, VMCollectionUpdate body, Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String monitorName, VMCollectionUpdate body,
+        Context context);
 
     /**
      * Update the vm details that will be monitored by the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -17,7 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class ExperimentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExperimentInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExperimentInner.class);
 
     /*
      * Time when the Experiment was created.

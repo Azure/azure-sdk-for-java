@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionKeyParameterNamesContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionKeyParameterNamesContract model =
-            BinaryData
-                .fromString("{\"header\":\"joxzjnchgejspodm\",\"query\":\"lzydehojwyahux\"}")
+        SubscriptionKeyParameterNamesContract model
+            = BinaryData.fromString("{\"header\":\"joxzjnchgejspodm\",\"query\":\"lzydehojwyahux\"}")
                 .toObject(SubscriptionKeyParameterNamesContract.class);
         Assertions.assertEquals("joxzjnchgejspodm", model.headerProperty());
         Assertions.assertEquals("lzydehojwyahux", model.query());
@@ -21,9 +20,8 @@ public final class SubscriptionKeyParameterNamesContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionKeyParameterNamesContract model =
-            new SubscriptionKeyParameterNamesContract()
-                .withHeaderProperty("joxzjnchgejspodm")
+        SubscriptionKeyParameterNamesContract model
+            = new SubscriptionKeyParameterNamesContract().withHeaderProperty("joxzjnchgejspodm")
                 .withQuery("lzydehojwyahux");
         model = BinaryData.fromObject(model).toObject(SubscriptionKeyParameterNamesContract.class);
         Assertions.assertEquals("joxzjnchgejspodm", model.headerProperty());

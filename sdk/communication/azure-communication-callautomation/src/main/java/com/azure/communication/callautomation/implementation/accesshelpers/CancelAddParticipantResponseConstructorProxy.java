@@ -12,7 +12,8 @@ import com.azure.communication.callautomation.models.CancelAddParticipantOperati
 public final class CancelAddParticipantResponseConstructorProxy {
     private static CancelAddParticipantResponseConstructorAccessor accessor;
 
-    private CancelAddParticipantResponseConstructorProxy() { }
+    private CancelAddParticipantResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link CancelAddParticipantResponseConstructorAccessor}

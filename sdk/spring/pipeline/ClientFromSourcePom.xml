@@ -1,0 +1,25 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-sdk-from-source</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>
+
+  <modules>
+    <module>../../../eng/code-quality-reports/pom.xml</module>
+    <module>../../../common/perf-test-core/pom.xml</module>
+    <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml</module>
+    <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml</module>
+    <module>../../eventhubs/azure-messaging-eventhubs-stress/pom.xml</module>
+    <module>../../eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml</module>
+    <module>../../eventhubs/azure-messaging-eventhubs/pom.xml</module>
+    <module>../../monitor/azure-monitor-opentelemetry-exporter/pom.xml</module>
+    <module>../../parents/azure-perf-test-parent/pom.xml</module>
+    <module>../../parents/azure-sdk-parent/pom.xml</module>
+    <module>../../servicebus/azure-messaging-servicebus-stress/pom.xml</module>
+    <module>../../servicebus/azure-messaging-servicebus-track2-perf/pom.xml</module>
+    <module>../../servicebus/azure-messaging-servicebus/pom.xml</module>
+  </modules>
+</project>

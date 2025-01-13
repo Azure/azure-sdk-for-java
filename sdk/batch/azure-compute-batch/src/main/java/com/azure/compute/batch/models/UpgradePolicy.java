@@ -28,8 +28,7 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     private final UpgradeMode mode;
 
     /*
-     * The configuration parameters used while performing a rolling upgrade. This property is only supported on Pools
-     * with the virtualMachineConfiguration property.
+     * The configuration parameters used while performing a rolling upgrade.
      */
     @Generated
     private RollingUpgradePolicy rollingUpgradePolicy;
@@ -59,8 +58,7 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     }
 
     /**
-     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
-     * property is only supported on Pools with the virtualMachineConfiguration property.
+     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      *
      * @return the rollingUpgradePolicy value.
      */
@@ -70,8 +68,7 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     }
 
     /**
-     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
-     * property is only supported on Pools with the virtualMachineConfiguration property.
+     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      *
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.

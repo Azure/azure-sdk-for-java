@@ -18,14 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for TopicAuthorizationRules.
  */
-class TopicAuthorizationRulesImpl
-    extends ServiceBusChildResourcesImpl<
-        TopicAuthorizationRule,
-        TopicAuthorizationRuleImpl,
-        SBAuthorizationRuleInner,
-        TopicsClient,
-        ServiceBusManager,
-        Topic>
+class TopicAuthorizationRulesImpl extends
+    ServiceBusChildResourcesImpl<TopicAuthorizationRule, TopicAuthorizationRuleImpl, SBAuthorizationRuleInner, TopicsClient, ServiceBusManager, Topic>
     implements TopicAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;
@@ -34,11 +28,8 @@ class TopicAuthorizationRulesImpl
 
     private final ClientLogger logger = new ClientLogger(TopicAuthorizationRulesImpl.class);
 
-    TopicAuthorizationRulesImpl(String resourceGroupName,
-                                String namespaceName,
-                                String topicName,
-                                Region region,
-                                ServiceBusManager manager) {
+    TopicAuthorizationRulesImpl(String resourceGroupName, String namespaceName, String topicName, Region region,
+        ServiceBusManager manager) {
         super(manager.serviceClient().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
@@ -53,41 +44,31 @@ class TopicAuthorizationRulesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.innerModel().deleteAuthorizationRuleAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name);
+        return this.innerModel()
+            .deleteAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
     protected Mono<SBAuthorizationRuleInner> getInnerByNameAsync(String name) {
-        return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name);
+        return this.innerModel()
+            .getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
     protected PagedFlux<SBAuthorizationRuleInner> listInnerAsync() {
-        return this.innerModel().listAuthorizationRulesAsync(
-            this.resourceGroupName, this.namespaceName, this.topicName);
+        return this.innerModel()
+            .listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
     protected PagedIterable<SBAuthorizationRuleInner> listInner() {
-        return this.innerModel().listAuthorizationRules(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName);
+        return this.innerModel().listAuthorizationRules(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
     protected TopicAuthorizationRuleImpl wrapModel(String name) {
-        return new TopicAuthorizationRuleImpl(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name,
-                new SBAuthorizationRuleInner(),
-                this.manager());
+        return new TopicAuthorizationRuleImpl(this.resourceGroupName, this.namespaceName, this.topicName, name,
+            new SBAuthorizationRuleInner(), this.manager());
     }
 
     @Override
@@ -95,12 +76,8 @@ class TopicAuthorizationRulesImpl
         if (inner == null) {
             return null;
         }
-        return new TopicAuthorizationRuleImpl(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                inner.name(),
-                inner,
-                this.manager());
+        return new TopicAuthorizationRuleImpl(this.resourceGroupName, this.namespaceName, this.topicName, inner.name(),
+            inner, this.manager());
     }
 
     @Override

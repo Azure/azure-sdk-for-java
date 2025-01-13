@@ -6,41 +6,70 @@ package com.azure.resourcemanager.iotcentral.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
 import com.azure.resourcemanager.iotcentral.models.AppState;
 import com.azure.resourcemanager.iotcentral.models.NetworkRuleSets;
 import com.azure.resourcemanager.iotcentral.models.ProvisioningState;
 import com.azure.resourcemanager.iotcentral.models.PublicNetworkAccess;
 import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The IoT Central application. */
+/**
+ * The IoT Central application.
+ */
 @Fluent
 public final class AppInner extends Resource {
     /*
      * The common properties of an IoT Central application.
      */
-    @JsonProperty(value = "properties")
     private AppProperties innerProperties;
 
     /*
      * A valid instance SKU.
      */
-    @JsonProperty(value = "sku", required = true)
     private AppSkuInfo sku;
 
     /*
      * The managed identities for the IoT Central application.
      */
-    @JsonProperty(value = "identity")
     private SystemAssignedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AppInner class.
+     */
+    public AppInner() {
+    }
 
     /**
      * Get the innerProperties property: The common properties of an IoT Central application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppProperties innerProperties() {
@@ -49,7 +78,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the sku property: A valid instance SKU.
-     *
+     * 
      * @return the sku value.
      */
     public AppSkuInfo sku() {
@@ -58,7 +87,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the sku property: A valid instance SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AppInner object itself.
      */
@@ -69,7 +98,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the identity property: The managed identities for the IoT Central application.
-     *
+     * 
      * @return the identity value.
      */
     public SystemAssignedServiceIdentity identity() {
@@ -78,7 +107,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the identity property: The managed identities for the IoT Central application.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AppInner object itself.
      */
@@ -87,14 +116,57 @@ public final class AppInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,7 +175,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the application.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -112,7 +184,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the applicationId property: The ID of the application.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -121,7 +193,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the displayName property: The display name of the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -130,7 +202,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the displayName property: The display name of the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AppInner object itself.
      */
@@ -144,7 +216,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the subdomain property: The subdomain of the application.
-     *
+     * 
      * @return the subdomain value.
      */
     public String subdomain() {
@@ -153,7 +225,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the subdomain property: The subdomain of the application.
-     *
+     * 
      * @param subdomain the subdomain value to set.
      * @return the AppInner object itself.
      */
@@ -169,7 +241,7 @@ public final class AppInner extends Resource {
      * Get the template property: The ID of the application template, which is a blueprint that defines the
      * characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and
      * allows the application to be defined from scratch.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -180,7 +252,7 @@ public final class AppInner extends Resource {
      * Set the template property: The ID of the application template, which is a blueprint that defines the
      * characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and
      * allows the application to be defined from scratch.
-     *
+     * 
      * @param template the template value to set.
      * @return the AppInner object itself.
      */
@@ -194,7 +266,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the state property: The current state of the application.
-     *
+     * 
      * @return the state value.
      */
     public AppState state() {
@@ -203,7 +275,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -212,7 +284,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AppInner object itself.
      */
@@ -226,7 +298,7 @@ public final class AppInner extends Resource {
 
     /**
      * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
-     *
+     * 
      * @return the networkRuleSets value.
      */
     public NetworkRuleSets networkRuleSets() {
@@ -235,7 +307,7 @@ public final class AppInner extends Resource {
 
     /**
      * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
-     *
+     * 
      * @param networkRuleSets the networkRuleSets value to set.
      * @return the AppInner object itself.
      */
@@ -250,7 +322,7 @@ public final class AppInner extends Resource {
     /**
      * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
      * application.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -259,7 +331,7 @@ public final class AppInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -267,8 +339,7 @@ public final class AppInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property sku in model AppInner"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property sku in model AppInner"));
         } else {
             sku().validate();
         }
@@ -278,4 +349,62 @@ public final class AppInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppInner.
+     */
+    public static AppInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppInner deserializedAppInner = new AppInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAppInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAppInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAppInner.sku = AppSkuInfo.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppInner.innerProperties = AppProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppInner.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAppInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppInner;
+        });
+    }
 }

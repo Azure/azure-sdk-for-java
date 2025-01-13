@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-/** Samples for StreamingLocators List. */
+/**
+ * Samples for StreamingLocators List.
+ */
 public final class StreamingLocatorsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-locators-list.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-
+     * locators-list.json
      */
     /**
      * Sample code: Lists Streaming Locators.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listsStreamingLocators(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .streamingLocators()
+        manager.streamingLocators()
             .list("contosorg", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

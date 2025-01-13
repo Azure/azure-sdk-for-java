@@ -308,7 +308,8 @@ public class ShareFileJavaDocCodeSamples {
             .setDestinationRequestConditions(requestConditions)
             .setSmbPropertiesToCopy(list)
             .setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
-            .setMetadata(Collections.singletonMap("file", "metadata"));
+            .setMetadata(Collections.singletonMap("file", "metadata"))
+            .setFilePermissionFormat(FilePermissionFormat.BINARY);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}", options, Duration.ofSeconds(2));

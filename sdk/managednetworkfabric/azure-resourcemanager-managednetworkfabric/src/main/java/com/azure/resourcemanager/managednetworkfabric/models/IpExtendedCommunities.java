@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IpExtendedCommunities. */
+/**
+ * Resource collection API of IpExtendedCommunities.
+ */
 public interface IpExtendedCommunities {
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface IpExtendedCommunities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response}.
      */
-    Response<IpExtendedCommunity> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    Response<IpExtendedCommunity> getByResourceGroupWithResponse(String resourceGroupName,
+        String ipExtendedCommunityName, Context context);
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface IpExtendedCommunities {
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface IpExtendedCommunities {
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface IpExtendedCommunities {
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface IpExtendedCommunities {
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface IpExtendedCommunities {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface IpExtendedCommunities {
 
     /**
      * Begins definition for a new IpExtendedCommunity resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IpExtendedCommunity definition.
      */

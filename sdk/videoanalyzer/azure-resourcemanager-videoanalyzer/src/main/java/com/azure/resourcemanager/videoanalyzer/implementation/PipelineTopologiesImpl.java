@@ -21,8 +21,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public PipelineTopologiesImpl(
-        PipelineTopologiesClient innerClient,
+    public PipelineTopologiesImpl(PipelineTopologiesClient innerClient,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,10 +32,10 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         return Utils.mapPage(inner, inner1 -> new PipelineTopologyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PipelineTopology> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
-        PagedIterable<PipelineTopologyInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, filter, top, context);
+    public PagedIterable<PipelineTopology> list(String resourceGroupName, String accountName, String filter,
+        Integer top, Context context) {
+        PagedIterable<PipelineTopologyInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new PipelineTopologyImpl(inner1, this.manager()));
     }
 
@@ -49,15 +48,12 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
     }
 
-    public Response<PipelineTopology> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
-        Response<PipelineTopologyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, pipelineTopologyName, context);
+    public Response<PipelineTopology> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, Context context) {
+        Response<PipelineTopologyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, pipelineTopologyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PipelineTopologyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -68,36 +64,26 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         this.serviceClient().delete(resourceGroupName, accountName, pipelineTopologyName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineTopologyName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, pipelineTopologyName, context);
     }
 
     public PipelineTopology getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE).getValue();
     }
@@ -105,28 +91,18 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public Response<PipelineTopology> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, pipelineTopologyName, context);
     }
@@ -134,28 +110,18 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE);
     }
@@ -163,28 +129,18 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, pipelineTopologyName, context);
     }

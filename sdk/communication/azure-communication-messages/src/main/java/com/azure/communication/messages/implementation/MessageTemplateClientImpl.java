@@ -207,14 +207,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -247,14 +249,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -304,14 +308,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -341,14 +347,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -388,19 +396,19 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given Azure Communication Services channel
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -423,19 +431,19 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given Azure Communication Services channel
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

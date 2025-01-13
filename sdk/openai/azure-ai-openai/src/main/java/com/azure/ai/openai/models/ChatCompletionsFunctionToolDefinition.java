@@ -20,17 +20,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
      * The function definition details for the function tool.
      */
     @Generated
-    private final FunctionDefinition function;
-
-    /**
-     * Creates an instance of ChatCompletionsFunctionToolDefinition class.
-     *
-     * @param function the function value to set.
-     */
-    @Generated
-    public ChatCompletionsFunctionToolDefinition(FunctionDefinition function) {
-        this.function = function;
-    }
+    private final ChatCompletionsFunctionToolDefinitionFunction function;
 
     /**
      * Get the function property: The function definition details for the function tool.
@@ -38,7 +28,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
      * @return the function value.
      */
     @Generated
-    public FunctionDefinition getFunction() {
+    public ChatCompletionsFunctionToolDefinitionFunction getFunction() {
         return this.function;
     }
 
@@ -83,13 +73,13 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
     @Generated
     public static ChatCompletionsFunctionToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FunctionDefinition function = null;
+            ChatCompletionsFunctionToolDefinitionFunction function = null;
             String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("function".equals(fieldName)) {
-                    function = FunctionDefinition.fromJson(reader);
+                    function = ChatCompletionsFunctionToolDefinitionFunction.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else {
@@ -101,5 +91,15 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
             deserializedChatCompletionsFunctionToolDefinition.type = type;
             return deserializedChatCompletionsFunctionToolDefinition;
         });
+    }
+
+    /**
+     * Creates an instance of ChatCompletionsFunctionToolDefinition class.
+     *
+     * @param function the function value to set.
+     */
+    @Generated
+    public ChatCompletionsFunctionToolDefinition(ChatCompletionsFunctionToolDefinitionFunction function) {
+        this.function = function;
     }
 }

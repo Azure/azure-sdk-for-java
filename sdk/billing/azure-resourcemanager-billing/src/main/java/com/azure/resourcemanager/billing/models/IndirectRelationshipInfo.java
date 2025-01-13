@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The billing profile details of the partner of the customer for an indirect motion. */
+/**
+ * Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
+ */
 @Fluent
-public final class IndirectRelationshipInfo {
+public class IndirectRelationshipInfo implements JsonSerializable<IndirectRelationshipInfo> {
     /*
      * The billing account name of the partner or the customer for an indirect motion.
      */
-    @JsonProperty(value = "billingAccountName")
     private String billingAccountName;
 
     /*
      * The billing profile name of the partner or the customer for an indirect motion.
      */
-    @JsonProperty(value = "billingProfileName")
     private String billingProfileName;
 
     /*
      * The display name of the partner or customer for an indirect motion.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of IndirectRelationshipInfo class. */
+    /**
+     * Creates an instance of IndirectRelationshipInfo class.
+     */
     public IndirectRelationshipInfo() {
     }
 
     /**
      * Get the billingAccountName property: The billing account name of the partner or the customer for an indirect
      * motion.
-     *
+     * 
      * @return the billingAccountName value.
      */
     public String billingAccountName() {
@@ -45,7 +50,7 @@ public final class IndirectRelationshipInfo {
     /**
      * Set the billingAccountName property: The billing account name of the partner or the customer for an indirect
      * motion.
-     *
+     * 
      * @param billingAccountName the billingAccountName value to set.
      * @return the IndirectRelationshipInfo object itself.
      */
@@ -57,7 +62,7 @@ public final class IndirectRelationshipInfo {
     /**
      * Get the billingProfileName property: The billing profile name of the partner or the customer for an indirect
      * motion.
-     *
+     * 
      * @return the billingProfileName value.
      */
     public String billingProfileName() {
@@ -67,7 +72,7 @@ public final class IndirectRelationshipInfo {
     /**
      * Set the billingProfileName property: The billing profile name of the partner or the customer for an indirect
      * motion.
-     *
+     * 
      * @param billingProfileName the billingProfileName value to set.
      * @return the IndirectRelationshipInfo object itself.
      */
@@ -78,7 +83,7 @@ public final class IndirectRelationshipInfo {
 
     /**
      * Get the displayName property: The display name of the partner or customer for an indirect motion.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -87,7 +92,7 @@ public final class IndirectRelationshipInfo {
 
     /**
      * Set the displayName property: The display name of the partner or customer for an indirect motion.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the IndirectRelationshipInfo object itself.
      */
@@ -98,9 +103,51 @@ public final class IndirectRelationshipInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingAccountName", this.billingAccountName);
+        jsonWriter.writeStringField("billingProfileName", this.billingProfileName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IndirectRelationshipInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndirectRelationshipInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IndirectRelationshipInfo.
+     */
+    public static IndirectRelationshipInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IndirectRelationshipInfo deserializedIndirectRelationshipInfo = new IndirectRelationshipInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingAccountName".equals(fieldName)) {
+                    deserializedIndirectRelationshipInfo.billingAccountName = reader.getString();
+                } else if ("billingProfileName".equals(fieldName)) {
+                    deserializedIndirectRelationshipInfo.billingProfileName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedIndirectRelationshipInfo.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIndirectRelationshipInfo;
+        });
     }
 }

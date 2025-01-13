@@ -10,7 +10,6 @@ import com.azure.core.util.Configuration;
 
 import java.util.function.Consumer;
 
-
 /**
  * Base class for Anomaly Detector clients test.
  */
@@ -20,9 +19,8 @@ public class AnomalyDetectorClientTestBase extends TestProxyTestBase {
     }
 
     AnomalyDetectorClientBuilder getClientBuilder() {
-        AnomalyDetectorClientBuilder builder = new AnomalyDetectorClientBuilder()
-            .endpoint(getEndpoint())
-            .credential(new AzureKeyCredential(getKey()));
+        AnomalyDetectorClientBuilder builder
+            = new AnomalyDetectorClientBuilder().endpoint(getEndpoint()).credential(new AzureKeyCredential(getKey()));
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -35,12 +33,14 @@ public class AnomalyDetectorClientTestBase extends TestProxyTestBase {
 
     private String getKey() {
         return interceptorManager.isPlaybackMode()
-            ? "fakeKeyPlaceholder" : Configuration.getGlobalConfiguration().get("ANOMALY_DETECTOR_API_KEY");
+            ? "fakeKeyPlaceholder"
+            : Configuration.getGlobalConfiguration().get("ANOMALY_DETECTOR_API_KEY");
     }
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080" : Configuration.getGlobalConfiguration().get("ANOMALY_DETECTOR_ENDPOINT");
+            ? "https://localhost:8080"
+            : Configuration.getGlobalConfiguration().get("ANOMALY_DETECTOR_ENDPOINT");
     }
 
     private BinaryData getDetectRequest() {

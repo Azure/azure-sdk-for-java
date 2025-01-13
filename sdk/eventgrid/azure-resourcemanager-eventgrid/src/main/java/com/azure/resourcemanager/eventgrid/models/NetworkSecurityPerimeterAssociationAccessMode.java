@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class NetworkSecurityPerimeterAssociationAccessMode
      * @param name a name to look for.
      * @return the corresponding NetworkSecurityPerimeterAssociationAccessMode.
      */
-    @JsonCreator
     public static NetworkSecurityPerimeterAssociationAccessMode fromString(String name) {
         return fromString(name, NetworkSecurityPerimeterAssociationAccessMode.class);
     }

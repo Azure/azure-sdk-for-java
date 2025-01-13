@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ingestion type. */
+/**
+ * The ingestion type.
+ */
 public final class IngestionType extends ExpandableStringEnum<IngestionType> {
-    /** Static value IPFIX for IngestionType. */
+    /**
+     * Static value IPFIX for IngestionType.
+     */
     public static final IngestionType IPFIX = fromString("IPFIX");
 
     /**
+     * Creates a new instance of IngestionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IngestionType() {
+    }
+
+    /**
      * Creates or finds a IngestionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IngestionType.
      */
-    @JsonCreator
     public static IngestionType fromString(String name) {
         return fromString(name, IngestionType.class);
     }
 
     /**
      * Gets known IngestionType values.
-     *
+     * 
      * @return known IngestionType values.
      */
     public static Collection<IngestionType> values() {

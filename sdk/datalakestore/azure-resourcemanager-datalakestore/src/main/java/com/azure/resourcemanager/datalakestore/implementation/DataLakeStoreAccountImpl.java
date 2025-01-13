@@ -95,12 +95,9 @@ public final class DataLakeStoreAccountImpl
     public List<FirewallRule> firewallRules() {
         List<FirewallRuleInner> inner = this.innerModel().firewallRules();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -109,12 +106,9 @@ public final class DataLakeStoreAccountImpl
     public List<VirtualNetworkRule> virtualNetworkRules() {
         List<VirtualNetworkRuleInner> inner = this.innerModel().virtualNetworkRules();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -131,12 +125,9 @@ public final class DataLakeStoreAccountImpl
     public List<TrustedIdProvider> trustedIdProviders() {
         List<TrustedIdProviderInner> inner = this.innerModel().trustedIdProviders();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new TrustedIdProviderImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new TrustedIdProviderImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -212,20 +203,16 @@ public final class DataLakeStoreAccountImpl
     }
 
     public DataLakeStoreAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, Context.NONE);
         return this;
     }
 
     public DataLakeStoreAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, context);
         return this;
     }
 
@@ -242,49 +229,40 @@ public final class DataLakeStoreAccountImpl
     }
 
     public DataLakeStoreAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
     public DataLakeStoreAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 
-    DataLakeStoreAccountImpl(
-        DataLakeStoreAccountInner innerObject,
+    DataLakeStoreAccountImpl(DataLakeStoreAccountInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public DataLakeStoreAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataLakeStoreAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 
@@ -346,8 +324,8 @@ public final class DataLakeStoreAccountImpl
         return this;
     }
 
-    public DataLakeStoreAccountImpl withVirtualNetworkRules(
-        List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl
+        withVirtualNetworkRules(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.createParameters.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
@@ -372,8 +350,8 @@ public final class DataLakeStoreAccountImpl
         }
     }
 
-    public DataLakeStoreAccountImpl withTrustedIdProviders(
-        List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl
+        withTrustedIdProviders(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.createParameters.withTrustedIdProviders(trustedIdProviders);
         return this;
     }
@@ -403,20 +381,20 @@ public final class DataLakeStoreAccountImpl
         return this;
     }
 
-    public DataLakeStoreAccountImpl withFirewallRulesForUpdate(
-        List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeStoreAccountImpl
+        withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
         this.updateParameters.withFirewallRules(firewallRules);
         return this;
     }
 
-    public DataLakeStoreAccountImpl withVirtualNetworkRulesForUpdate(
-        List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl
+        withVirtualNetworkRulesForUpdate(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.updateParameters.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
 
-    public DataLakeStoreAccountImpl withTrustedIdProvidersForUpdate(
-        List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl
+        withTrustedIdProvidersForUpdate(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.updateParameters.withTrustedIdProviders(trustedIdProviders);
         return this;
     }

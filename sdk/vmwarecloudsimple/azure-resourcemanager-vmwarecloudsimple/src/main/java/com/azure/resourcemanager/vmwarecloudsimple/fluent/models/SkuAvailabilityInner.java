@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU availability model. */
+/**
+ * SKU availability model.
+ */
 @Fluent
-public final class SkuAvailabilityInner {
+public final class SkuAvailabilityInner implements JsonSerializable<SkuAvailabilityInner> {
     /*
      * CloudSimple Availability Zone id
      */
-    @JsonProperty(value = "dedicatedAvailabilityZoneId")
     private String dedicatedAvailabilityZoneId;
 
     /*
      * CloudSimple Availability Zone Name
      */
-    @JsonProperty(value = "dedicatedAvailabilityZoneName")
     private String dedicatedAvailabilityZoneName;
 
     /*
      * CloudSimple Placement Group Id
      */
-    @JsonProperty(value = "dedicatedPlacementGroupId")
     private String dedicatedPlacementGroupId;
 
     /*
      * CloudSimple Placement Group name
      */
-    @JsonProperty(value = "dedicatedPlacementGroupName")
     private String dedicatedPlacementGroupName;
 
     /*
      * indicates how many resources of a given SKU is available in a AZ->PG
      */
-    @JsonProperty(value = "limit", required = true)
     private int limit;
 
     /*
      * resource type e.g. DedicatedCloudNodes
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * sku id
      */
-    @JsonProperty(value = "skuId")
     private String skuId;
 
     /*
      * sku name
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
-    /** Creates an instance of SkuAvailabilityInner class. */
+    /**
+     * Creates an instance of SkuAvailabilityInner class.
+     */
     public SkuAvailabilityInner() {
     }
 
     /**
      * Get the dedicatedAvailabilityZoneId property: CloudSimple Availability Zone id.
-     *
+     * 
      * @return the dedicatedAvailabilityZoneId value.
      */
     public String dedicatedAvailabilityZoneId() {
@@ -73,7 +73,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the dedicatedAvailabilityZoneId property: CloudSimple Availability Zone id.
-     *
+     * 
      * @param dedicatedAvailabilityZoneId the dedicatedAvailabilityZoneId value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -84,7 +84,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the dedicatedAvailabilityZoneName property: CloudSimple Availability Zone Name.
-     *
+     * 
      * @return the dedicatedAvailabilityZoneName value.
      */
     public String dedicatedAvailabilityZoneName() {
@@ -93,7 +93,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the dedicatedAvailabilityZoneName property: CloudSimple Availability Zone Name.
-     *
+     * 
      * @param dedicatedAvailabilityZoneName the dedicatedAvailabilityZoneName value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -104,7 +104,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the dedicatedPlacementGroupId property: CloudSimple Placement Group Id.
-     *
+     * 
      * @return the dedicatedPlacementGroupId value.
      */
     public String dedicatedPlacementGroupId() {
@@ -113,7 +113,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the dedicatedPlacementGroupId property: CloudSimple Placement Group Id.
-     *
+     * 
      * @param dedicatedPlacementGroupId the dedicatedPlacementGroupId value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -124,7 +124,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the dedicatedPlacementGroupName property: CloudSimple Placement Group name.
-     *
+     * 
      * @return the dedicatedPlacementGroupName value.
      */
     public String dedicatedPlacementGroupName() {
@@ -133,7 +133,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the dedicatedPlacementGroupName property: CloudSimple Placement Group name.
-     *
+     * 
      * @param dedicatedPlacementGroupName the dedicatedPlacementGroupName value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -144,7 +144,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the limit property: indicates how many resources of a given SKU is available in a AZ-&gt;PG.
-     *
+     * 
      * @return the limit value.
      */
     public int limit() {
@@ -153,7 +153,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the limit property: indicates how many resources of a given SKU is available in a AZ-&gt;PG.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -164,7 +164,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the resourceType property: resource type e.g. DedicatedCloudNodes.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -173,7 +173,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the resourceType property: resource type e.g. DedicatedCloudNodes.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -184,7 +184,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the skuId property: sku id.
-     *
+     * 
      * @return the skuId value.
      */
     public String skuId() {
@@ -193,7 +193,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the skuId property: sku id.
-     *
+     * 
      * @param skuId the skuId value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -204,7 +204,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Get the skuName property: sku name.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -213,7 +213,7 @@ public final class SkuAvailabilityInner {
 
     /**
      * Set the skuName property: sku name.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the SkuAvailabilityInner object itself.
      */
@@ -224,9 +224,67 @@ public final class SkuAvailabilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("limit", this.limit);
+        jsonWriter.writeStringField("dedicatedAvailabilityZoneId", this.dedicatedAvailabilityZoneId);
+        jsonWriter.writeStringField("dedicatedAvailabilityZoneName", this.dedicatedAvailabilityZoneName);
+        jsonWriter.writeStringField("dedicatedPlacementGroupId", this.dedicatedPlacementGroupId);
+        jsonWriter.writeStringField("dedicatedPlacementGroupName", this.dedicatedPlacementGroupName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("skuId", this.skuId);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuAvailabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuAvailabilityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuAvailabilityInner.
+     */
+    public static SkuAvailabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuAvailabilityInner deserializedSkuAvailabilityInner = new SkuAvailabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.limit = reader.getInt();
+                } else if ("dedicatedAvailabilityZoneId".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.dedicatedAvailabilityZoneId = reader.getString();
+                } else if ("dedicatedAvailabilityZoneName".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.dedicatedAvailabilityZoneName = reader.getString();
+                } else if ("dedicatedPlacementGroupId".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.dedicatedPlacementGroupId = reader.getString();
+                } else if ("dedicatedPlacementGroupName".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.dedicatedPlacementGroupName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.resourceType = reader.getString();
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.skuId = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedSkuAvailabilityInner.skuName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuAvailabilityInner;
+        });
     }
 }

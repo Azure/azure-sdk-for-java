@@ -5,7 +5,8 @@ package com.azure.storage.stress;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import io.netty.channel.unix.Errors;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -98,9 +99,7 @@ public class TelemetryHelper {
             System.setProperty("otel.metrics.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
         } else {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
+            AzureMonitorExporter.customize(sdkBuilder, applicationInsightsConnectionString);
         }
 
         OpenTelemetry otel = sdkBuilder
@@ -196,6 +195,18 @@ public class TelemetryHelper {
 
     private void trackFailure(Instant start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
+
+        // Check if the unwrapped exception is a RuntimeException
+        // Check if the message contains "NativeIoException" or TimeoutException and the unwrapped exception is not
+        // already a NativeIoException/TimeoutException
+        if (unwrapped instanceof RuntimeException) {
+            String message = unwrapped.getMessage();
+            if (message.contains("NativeIoException")) {
+                unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
+            } else if (message.contains("TimeoutException")) {
+                unwrapped = new TimeoutException(message);
+            }
+        }
 
         span.recordException(unwrapped);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, unwrapped.getClass().getName());

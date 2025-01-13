@@ -13,8 +13,7 @@ public final class PipelineJobOperationStatusImpl implements PipelineJobOperatio
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    PipelineJobOperationStatusImpl(
-        PipelineJobOperationStatusInner innerObject,
+    PipelineJobOperationStatusImpl(PipelineJobOperationStatusInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

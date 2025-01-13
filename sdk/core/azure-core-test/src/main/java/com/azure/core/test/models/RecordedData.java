@@ -3,8 +3,12 @@
 
 package com.azure.core.test.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -13,10 +17,11 @@ import java.util.function.Predicate;
 /**
  * Keeps track of the network calls and variable names that were made in a test session.
  */
-public class RecordedData {
-    @JsonProperty()
+public class RecordedData implements JsonSerializable<RecordedData> {
+    private final Object networkCallRecordsLock = new Object();
+    private final Object variablesLock = new Object();
+
     private final LinkedList<NetworkCallRecord> networkCallRecords;
-    @JsonProperty()
     private final LinkedList<String> variables;
 
     /**
@@ -38,7 +43,7 @@ public class RecordedData {
     public NetworkCallRecord findFirstAndRemoveNetworkCall(Predicate<NetworkCallRecord> isMatch) {
         Objects.requireNonNull(isMatch, "'isMatch' cannot be null.");
 
-        synchronized (networkCallRecords) {
+        synchronized (networkCallRecordsLock) {
             Iterator<NetworkCallRecord> iterator = networkCallRecords.iterator();
             while (iterator.hasNext()) {
                 NetworkCallRecord next = iterator.next();
@@ -60,7 +65,7 @@ public class RecordedData {
     public void addNetworkCall(NetworkCallRecord record) {
         Objects.requireNonNull(record, "'record' cannot be null.");
 
-        synchronized (networkCallRecords) {
+        synchronized (networkCallRecordsLock) {
             networkCallRecords.add(record);
         }
     }
@@ -73,7 +78,7 @@ public class RecordedData {
     public void addVariable(String variable) {
         Objects.requireNonNull(variable, "'variable' cannot be null.");
 
-        synchronized (variables) {
+        synchronized (variablesLock) {
             variables.add(variable);
         }
     }
@@ -84,8 +89,35 @@ public class RecordedData {
      * @return The first variable.
      */
     public String removeVariable() {
-        synchronized (variables) {
-            return variables.remove();
+        synchronized (variablesLock) {
+            return variables.removeFirst();
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("networkCallRecords", networkCallRecords, JsonWriter::writeJson)
+            .writeArrayField("variables", variables, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of RecordedData from the input JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize the data from.
+     * @return An instance of RecordedData deserialized from the JSON.
+     * @throws IOException If the JSON reader encounters an error while reading the JSON.
+     */
+    public static RecordedData fromJson(JsonReader jsonReader) throws IOException {
+        return TestingHelpers.readObject(jsonReader, RecordedData::new, (recordedData, fieldName, reader) -> {
+            if ("networkCallRecords".equals(fieldName)) {
+                recordedData.networkCallRecords.addAll(reader.readArray(NetworkCallRecord::fromJson));
+            } else if ("variables".equals(fieldName)) {
+                recordedData.variables.addAll(reader.readArray(JsonReader::getString));
+            } else {
+                reader.skipChildren();
+            }
+        });
     }
 }

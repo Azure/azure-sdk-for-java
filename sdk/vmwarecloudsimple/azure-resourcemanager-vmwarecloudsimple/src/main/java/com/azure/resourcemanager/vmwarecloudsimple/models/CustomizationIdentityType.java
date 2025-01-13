@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Identity type. */
+/**
+ * Identity type.
+ */
 public final class CustomizationIdentityType extends ExpandableStringEnum<CustomizationIdentityType> {
-    /** Static value WINDOWS_TEXT for CustomizationIdentityType. */
+    /**
+     * Static value WINDOWS_TEXT for CustomizationIdentityType.
+     */
     public static final CustomizationIdentityType WINDOWS_TEXT = fromString("WINDOWS_TEXT");
 
-    /** Static value WINDOWS for CustomizationIdentityType. */
+    /**
+     * Static value WINDOWS for CustomizationIdentityType.
+     */
     public static final CustomizationIdentityType WINDOWS = fromString("WINDOWS");
 
-    /** Static value LINUX for CustomizationIdentityType. */
+    /**
+     * Static value LINUX for CustomizationIdentityType.
+     */
     public static final CustomizationIdentityType LINUX = fromString("LINUX");
 
     /**
      * Creates a new instance of CustomizationIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class CustomizationIdentityType extends ExpandableStringEnum<Custom
 
     /**
      * Creates or finds a CustomizationIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomizationIdentityType.
      */
-    @JsonCreator
     public static CustomizationIdentityType fromString(String name) {
         return fromString(name, CustomizationIdentityType.class);
     }
 
     /**
      * Gets known CustomizationIdentityType values.
-     *
+     * 
      * @return known CustomizationIdentityType values.
      */
     public static Collection<CustomizationIdentityType> values() {

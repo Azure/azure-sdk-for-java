@@ -13,27 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFileListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"sizeInKB\":5458366218543604408,\"createdTime\":\"2021-05-01T06:23:28Z\",\"lastModifiedTime\":\"2021-05-14T05:31:12Z\",\"type\":\"pqyegualhbxxh\",\"url\":\"jzzvdud\"},\"id\":\"wdslfhotwmcy\",\"name\":\"pwlbjnpg\",\"type\":\"cftadeh\"}]}")
-                .toObject(LogFileListResult.class);
-        Assertions.assertEquals(5458366218543604408L, model.value().get(0).sizeInKB());
-        Assertions.assertEquals("pqyegualhbxxh", model.value().get(0).typePropertiesType());
+        LogFileListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"sizeInKB\":7150942946932473894,\"createdTime\":\"2021-05-19T07:12:27Z\",\"lastModifiedTime\":\"2021-11-11T15:58:55Z\",\"type\":\"jj\",\"url\":\"v\"},\"id\":\"udgwdslfho\",\"name\":\"wmc\",\"type\":\"npwlbjnpg\"}]}")
+            .toObject(LogFileListResult.class);
+        Assertions.assertEquals(7150942946932473894L, model.value().get(0).sizeInKB());
+        Assertions.assertEquals("jj", model.value().get(0).typePropertiesType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileListResult model =
-            new LogFileListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LogFileInner()
-                                .withSizeInKB(5458366218543604408L)
-                                .withTypePropertiesType("pqyegualhbxxh")));
+        LogFileListResult model = new LogFileListResult().withValue(
+            Arrays.asList(new LogFileInner().withSizeInKB(7150942946932473894L).withTypePropertiesType("jj")));
         model = BinaryData.fromObject(model).toObject(LogFileListResult.class);
-        Assertions.assertEquals(5458366218543604408L, model.value().get(0).sizeInKB());
-        Assertions.assertEquals("pqyegualhbxxh", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals(7150942946932473894L, model.value().get(0).sizeInKB());
+        Assertions.assertEquals("jj", model.value().get(0).typePropertiesType());
     }
 }

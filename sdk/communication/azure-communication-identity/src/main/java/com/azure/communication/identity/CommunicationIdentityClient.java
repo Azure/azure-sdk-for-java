@@ -77,16 +77,15 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        Response<CommunicationIdentityAccessTokenResult> response =
-            client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
+        Response<CommunicationIdentityAccessTokenResult> response
+            = client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
 
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Service failed to return a response or expected value."));
         }
         String id = response.getValue().getIdentity().getId();
-        return new SimpleResponse<CommunicationUserIdentifier>(
-            response,
-            new CommunicationUserIdentifier(id));
+        return new SimpleResponse<CommunicationUserIdentifier>(response, new CommunicationUserIdentifier(id));
 
     }
 
@@ -99,12 +98,12 @@ public final class CommunicationIdentityClient {
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserIdentifierAndToken createUserAndToken(
-        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
+    public CommunicationUserIdentifierAndToken createUserAndToken(Iterable<CommunicationTokenScope> scopes,
+        Duration tokenExpiresIn) {
         Objects.requireNonNull(scopes);
 
-        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest
+            = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
         CommunicationIdentityAccessTokenResult result = client.create(communicationIdentityCreateRequest);
         return userWithAccessTokenResultConverter(result);
@@ -117,8 +116,7 @@ public final class CommunicationIdentityClient {
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserIdentifierAndToken createUserAndToken(
-        Iterable<CommunicationTokenScope> scopes) {
+    public CommunicationUserIdentifierAndToken createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
         return createUserAndToken(scopes, null);
     }
 
@@ -137,17 +135,17 @@ public final class CommunicationIdentityClient {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
 
-        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest
+            = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
-        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponse(
-            communicationIdentityCreateRequest, context);
+        Response<CommunicationIdentityAccessTokenResult> response
+            = client.createWithResponse(communicationIdentityCreateRequest, context);
 
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Service failed to return a response or expected value."));
         }
-        return new SimpleResponse<CommunicationUserIdentifierAndToken>(
-            response,
+        return new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
             userWithAccessTokenResultConverter(response.getValue()));
     }
 
@@ -159,8 +157,8 @@ public final class CommunicationIdentityClient {
      * @return The created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
-        Iterable<CommunicationTokenScope> scopes, Context context) {
+    public Response<CommunicationUserIdentifierAndToken>
+        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Context context) {
         return createUserAndTokenWithResponse(scopes, null, context);
     }
 
@@ -228,19 +226,15 @@ public final class CommunicationIdentityClient {
      * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken getToken(
-        CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes,
+    public AccessToken getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes,
         Duration tokenExpiresIn) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
 
-        CommunicationIdentityAccessTokenRequest tokenRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityAccessTokenRequest tokenRequest = CommunicationIdentityClientUtils
+            .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-        CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
-            communicationUser.getId(),
-            tokenRequest);
+        CommunicationIdentityAccessToken rawToken = client.issueAccessToken(communicationUser.getId(), tokenRequest);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -270,29 +264,24 @@ public final class CommunicationIdentityClient {
      * @return the Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> getTokenWithResponse(
-        CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresIn,
-        Context context) {
+    public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
 
-        CommunicationIdentityAccessTokenRequest tokenRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityAccessTokenRequest tokenRequest = CommunicationIdentityClientUtils
+            .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponse(
-                communicationUser.getId(),
-                tokenRequest,
-                context);
+        Response<CommunicationIdentityAccessToken> response
+            = client.issueAccessTokenWithResponse(communicationUser.getId(), tokenRequest, context);
 
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Service failed to return a response or expected value."));
         }
 
-        return new SimpleResponse<AccessToken>(
-            response,
+        return new SimpleResponse<AccessToken>(response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 
@@ -311,12 +300,11 @@ public final class CommunicationIdentityClient {
         return getTokenWithResponse(communicationUser, scopes, null, context);
     }
 
-    private CommunicationUserIdentifierAndToken userWithAccessTokenResultConverter(
-        CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
-        CommunicationUserIdentifier user =
-            new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
-        AccessToken token = new AccessToken(
-            identityAccessTokenResult.getAccessToken().getToken(),
+    private CommunicationUserIdentifierAndToken
+        userWithAccessTokenResultConverter(CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
+        CommunicationUserIdentifier user
+            = new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
+        AccessToken token = new AccessToken(identityAccessTokenResult.getAccessToken().getToken(),
             identityAccessTokenResult.getAccessToken().getExpiresOn());
         return new CommunicationUserIdentifierAndToken(user, token);
 
@@ -343,15 +331,17 @@ public final class CommunicationIdentityClient {
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options, Context context) {
+    public Response<AccessToken> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options,
+        Context context) {
         context = context == null ? Context.NONE : context;
-        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponse(options, context);
+        Response<CommunicationIdentityAccessToken> response
+            = client.exchangeTeamsUserAccessTokenWithResponse(options, context);
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Service failed to return a response or expected value."));
         }
 
-        return new SimpleResponse<AccessToken>(
-            response,
+        return new SimpleResponse<AccessToken>(response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 }

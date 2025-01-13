@@ -20,15 +20,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to Azure Managed Service Identity (MSI) Identity resource management API.
  */
 @Fluent
-public interface Identities extends
-        SupportsListing<Identity>,
-        SupportsListingByResourceGroup<Identity>,
-        SupportsGettingByResourceGroup<Identity>,
-        SupportsGettingById<Identity>,
-        SupportsCreating<Identity.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<Identity>,
-        SupportsBatchDeletion,
-        HasManager<MsiManager> {
+public interface Identities extends SupportsListing<Identity>, SupportsListingByResourceGroup<Identity>,
+    SupportsGettingByResourceGroup<Identity>, SupportsGettingById<Identity>,
+    SupportsCreating<Identity.DefinitionStages.Blank>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<Identity>, SupportsBatchDeletion, HasManager<MsiManager> {
 }

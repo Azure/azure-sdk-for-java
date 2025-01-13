@@ -25,15 +25,12 @@ public final class TasksImpl implements Tasks {
         this.serviceManager = serviceManager;
     }
 
-    public Response<TaskResource> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context) {
-        Response<TaskResourceInner> inner =
-            this.serviceClient().getByWorkspaceWithResponse(resourceGroupName, workspaceName, taskId, context);
+    public Response<TaskResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String taskId, Context context) {
+        Response<TaskResourceInner> inner
+            = this.serviceClient().getByWorkspaceWithResponse(resourceGroupName, workspaceName, taskId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TaskResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -27,7 +27,7 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
         DeviceManagementClientBuilder clientBuilder = new DeviceManagementClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", TestData.ACCOUNT_ENDPOINT))
             .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", TestData.INSTANCE_ID))
-            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
+            .httpClient(buildSyncAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null))))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -48,22 +48,24 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testGetGroup() {
-        Response<BinaryData> response = deviceManagementClient.getGroupWithResponse(TestData.DEVICE_GROUP, requestOptions);
+        Response<BinaryData> response
+            = deviceManagementClient.getGroupWithResponse(TestData.DEVICE_GROUP, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListBestUpdatesForGroup() {
-        PagedIterable<BinaryData> response = deviceManagementClient.listBestUpdatesForGroup(TestData.DEVICE_GROUP, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceManagementClient.listBestUpdatesForGroup(TestData.DEVICE_GROUP, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testListDeviceClassSubgroupsForGroup() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listDeviceClassSubgroupsForGroup(TestData.DEVICE_GROUP, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceManagementClient.listDeviceClassSubgroupsForGroup(TestData.DEVICE_GROUP, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
@@ -77,8 +79,8 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testGetUpdateComplianceForGroup() {
-        Response<BinaryData> response =
-            deviceManagementClient.getUpdateComplianceForGroupWithResponse(TestData.DEVICE_GROUP, requestOptions);
+        Response<BinaryData> response
+            = deviceManagementClient.getUpdateComplianceForGroupWithResponse(TestData.DEVICE_GROUP, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
@@ -92,7 +94,8 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testGetDevice() {
-        Response<BinaryData> response = deviceManagementClient.getDeviceWithResponse(TestData.DEVICE_ID, requestOptions);
+        Response<BinaryData> response
+            = deviceManagementClient.getDeviceWithResponse(TestData.DEVICE_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
@@ -106,117 +109,109 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testListHealthOfDevices() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listHealthOfDevices("state eq 'Healthy'", requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceManagementClient.listHealthOfDevices("state eq 'Healthy'", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testGetDeviceClass() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeviceClassWithResponse(TestData.DEVICE_CLASS_ID, requestOptions);
+        Response<BinaryData> response
+            = deviceManagementClient.getDeviceClassWithResponse(TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListInstallableUpdatesForDeviceClass() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listInstallableUpdatesForDeviceClass(TestData.DEVICE_CLASS_ID, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceManagementClient.listInstallableUpdatesForDeviceClass(TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testGetDeviceClassSubgroup() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeviceClassSubgroupWithResponse(TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeviceClassSubgroupWithResponse(TestData.DEVICE_GROUP,
+            TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListBestUpdatesForDeviceClassSubgroup() {
-        Response<BinaryData> response =
-            deviceManagementClient.getBestUpdatesForDeviceClassSubgroupWithResponse(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getBestUpdatesForDeviceClassSubgroupWithResponse(
+            TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testGetDeviceClassSubgroupUpdateCompliance() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeviceClassSubgroupUpdateComplianceWithResponse(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeviceClassSubgroupUpdateComplianceWithResponse(
+            TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListDeploymentsForGroup() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listDeploymentsForGroup(TestData.DEVICE_GROUP, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceManagementClient.listDeploymentsForGroup(TestData.DEVICE_GROUP, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testGetDeployment() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeploymentWithResponse(TestData.DEVICE_GROUP, TestData.DEPLOYMENT_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeploymentWithResponse(TestData.DEVICE_GROUP,
+            TestData.DEPLOYMENT_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListDeploymentsForDeviceClassSubgroup() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listDeploymentsForDeviceClassSubgroup(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
+        PagedIterable<BinaryData> response = deviceManagementClient
+            .listDeploymentsForDeviceClassSubgroup(TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testGetDeploymentForDeviceClassSubgroup() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeploymentForDeviceClassSubgroupWithResponse(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeploymentForDeviceClassSubgroupWithResponse(
+            TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testGetDeploymentStatus() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeploymentStatusWithResponse(TestData.DEVICE_GROUP, TestData.DEPLOYMENT_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeploymentStatusWithResponse(TestData.DEVICE_GROUP,
+            TestData.DEPLOYMENT_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testGetDeviceClassSubgroupDeploymentStatus() {
-        Response<BinaryData> response =
-            deviceManagementClient.getDeviceClassSubgroupDeploymentStatusWithResponse(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeviceClassSubgroupDeploymentStatusWithResponse(
+            TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     public void testListDeviceStatesForDeviceClassSubgroupDeployment() {
-        PagedIterable<BinaryData> response =
-            deviceManagementClient.listDeviceStatesForDeviceClassSubgroupDeployment(
-                TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
+        PagedIterable<BinaryData> response = deviceManagementClient.listDeviceStatesForDeviceClassSubgroupDeployment(
+            TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, TestData.DEPLOYMENT_ID, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 }

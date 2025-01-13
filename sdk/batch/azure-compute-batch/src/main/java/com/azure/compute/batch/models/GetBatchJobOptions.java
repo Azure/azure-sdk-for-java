@@ -14,6 +14,12 @@ public class GetBatchJobOptions extends BatchBaseOptions {
     private List<String> select;
 
     /**
+     * Creates an instance of {@link GetBatchJobOptions}.
+     */
+    public GetBatchJobOptions() {
+    }
+
+    /**
      * Gets the OData $expand clause.
      *
      * <p>The $expand clause specifies related entities or complex properties to include in the response.

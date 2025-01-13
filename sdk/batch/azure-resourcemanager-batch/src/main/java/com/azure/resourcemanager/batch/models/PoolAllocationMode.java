@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The allocation mode for creating pools in the Batch account.
  */
@@ -36,7 +33,6 @@ public enum PoolAllocationMode {
      * @param value the serialized value to parse.
      * @return the parsed PoolAllocationMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static PoolAllocationMode fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum PoolAllocationMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

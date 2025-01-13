@@ -5,27 +5,34 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.OverallValidationStatus;
 import com.azure.resourcemanager.databox.models.ValidationInputResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response of pre job creation validations. */
+/**
+ * Response of pre job creation validations.
+ */
 @Immutable
-public final class ValidationResponseInner {
+public final class ValidationResponseInner implements JsonSerializable<ValidationResponseInner> {
     /*
      * Properties of pre job creation validation response.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationResponseProperties innerProperties;
 
-    /** Creates an instance of ValidationResponseInner class. */
+    /**
+     * Creates an instance of ValidationResponseInner class.
+     */
     public ValidationResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of pre job creation validation response.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ValidationResponseProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class ValidationResponseInner {
 
     /**
      * Get the status property: Overall validation status.
-     *
+     * 
      * @return the status value.
      */
     public OverallValidationStatus status() {
@@ -44,7 +51,7 @@ public final class ValidationResponseInner {
     /**
      * Get the individualResponseDetails property: List of response details contain validationType and its response as
      * key and value respectively.
-     *
+     * 
      * @return the individualResponseDetails value.
      */
     public List<ValidationInputResponse> individualResponseDetails() {
@@ -53,12 +60,47 @@ public final class ValidationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationResponseInner.
+     */
+    public static ValidationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationResponseInner deserializedValidationResponseInner = new ValidationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedValidationResponseInner.innerProperties = ValidationResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationResponseInner;
+        });
     }
 }

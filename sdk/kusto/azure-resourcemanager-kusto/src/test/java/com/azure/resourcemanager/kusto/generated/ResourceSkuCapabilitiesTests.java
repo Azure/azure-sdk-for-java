@@ -10,8 +10,8 @@ import com.azure.resourcemanager.kusto.models.ResourceSkuCapabilities;
 public final class ResourceSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCapabilities model =
-            BinaryData.fromString("{\"name\":\"bsrfbj\",\"value\":\"twss\"}").toObject(ResourceSkuCapabilities.class);
+        ResourceSkuCapabilities model
+            = BinaryData.fromString("{\"name\":\"bsrfbj\",\"value\":\"twss\"}").toObject(ResourceSkuCapabilities.class);
     }
 
     @org.junit.jupiter.api.Test

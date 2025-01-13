@@ -312,8 +312,8 @@ public final class AccountSasSignatureValues {
      * after initializing {@link AccountSasSignatureValues}.
      */
     @Deprecated
-    public AccountSasQueryParameters generateSasQueryParameters(
-        StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public AccountSasQueryParameters
+        generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         StorageImplUtils.assertNotNull("services", this.services);
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
@@ -336,7 +336,7 @@ public final class AccountSasSignatureValues {
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(), VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, ""
-            // Account SAS requires an additional newline character
+        // Account SAS requires an additional newline character
         );
     }
 }

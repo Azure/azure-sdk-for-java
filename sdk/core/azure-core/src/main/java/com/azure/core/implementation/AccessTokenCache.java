@@ -254,9 +254,8 @@ public final class AccessTokenCache {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null
-                    ? false
-                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+                : (tokenRequestContext.getClaims() != null
+                    && tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
@@ -290,7 +289,7 @@ public final class AccessTokenCache {
             return logBuilder;
         }
 
-        Duration tte = Duration.between(now, cache.getExpiresAt());
+        Duration tte = cache.getDurationUntilExpiration();
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
             .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)

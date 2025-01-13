@@ -57,10 +57,8 @@ public final class ManageZonalVirtualMachineScaleSet {
         final String sshPublicKey = Utils.sshPublicKey();
 
         try {
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups()
-                    .define(rgName)
-                    .withRegion(region)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
             //=============================================================
             // Create a zone resilient PublicIP address
@@ -68,15 +66,15 @@ public final class ManageZonalVirtualMachineScaleSet {
             System.out.println("Creating a zone resilient public ip address");
 
             PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
-                    .define(publicIPName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withLeafDomainLabel(publicIPName)
-                    // Optionals
-                    .withStaticIP()
-                    .withSku(PublicIPSkuType.STANDARD)
-                    // Create PublicIP
-                    .create();
+                .define(publicIPName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withLeafDomainLabel(publicIPName)
+                // Optionals
+                .withStaticIP()
+                .withSku(PublicIPSkuType.STANDARD)
+                // Create PublicIP
+                .create();
 
             System.out.println("Created a zone resilient public ip address: " + publicIPAddress.id());
             Utils.print(publicIPAddress);
@@ -87,51 +85,51 @@ public final class ManageZonalVirtualMachineScaleSet {
             System.out.println("Creating a zone resilient load balancer");
 
             LoadBalancer loadBalancer = azureResourceManager.loadBalancers()
-                    .define(loadBalancerName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
+                .define(loadBalancerName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
 
-                    // Add two rules that uses above backend and probe
-                    .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(80)
-                    .toBackend(backendPoolName1)
-                    .withProbe("httpProbe")
-                    .attach()
-                    .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(443)
-                    .toBackend(backendPoolName2)
-                    .withProbe("httpsProbe")
-                    .attach()
-                    // Add two nat pools to enable direct VMSS connectivity to port SSH and 23
-                    .defineInboundNatPool(natPoolName1)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPortRange(5000, 5099)
-                    .toBackendPort(22)
-                    .attach()
-                    .defineInboundNatPool(natPoolName2)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPortRange(6000, 6099)
-                    .toBackendPort(23)
-                    .attach()
-                    // Explicitly define the frontend
-                    .definePublicFrontend(frontendName)
-                    .withExistingPublicIpAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
-                    .attach()
-                    // Add two probes one per rule
-                    .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
-                    .defineHttpProbe("httpsProbe")
-                    .withRequestPath("/")
-                    .attach()
-                    .withSku(LoadBalancerSkuType.STANDARD)
-                    .create();
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule("httpRule")
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(80)
+                .toBackend(backendPoolName1)
+                .withProbe("httpProbe")
+                .attach()
+                .defineLoadBalancingRule("httpsRule")
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(443)
+                .toBackend(backendPoolName2)
+                .withProbe("httpsProbe")
+                .attach()
+                // Add two nat pools to enable direct VMSS connectivity to port SSH and 23
+                .defineInboundNatPool(natPoolName1)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(5000, 5099)
+                .toBackendPort(22)
+                .attach()
+                .defineInboundNatPool(natPoolName2)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(6000, 6099)
+                .toBackendPort(23)
+                .attach()
+                // Explicitly define the frontend
+                .definePublicFrontend(frontendName)
+                .withExistingPublicIpAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
+                .attach()
+                // Add two probes one per rule
+                .defineHttpProbe("httpProbe")
+                .withRequestPath("/")
+                .attach()
+                .defineHttpProbe("httpsProbe")
+                .withRequestPath("/")
+                .attach()
+                .withSku(LoadBalancerSkuType.STANDARD)
+                .create();
 
             System.out.println("Created a zone resilient load balancer: " + publicIPAddress.id());
             Utils.print(loadBalancer);
@@ -147,14 +145,13 @@ public final class ManageZonalVirtualMachineScaleSet {
 
             System.out.println("Creating network for virtual machine scale sets");
 
-            Network network = azureResourceManager
-                    .networks()
-                    .define("vmssvnet")
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/28")
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define("vmssvnet")
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
 
             System.out.println("Created network for virtual machine scale sets");
             Utils.print(network);
@@ -167,20 +164,20 @@ public final class ManageZonalVirtualMachineScaleSet {
             // HTTP goes to this virtual machine scale set
             //
             VirtualMachineScaleSet virtualMachineScaleSet1 = azureResourceManager.virtualMachineScaleSets()
-                    .define(vmssName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                    .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                    .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer)
-                    .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0))
-                    .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(0))
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .create();
+                .define(vmssName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0))
+                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(0))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                .create();
 
             System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet1.id());
 
@@ -192,20 +189,20 @@ public final class ManageZonalVirtualMachineScaleSet {
             // HTTPS goes to this virtual machine scale set
             //
             VirtualMachineScaleSet virtualMachineScaleSet2 = azureResourceManager.virtualMachineScaleSets()
-                    .define(vmssName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                    .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                    .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer)
-                    .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1))
-                    .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(1))
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .create();
+                .define(vmssName2)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer)
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1))
+                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(1))
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                .create();
 
             System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet2.id());
 
@@ -238,8 +235,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ScenesClientBuilder.class, isAsync = true)
 public final class ScenesAsyncClient {
-    @Generated private final ScenesImpl serviceClient;
+    @Generated
+    private final ScenesImpl serviceClient;
 
     /**
      * Initializes an instance of ScenesAsyncClient class.
@@ -97,8 +98,8 @@ public final class ScenesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(
-            String provider, String partyId, String boundaryId, String source, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> list(String provider, String partyId, String boundaryId, String source,
+        RequestOptions requestOptions) {
         return this.serviceClient.listAsync(provider, partyId, boundaryId, source, requestOptions);
     }
 
@@ -219,8 +220,8 @@ public final class ScenesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateSatelliteDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateSatelliteDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateSatelliteDataIngestionJobAsync(jobId, job, requestOptions);
     }
 
@@ -277,8 +278,8 @@ public final class ScenesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSatelliteDataIngestionJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSatelliteDataIngestionJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSatelliteDataIngestionJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -368,8 +369,8 @@ public final class ScenesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> searchFeaturesWithResponse(
-            String collectionId, BinaryData searchFeaturesQuery, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> searchFeaturesWithResponse(String collectionId, BinaryData searchFeaturesQuery,
+        RequestOptions requestOptions) {
         return this.serviceClient.searchFeaturesWithResponseAsync(collectionId, searchFeaturesQuery, requestOptions);
     }
 
@@ -426,8 +427,8 @@ public final class ScenesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStacFeatureWithResponse(
-            String collectionId, String featureId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getStacFeatureWithResponse(String collectionId, String featureId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getStacFeatureWithResponseAsync(collectionId, featureId, requestOptions);
     }
 }

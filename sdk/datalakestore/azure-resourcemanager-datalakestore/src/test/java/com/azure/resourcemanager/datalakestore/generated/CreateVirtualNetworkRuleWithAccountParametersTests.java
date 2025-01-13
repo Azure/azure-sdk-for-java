@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateVirtualNetworkRuleWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateVirtualNetworkRuleWithAccountParameters model =
-            BinaryData
-                .fromString("{\"name\":\"spemvtzfk\",\"properties\":{\"subnetId\":\"fublj\"}}")
+        CreateVirtualNetworkRuleWithAccountParameters model
+            = BinaryData.fromString("{\"name\":\"podepoo\",\"properties\":{\"subnetId\":\"inuvamiheogn\"}}")
                 .toObject(CreateVirtualNetworkRuleWithAccountParameters.class);
-        Assertions.assertEquals("spemvtzfk", model.name());
-        Assertions.assertEquals("fublj", model.subnetId());
+        Assertions.assertEquals("podepoo", model.name());
+        Assertions.assertEquals("inuvamiheogn", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateVirtualNetworkRuleWithAccountParameters model =
-            new CreateVirtualNetworkRuleWithAccountParameters().withName("spemvtzfk").withSubnetId("fublj");
+        CreateVirtualNetworkRuleWithAccountParameters model
+            = new CreateVirtualNetworkRuleWithAccountParameters().withName("podepoo").withSubnetId("inuvamiheogn");
         model = BinaryData.fromObject(model).toObject(CreateVirtualNetworkRuleWithAccountParameters.class);
-        Assertions.assertEquals("spemvtzfk", model.name());
-        Assertions.assertEquals("fublj", model.subnetId());
+        Assertions.assertEquals("podepoo", model.name());
+        Assertions.assertEquals("inuvamiheogn", model.subnetId());
     }
 }

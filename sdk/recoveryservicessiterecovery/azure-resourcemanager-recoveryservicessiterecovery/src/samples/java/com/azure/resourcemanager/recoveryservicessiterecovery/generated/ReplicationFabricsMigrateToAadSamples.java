@@ -20,7 +20,7 @@ public final class ReplicationFabricsMigrateToAadSamples {
      */
     public static void
         migratesTheSiteToAAD(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().migrateToAad("vault1", "resourceGroupPS1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .migrateToAad("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

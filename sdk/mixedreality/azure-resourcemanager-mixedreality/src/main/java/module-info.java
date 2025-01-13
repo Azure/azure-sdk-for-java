@@ -10,10 +10,6 @@ module com.azure.resourcemanager.mixedreality {
     exports com.azure.resourcemanager.mixedreality.fluent.models;
     exports com.azure.resourcemanager.mixedreality.models;
 
-    opens com.azure.resourcemanager.mixedreality.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.mixedreality.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.mixedreality.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.mixedreality.models to com.azure.core;
 }

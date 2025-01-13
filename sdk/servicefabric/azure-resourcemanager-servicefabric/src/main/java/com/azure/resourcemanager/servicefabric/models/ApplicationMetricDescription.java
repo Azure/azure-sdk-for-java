@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes capacity information for a custom resource balancing metric. This can be used to limit the total
  * consumption of this metric by the services of this application.
  */
 @Fluent
-public final class ApplicationMetricDescription {
+public final class ApplicationMetricDescription implements JsonSerializable<ApplicationMetricDescription> {
     /*
      * The name of the metric.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The maximum node capacity for Service Fabric application.
      * This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is
-     * greater than this value, Service Fabric will limit the total load of services within the application on each
-     * node to this value.
+     * greater than this value, Service Fabric will limit the total load of services within the application on each node
+     * to this value.
      * If set to zero, capacity for this metric is unlimited on each node.
      * When creating a new application with application capacity defined, the product of MaximumNodes and this value
      * must always be smaller than or equal to TotalApplicationCapacity.
      * When updating existing application with application capacity, the product of MaximumNodes and this value must
      * always be smaller than or equal to TotalApplicationCapacity.
-     * 
      */
-    @JsonProperty(value = "maximumCapacity")
     private Long maximumCapacity;
 
     /*
@@ -40,11 +41,9 @@ public final class ApplicationMetricDescription {
      * If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for
      * the application.
      * If set to zero, no capacity is reserved for this metric.
-     * When setting application capacity or when updating application capacity; this value must be smaller than or
-     * equal to MaximumCapacity for each metric.
-     * 
+     * When setting application capacity or when updating application capacity; this value must be smaller than or equal
+     * to MaximumCapacity for each metric.
      */
-    @JsonProperty(value = "reservationCapacity")
     private Long reservationCapacity;
 
     /*
@@ -53,9 +52,7 @@ public final class ApplicationMetricDescription {
      * of loads of services within the application to this value.
      * When creating a new application with application capacity defined, the product of MaximumNodes and
      * MaximumCapacity must always be smaller than or equal to this value.
-     * 
      */
-    @JsonProperty(value = "totalApplicationCapacity")
     private Long totalApplicationCapacity;
 
     /**
@@ -87,8 +84,8 @@ public final class ApplicationMetricDescription {
     /**
      * Get the maximumCapacity property: The maximum node capacity for Service Fabric application.
      * This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is
-     * greater than this value, Service Fabric will limit the total load of services within the application on each
-     * node to this value.
+     * greater than this value, Service Fabric will limit the total load of services within the application on each node
+     * to this value.
      * If set to zero, capacity for this metric is unlimited on each node.
      * When creating a new application with application capacity defined, the product of MaximumNodes and this value
      * must always be smaller than or equal to TotalApplicationCapacity.
@@ -104,8 +101,8 @@ public final class ApplicationMetricDescription {
     /**
      * Set the maximumCapacity property: The maximum node capacity for Service Fabric application.
      * This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is
-     * greater than this value, Service Fabric will limit the total load of services within the application on each
-     * node to this value.
+     * greater than this value, Service Fabric will limit the total load of services within the application on each node
+     * to this value.
      * If set to zero, capacity for this metric is unlimited on each node.
      * When creating a new application with application capacity defined, the product of MaximumNodes and this value
      * must always be smaller than or equal to TotalApplicationCapacity.
@@ -126,8 +123,8 @@ public final class ApplicationMetricDescription {
      * If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for
      * the application.
      * If set to zero, no capacity is reserved for this metric.
-     * When setting application capacity or when updating application capacity; this value must be smaller than or
-     * equal to MaximumCapacity for each metric.
+     * When setting application capacity or when updating application capacity; this value must be smaller than or equal
+     * to MaximumCapacity for each metric.
      * 
      * @return the reservationCapacity value.
      */
@@ -141,8 +138,8 @@ public final class ApplicationMetricDescription {
      * If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for
      * the application.
      * If set to zero, no capacity is reserved for this metric.
-     * When setting application capacity or when updating application capacity; this value must be smaller than or
-     * equal to MaximumCapacity for each metric.
+     * When setting application capacity or when updating application capacity; this value must be smaller than or equal
+     * to MaximumCapacity for each metric.
      * 
      * @param reservationCapacity the reservationCapacity value to set.
      * @return the ApplicationMetricDescription object itself.
@@ -186,5 +183,52 @@ public final class ApplicationMetricDescription {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("maximumCapacity", this.maximumCapacity);
+        jsonWriter.writeNumberField("reservationCapacity", this.reservationCapacity);
+        jsonWriter.writeNumberField("totalApplicationCapacity", this.totalApplicationCapacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationMetricDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationMetricDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationMetricDescription.
+     */
+    public static ApplicationMetricDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationMetricDescription deserializedApplicationMetricDescription = new ApplicationMetricDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationMetricDescription.name = reader.getString();
+                } else if ("maximumCapacity".equals(fieldName)) {
+                    deserializedApplicationMetricDescription.maximumCapacity = reader.getNullable(JsonReader::getLong);
+                } else if ("reservationCapacity".equals(fieldName)) {
+                    deserializedApplicationMetricDescription.reservationCapacity
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalApplicationCapacity".equals(fieldName)) {
+                    deserializedApplicationMetricDescription.totalApplicationCapacity
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationMetricDescription;
+        });
     }
 }

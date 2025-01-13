@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.models.VirtualMachineProductProperti
 public final class VirtualMachineProductPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineProductProperties model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"nysounqe\",\"osDiskImage\":{\"operatingSystem\":\"None\",\"sourceBlobSasUri\":\"eupfhyhltrpm\"},\"dataDiskImages\":[{\"lun\":584946048,\"sourceBlobSasUri\":\"atuokthfuiu\"},{\"lun\":1445775245,\"sourceBlobSasUri\":\"fcp\"},{\"lun\":1920880851,\"sourceBlobSasUri\":\"dpuozmyz\"},{\"lun\":1008080043,\"sourceBlobSasUri\":\"fuaxbe\"}]}")
-                .toObject(VirtualMachineProductProperties.class);
+        VirtualMachineProductProperties model = BinaryData.fromString(
+            "{\"version\":\"sicohoqqnwvlry\",\"osDiskImage\":{\"operatingSystem\":\"None\",\"sourceBlobSasUri\":\"eun\"},\"dataDiskImages\":[{\"lun\":1220710831,\"sourceBlobSasUri\":\"xzko\"},{\"lun\":1366383257,\"sourceBlobSasUri\":\"koklya\"},{\"lun\":1609170177,\"sourceBlobSasUri\":\"nuqszfkbey\"},{\"lun\":1315033601,\"sourceBlobSasUri\":\"mjmwvvjektcx\"}]}")
+            .toObject(VirtualMachineProductProperties.class);
     }
 
     @org.junit.jupiter.api.Test

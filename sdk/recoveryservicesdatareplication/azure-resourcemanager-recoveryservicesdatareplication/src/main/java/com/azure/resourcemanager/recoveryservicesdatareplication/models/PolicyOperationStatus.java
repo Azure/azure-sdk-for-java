@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PolicyOperationStatus. */
+/**
+ * Resource collection API of PolicyOperationStatus.
+ */
 public interface PolicyOperationStatus {
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -24,14 +26,14 @@ public interface PolicyOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String vaultName, String policyName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String resourceGroupName, String vaultName, String policyName,
+        String operationId, Context context);
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.

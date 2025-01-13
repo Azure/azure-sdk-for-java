@@ -204,8 +204,8 @@ public final class DigitalTwinsClientBuilder
         }
 
         // Default is exponential backoff
-        HttpPipelinePolicy retryPolicy = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, retryOptions,
-            DEFAULT_RETRY_POLICY);
+        HttpPipelinePolicy retryPolicy
+            = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, retryOptions, DEFAULT_RETRY_POLICY);
 
         HttpPipeline pipeline = this.httpPipeline;
         if (pipeline == null) {

@@ -102,20 +102,16 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Account create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -130,48 +126,40 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Account apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
-    AccountImpl(
-        AccountInner innerObject, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    AccountImpl(AccountInner innerObject,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public Account refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Account refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 

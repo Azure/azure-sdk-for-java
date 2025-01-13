@@ -6,56 +6,57 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance. */
+/**
+ * Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance.
+ */
 @Fluent
 public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput {
     /*
      * Databases to migrate
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases;
 
     /*
      * Logins to migrate.
      */
-    @JsonProperty(value = "selectedLogins")
     private List<String> selectedLogins;
 
     /*
      * Agent Jobs to migrate.
      */
-    @JsonProperty(value = "selectedAgentJobs")
     private List<String> selectedAgentJobs;
 
     /*
      * Backup file share information for all selected databases.
      */
-    @JsonProperty(value = "backupFileShare")
     private FileShare backupFileShare;
 
     /*
      * SAS URI of Azure Storage Account Container to be used for storing backup files.
      */
-    @JsonProperty(value = "backupBlobShare", required = true)
     private BlobShare backupBlobShare;
 
     /*
      * Backup Mode to specify whether to use existing backup or create new backup. If using existing backups, backup
      * file paths are required to be provided in selectedDatabases.
      */
-    @JsonProperty(value = "backupMode")
     private BackupMode backupMode;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskInput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskInput class.
+     */
     public MigrateSqlServerSqlMITaskInput() {
     }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases() {
@@ -64,19 +65,19 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
-    public MigrateSqlServerSqlMITaskInput withSelectedDatabases(
-        List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases) {
+    public MigrateSqlServerSqlMITaskInput
+        withSelectedDatabases(List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
         return this;
     }
 
     /**
      * Get the selectedLogins property: Logins to migrate.
-     *
+     * 
      * @return the selectedLogins value.
      */
     public List<String> selectedLogins() {
@@ -85,7 +86,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the selectedLogins property: Logins to migrate.
-     *
+     * 
      * @param selectedLogins the selectedLogins value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
@@ -96,7 +97,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Get the selectedAgentJobs property: Agent Jobs to migrate.
-     *
+     * 
      * @return the selectedAgentJobs value.
      */
     public List<String> selectedAgentJobs() {
@@ -105,7 +106,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the selectedAgentJobs property: Agent Jobs to migrate.
-     *
+     * 
      * @param selectedAgentJobs the selectedAgentJobs value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
@@ -116,7 +117,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Get the backupFileShare property: Backup file share information for all selected databases.
-     *
+     * 
      * @return the backupFileShare value.
      */
     public FileShare backupFileShare() {
@@ -125,7 +126,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the backupFileShare property: Backup file share information for all selected databases.
-     *
+     * 
      * @param backupFileShare the backupFileShare value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
@@ -136,7 +137,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Get the backupBlobShare property: SAS URI of Azure Storage Account Container to be used for storing backup files.
-     *
+     * 
      * @return the backupBlobShare value.
      */
     public BlobShare backupBlobShare() {
@@ -145,7 +146,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the backupBlobShare property: SAS URI of Azure Storage Account Container to be used for storing backup files.
-     *
+     * 
      * @param backupBlobShare the backupBlobShare value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
@@ -157,7 +158,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     /**
      * Get the backupMode property: Backup Mode to specify whether to use existing backup or create new backup. If using
      * existing backups, backup file paths are required to be provided in selectedDatabases.
-     *
+     * 
      * @return the backupMode value.
      */
     public BackupMode backupMode() {
@@ -167,7 +168,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     /**
      * Set the backupMode property: Backup Mode to specify whether to use existing backup or create new backup. If using
      * existing backups, backup file paths are required to be provided in selectedDatabases.
-     *
+     * 
      * @param backupMode the backupMode value to set.
      * @return the MigrateSqlServerSqlMITaskInput object itself.
      */
@@ -176,14 +177,18 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateSqlServerSqlMITaskInput withSourceConnectionInfo(SqlConnectionInfo sourceConnectionInfo) {
         super.withSourceConnectionInfo(sourceConnectionInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateSqlServerSqlMITaskInput withTargetConnectionInfo(SqlConnectionInfo targetConnectionInfo) {
         super.withTargetConnectionInfo(targetConnectionInfo);
@@ -192,17 +197,15 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model MigrateSqlServerSqlMITaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model MigrateSqlServerSqlMITaskInput"));
         } else {
             selectedDatabases().forEach(e -> e.validate());
         }
@@ -210,14 +213,95 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
             backupFileShare().validate();
         }
         if (backupBlobShare() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupBlobShare in model MigrateSqlServerSqlMITaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupBlobShare in model MigrateSqlServerSqlMITaskInput"));
         } else {
             backupBlobShare().validate();
+        }
+        if (sourceConnectionInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model MigrateSqlServerSqlMITaskInput"));
+        } else {
+            sourceConnectionInfo().validate();
+        }
+        if (targetConnectionInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model MigrateSqlServerSqlMITaskInput"));
+        } else {
+            targetConnectionInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlMITaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", sourceConnectionInfo());
+        jsonWriter.writeJsonField("targetConnectionInfo", targetConnectionInfo());
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("backupBlobShare", this.backupBlobShare);
+        jsonWriter.writeArrayField("selectedLogins", this.selectedLogins,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("selectedAgentJobs", this.selectedAgentJobs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("backupFileShare", this.backupFileShare);
+        jsonWriter.writeStringField("backupMode", this.backupMode == null ? null : this.backupMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskInput.
+     */
+    public static MigrateSqlServerSqlMITaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskInput deserializedMigrateSqlServerSqlMITaskInput
+                = new MigrateSqlServerSqlMITaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput
+                        .withSourceConnectionInfo(SqlConnectionInfo.fromJson(reader));
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput
+                        .withTargetConnectionInfo(SqlConnectionInfo.fromJson(reader));
+                } else if ("selectedDatabases".equals(fieldName)) {
+                    List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases
+                        = reader.readArray(reader1 -> MigrateSqlServerSqlMIDatabaseInput.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskInput.selectedDatabases = selectedDatabases;
+                } else if ("backupBlobShare".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.backupBlobShare = BlobShare.fromJson(reader);
+                } else if ("selectedLogins".equals(fieldName)) {
+                    List<String> selectedLogins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlMITaskInput.selectedLogins = selectedLogins;
+                } else if ("selectedAgentJobs".equals(fieldName)) {
+                    List<String> selectedAgentJobs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlMITaskInput.selectedAgentJobs = selectedAgentJobs;
+                } else if ("backupFileShare".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.backupFileShare = FileShare.fromJson(reader);
+                } else if ("backupMode".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.backupMode = BackupMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskInput;
+        });
+    }
 }

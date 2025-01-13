@@ -21,9 +21,7 @@ public class AzureCoreFeature implements GraalVMFeature {
 
     @Override
     public Set<ClassReflectionAttributes> getReflectionClasses() {
-        return setOf(
-            createWithAllDeclared("com.azure.core.util.DateTimeRfc1123"),
-            createWithAllDeclared("com.azure.core.http.rest.StreamResponse")
-        );
+        return setOf(createWithAllDeclared("com.azure.core.util.DateTimeRfc1123"),
+            createWithAllDeclared("com.azure.core.http.rest.StreamResponse"));
     }
 }

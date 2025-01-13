@@ -4,34 +4,35 @@
 
 package com.azure.resourcemanager.qumulo.generated;
 
-/** Samples for FileSystems GetByResourceGroup. */
+/**
+ * Samples for FileSystems GetByResourceGroup.
+ */
 public final class FileSystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_Get_MaximumSet_Gen.
-     *
+     * Sample code: FileSystems_Get.
+     * 
      * @param manager Entry point to QumuloManager.
      */
-    public static void fileSystemsGetMaximumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        manager
-            .fileSystems()
-            .getByResourceGroupWithResponse(
-                "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", com.azure.core.util.Context.NONE);
+    public static void fileSystemsGet(com.azure.resourcemanager.qumulo.QumuloManager manager) {
+        manager.fileSystems()
+            .getByResourceGroupWithResponse("rgQumulo", "sihbehcisdqtqqyfiewiiaphgh", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to QumuloManager.
      */
     public static void fileSystemsGetMinimumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        manager
-            .fileSystems()
+        manager.fileSystems()
             .getByResourceGroupWithResponse("rgQumulo", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

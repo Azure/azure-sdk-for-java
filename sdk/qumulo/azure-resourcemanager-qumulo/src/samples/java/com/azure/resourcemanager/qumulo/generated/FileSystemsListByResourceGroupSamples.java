@@ -4,31 +4,34 @@
 
 package com.azure.resourcemanager.qumulo.generated;
 
-/** Samples for FileSystems ListByResourceGroup. */
+/**
+ * Samples for FileSystems ListByResourceGroup.
+ */
 public final class FileSystemsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_ListByResourceGroup_MaximumSet_Gen.
-     *
+     * Sample code: FileSystems_ListByResourceGroup.
+     * 
      * @param manager Entry point to QumuloManager.
      */
-    public static void fileSystemsListByResourceGroupMaximumSetGen(
-        com.azure.resourcemanager.qumulo.QumuloManager manager) {
+    public static void fileSystemsListByResourceGroup(com.azure.resourcemanager.qumulo.QumuloManager manager) {
         manager.fileSystems().listByResourceGroup("rgQumulo", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListByResourceGroup_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to QumuloManager.
      */
-    public static void fileSystemsListByResourceGroupMinimumSetGen(
-        com.azure.resourcemanager.qumulo.QumuloManager manager) {
+    public static void
+        fileSystemsListByResourceGroupMinimumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
         manager.fileSystems().listByResourceGroup("rgQumulo", com.azure.core.util.Context.NONE);
     }
 }

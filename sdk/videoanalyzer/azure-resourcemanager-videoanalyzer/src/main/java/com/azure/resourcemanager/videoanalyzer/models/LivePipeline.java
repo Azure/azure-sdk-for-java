@@ -101,11 +101,13 @@ public interface LivePipeline {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The LivePipeline definition stages. */
     interface DefinitionStages {
         /** The first stage of the LivePipeline definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the LivePipeline definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -117,15 +119,13 @@ public interface LivePipeline {
              */
             WithCreate withExistingVideoAnalyzer(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the LivePipeline definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTopologyName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithBitrateKbps,
-                DefinitionStages.WithParameters {
+        interface WithCreate extends DefinitionStages.WithTopologyName, DefinitionStages.WithDescription,
+            DefinitionStages.WithBitrateKbps, DefinitionStages.WithParameters {
             /**
              * Executes the create request.
              *
@@ -141,6 +141,7 @@ public interface LivePipeline {
              */
             LivePipeline create(Context context);
         }
+
         /** The stage of the LivePipeline definition allowing to specify topologyName. */
         interface WithTopologyName {
             /**
@@ -155,6 +156,7 @@ public interface LivePipeline {
              */
             WithCreate withTopologyName(String topologyName);
         }
+
         /** The stage of the LivePipeline definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -165,6 +167,7 @@ public interface LivePipeline {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the LivePipeline definition allowing to specify bitrateKbps. */
         interface WithBitrateKbps {
             /**
@@ -184,6 +187,7 @@ public interface LivePipeline {
              */
             WithCreate withBitrateKbps(int bitrateKbps);
         }
+
         /** The stage of the LivePipeline definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -201,6 +205,7 @@ public interface LivePipeline {
             WithCreate withParameters(List<ParameterDefinition> parameters);
         }
     }
+
     /**
      * Begins update for the LivePipeline resource.
      *
@@ -209,11 +214,8 @@ public interface LivePipeline {
     LivePipeline.Update update();
 
     /** The template for LivePipeline update. */
-    interface Update
-        extends UpdateStages.WithTopologyName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithBitrateKbps,
-            UpdateStages.WithParameters {
+    interface Update extends UpdateStages.WithTopologyName, UpdateStages.WithDescription, UpdateStages.WithBitrateKbps,
+        UpdateStages.WithParameters {
         /**
          * Executes the update request.
          *
@@ -229,6 +231,7 @@ public interface LivePipeline {
          */
         LivePipeline apply(Context context);
     }
+
     /** The LivePipeline update stages. */
     interface UpdateStages {
         /** The stage of the LivePipeline update allowing to specify topologyName. */
@@ -245,6 +248,7 @@ public interface LivePipeline {
              */
             Update withTopologyName(String topologyName);
         }
+
         /** The stage of the LivePipeline update allowing to specify description. */
         interface WithDescription {
             /**
@@ -255,6 +259,7 @@ public interface LivePipeline {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the LivePipeline update allowing to specify bitrateKbps. */
         interface WithBitrateKbps {
             /**
@@ -274,6 +279,7 @@ public interface LivePipeline {
              */
             Update withBitrateKbps(Integer bitrateKbps);
         }
+
         /** The stage of the LivePipeline update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -291,6 +297,7 @@ public interface LivePipeline {
             Update withParameters(List<ParameterDefinition> parameters);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

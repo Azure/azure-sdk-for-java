@@ -7,25 +7,27 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.OutboundEnvironmentEndpointListInner;
 import java.util.List;
 
-/** An immutable client-side representation of OutboundEnvironmentEndpointList. */
+/**
+ * An immutable client-side representation of OutboundEnvironmentEndpointList.
+ */
 public interface OutboundEnvironmentEndpointList {
     /**
      * Gets the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     List<OutboundEnvironmentEndpoint> value();
 
     /**
      * Gets the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.OutboundEnvironmentEndpointListInner object.
-     *
+     * 
      * @return the inner object.
      */
     OutboundEnvironmentEndpointListInner innerModel();

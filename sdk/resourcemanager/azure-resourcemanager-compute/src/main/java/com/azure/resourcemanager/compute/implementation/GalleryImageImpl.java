@@ -70,32 +70,28 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public Mono<GalleryImageVersion> getVersionAsync(String versionName) {
-        return this
-            .manager()
+        return this.manager()
             .galleryImageVersions()
             .getByGalleryImageAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, versionName);
     }
 
     @Override
     public GalleryImageVersion getVersion(String versionName) {
-        return this
-            .manager()
+        return this.manager()
             .galleryImageVersions()
             .getByGalleryImage(this.resourceGroupName, this.galleryName, this.galleryImageName, versionName);
     }
 
     @Override
     public PagedFlux<GalleryImageVersion> listVersionsAsync() {
-        return this
-            .manager()
+        return this.manager()
             .galleryImageVersions()
             .listByGalleryImageAsync(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }
 
     @Override
     public PagedIterable<GalleryImageVersion> listVersions() {
-        return this
-            .manager()
+        return this.manager()
             .galleryImageVersions()
             .listByGalleryImage(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }
@@ -107,8 +103,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public Mono<GalleryImage> createResourceAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.innerModel())
             .map(innerToFluentMap(this));
@@ -122,12 +117,10 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public Mono<GalleryImage> updateResourceAsync() {
-        this.galleryImageUpdate
-            .withOsState(innerModel().osState())
+        this.galleryImageUpdate.withOsState(innerModel().osState())
             .withOsType(innerModel().osType())
             .withIdentifier(innerModel().identifier());
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImages()
             .updateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageUpdate)
             .map(innerToFluentMap(this));
@@ -135,8 +128,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     protected Mono<GalleryImageInner> getInnerAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImages()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }
@@ -243,8 +235,8 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     public SecurityTypes securityType() {
         return CoreUtils.isNullOrEmpty(this.innerModel().features())
             ? null
-            :
-            this.innerModel().features()
+            : this.innerModel()
+                .features()
                 .stream()
                 .filter(feature -> FEATURE_SECURITY_TYPE.equals(feature.name()))
                 .findAny()
@@ -296,8 +288,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withIdentifier(String publisher, String offer, String sku) {
-        this
-            .innerModel()
+        this.innerModel()
             .withIdentifier(new GalleryImageIdentifier().withPublisher(publisher).withOffer(offer).withSku(sku));
         return this;
     }
@@ -542,8 +533,8 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     }
 
     @Override
-    public GalleryImageImpl withRecommendedConfigurationForVirtualMachine(
-        RecommendedMachineConfiguration recommendedConfig) {
+    public GalleryImageImpl
+        withRecommendedConfigurationForVirtualMachine(RecommendedMachineConfiguration recommendedConfig) {
         this.innerModel().withRecommended(recommendedConfig);
         if (isInUpdateMode()) {
             this.galleryImageUpdate.withRecommended(recommendedConfig);
@@ -577,16 +568,13 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withTrustedLaunch() {
-        this.innerModel().withFeatures(
-            Stream.concat(
-                ensureFeatures()
-                    .stream()
-                    .filter(feature -> !FEATURE_SECURITY_TYPE.equals(feature.name())),
-                Stream.of(new GalleryImageFeature()
-                    .withName(FEATURE_SECURITY_TYPE)
-                    .withValue(SecurityTypes.TRUSTED_LAUNCH.toString()))
-            ).collect(Collectors.toList())
-        );
+        this.innerModel()
+            .withFeatures(
+                Stream
+                    .concat(ensureFeatures().stream().filter(feature -> !FEATURE_SECURITY_TYPE.equals(feature.name())),
+                        Stream.of(new GalleryImageFeature().withName(FEATURE_SECURITY_TYPE)
+                            .withValue(SecurityTypes.TRUSTED_LAUNCH.toString())))
+                    .collect(Collectors.toList()));
         return this;
     }
 

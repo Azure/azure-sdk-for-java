@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2021-10-29T04:44:12Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-04-04T05:13:51Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"yhtnapczwlokjye\",\"billingPlanId\":\"kvnipjoxz\"},\"location\":\"nchgej\",\"tags\":{\"ahuxinpm\":\"dmailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}")
-                .toObject(AccountResourceInner.class);
+        AccountResourceInner model = BinaryData.fromString(
+            "{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2021-10-29T04:44:12Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-04-04T05:13:51Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"yhtnapczwlokjye\",\"billingPlanId\":\"kvnipjoxz\"},\"location\":\"nchgej\",\"tags\":{\"ahuxinpm\":\"dmailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}")
+            .toObject(AccountResourceInner.class);
         Assertions.assertEquals("nchgej", model.location());
         Assertions.assertEquals("dmailzydehojw", model.tags().get("ahuxinpm"));
         Assertions.assertEquals("yhtnapczwlokjye", model.properties().appId());
@@ -26,19 +24,17 @@ public final class AccountResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountResourceInner model =
-            new AccountResourceInner()
-                .withLocation("nchgej")
-                .withTags(
-                    mapOf(
-                        "ahuxinpm", "dmailzydehojw", "vcputegj", "njaqwixjspro", "uuvmkjozkrwfnd", "wmfdatscmdvpjhul"))
-                .withProperties(new AccountResourceProperties().withAppId("yhtnapczwlokjye"));
+        AccountResourceInner model = new AccountResourceInner().withLocation("nchgej")
+            .withTags(
+                mapOf("ahuxinpm", "dmailzydehojw", "vcputegj", "njaqwixjspro", "uuvmkjozkrwfnd", "wmfdatscmdvpjhul"))
+            .withProperties(new AccountResourceProperties().withAppId("yhtnapczwlokjye"));
         model = BinaryData.fromObject(model).toObject(AccountResourceInner.class);
         Assertions.assertEquals("nchgej", model.location());
         Assertions.assertEquals("dmailzydehojw", model.tags().get("ahuxinpm"));
         Assertions.assertEquals("yhtnapczwlokjye", model.properties().appId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

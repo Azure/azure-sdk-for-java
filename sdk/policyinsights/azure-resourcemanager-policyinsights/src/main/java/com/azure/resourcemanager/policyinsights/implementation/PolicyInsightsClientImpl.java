@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -23,6 +24,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.policyinsights.fluent.AttestationsClient;
+import com.azure.resourcemanager.policyinsights.fluent.ComponentPolicyStatesClient;
 import com.azure.resourcemanager.policyinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyEventsClient;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyInsightsClient;
@@ -40,159 +42,201 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the PolicyInsightsClientImpl type. */
+/**
+ * Initializes a new instance of the PolicyInsightsClientImpl type.
+ */
 @ServiceClient(builder = PolicyInsightsClientBuilder.class)
 public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
-    /** Microsoft Azure subscription ID. */
+    /**
+     * Microsoft Azure subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets Microsoft Azure subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The PolicyTrackedResourcesClient object to access its operations. */
+    /**
+     * The PolicyTrackedResourcesClient object to access its operations.
+     */
     private final PolicyTrackedResourcesClient policyTrackedResources;
 
     /**
      * Gets the PolicyTrackedResourcesClient object to access its operations.
-     *
+     * 
      * @return the PolicyTrackedResourcesClient object.
      */
     public PolicyTrackedResourcesClient getPolicyTrackedResources() {
         return this.policyTrackedResources;
     }
 
-    /** The RemediationsClient object to access its operations. */
+    /**
+     * The RemediationsClient object to access its operations.
+     */
     private final RemediationsClient remediations;
 
     /**
      * Gets the RemediationsClient object to access its operations.
-     *
+     * 
      * @return the RemediationsClient object.
      */
     public RemediationsClient getRemediations() {
         return this.remediations;
     }
 
-    /** The PolicyEventsClient object to access its operations. */
+    /**
+     * The PolicyEventsClient object to access its operations.
+     */
     private final PolicyEventsClient policyEvents;
 
     /**
      * Gets the PolicyEventsClient object to access its operations.
-     *
+     * 
      * @return the PolicyEventsClient object.
      */
     public PolicyEventsClient getPolicyEvents() {
         return this.policyEvents;
     }
 
-    /** The PolicyStatesClient object to access its operations. */
+    /**
+     * The PolicyStatesClient object to access its operations.
+     */
     private final PolicyStatesClient policyStates;
 
     /**
      * Gets the PolicyStatesClient object to access its operations.
-     *
+     * 
      * @return the PolicyStatesClient object.
      */
     public PolicyStatesClient getPolicyStates() {
         return this.policyStates;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
+     * The PolicyMetadatasClient object to access its operations.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The PolicyMetadatasClient object to access its operations. */
     private final PolicyMetadatasClient policyMetadatas;
 
     /**
      * Gets the PolicyMetadatasClient object to access its operations.
-     *
+     * 
      * @return the PolicyMetadatasClient object.
      */
     public PolicyMetadatasClient getPolicyMetadatas() {
         return this.policyMetadatas;
     }
 
-    /** The PolicyRestrictionsClient object to access its operations. */
+    /**
+     * The PolicyRestrictionsClient object to access its operations.
+     */
     private final PolicyRestrictionsClient policyRestrictions;
 
     /**
      * Gets the PolicyRestrictionsClient object to access its operations.
-     *
+     * 
      * @return the PolicyRestrictionsClient object.
      */
     public PolicyRestrictionsClient getPolicyRestrictions() {
         return this.policyRestrictions;
     }
 
-    /** The AttestationsClient object to access its operations. */
+    /**
+     * The ComponentPolicyStatesClient object to access its operations.
+     */
+    private final ComponentPolicyStatesClient componentPolicyStates;
+
+    /**
+     * Gets the ComponentPolicyStatesClient object to access its operations.
+     * 
+     * @return the ComponentPolicyStatesClient object.
+     */
+    public ComponentPolicyStatesClient getComponentPolicyStates() {
+        return this.componentPolicyStates;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The AttestationsClient object to access its operations.
+     */
     private final AttestationsClient attestations;
 
     /**
      * Gets the AttestationsClient object to access its operations.
-     *
+     * 
      * @return the AttestationsClient object.
      */
     public AttestationsClient getAttestations() {
@@ -201,7 +245,7 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
 
     /**
      * Initializes an instance of PolicyInsightsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -209,13 +253,8 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param endpoint server parameter.
      */
-    PolicyInsightsClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    PolicyInsightsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -225,15 +264,16 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
         this.remediations = new RemediationsClientImpl(this);
         this.policyEvents = new PolicyEventsClientImpl(this);
         this.policyStates = new PolicyStatesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.policyMetadatas = new PolicyMetadatasClientImpl(this);
         this.policyRestrictions = new PolicyRestrictionsClientImpl(this);
+        this.componentPolicyStates = new ComponentPolicyStatesClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.attestations = new AttestationsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -242,7 +282,7 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -252,7 +292,7 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -262,26 +302,15 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -294,19 +323,16 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -347,7 +373,7 @@ public final class PolicyInsightsClientImpl implements PolicyInsightsClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

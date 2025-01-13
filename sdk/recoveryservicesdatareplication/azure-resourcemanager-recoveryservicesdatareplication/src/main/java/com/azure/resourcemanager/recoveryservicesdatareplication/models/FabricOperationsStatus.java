@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FabricOperationsStatus. */
+/**
+ * Resource collection API of FabricOperationsStatus.
+ */
 public interface FabricOperationsStatus {
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.
@@ -23,14 +25,14 @@ public interface FabricOperationsStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String fabricName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String resourceGroupName, String fabricName, String operationId,
+        Context context);
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.

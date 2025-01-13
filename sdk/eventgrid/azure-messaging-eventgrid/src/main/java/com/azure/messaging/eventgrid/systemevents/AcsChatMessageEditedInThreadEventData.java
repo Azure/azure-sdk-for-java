@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -172,6 +173,9 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -219,8 +223,8 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageEditedInThreadEventData.setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
-                    deserializedAcsChatMessageEditedInThreadEventData.setComposeTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatMessageEditedInThreadEventData.setComposeTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("type".equals(fieldName)) {
                     deserializedAcsChatMessageEditedInThreadEventData.setType(reader.getString());
                 } else if ("version".equals(fieldName)) {
@@ -232,8 +236,8 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsChatMessageEditedInThreadEventData.metadata = metadata;
                 } else if ("editTime".equals(fieldName)) {
-                    deserializedAcsChatMessageEditedInThreadEventData.editTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatMessageEditedInThreadEventData.editTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

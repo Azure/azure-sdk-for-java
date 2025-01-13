@@ -122,8 +122,8 @@ public class SettingSelector {
      * @return The updated SettingSelector object.
      */
     public SettingSelector setAcceptDatetime(OffsetDateTime datetime) {
-        this.acceptDatetime = datetime == null ? null
-                                  : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
+        this.acceptDatetime
+            = datetime == null ? null : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
         return this;
     }
 

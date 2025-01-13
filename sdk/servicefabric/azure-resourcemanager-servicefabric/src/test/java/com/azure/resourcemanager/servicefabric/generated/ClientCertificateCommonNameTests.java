@@ -22,7 +22,8 @@ public final class ClientCertificateCommonNameTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientCertificateCommonName model = new ClientCertificateCommonName().withIsAdmin(false)
-            .withCertificateCommonName("jpsq").withCertificateIssuerThumbprint("cmpoyfdkfogkny");
+            .withCertificateCommonName("jpsq")
+            .withCertificateIssuerThumbprint("cmpoyfdkfogkny");
         model = BinaryData.fromObject(model).toObject(ClientCertificateCommonName.class);
         Assertions.assertEquals(false, model.isAdmin());
         Assertions.assertEquals("jpsq", model.certificateCommonName());

@@ -10,8 +10,6 @@ extends:
       - name: azure-resourcemanager-deviceupdate
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceupdate
-    Clouds: 'Public'
-    UseFederatedAuth: true
     # Only run tests on Windows to save cost.
     MatrixFilters:
       - pool=.*(win).*

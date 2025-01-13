@@ -14,7 +14,11 @@ import java.util.Collection;
 public interface ApplicationGatewayBackend
     extends HasInnerModel<ApplicationGatewayBackendAddressPool>, ChildResource<ApplicationGateway>, HasBackendNics {
 
-    /** @return addresses on the backend of the application gateway */
+    /**
+     * Gets addresses on the backend of the application gateway.
+     *
+     * @return addresses on the backend of the application gateway
+     */
     Collection<ApplicationGatewayBackendAddress> addresses();
 
     /**

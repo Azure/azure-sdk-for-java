@@ -6,37 +6,37 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties for Snapshot.
  */
 @Fluent
-public final class SnapshotProperties {
+public final class SnapshotProperties implements JsonSerializable<SnapshotProperties> {
     /*
      * Data used when creating a volume snapshot.
      */
-    @JsonProperty(value = "creationData", required = true)
     private SnapshotCreationData creationData;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Size of Source Volume
      */
-    @JsonProperty(value = "sourceVolumeSizeGiB", access = JsonProperty.Access.WRITE_ONLY)
     private Long sourceVolumeSizeGiB;
 
     /*
      * Source Volume Name of a snapshot
      */
-    @JsonProperty(value = "volumeName", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeName;
 
     /**
@@ -99,12 +99,57 @@ public final class SnapshotProperties {
      */
     public void validate() {
         if (creationData() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property creationData in model SnapshotProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property creationData in model SnapshotProperties"));
         } else {
             creationData().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnapshotProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("creationData", this.creationData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotProperties.
+     */
+    public static SnapshotProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotProperties deserializedSnapshotProperties = new SnapshotProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationData".equals(fieldName)) {
+                    deserializedSnapshotProperties.creationData = SnapshotCreationData.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSnapshotProperties.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("sourceVolumeSizeGiB".equals(fieldName)) {
+                    deserializedSnapshotProperties.sourceVolumeSizeGiB = reader.getNullable(JsonReader::getLong);
+                } else if ("volumeName".equals(fieldName)) {
+                    deserializedSnapshotProperties.volumeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotProperties;
+        });
+    }
 }

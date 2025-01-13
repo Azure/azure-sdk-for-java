@@ -646,13 +646,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
@@ -712,13 +712,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */

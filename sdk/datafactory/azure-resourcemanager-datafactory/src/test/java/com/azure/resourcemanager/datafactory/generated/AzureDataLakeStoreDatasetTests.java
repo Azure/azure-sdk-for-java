@@ -21,39 +21,41 @@ public final class AzureDataLakeStoreDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreDataset model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreFile\",\"typeProperties\":{\"folderPath\":\"datajmdgjvxlhmpmhe\",\"fileName\":\"datayaphqeofytlsnlo\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datamcqixuanccqvjf\",\"deserializer\":\"datafqpmquxpj\",\"\":{\"gugrblwa\":\"dataaaradciovmuf\"}},\"compression\":{\"type\":\"dataossnq\",\"level\":\"dataaotbptgcsm\",\"\":{\"ecvtamqwzmno\":\"dataxrwqfmd\",\"wpsibxovuqoq\":\"datafe\",\"ycvtqnzjcy\":\"datarkblndyclw\",\"alb\":\"dataqzhembtbw\"}}},\"description\":\"pisjdleajv\",\"structure\":\"datavl\",\"schema\":\"dataubsfxip\",\"linkedServiceName\":{\"referenceName\":\"eopsk\",\"parameters\":{\"cdhus\":\"datajomlupfazus\",\"rgdqyxaj\":\"datagdw\"}},\"parameters\":{\"oqzkmqcwwsjnki\":{\"type\":\"Object\",\"defaultValue\":\"dataavqcwy\"},\"sqxile\":{\"type\":\"SecureString\",\"defaultValue\":\"datapbntqqwwgf\"}},\"annotations\":[\"datasewrzne\",\"datauqynttwk\"],\"folder\":{\"name\":\"jksb\"},\"\":{\"bssfcriqx\":\"datagjmqjhgcydijnmcv\",\"vcdkucpxpyafrwr\":\"dataixtdlxw\",\"krspnrsjsemlz\":\"dataorogeuv\"}}")
+            "{\"type\":\"AzureDataLakeStoreFile\",\"typeProperties\":{\"folderPath\":\"datawgr\",\"fileName\":\"databwudhvosgjzs\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datazalivdfwgq\",\"deserializer\":\"dataewcffrxgg\",\"\":{\"priqissener\":\"datah\",\"ujyduonbdawsao\":\"datausyzaivnpsjnpckp\"}},\"compression\":{\"type\":\"datavvm\",\"level\":\"datakxjarsbbdddw\",\"\":{\"kdyqjvz\":\"dataxailx\"}}},\"description\":\"grdspzesfkqq\",\"structure\":\"datahvzf\",\"schema\":\"datarouszxacdwukokgo\",\"linkedServiceName\":{\"referenceName\":\"j\",\"parameters\":{\"tzvxxvsb\":\"dataktubcmunhg\",\"furqm\":\"datauufkrfnkcnihkswx\",\"motahbqsvnk\":\"datamwwpnt\",\"gc\":\"datamytzuaedrlh\"}},\"parameters\":{\"yftgpqoswgfqv\":{\"type\":\"Int\",\"defaultValue\":\"datakvxzzmiem\"},\"qyhls\":{\"type\":\"Array\",\"defaultValue\":\"datahpak\"},\"gkncjm\":{\"type\":\"String\",\"defaultValue\":\"datafbmeq\"}},\"annotations\":[\"datayevztnjaw\",\"datahul\",\"datammqmbwppx\",\"datarxbkitzmnhitax\"],\"folder\":{\"name\":\"l\"},\"\":{\"dvyljubvfjy\":\"dataxsgcemegd\",\"ifnivlut\":\"dataufl\",\"aacxauhvc\":\"datag\"}}")
             .toObject(AzureDataLakeStoreDataset.class);
-        Assertions.assertEquals("pisjdleajv", model.description());
-        Assertions.assertEquals("eopsk", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("oqzkmqcwwsjnki").type());
-        Assertions.assertEquals("jksb", model.folder().name());
+        Assertions.assertEquals("grdspzesfkqq", model.description());
+        Assertions.assertEquals("j", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("yftgpqoswgfqv").type());
+        Assertions.assertEquals("l", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreDataset model = new AzureDataLakeStoreDataset().withDescription("pisjdleajv")
-            .withStructure("datavl")
-            .withSchema("dataubsfxip")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("eopsk")
-                .withParameters(mapOf("cdhus", "datajomlupfazus", "rgdqyxaj", "datagdw")))
-            .withParameters(mapOf("oqzkmqcwwsjnki",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataavqcwy"), "sqxile",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datapbntqqwwgf")))
-            .withAnnotations(Arrays.asList("datasewrzne", "datauqynttwk"))
-            .withFolder(new DatasetFolder().withName("jksb"))
-            .withFolderPath("datajmdgjvxlhmpmhe")
-            .withFileName("datayaphqeofytlsnlo")
-            .withFormat(new DatasetStorageFormat().withSerializer("datamcqixuanccqvjf")
-                .withDeserializer("datafqpmquxpj")
+        AzureDataLakeStoreDataset model = new AzureDataLakeStoreDataset().withDescription("grdspzesfkqq")
+            .withStructure("datahvzf")
+            .withSchema("datarouszxacdwukokgo")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("j")
+                .withParameters(mapOf("tzvxxvsb", "dataktubcmunhg", "furqm", "datauufkrfnkcnihkswx", "motahbqsvnk",
+                    "datamwwpnt", "gc", "datamytzuaedrlh")))
+            .withParameters(mapOf("yftgpqoswgfqv",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datakvxzzmiem"), "qyhls",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datahpak"), "gkncjm",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datafbmeq")))
+            .withAnnotations(Arrays.asList("datayevztnjaw", "datahul", "datammqmbwppx", "datarxbkitzmnhitax"))
+            .withFolder(new DatasetFolder().withName("l"))
+            .withFolderPath("datawgr")
+            .withFileName("databwudhvosgjzs")
+            .withFormat(new DatasetStorageFormat().withSerializer("datazalivdfwgq")
+                .withDeserializer("dataewcffrxgg")
                 .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withCompression(new DatasetCompression().withType("dataossnq")
-                .withLevel("dataaotbptgcsm")
+            .withCompression(new DatasetCompression().withType("datavvm")
+                .withLevel("datakxjarsbbdddw")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreDataset.class);
-        Assertions.assertEquals("pisjdleajv", model.description());
-        Assertions.assertEquals("eopsk", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("oqzkmqcwwsjnki").type());
-        Assertions.assertEquals("jksb", model.folder().name());
+        Assertions.assertEquals("grdspzesfkqq", model.description());
+        Assertions.assertEquals("j", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("yftgpqoswgfqv").type());
+        Assertions.assertEquals("l", model.folder().name());
     }
 
     // Use "Map.of" if available

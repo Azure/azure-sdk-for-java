@@ -9,30 +9,31 @@ import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Users CreateOrUpdate. */
+/**
+ * Samples for Users CreateOrUpdate.
+ */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Users_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .users()
+        manager.users()
             .define("{userName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{devtestlabName}")
             .withTags(mapOf("tagName1", "tagValue1"))
-            .withIdentity(
-                new UserIdentity()
-                    .withPrincipalName("{principalName}")
-                    .withPrincipalId("{principalId}")
-                    .withTenantId("{tenantId}")
-                    .withObjectId("{objectId}")
-                    .withAppId("{appId}"))
+            .withIdentity(new UserIdentity().withPrincipalName("{principalName}")
+                .withPrincipalId("{principalId}")
+                .withTenantId("{tenantId}")
+                .withObjectId("{objectId}")
+                .withAppId("{appId}"))
             .withSecretStore(
                 new UserSecretStore().withKeyVaultUri("fakeTokenPlaceholder").withKeyVaultId("fakeTokenPlaceholder"))
             .create();

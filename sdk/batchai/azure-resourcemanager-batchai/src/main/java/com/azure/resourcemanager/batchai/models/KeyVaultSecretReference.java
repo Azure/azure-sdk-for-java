@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Key Vault Secret reference. */
 @Fluent
 public final class KeyVaultSecretReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSecretReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultSecretReference.class);
 
     /*
      * Fully qualified resource identifier of the Key Vault.
@@ -73,18 +74,14 @@ public final class KeyVaultSecretReference {
      */
     public void validate() {
         if (sourceVault() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultSecretReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceVault in model KeyVaultSecretReference"));
         } else {
             sourceVault().validate();
         }
         if (secretUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretUrl in model KeyVaultSecretReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property secretUrl in model KeyVaultSecretReference"));
         }
     }
 }

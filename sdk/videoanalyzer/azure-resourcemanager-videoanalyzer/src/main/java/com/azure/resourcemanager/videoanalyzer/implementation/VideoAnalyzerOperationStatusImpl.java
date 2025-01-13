@@ -13,8 +13,7 @@ public final class VideoAnalyzerOperationStatusImpl implements VideoAnalyzerOper
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    VideoAnalyzerOperationStatusImpl(
-        VideoAnalyzerOperationStatusInner innerObject,
+    VideoAnalyzerOperationStatusImpl(VideoAnalyzerOperationStatusInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

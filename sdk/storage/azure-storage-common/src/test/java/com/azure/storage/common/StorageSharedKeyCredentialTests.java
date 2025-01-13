@@ -47,29 +47,29 @@ public class StorageSharedKeyCredentialTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;accountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;Accountname=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;accountname=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net"
-    })
+    @ValueSource(
+        strings = {
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;accountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;Accountname=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;accountname=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net" })
     public void canParseValidConnectionString(String connectionString) {
         assertEquals("teststorage", StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName());
 
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName =teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey =atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;Account Name=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
-        "DefaultEndpointsProtocol=https;AccountName=teststorage;Account Key=atestaccountkey;EndpointSuffix=core.windows.net"
-    })
+    @ValueSource(
+        strings = {
+            "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName =teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey =atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;Account Name=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net",
+            "DefaultEndpointsProtocol=https;AccountName=teststorage;Account Key=atestaccountkey;EndpointSuffix=core.windows.net" })
     public void cannotParseInvalidConnectionString(String connectionString) {
         assertThrows(IllegalArgumentException.class,
             () -> StorageSharedKeyCredential.fromConnectionString(connectionString));

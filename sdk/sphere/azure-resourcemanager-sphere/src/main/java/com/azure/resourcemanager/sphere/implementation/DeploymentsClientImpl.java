@@ -718,8 +718,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, resource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                resource)
+            .getSyncPoller();
     }
 
     /**
@@ -743,8 +745,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, resource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                resource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1080,7 +1084,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, Context context) {
         return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1127,9 +1132,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1156,9 +1159,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

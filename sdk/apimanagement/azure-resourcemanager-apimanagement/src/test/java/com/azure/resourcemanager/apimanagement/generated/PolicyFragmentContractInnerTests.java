@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyFragmentContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyFragmentContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"sk\",\"description\":\"ddida\",\"format\":\"rawxml\"},\"id\":\"lrqmtlp\",\"name\":\"yxroiduyqypffmno\",\"type\":\"ic\"}")
-                .toObject(PolicyFragmentContractInner.class);
+        PolicyFragmentContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"sk\",\"description\":\"ddida\",\"format\":\"rawxml\"},\"id\":\"lrqmtlp\",\"name\":\"yxroiduyqypffmno\",\"type\":\"ic\"}")
+            .toObject(PolicyFragmentContractInner.class);
         Assertions.assertEquals("sk", model.value());
         Assertions.assertEquals("ddida", model.description());
         Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, model.format());
@@ -24,11 +22,9 @@ public final class PolicyFragmentContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyFragmentContractInner model =
-            new PolicyFragmentContractInner()
-                .withValue("sk")
-                .withDescription("ddida")
-                .withFormat(PolicyFragmentContentFormat.RAWXML);
+        PolicyFragmentContractInner model = new PolicyFragmentContractInner().withValue("sk")
+            .withDescription("ddida")
+            .withFormat(PolicyFragmentContentFormat.RAWXML);
         model = BinaryData.fromObject(model).toObject(PolicyFragmentContractInner.class);
         Assertions.assertEquals("sk", model.value());
         Assertions.assertEquals("ddida", model.description());

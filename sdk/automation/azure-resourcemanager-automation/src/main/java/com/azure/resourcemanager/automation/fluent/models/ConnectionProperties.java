@@ -5,49 +5,55 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ConnectionTypeAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the connection properties. */
+/**
+ * Definition of the connection properties.
+ */
 @Fluent
-public final class ConnectionProperties {
+public final class ConnectionProperties implements JsonSerializable<ConnectionProperties> {
     /*
      * Gets or sets the connectionType of the connection.
      */
-    @JsonProperty(value = "connectionType")
     private ConnectionTypeAssociationProperty connectionType;
 
     /*
      * Gets the field definition values of the connection.
      */
-    @JsonProperty(value = "fieldDefinitionValues", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> fieldDefinitionValues;
 
     /*
      * Gets the creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ConnectionProperties class.
+     */
+    public ConnectionProperties() {
+    }
+
+    /**
      * Get the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @return the connectionType value.
      */
     public ConnectionTypeAssociationProperty connectionType() {
@@ -56,7 +62,7 @@ public final class ConnectionProperties {
 
     /**
      * Set the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ConnectionProperties object itself.
      */
@@ -67,7 +73,7 @@ public final class ConnectionProperties {
 
     /**
      * Get the fieldDefinitionValues property: Gets the field definition values of the connection.
-     *
+     * 
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
@@ -76,7 +82,7 @@ public final class ConnectionProperties {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -85,7 +91,7 @@ public final class ConnectionProperties {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -94,7 +100,7 @@ public final class ConnectionProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -103,7 +109,7 @@ public final class ConnectionProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionProperties object itself.
      */
@@ -114,12 +120,61 @@ public final class ConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionType() != null) {
             connectionType().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectionType", this.connectionType);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionProperties.
+     */
+    public static ConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionProperties deserializedConnectionProperties = new ConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionType".equals(fieldName)) {
+                    deserializedConnectionProperties.connectionType
+                        = ConnectionTypeAssociationProperty.fromJson(reader);
+                } else if ("fieldDefinitionValues".equals(fieldName)) {
+                    Map<String, String> fieldDefinitionValues = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectionProperties.fieldDefinitionValues = fieldDefinitionValues;
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedConnectionProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedConnectionProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionProperties;
+        });
     }
 }

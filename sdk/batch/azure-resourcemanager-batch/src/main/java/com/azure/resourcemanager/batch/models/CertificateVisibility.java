@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for CertificateVisibility.
  */
@@ -41,7 +38,6 @@ public enum CertificateVisibility {
      * @param value the serialized value to parse.
      * @return the parsed CertificateVisibility object, or null if unable to parse.
      */
-    @JsonCreator
     public static CertificateVisibility fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum CertificateVisibility {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -15,6 +15,7 @@ This package contains the Java SDK for Azure Communication Services for Email.
 To create these resources, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
 
 ### Include the package
+
 #### Include the BOM file
 
 Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
@@ -46,10 +47,12 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-email;current})
+
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -57,9 +60,11 @@ add the direct dependency to your project as follows.
     <version>1.0.4</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+
 > More details coming soon.
 
 ## Examples
@@ -91,6 +96,7 @@ EmailClient emailClient = new EmailClientBuilder()
 ```
 
 ### Azure Active Directory Token Authentication
+
 A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the `credential()` method. An endpoint must also be set via the `endpoint()` method.
 
 The `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables are needed to create a `DefaultAzureCredential` object.
@@ -187,7 +193,34 @@ PollResponse<EmailSendResult> response = poller.waitForCompletion();
 System.out.println("Operation Id: " + response.getValue().getId());
 ```
 
+### Send Email with Inline Attachments
+
+Azure Communication Services support sending inline attachments.
+Adding an optional `contentId` parameter to an `EmailAttachment` will make the attachment an inline attachment.
+
+```java readme-sample-sendEmailWithInlineAttachment
+BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+EmailAttachment attachment = new EmailAttachment(
+    "inlineimage.jpg",
+    "image/jpeg",
+    attachmentContent
+).setContentId("inline_image");
+
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setToRecipients("<recipient-email-address>")
+    .setSubject("test subject")
+    .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
+    .setAttachments(attachment);
+
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+System.out.println("Operation Id: " + response.getValue().getId());
+```
+
 ## Troubleshooting
+
 > More details coming soon,
 
 ## Next steps

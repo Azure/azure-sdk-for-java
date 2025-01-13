@@ -58,8 +58,8 @@ public interface GuestUsages {
      * @return a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider along with {@link
      *     Response}.
      */
-    Response<GuestUsagesResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<GuestUsagesResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets Guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider.

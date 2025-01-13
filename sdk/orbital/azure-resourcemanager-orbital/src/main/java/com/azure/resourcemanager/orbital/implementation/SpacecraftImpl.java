@@ -114,20 +114,16 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public Spacecraft create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Spacecraft create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), context);
         return this;
     }
 
@@ -143,47 +139,39 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public Spacecraft apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .updateTags(resourceGroupName, spacecraftName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .updateTags(resourceGroupName, spacecraftName, updateParameters, Context.NONE);
         return this;
     }
 
     public Spacecraft apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .updateTags(resourceGroupName, spacecraftName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .updateTags(resourceGroupName, spacecraftName, updateParameters, context);
         return this;
     }
 
     SpacecraftImpl(SpacecraftInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spacecraftName = Utils.getValueFromIdByName(innerObject.id(), "spacecrafts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.spacecraftName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "spacecrafts");
     }
 
     public Spacecraft refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Spacecraft refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context)
+            .getValue();
         return this;
     }
 
@@ -192,8 +180,7 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public PagedIterable<AvailableContacts> listAvailableContacts(ContactParameters parameters, Context context) {
-        return serviceManager
-            .spacecrafts()
+        return serviceManager.spacecrafts()
             .listAvailableContacts(resourceGroupName, spacecraftName, parameters, context);
     }
 

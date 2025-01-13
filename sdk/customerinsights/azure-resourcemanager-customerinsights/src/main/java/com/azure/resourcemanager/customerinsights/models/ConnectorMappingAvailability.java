@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connector mapping property availability. */
+/**
+ * Connector mapping property availability.
+ */
 @Fluent
-public final class ConnectorMappingAvailability {
+public final class ConnectorMappingAvailability implements JsonSerializable<ConnectorMappingAvailability> {
     /*
      * The frequency to update.
      */
-    @JsonProperty(value = "frequency")
     private FrequencyTypes frequency;
 
     /*
      * The interval of the given frequency to use.
      */
-    @JsonProperty(value = "interval", required = true)
     private int interval;
 
-    /** Creates an instance of ConnectorMappingAvailability class. */
+    /**
+     * Creates an instance of ConnectorMappingAvailability class.
+     */
     public ConnectorMappingAvailability() {
     }
 
     /**
      * Get the frequency property: The frequency to update.
-     *
+     * 
      * @return the frequency value.
      */
     public FrequencyTypes frequency() {
@@ -37,7 +43,7 @@ public final class ConnectorMappingAvailability {
 
     /**
      * Set the frequency property: The frequency to update.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ConnectorMappingAvailability object itself.
      */
@@ -48,7 +54,7 @@ public final class ConnectorMappingAvailability {
 
     /**
      * Get the interval property: The interval of the given frequency to use.
-     *
+     * 
      * @return the interval value.
      */
     public int interval() {
@@ -57,7 +63,7 @@ public final class ConnectorMappingAvailability {
 
     /**
      * Set the interval property: The interval of the given frequency to use.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ConnectorMappingAvailability object itself.
      */
@@ -68,9 +74,49 @@ public final class ConnectorMappingAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("interval", this.interval);
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingAvailability if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMappingAvailability.
+     */
+    public static ConnectorMappingAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingAvailability deserializedConnectorMappingAvailability = new ConnectorMappingAvailability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interval".equals(fieldName)) {
+                    deserializedConnectorMappingAvailability.interval = reader.getInt();
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedConnectorMappingAvailability.frequency = FrequencyTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingAvailability;
+        });
     }
 }

@@ -5,6 +5,7 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -67,7 +68,7 @@ public final class Task implements JsonSerializable<Task> {
      * Attributes unique to the task. This differs by task type.
      */
     @Generated
-    private Map<String, Object> metadata;
+    private Map<String, BinaryData> metadata;
 
     /**
      * Creates an instance of Task class.
@@ -152,7 +153,7 @@ public final class Task implements JsonSerializable<Task> {
      * @return the metadata value.
      */
     @Generated
-    public Map<String, Object> getMetadata() {
+    public Map<String, BinaryData> getMetadata() {
         return this.metadata;
     }
 
@@ -172,7 +173,8 @@ public final class Task implements JsonSerializable<Task> {
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
         jsonWriter.writeStringField("reason", this.reason);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("metadata", this.metadata,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 
@@ -210,7 +212,8 @@ public final class Task implements JsonSerializable<Task> {
                 } else if ("reason".equals(fieldName)) {
                     deserializedTask.reason = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
-                    Map<String, Object> metadata = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> metadata = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedTask.metadata = metadata;
                 } else {
                     reader.skipChildren();

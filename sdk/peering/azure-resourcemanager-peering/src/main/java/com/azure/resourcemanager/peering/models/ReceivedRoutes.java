@@ -7,11 +7,13 @@ package com.azure.resourcemanager.peering.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReceivedRoutes. */
+/**
+ * Resource collection API of ReceivedRoutes.
+ */
 public interface ReceivedRoutes {
     /**
      * Lists the prefixes received over the specified peering under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface ReceivedRoutes {
 
     /**
      * Lists the prefixes received over the specified peering under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param prefix The optional prefix that can be used to filter the routes.
@@ -37,13 +39,6 @@ public interface ReceivedRoutes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of received routes for the peering as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PeeringReceivedRoute> listByPeering(
-        String resourceGroupName,
-        String peeringName,
-        String prefix,
-        String asPath,
-        String originAsValidationState,
-        String rpkiValidationState,
-        String skipToken,
-        Context context);
+    PagedIterable<PeeringReceivedRoute> listByPeering(String resourceGroupName, String peeringName, String prefix,
+        String asPath, String originAsValidationState, String rpkiValidationState, String skipToken, Context context);
 }

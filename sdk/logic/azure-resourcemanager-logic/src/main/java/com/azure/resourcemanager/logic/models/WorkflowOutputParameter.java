@@ -5,52 +5,66 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The workflow output parameter. */
+/**
+ * The workflow output parameter.
+ */
 @Fluent
 public final class WorkflowOutputParameter extends WorkflowParameter {
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
-    /** Creates an instance of WorkflowOutputParameter class. */
+    /**
+     * Creates an instance of WorkflowOutputParameter class.
+     */
     public WorkflowOutputParameter() {
     }
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
         return this.error;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withType(ParameterType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withValue(Object value) {
         super.withValue(value);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withMetadata(Object metadata) {
         super.withMetadata(metadata);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowOutputParameter withDescription(String description) {
         super.withDescription(description);
@@ -59,11 +73,57 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeUntypedField("value", value());
+        jsonWriter.writeUntypedField("metadata", metadata());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowOutputParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowOutputParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowOutputParameter.
+     */
+    public static WorkflowOutputParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowOutputParameter deserializedWorkflowOutputParameter = new WorkflowOutputParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withType(ParameterType.fromString(reader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withValue(reader.readUntyped());
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withMetadata(reader.readUntyped());
+                } else if ("description".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withDescription(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.error = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowOutputParameter;
+        });
     }
 }

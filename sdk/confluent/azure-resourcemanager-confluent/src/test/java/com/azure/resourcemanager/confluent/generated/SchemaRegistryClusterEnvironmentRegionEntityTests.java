@@ -21,8 +21,10 @@ public final class SchemaRegistryClusterEnvironmentRegionEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryClusterEnvironmentRegionEntity model = new SchemaRegistryClusterEnvironmentRegionEntity()
-            .withId("xum").withRelated("ton").withResourceName("jl");
+        SchemaRegistryClusterEnvironmentRegionEntity model
+            = new SchemaRegistryClusterEnvironmentRegionEntity().withId("xum")
+                .withRelated("ton")
+                .withResourceName("jl");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryClusterEnvironmentRegionEntity.class);
         Assertions.assertEquals("xum", model.id());
         Assertions.assertEquals("ton", model.related());

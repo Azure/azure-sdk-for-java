@@ -266,10 +266,8 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(String triggerName,
         TriggerResource trigger, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateTrigger(this.client.getEndpoint(), triggerName,
-            apiVersion, ifMatch, trigger, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch, context));
     }
 
     /**
@@ -415,10 +413,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(String triggerName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTrigger(this.client.getEndpoint(), triggerName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getTriggerWithResponseAsync(triggerName, ifNoneMatch, context));
     }
 
     /**
@@ -549,10 +544,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTriggerWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteTriggerWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -642,10 +634,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>>
         subscribeTriggerToEventsWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.subscribeTriggerToEvents(this.client.getEndpoint(), triggerName,
-            apiVersion, accept, context));
+        return FluxUtil.withContext(context -> subscribeTriggerToEventsWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -740,10 +729,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>>
         getEventSubscriptionStatusWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEventSubscriptionStatus(this.client.getEndpoint(),
-            triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> getEventSubscriptionStatusWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -840,10 +826,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>>
         unsubscribeTriggerFromEventsWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.unsubscribeTriggerFromEvents(this.client.getEndpoint(),
-            triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> unsubscribeTriggerFromEventsWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -939,10 +922,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startTriggerWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.startTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> startTriggerWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -1030,10 +1010,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopTriggerWithResponseAsync(String triggerName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.stopTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> stopTriggerWithResponseAsync(triggerName, context));
     }
 
     /**
@@ -1113,9 +1090,7 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1134,9 +1109,7 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1155,9 +1128,7 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1171,9 +1142,7 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

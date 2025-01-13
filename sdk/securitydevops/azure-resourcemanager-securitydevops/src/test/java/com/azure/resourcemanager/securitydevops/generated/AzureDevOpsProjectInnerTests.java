@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsProjectInnerTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsProjectInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Failed\",\"projectId\":\"kfthwxmntei\",\"orgName\":\"opvkmijcm\",\"autoDiscovery\":\"Disabled\"},\"id\":\"ufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"}")
-                .toObject(AzureDevOpsProjectInner.class);
+        AzureDevOpsProjectInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"projectId\":\"kfthwxmntei\",\"orgName\":\"opvkmijcm\",\"autoDiscovery\":\"Disabled\"},\"id\":\"ufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"}")
+            .toObject(AzureDevOpsProjectInner.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
         Assertions.assertEquals("kfthwxmntei", model.properties().projectId());
         Assertions.assertEquals("opvkmijcm", model.properties().orgName());
@@ -28,14 +26,11 @@ public final class AzureDevOpsProjectInnerTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsProjectInner model =
-            new AzureDevOpsProjectInner()
-                .withProperties(
-                    new AzureDevOpsProjectProperties()
-                        .withProvisioningState(ProvisioningState.FAILED)
-                        .withProjectId("kfthwxmntei")
-                        .withOrgName("opvkmijcm")
-                        .withAutoDiscovery(AutoDiscovery.DISABLED));
+        AzureDevOpsProjectInner model = new AzureDevOpsProjectInner()
+            .withProperties(new AzureDevOpsProjectProperties().withProvisioningState(ProvisioningState.FAILED)
+                .withProjectId("kfthwxmntei")
+                .withOrgName("opvkmijcm")
+                .withAutoDiscovery(AutoDiscovery.DISABLED));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsProjectInner.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
         Assertions.assertEquals("kfthwxmntei", model.properties().projectId());

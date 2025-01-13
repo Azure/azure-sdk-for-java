@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OrchestratorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceGuid\":\"ybrk\",\"provisioningState\":\"Failed\",\"orchestratorAppId\":\"mjgr\",\"orchestratorTenantId\":\"wvukx\",\"clusterRootCA\":\"udccsnhsjc\",\"apiServerEndpoint\":\"ejhkry\",\"privateLinkResourceId\":\"napczwlokjy\",\"controllerDetails\":{\"id\":\"kkvnipjox\"}},\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"hgejspodma\",\"tenantId\":\"zyde\",\"type\":\"None\"},\"location\":\"wyahuxinpmqnja\",\"tags\":{\"prozvcputegjvwmf\":\"xj\",\"pjhulsuuvmkj\":\"atscmd\",\"iodjp\":\"zkrwfn\",\"ryo\":\"lwejdpv\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"}")
-                .toObject(OrchestratorInner.class);
+        OrchestratorInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceGuid\":\"ybrk\",\"provisioningState\":\"Failed\",\"orchestratorAppId\":\"mjgr\",\"orchestratorTenantId\":\"wvukx\",\"clusterRootCA\":\"udccsnhsjc\",\"apiServerEndpoint\":\"ejhkry\",\"privateLinkResourceId\":\"napczwlokjy\",\"controllerDetails\":{\"id\":\"kkvnipjox\"}},\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"hgejspodma\",\"tenantId\":\"zyde\",\"type\":\"None\"},\"location\":\"wyahuxinpmqnja\",\"tags\":{\"prozvcputegjvwmf\":\"xj\",\"pjhulsuuvmkj\":\"atscmd\",\"iodjp\":\"zkrwfn\",\"ryo\":\"lwejdpv\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"}")
+            .toObject(OrchestratorInner.class);
         Assertions.assertEquals("wyahuxinpmqnja", model.location());
         Assertions.assertEquals("xj", model.tags().get("prozvcputegjvwmf"));
         Assertions.assertEquals(OrchestratorKind.KUBERNETES, model.kind());
@@ -37,21 +35,16 @@ public final class OrchestratorInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrchestratorInner model =
-            new OrchestratorInner()
-                .withLocation("wyahuxinpmqnja")
-                .withTags(
-                    mapOf("prozvcputegjvwmf", "xj", "pjhulsuuvmkj", "atscmd", "iodjp", "zkrwfn", "ryo", "lwejdpv"))
-                .withKind(OrchestratorKind.KUBERNETES)
-                .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.NONE))
-                .withProperties(
-                    new OrchestratorResourceProperties()
-                        .withOrchestratorAppId("mjgr")
-                        .withOrchestratorTenantId("wvukx")
-                        .withClusterRootCA("udccsnhsjc")
-                        .withApiServerEndpoint("ejhkry")
-                        .withPrivateLinkResourceId("napczwlokjy")
-                        .withControllerDetails(new ControllerDetails().withId("kkvnipjox")));
+        OrchestratorInner model = new OrchestratorInner().withLocation("wyahuxinpmqnja")
+            .withTags(mapOf("prozvcputegjvwmf", "xj", "pjhulsuuvmkj", "atscmd", "iodjp", "zkrwfn", "ryo", "lwejdpv"))
+            .withKind(OrchestratorKind.KUBERNETES)
+            .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.NONE))
+            .withProperties(new OrchestratorResourceProperties().withOrchestratorAppId("mjgr")
+                .withOrchestratorTenantId("wvukx")
+                .withClusterRootCA("udccsnhsjc")
+                .withApiServerEndpoint("ejhkry")
+                .withPrivateLinkResourceId("napczwlokjy")
+                .withControllerDetails(new ControllerDetails().withId("kkvnipjox")));
         model = BinaryData.fromObject(model).toObject(OrchestratorInner.class);
         Assertions.assertEquals("wyahuxinpmqnja", model.location());
         Assertions.assertEquals("xj", model.tags().get("prozvcputegjvwmf"));
@@ -65,6 +58,7 @@ public final class OrchestratorInnerTests {
         Assertions.assertEquals("kkvnipjox", model.properties().controllerDetails().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

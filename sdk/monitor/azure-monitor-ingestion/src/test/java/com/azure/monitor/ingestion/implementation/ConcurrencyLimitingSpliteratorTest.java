@@ -3,6 +3,7 @@
 
 package com.azure.monitor.ingestion.implementation;
 
+import com.azure.core.util.SharedExecutorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -13,8 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -31,7 +30,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ConcurrencyLimitingSpliteratorTest {
     private static final int TEST_TIMEOUT_SEC = 30;
-    private static final ExecutorService TEST_THREAD_POOL = Executors.newCachedThreadPool();
 
     @Test
     public void invalidParams() {
@@ -53,7 +51,7 @@ public class ConcurrencyLimitingSpliteratorTest {
 
         int effectiveConcurrency = Math.min(list.size(), concurrency);
         CountDownLatch latch = new CountDownLatch(effectiveConcurrency);
-        List<Integer> processed = TEST_THREAD_POOL.submit(() -> stream.map(r -> {
+        List<Integer> processed = SharedExecutorService.getInstance().submit(() -> stream.map(r -> {
             latch.countDown();
             try {
                 Thread.sleep(10);
@@ -78,7 +76,7 @@ public class ConcurrencyLimitingSpliteratorTest {
 
         AtomicInteger parallel = new AtomicInteger(0);
         AtomicInteger maxParallel = new AtomicInteger(0);
-        List<Integer> processed = TEST_THREAD_POOL.submit(() -> stream.map(r -> {
+        List<Integer> processed = SharedExecutorService.getInstance().submit(() -> stream.map(r -> {
             int cur = parallel.incrementAndGet();
             int curMax = maxParallel.get();
             while (cur > curMax && !maxParallel.compareAndSet(curMax, cur)) {

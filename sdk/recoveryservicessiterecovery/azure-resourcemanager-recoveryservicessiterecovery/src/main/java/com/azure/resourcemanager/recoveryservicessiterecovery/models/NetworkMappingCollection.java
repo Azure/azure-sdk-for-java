@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.NetworkMappingInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +19,15 @@ import java.util.List;
  * makes sense to override Load with Base.NetworkMapping instead of existing CurrentVersion.NetworkMapping.
  */
 @Fluent
-public final class NetworkMappingCollection {
+public final class NetworkMappingCollection implements JsonSerializable<NetworkMappingCollection> {
     /*
      * The Network Mappings list.
      */
-    @JsonProperty(value = "value")
     private List<NetworkMappingInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,5 +85,46 @@ public final class NetworkMappingCollection {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkMappingCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkMappingCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkMappingCollection.
+     */
+    public static NetworkMappingCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkMappingCollection deserializedNetworkMappingCollection = new NetworkMappingCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkMappingInner> value
+                        = reader.readArray(reader1 -> NetworkMappingInner.fromJson(reader1));
+                    deserializedNetworkMappingCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkMappingCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkMappingCollection;
+        });
     }
 }

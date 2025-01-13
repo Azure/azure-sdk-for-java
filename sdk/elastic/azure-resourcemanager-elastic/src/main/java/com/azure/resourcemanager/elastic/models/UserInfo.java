@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User Information to be passed to partners. */
+/**
+ * User Information to be passed to partners.
+ */
 @Fluent
-public final class UserInfo {
+public final class UserInfo implements JsonSerializable<UserInfo> {
     /*
      * First name of the user
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last name of the user
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
     /*
      * Company name of the user
      */
-    @JsonProperty(value = "companyName")
     private String companyName;
 
     /*
      * Email of the user used by Elastic for contacting them if needed
      */
-    @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
     /*
      * Company information of the user to be passed to partners.
      */
-    @JsonProperty(value = "companyInfo")
     private CompanyInfo companyInfo;
 
-    /** Creates an instance of UserInfo class. */
+    /**
+     * Creates an instance of UserInfo class.
+     */
     public UserInfo() {
     }
 
     /**
      * Get the firstName property: First name of the user.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -55,7 +58,7 @@ public final class UserInfo {
 
     /**
      * Set the firstName property: First name of the user.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserInfo object itself.
      */
@@ -66,7 +69,7 @@ public final class UserInfo {
 
     /**
      * Get the lastName property: Last name of the user.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -75,7 +78,7 @@ public final class UserInfo {
 
     /**
      * Set the lastName property: Last name of the user.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserInfo object itself.
      */
@@ -86,7 +89,7 @@ public final class UserInfo {
 
     /**
      * Get the companyName property: Company name of the user.
-     *
+     * 
      * @return the companyName value.
      */
     public String companyName() {
@@ -95,7 +98,7 @@ public final class UserInfo {
 
     /**
      * Set the companyName property: Company name of the user.
-     *
+     * 
      * @param companyName the companyName value to set.
      * @return the UserInfo object itself.
      */
@@ -106,7 +109,7 @@ public final class UserInfo {
 
     /**
      * Get the emailAddress property: Email of the user used by Elastic for contacting them if needed.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -115,7 +118,7 @@ public final class UserInfo {
 
     /**
      * Set the emailAddress property: Email of the user used by Elastic for contacting them if needed.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserInfo object itself.
      */
@@ -126,7 +129,7 @@ public final class UserInfo {
 
     /**
      * Get the companyInfo property: Company information of the user to be passed to partners.
-     *
+     * 
      * @return the companyInfo value.
      */
     public CompanyInfo companyInfo() {
@@ -135,7 +138,7 @@ public final class UserInfo {
 
     /**
      * Set the companyInfo property: Company information of the user to be passed to partners.
-     *
+     * 
      * @param companyInfo the companyInfo value to set.
      * @return the UserInfo object itself.
      */
@@ -146,12 +149,60 @@ public final class UserInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (companyInfo() != null) {
             companyInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeJsonField("companyInfo", this.companyInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UserInfo.
+     */
+    public static UserInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInfo deserializedUserInfo = new UserInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstName".equals(fieldName)) {
+                    deserializedUserInfo.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedUserInfo.lastName = reader.getString();
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedUserInfo.companyName = reader.getString();
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedUserInfo.emailAddress = reader.getString();
+                } else if ("companyInfo".equals(fieldName)) {
+                    deserializedUserInfo.companyInfo = CompanyInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInfo;
+        });
     }
 }

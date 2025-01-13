@@ -34,6 +34,7 @@ List deployed packages:
 
 ```shell
 helm list -n <stress test namespace>
+helm list --all-namespaces -l deployId=<your deployment id>
 ```
 
 Get stress test pods and status:

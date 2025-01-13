@@ -36,27 +36,36 @@ public final class ArtifactManifestListResultTests {
                 .withTags(
                     mapOf("knpirgnepttwq", "x", "mqnrojlpijnkr", "sniffc", "zronasxift", "frddhcrati", "zh", "zq"))
                 .withProperties(new ArtifactManifestPropertiesFormat().withArtifacts(Arrays.asList(
-                    new ManifestArtifactFormat().withArtifactName("wubxc").withArtifactType(ArtifactType.OCIARTIFACT)
+                    new ManifestArtifactFormat().withArtifactName("wubxc")
+                        .withArtifactType(ArtifactType.OCIARTIFACT)
                         .withArtifactVersion("qknfd"),
-                    new ManifestArtifactFormat().withArtifactName("wjchrdg").withArtifactType(ArtifactType.IMAGE_FILE)
+                    new ManifestArtifactFormat().withArtifactName("wjchrdg")
+                        .withArtifactType(ArtifactType.IMAGE_FILE)
                         .withArtifactVersion("umwctondz"),
-                    new ManifestArtifactFormat().withArtifactName("uu").withArtifactType(ArtifactType.ARM_TEMPLATE)
+                    new ManifestArtifactFormat().withArtifactName("uu")
+                        .withArtifactType(ArtifactType.ARM_TEMPLATE)
                         .withArtifactVersion("wggytsbwtovvt")))),
             new ArtifactManifestInner().withLocation("vbuswd")
                 .withTags(mapOf("rtkfawnopq", "ybycnunvj", "x", "ikyzirtxdy"))
                 .withProperties(new ArtifactManifestPropertiesFormat()
                     .withArtifacts(Arrays.asList(new ManifestArtifactFormat().withArtifactName("rghxjb")
-                        .withArtifactType(ArtifactType.IMAGE_FILE).withArtifactVersion("vcxgfrpdsofbshr")))),
-            new ArtifactManifestInner().withLocation("sgaojfmwncot").withTags(mapOf("yczuhxacpq", "hirctymoxoftpipi"))
+                        .withArtifactType(ArtifactType.IMAGE_FILE)
+                        .withArtifactVersion("vcxgfrpdsofbshr")))),
+            new ArtifactManifestInner().withLocation("sgaojfmwncot")
+                .withTags(mapOf("yczuhxacpq", "hirctymoxoftpipi"))
                 .withProperties(new ArtifactManifestPropertiesFormat().withArtifacts(Arrays.asList(
                     new ManifestArtifactFormat().withArtifactName("mtbghh")
-                        .withArtifactType(ArtifactType.VHD_IMAGE_FILE).withArtifactVersion("vkffovjzhpjb"),
+                        .withArtifactType(ArtifactType.VHD_IMAGE_FILE)
+                        .withArtifactVersion("vkffovjzhpjb"),
                     new ManifestArtifactFormat().withArtifactName("gjmfxumvfcl")
-                        .withArtifactType(ArtifactType.VHD_IMAGE_FILE).withArtifactVersion("wxnb"),
+                        .withArtifactType(ArtifactType.VHD_IMAGE_FILE)
+                        .withArtifactVersion("wxnb"),
                     new ManifestArtifactFormat().withArtifactName("ezzxscyhwzdgiruj")
-                        .withArtifactType(ArtifactType.UNKNOWN).withArtifactVersion("mvzzbtdcqvp"),
+                        .withArtifactType(ArtifactType.UNKNOWN)
+                        .withArtifactVersion("mvzzbtdcqvp"),
                     new ManifestArtifactFormat().withArtifactName("yujviylwdshfssn")
-                        .withArtifactType(ArtifactType.UNKNOWN).withArtifactVersion("efr"))))));
+                        .withArtifactType(ArtifactType.UNKNOWN)
+                        .withArtifactVersion("efr"))))));
         model = BinaryData.fromObject(model).toObject(ArtifactManifestListResult.class);
         Assertions.assertEquals("einqf", model.value().get(0).location());
         Assertions.assertEquals("x", model.value().get(0).tags().get("knpirgnepttwq"));

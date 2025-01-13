@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
@@ -12,75 +16,70 @@ import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-/** Properties of the Media Services account. */
+/**
+ * Properties of the Media Services account.
+ */
 @Fluent
-public final class MediaServiceProperties {
+public final class MediaServiceProperties implements JsonSerializable<MediaServiceProperties> {
     /*
      * The Media Services account ID.
      */
-    @JsonProperty(value = "mediaServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID mediaServiceId;
 
     /*
      * The storage accounts for this resource.
      */
-    @JsonProperty(value = "storageAccounts")
     private List<StorageAccount> storageAccounts;
 
     /*
      * The storageAuthentication property.
      */
-    @JsonProperty(value = "storageAuthentication")
     private StorageAuthentication storageAuthentication;
 
     /*
      * The account encryption properties.
      */
-    @JsonProperty(value = "encryption")
     private AccountEncryption encryption;
 
     /*
      * The Key Delivery properties for Media Services account.
      */
-    @JsonProperty(value = "keyDelivery")
     private KeyDelivery keyDelivery;
 
     /*
      * Whether or not public network access is allowed for resources under the Media Services account.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Provisioning state of the Media Services account.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The Private Endpoint Connections created for the Media Service account.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * The minimum TLS version allowed for this account's requests. This is an optional property. If unspecified, a
      * secure default value will be used.
      */
-    @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
-    /** Creates an instance of MediaServiceProperties class. */
+    /**
+     * Creates an instance of MediaServiceProperties class.
+     */
     public MediaServiceProperties() {
     }
 
     /**
      * Get the mediaServiceId property: The Media Services account ID.
-     *
+     * 
      * @return the mediaServiceId value.
      */
     public UUID mediaServiceId() {
@@ -89,7 +88,7 @@ public final class MediaServiceProperties {
 
     /**
      * Get the storageAccounts property: The storage accounts for this resource.
-     *
+     * 
      * @return the storageAccounts value.
      */
     public List<StorageAccount> storageAccounts() {
@@ -98,7 +97,7 @@ public final class MediaServiceProperties {
 
     /**
      * Set the storageAccounts property: The storage accounts for this resource.
-     *
+     * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -109,7 +108,7 @@ public final class MediaServiceProperties {
 
     /**
      * Get the storageAuthentication property: The storageAuthentication property.
-     *
+     * 
      * @return the storageAuthentication value.
      */
     public StorageAuthentication storageAuthentication() {
@@ -118,7 +117,7 @@ public final class MediaServiceProperties {
 
     /**
      * Set the storageAuthentication property: The storageAuthentication property.
-     *
+     * 
      * @param storageAuthentication the storageAuthentication value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -129,7 +128,7 @@ public final class MediaServiceProperties {
 
     /**
      * Get the encryption property: The account encryption properties.
-     *
+     * 
      * @return the encryption value.
      */
     public AccountEncryption encryption() {
@@ -138,7 +137,7 @@ public final class MediaServiceProperties {
 
     /**
      * Set the encryption property: The account encryption properties.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -149,7 +148,7 @@ public final class MediaServiceProperties {
 
     /**
      * Get the keyDelivery property: The Key Delivery properties for Media Services account.
-     *
+     * 
      * @return the keyDelivery value.
      */
     public KeyDelivery keyDelivery() {
@@ -158,7 +157,7 @@ public final class MediaServiceProperties {
 
     /**
      * Set the keyDelivery property: The Key Delivery properties for Media Services account.
-     *
+     * 
      * @param keyDelivery the keyDelivery value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -170,7 +169,7 @@ public final class MediaServiceProperties {
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
      * Media Services account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -180,7 +179,7 @@ public final class MediaServiceProperties {
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
      * Media Services account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -191,7 +190,7 @@ public final class MediaServiceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the Media Services account.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -201,7 +200,7 @@ public final class MediaServiceProperties {
     /**
      * Get the privateEndpointConnections property: The Private Endpoint Connections created for the Media Service
      * account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -211,7 +210,7 @@ public final class MediaServiceProperties {
     /**
      * Get the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
      * optional property. If unspecified, a secure default value will be used.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -221,7 +220,7 @@ public final class MediaServiceProperties {
     /**
      * Set the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
      * optional property. If unspecified, a secure default value will be used.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the MediaServiceProperties object itself.
      */
@@ -232,7 +231,7 @@ public final class MediaServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -248,5 +247,75 @@ public final class MediaServiceProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("storageAuthentication",
+            this.storageAuthentication == null ? null : this.storageAuthentication.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("keyDelivery", this.keyDelivery);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaServiceProperties.
+     */
+    public static MediaServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaServiceProperties deserializedMediaServiceProperties = new MediaServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mediaServiceId".equals(fieldName)) {
+                    deserializedMediaServiceProperties.mediaServiceId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<StorageAccount> storageAccounts
+                        = reader.readArray(reader1 -> StorageAccount.fromJson(reader1));
+                    deserializedMediaServiceProperties.storageAccounts = storageAccounts;
+                } else if ("storageAuthentication".equals(fieldName)) {
+                    deserializedMediaServiceProperties.storageAuthentication
+                        = StorageAuthentication.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMediaServiceProperties.encryption = AccountEncryption.fromJson(reader);
+                } else if ("keyDelivery".equals(fieldName)) {
+                    deserializedMediaServiceProperties.keyDelivery = KeyDelivery.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedMediaServiceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMediaServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedMediaServiceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedMediaServiceProperties.minimumTlsVersion
+                        = MinimumTlsVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaServiceProperties;
+        });
     }
 }

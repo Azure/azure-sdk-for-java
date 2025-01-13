@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mixedreality.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Developer Keys of account. */
+/**
+ * Developer Keys of account.
+ */
 @Immutable
-public final class AccountKeysInner {
+public final class AccountKeysInner implements JsonSerializable<AccountKeysInner> {
     /*
      * value of primary key.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
      * value of secondary key.
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
-    /** Creates an instance of AccountKeysInner class. */
+    /**
+     * Creates an instance of AccountKeysInner class.
+     */
     public AccountKeysInner() {
     }
 
     /**
      * Get the primaryKey property: value of primary key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -37,7 +43,7 @@ public final class AccountKeysInner {
 
     /**
      * Get the secondaryKey property: value of secondary key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -46,9 +52,46 @@ public final class AccountKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountKeysInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountKeysInner.
+     */
+    public static AccountKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountKeysInner deserializedAccountKeysInner = new AccountKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedAccountKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedAccountKeysInner.secondaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountKeysInner;
+        });
     }
 }

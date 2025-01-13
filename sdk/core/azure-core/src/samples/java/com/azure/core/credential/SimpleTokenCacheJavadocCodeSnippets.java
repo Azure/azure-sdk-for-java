@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public class SimpleTokenCacheJavadocCodeSnippets {
 
-    public void azureNamedKeyCredenialSasKey() {
+    public void azureNamedKeyCredentialSasKey() {
         // BEGIN: com.azure.core.credential.simpleTokenCache
         SimpleTokenCache simpleTokenCache =
             new SimpleTokenCache(() -> {

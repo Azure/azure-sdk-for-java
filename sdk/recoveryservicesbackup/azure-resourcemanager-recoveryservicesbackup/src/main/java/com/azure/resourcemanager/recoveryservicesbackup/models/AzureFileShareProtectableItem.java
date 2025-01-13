@@ -5,45 +5,34 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Protectable item for Azure Fileshare workloads.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectableItemType",
-    defaultImpl = AzureFileShareProtectableItem.class,
-    visible = true)
-@JsonTypeName("AzureFileShare")
 @Fluent
 public final class AzureFileShareProtectableItem extends WorkloadProtectableItem {
     /*
      * Type of the backup item.
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectableItemType", required = true)
     private String protectableItemType = "AzureFileShare";
 
     /*
      * Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
      */
-    @JsonProperty(value = "parentContainerFabricId")
     private String parentContainerFabricId;
 
     /*
      * Friendly name of container to which this protectable item belongs.
      */
-    @JsonProperty(value = "parentContainerFriendlyName")
     private String parentContainerFriendlyName;
 
     /*
      * File Share type XSync or XSMB.
      */
-    @JsonProperty(value = "azureFileShareType")
     private AzureFileShareType azureFileShareType;
 
     /**
@@ -167,6 +156,66 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectableItemType", this.protectableItemType);
+        jsonWriter.writeStringField("parentContainerFabricId", this.parentContainerFabricId);
+        jsonWriter.writeStringField("parentContainerFriendlyName", this.parentContainerFriendlyName);
+        jsonWriter.writeStringField("azureFileShareType",
+            this.azureFileShareType == null ? null : this.azureFileShareType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareProtectableItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareProtectableItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareProtectableItem.
+     */
+    public static AzureFileShareProtectableItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareProtectableItem deserializedAzureFileShareProtectableItem
+                = new AzureFileShareProtectableItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectableItemType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.protectableItemType = reader.getString();
+                } else if ("parentContainerFabricId".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.parentContainerFabricId = reader.getString();
+                } else if ("parentContainerFriendlyName".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.parentContainerFriendlyName = reader.getString();
+                } else if ("azureFileShareType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.azureFileShareType
+                        = AzureFileShareType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareProtectableItem;
+        });
     }
 }

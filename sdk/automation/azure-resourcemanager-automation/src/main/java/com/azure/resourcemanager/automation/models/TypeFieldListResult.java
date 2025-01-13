@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response model for the list fields operation. */
+/**
+ * The response model for the list fields operation.
+ */
 @Fluent
-public final class TypeFieldListResult {
+public final class TypeFieldListResult implements JsonSerializable<TypeFieldListResult> {
     /*
      * Gets or sets a list of fields.
      */
-    @JsonProperty(value = "value")
     private List<TypeFieldInner> value;
 
     /**
+     * Creates an instance of TypeFieldListResult class.
+     */
+    public TypeFieldListResult() {
+    }
+
+    /**
      * Get the value property: Gets or sets a list of fields.
-     *
+     * 
      * @return the value value.
      */
     public List<TypeFieldInner> value() {
@@ -29,7 +40,7 @@ public final class TypeFieldListResult {
 
     /**
      * Set the value property: Gets or sets a list of fields.
-     *
+     * 
      * @param value the value value to set.
      * @return the TypeFieldListResult object itself.
      */
@@ -40,12 +51,49 @@ public final class TypeFieldListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TypeFieldListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TypeFieldListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TypeFieldListResult.
+     */
+    public static TypeFieldListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TypeFieldListResult deserializedTypeFieldListResult = new TypeFieldListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TypeFieldInner> value = reader.readArray(reader1 -> TypeFieldInner.fromJson(reader1));
+                    deserializedTypeFieldListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTypeFieldListResult;
+        });
     }
 }

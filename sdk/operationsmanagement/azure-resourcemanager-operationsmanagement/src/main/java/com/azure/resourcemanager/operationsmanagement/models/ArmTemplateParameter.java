@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameter to pass to ARM template. */
+/**
+ * Parameter to pass to ARM template.
+ */
 @Fluent
-public final class ArmTemplateParameter {
+public final class ArmTemplateParameter implements JsonSerializable<ArmTemplateParameter> {
     /*
      * name of the parameter.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * value for the parameter. In Jtoken
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ArmTemplateParameter class. */
+    /**
+     * Creates an instance of ArmTemplateParameter class.
+     */
     public ArmTemplateParameter() {
     }
 
     /**
      * Get the name property: name of the parameter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ArmTemplateParameter {
 
     /**
      * Set the name property: name of the parameter.
-     *
+     * 
      * @param name the name value to set.
      * @return the ArmTemplateParameter object itself.
      */
@@ -48,7 +54,7 @@ public final class ArmTemplateParameter {
 
     /**
      * Get the value property: value for the parameter. In Jtoken.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +63,7 @@ public final class ArmTemplateParameter {
 
     /**
      * Set the value property: value for the parameter. In Jtoken.
-     *
+     * 
      * @param value the value value to set.
      * @return the ArmTemplateParameter object itself.
      */
@@ -68,9 +74,48 @@ public final class ArmTemplateParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmTemplateParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmTemplateParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmTemplateParameter.
+     */
+    public static ArmTemplateParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmTemplateParameter deserializedArmTemplateParameter = new ArmTemplateParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedArmTemplateParameter.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedArmTemplateParameter.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmTemplateParameter;
+        });
     }
 }

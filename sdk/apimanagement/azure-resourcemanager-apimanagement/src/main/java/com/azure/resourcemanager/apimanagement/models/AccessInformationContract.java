@@ -8,80 +8,90 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationContractInner;
 
-/** An immutable client-side representation of AccessInformationContract. */
+/**
+ * An immutable client-side representation of AccessInformationContract.
+ */
 public interface AccessInformationContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the idPropertiesId property: Access Information type ('access' or 'gitAccess').
-     *
+     * 
      * @return the idPropertiesId value.
      */
     String idPropertiesId();
 
     /**
      * Gets the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @return the principalId value.
      */
     String principalId();
 
     /**
      * Gets the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     Boolean enabled();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccessInformationContractInner innerModel();
 
-    /** The entirety of the AccessInformationContract definition. */
+    /**
+     * The entirety of the AccessInformationContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The AccessInformationContract definition stages. */
+    /**
+     * The AccessInformationContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AccessInformationContract definition. */
+        /**
+         * The first stage of the AccessInformationContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -93,84 +103,90 @@ public interface AccessInformationContract {
          * The stage of the AccessInformationContract definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPrincipalId,
-                DefinitionStages.WithPrimaryKey,
-                DefinitionStages.WithSecondaryKey,
-                DefinitionStages.WithEnabled,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithPrincipalId, DefinitionStages.WithPrimaryKey,
+            DefinitionStages.WithSecondaryKey, DefinitionStages.WithEnabled, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AccessInformationContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AccessInformationContract create(Context context);
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify principalId. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify principalId.
+         */
         interface WithPrincipalId {
             /**
              * Specifies the principalId property: Principal (User) Identifier..
-             *
+             * 
              * @param principalId Principal (User) Identifier.
              * @return the next definition stage.
              */
             WithCreate withPrincipalId(String principalId);
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify primaryKey. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify primaryKey.
+         */
         interface WithPrimaryKey {
             /**
              * Specifies the primaryKey property: Primary access key. This property will not be filled on 'GET'
              * operations! Use '/listSecrets' POST request to get the value..
-             *
+             * 
              * @param primaryKey Primary access key. This property will not be filled on 'GET' operations! Use
-             *     '/listSecrets' POST request to get the value.
+             * '/listSecrets' POST request to get the value.
              * @return the next definition stage.
              */
             WithCreate withPrimaryKey(String primaryKey);
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify secondaryKey. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify secondaryKey.
+         */
         interface WithSecondaryKey {
             /**
              * Specifies the secondaryKey property: Secondary access key. This property will not be filled on 'GET'
              * operations! Use '/listSecrets' POST request to get the value..
-             *
+             * 
              * @param secondaryKey Secondary access key. This property will not be filled on 'GET' operations! Use
-             *     '/listSecrets' POST request to get the value.
+             * '/listSecrets' POST request to get the value.
              * @return the next definition stage.
              */
             WithCreate withSecondaryKey(String secondaryKey);
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify enabled. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify enabled.
+         */
         interface WithEnabled {
             /**
              * Specifies the enabled property: Determines whether direct access is enabled..
-             *
+             * 
              * @param enabled Determines whether direct access is enabled.
              * @return the next definition stage.
              */
             WithCreate withEnabled(Boolean enabled);
         }
 
-        /** The stage of the AccessInformationContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the AccessInformationContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -179,50 +195,58 @@ public interface AccessInformationContract {
 
     /**
      * Begins update for the AccessInformationContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AccessInformationContract.Update update();
 
-    /** The template for AccessInformationContract update. */
+    /**
+     * The template for AccessInformationContract update.
+     */
     interface Update extends UpdateStages.WithEnabled, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AccessInformationContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AccessInformationContract apply(Context context);
     }
 
-    /** The AccessInformationContract update stages. */
+    /**
+     * The AccessInformationContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AccessInformationContract update allowing to specify enabled. */
+        /**
+         * The stage of the AccessInformationContract update allowing to specify enabled.
+         */
         interface WithEnabled {
             /**
              * Specifies the enabled property: Determines whether direct access is enabled..
-             *
+             * 
              * @param enabled Determines whether direct access is enabled.
              * @return the next definition stage.
              */
             Update withEnabled(Boolean enabled);
         }
 
-        /** The stage of the AccessInformationContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the AccessInformationContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -231,14 +255,14 @@ public interface AccessInformationContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AccessInformationContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -246,7 +270,7 @@ public interface AccessInformationContract {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,7 +281,7 @@ public interface AccessInformationContract {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -265,7 +289,7 @@ public interface AccessInformationContract {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -276,7 +300,7 @@ public interface AccessInformationContract {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -284,7 +308,7 @@ public interface AccessInformationContract {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,7 +319,7 @@ public interface AccessInformationContract {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant access information details.

@@ -21,29 +21,26 @@ public final class StudentLabsImpl implements StudentLabs {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    public StudentLabsImpl(
-        StudentLabsClient innerClient, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    public StudentLabsImpl(StudentLabsClient innerClient,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StudentLabDetails> listAll() {
         PagedIterable<StudentLabDetailsInner> inner = this.serviceClient().listAll();
-        return Utils.mapPage(inner, inner1 -> new StudentLabDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StudentLabDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StudentLabDetails> listAll(Context context) {
         PagedIterable<StudentLabDetailsInner> inner = this.serviceClient().listAll(context);
-        return Utils.mapPage(inner, inner1 -> new StudentLabDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StudentLabDetailsImpl(inner1, this.manager()));
     }
 
     public Response<StudentLabDetails> getWithResponse(String studentLabName, Context context) {
         Response<StudentLabDetailsInner> inner = this.serviceClient().getWithResponse(studentLabName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StudentLabDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -65,31 +65,27 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
-        return PagedConverter.flatMapPage(manager()
-            .serviceClient()
-            .getGroups()
-            .listMembersAsync(id()),
-            directoryObjectInner -> Mono.justOrEmpty(parseDirectoryObject(directoryObjectInner))
-        );
+        return PagedConverter.flatMapPage(manager().serviceClient().getGroups().listMembersAsync(id()),
+            directoryObjectInner -> Mono.justOrEmpty(parseDirectoryObject(directoryObjectInner)));
     }
 
     private ActiveDirectoryObject parseDirectoryObject(MicrosoftGraphDirectoryObjectInner inner) {
         if (inner.additionalProperties() != null) {
             Object odataTypeObject = inner.additionalProperties().get("@odata.type");
             if (odataTypeObject instanceof String) {
-                SerializerAdapter serializerAdapter =
-                    ((MicrosoftGraphClientImpl) manager().serviceClient()).getSerializerAdapter();
+                SerializerAdapter serializerAdapter
+                    = ((MicrosoftGraphClientImpl) manager().serviceClient()).getSerializerAdapter();
                 String odataType = ((String) odataTypeObject).toLowerCase(Locale.ROOT);
                 try {
                     String jsonString = serializerAdapter.serialize(inner, SerializerEncoding.JSON);
                     if (odataType.endsWith("#microsoft.graph.user")) {
-                        MicrosoftGraphUserInner userInner = serializerAdapter.deserialize(
-                            jsonString, MicrosoftGraphUserInner.class, SerializerEncoding.JSON);
+                        MicrosoftGraphUserInner userInner = serializerAdapter.deserialize(jsonString,
+                            MicrosoftGraphUserInner.class, SerializerEncoding.JSON);
                         return new ActiveDirectoryUserImpl(userInner, manager());
 
                     } else if (odataType.endsWith("#microsoft.graph.group")) {
-                        MicrosoftGraphGroupInner groupInner = serializerAdapter.deserialize(
-                            jsonString, MicrosoftGraphGroupInner.class, SerializerEncoding.JSON);
+                        MicrosoftGraphGroupInner groupInner = serializerAdapter.deserialize(jsonString,
+                            MicrosoftGraphGroupInner.class, SerializerEncoding.JSON);
                         return new ActiveDirectoryGroupImpl(groupInner, manager());
 
                     } else if (odataType.endsWith("#microsoft.graph.serviceprincipal")) {
@@ -98,8 +94,8 @@ class ActiveDirectoryGroupImpl
                         return new ServicePrincipalImpl(servicePrincipalInner, manager());
 
                     } else if (odataType.endsWith("#microsoft.graph.application")) {
-                        MicrosoftGraphApplicationInner applicationInner = serializerAdapter.deserialize(
-                            jsonString, MicrosoftGraphApplicationInner.class, SerializerEncoding.JSON);
+                        MicrosoftGraphApplicationInner applicationInner = serializerAdapter.deserialize(jsonString,
+                            MicrosoftGraphApplicationInner.class, SerializerEncoding.JSON);
                         return new ActiveDirectoryApplicationImpl(applicationInner, manager());
                     } else {
                         logger.warning("Can't recognize member type '{}' of ActiveDirectoryGroup", odataType);
@@ -134,32 +130,24 @@ class ActiveDirectoryGroupImpl
             if (innerModel().securityEnabled() == null) {
                 innerModel().withSecurityEnabled(true);
             }
-            group = manager().serviceClient().getGroupsGroups().createGroupAsync(innerModel())
+            group = manager().serviceClient()
+                .getGroupsGroups()
+                .createGroupAsync(innerModel())
                 .map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
-            group =
-                group
-                    .flatMap(
-                        o ->
-                            Flux
-                                .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().serviceClient().getGroups().deleteRefMemberAsync(id(), s))
-                                .singleOrEmpty()
-                                .thenReturn(this)
-                                .doFinally(signalType -> membersToRemove.clear()));
+            group = group.flatMap(o -> Flux.fromIterable(membersToRemove)
+                .flatMap(s -> manager().serviceClient().getGroups().deleteRefMemberAsync(id(), s))
+                .singleOrEmpty()
+                .thenReturn(this)
+                .doFinally(signalType -> membersToRemove.clear()));
         }
         if (!membersToAdd.isEmpty()) {
-            group =
-                group
-                    .flatMap(
-                        o ->
-                            Flux
-                                .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().serviceClient().getGroups().createRefMembersAsync(id(), s))
-                                .singleOrEmpty()
-                                .thenReturn(this)
-                                .doFinally(signalType -> membersToAdd.clear()));
+            group = group.flatMap(o -> Flux.fromIterable(membersToAdd)
+                .flatMap(s -> manager().serviceClient().getGroups().createRefMembersAsync(id(), s))
+                .singleOrEmpty()
+                .thenReturn(this)
+                .doFinally(signalType -> membersToAdd.clear()));
         }
         return group;
     }
@@ -180,9 +168,8 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         // https://docs.microsoft.com/en-us/graph/api/group-post-members
         String membersKey = "@odata.id";
-        membersToAdd.add(
-            Collections.singletonMap(membersKey,
-                String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId)));
+        membersToAdd.add(Collections.singletonMap(membersKey,
+            String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId)));
         return this;
     }
 

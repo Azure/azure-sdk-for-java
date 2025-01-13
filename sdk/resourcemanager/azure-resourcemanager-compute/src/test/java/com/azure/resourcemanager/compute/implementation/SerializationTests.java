@@ -41,7 +41,8 @@ public class SerializationTests {
     @Test
     public void testExtension() throws IOException {
         // invalid JSON object or JSON string will result in empty settings
-        VirtualMachineExtensionInner extensionInner = new VirtualMachineExtensionInner().withSettings("invalidJSON").withProtectedSettings("invalidJSON");
+        VirtualMachineExtensionInner extensionInner
+            = new VirtualMachineExtensionInner().withSettings("invalidJSON").withProtectedSettings("invalidJSON");
         VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl("myExt", null, extensionInner, null);
         Assertions.assertEquals(0, extension.publicSettings().size());
 

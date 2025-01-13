@@ -97,9 +97,8 @@ public final class RtspSource extends SourceNodeBase {
     public void validate() {
         super.validate();
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoint in model RtspSource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endpoint in model RtspSource"));
         } else {
             endpoint().validate();
         }

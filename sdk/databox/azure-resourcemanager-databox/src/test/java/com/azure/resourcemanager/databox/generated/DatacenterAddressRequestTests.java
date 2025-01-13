@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DatacenterAddressRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatacenterAddressRequest model =
-            BinaryData
-                .fromString("{\"storageLocation\":\"llwptfdy\",\"skuName\":\"DataBoxHeavy\"}")
+        DatacenterAddressRequest model
+            = BinaryData.fromString("{\"storageLocation\":\"hjwniyqsluic\",\"skuName\":\"DataBoxCustomerDisk\"}")
                 .toObject(DatacenterAddressRequest.class);
-        Assertions.assertEquals("llwptfdy", model.storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+        Assertions.assertEquals("hjwniyqsluic", model.storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatacenterAddressRequest model =
-            new DatacenterAddressRequest().withStorageLocation("llwptfdy").withSkuName(SkuName.DATA_BOX_HEAVY);
+        DatacenterAddressRequest model = new DatacenterAddressRequest().withStorageLocation("hjwniyqsluic")
+            .withSkuName(SkuName.DATA_BOX_CUSTOMER_DISK);
         model = BinaryData.fromObject(model).toObject(DatacenterAddressRequest.class);
-        Assertions.assertEquals("llwptfdy", model.storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+        Assertions.assertEquals("hjwniyqsluic", model.storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuName());
     }
 }

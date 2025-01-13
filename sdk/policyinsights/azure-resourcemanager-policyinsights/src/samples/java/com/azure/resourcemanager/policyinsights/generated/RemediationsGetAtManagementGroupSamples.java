@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Remediations GetAtManagementGroup. */
+/**
+ * Samples for Remediations GetAtManagementGroup.
+ */
 public final class RemediationsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_GetManagementGroupScope.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * Remediations_GetManagementGroupScope.json
      */
     /**
      * Sample code: Get remediation at management group scope.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void getRemediationAtManagementGroupScope(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager.remediations().getAtManagementGroupWithResponse("financeMg", "storageRemediation", Context.NONE);
+    public static void
+        getRemediationAtManagementGroupScope(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.remediations()
+            .getAtManagementGroupWithResponse("financeMg", "storageRemediation", com.azure.core.util.Context.NONE);
     }
 }

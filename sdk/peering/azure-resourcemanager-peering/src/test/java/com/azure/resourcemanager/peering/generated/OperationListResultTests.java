@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"dkirsoodqxhcr\",\"display\":{\"provider\":\"hjtckwhd\",\"resource\":\"ifiyipjxsqwpgrj\",\"operation\":\"norcjxvsnbyxqab\",\"description\":\"ocpcy\"},\"isDataAction\":false}],\"nextLink\":\"zafb\"}")
-                .toObject(OperationListResult.class);
-        Assertions.assertEquals("zafb", model.nextLink());
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"h\",\"display\":{\"provider\":\"ifiyipjxsqwpgrj\",\"resource\":\"norcjxvsnbyxqab\",\"operation\":\"ocpcy\",\"description\":\"urzafb\"},\"isDataAction\":false}],\"nextLink\":\"pbtoqcjmkl\"}")
+            .toObject(OperationListResult.class);
+        Assertions.assertEquals("pbtoqcjmkl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult().withValue(Arrays.asList(new OperationInner())).withNextLink("zafb");
+        OperationListResult model
+            = new OperationListResult().withValue(Arrays.asList(new OperationInner())).withNextLink("pbtoqcjmkl");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("zafb", model.nextLink());
+        Assertions.assertEquals("pbtoqcjmkl", model.nextLink());
     }
 }

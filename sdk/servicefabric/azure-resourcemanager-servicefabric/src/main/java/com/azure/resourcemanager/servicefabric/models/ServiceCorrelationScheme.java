@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ServiceCorrelationScheme extends ExpandableStringEnum<Service
      * @param name a name to look for.
      * @return the corresponding ServiceCorrelationScheme.
      */
-    @JsonCreator
     public static ServiceCorrelationScheme fromString(String name) {
         return fromString(name, ServiceCorrelationScheme.class);
     }

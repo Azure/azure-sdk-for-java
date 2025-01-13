@@ -5,41 +5,67 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimeGrainType. */
+/**
+ * The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth,
+ * BillingQuarter, and BillingAnnual are only supported by WD customers.
+ */
 public final class TimeGrainType extends ExpandableStringEnum<TimeGrainType> {
-    /** Static value Monthly for TimeGrainType. */
+    /**
+     * Static value Monthly for TimeGrainType.
+     */
     public static final TimeGrainType MONTHLY = fromString("Monthly");
 
-    /** Static value Quarterly for TimeGrainType. */
+    /**
+     * Static value Quarterly for TimeGrainType.
+     */
     public static final TimeGrainType QUARTERLY = fromString("Quarterly");
 
-    /** Static value Annually for TimeGrainType. */
+    /**
+     * Static value Annually for TimeGrainType.
+     */
     public static final TimeGrainType ANNUALLY = fromString("Annually");
 
-    /** Static value BillingMonth for TimeGrainType. */
+    /**
+     * Static value BillingMonth for TimeGrainType.
+     */
     public static final TimeGrainType BILLING_MONTH = fromString("BillingMonth");
 
-    /** Static value BillingQuarter for TimeGrainType. */
+    /**
+     * Static value BillingQuarter for TimeGrainType.
+     */
     public static final TimeGrainType BILLING_QUARTER = fromString("BillingQuarter");
 
-    /** Static value BillingAnnual for TimeGrainType. */
+    /**
+     * Static value BillingAnnual for TimeGrainType.
+     */
     public static final TimeGrainType BILLING_ANNUAL = fromString("BillingAnnual");
 
     /**
+     * Creates a new instance of TimeGrainType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeGrainType() {
+    }
+
+    /**
      * Creates or finds a TimeGrainType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TimeGrainType.
      */
-    @JsonCreator
     public static TimeGrainType fromString(String name) {
         return fromString(name, TimeGrainType.class);
     }
 
-    /** @return known TimeGrainType values. */
+    /**
+     * Gets known TimeGrainType values.
+     * 
+     * @return known TimeGrainType values.
+     */
     public static Collection<TimeGrainType> values() {
         return values(TimeGrainType.class);
     }

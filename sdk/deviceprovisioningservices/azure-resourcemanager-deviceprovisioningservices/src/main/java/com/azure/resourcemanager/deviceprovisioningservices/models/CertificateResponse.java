@@ -8,53 +8,55 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 
-/** An immutable client-side representation of CertificateResponse. */
+/**
+ * An immutable client-side representation of CertificateResponse.
+ */
 public interface CertificateResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: properties of a certificate.
-     *
+     * 
      * @return the properties value.
      */
     CertificateProperties properties();
 
     /**
      * Gets the etag property: The entity tag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
@@ -62,31 +64,42 @@ public interface CertificateResponse {
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CertificateResponseInner innerModel();
 
-    /** The entirety of the CertificateResponse definition. */
+    /**
+     * The entirety of the CertificateResponse definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The CertificateResponse definition stages. */
+
+    /**
+     * The CertificateResponse definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CertificateResponse definition. */
+        /**
+         * The first stage of the CertificateResponse definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the CertificateResponse definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the CertificateResponse definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, provisioningServiceName.
-             *
+             * 
              * @param resourceGroupName Resource group identifier.
              * @param provisioningServiceName The name of the provisioning service.
              * @return the next definition stage.
              */
             WithCreate withExistingProvisioningService(String resourceGroupName, String provisioningServiceName);
         }
+
         /**
          * The stage of the CertificateResponse definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -94,101 +107,119 @@ public interface CertificateResponse {
         interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CertificateResponse create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CertificateResponse create(Context context);
         }
-        /** The stage of the CertificateResponse definition allowing to specify properties. */
+
+        /**
+         * The stage of the CertificateResponse definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: properties of a certificate.
-             *
+             * 
              * @param properties properties of a certificate.
              * @return the next definition stage.
              */
             WithCreate withProperties(CertificateProperties properties);
         }
-        /** The stage of the CertificateResponse definition allowing to specify ifMatch. */
+
+        /**
+         * The stage of the CertificateResponse definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the certificate. This is required to update an existing
              * certificate, and ignored while creating a brand new certificate..
-             *
+             * 
              * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored
-             *     while creating a brand new certificate.
+             * while creating a brand new certificate.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the CertificateResponse resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     CertificateResponse.Update update();
 
-    /** The template for CertificateResponse update. */
+    /**
+     * The template for CertificateResponse update.
+     */
     interface Update extends UpdateStages.WithProperties, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         CertificateResponse apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         CertificateResponse apply(Context context);
     }
-    /** The CertificateResponse update stages. */
+
+    /**
+     * The CertificateResponse update stages.
+     */
     interface UpdateStages {
-        /** The stage of the CertificateResponse update allowing to specify properties. */
+        /**
+         * The stage of the CertificateResponse update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: properties of a certificate.
-             *
+             * 
              * @param properties properties of a certificate.
              * @return the next definition stage.
              */
             Update withProperties(CertificateProperties properties);
         }
-        /** The stage of the CertificateResponse update allowing to specify ifMatch. */
+
+        /**
+         * The stage of the CertificateResponse update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the certificate. This is required to update an existing
              * certificate, and ignored while creating a brand new certificate..
-             *
+             * 
              * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored
-             *     while creating a brand new certificate.
+             * while creating a brand new certificate.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CertificateResponse refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

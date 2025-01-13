@@ -5,70 +5,66 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** location properties. */
+/**
+ * location properties.
+ */
 @Fluent
-public final class LocationProperties {
+public final class LocationProperties implements JsonSerializable<LocationProperties> {
     /*
      * The recipient name to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "recipientName")
     private String recipientName;
 
     /*
      * The first line of the street address to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "streetAddress1")
     private String streetAddress1;
 
     /*
      * The second line of the street address to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "streetAddress2")
     private String streetAddress2;
 
     /*
      * The city name to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The state or province to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "stateOrProvince")
     private String stateOrProvince;
 
     /*
      * The postal code to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * The country or region to use when shipping the drives to the Azure data center.
      */
-    @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
     /*
      * The phone number for the Azure data center.
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
     /*
      * Additional shipping information for customer, specific to datacenter to which customer should send their disks.
      */
-    @JsonProperty(value = "additionalShippingInformation")
     private String additionalShippingInformation;
 
     /*
      * A list of carriers that are supported at this location.
      */
-    @JsonProperty(value = "supportedCarriers")
     private List<String> supportedCarriers;
 
     /*
@@ -76,16 +72,17 @@ public final class LocationProperties {
      * location. If the current location is active, it will be part of the list. If it is temporarily closed due to
      * maintenance, this list may contain other locations.
      */
-    @JsonProperty(value = "alternateLocations")
     private List<String> alternateLocations;
 
-    /** Creates an instance of LocationProperties class. */
+    /**
+     * Creates an instance of LocationProperties class.
+     */
     public LocationProperties() {
     }
 
     /**
      * Get the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the recipientName value.
      */
     public String recipientName() {
@@ -94,7 +91,7 @@ public final class LocationProperties {
 
     /**
      * Set the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param recipientName the recipientName value to set.
      * @return the LocationProperties object itself.
      */
@@ -106,7 +103,7 @@ public final class LocationProperties {
     /**
      * Get the streetAddress1 property: The first line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
@@ -116,7 +113,7 @@ public final class LocationProperties {
     /**
      * Set the streetAddress1 property: The first line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @param streetAddress1 the streetAddress1 value to set.
      * @return the LocationProperties object itself.
      */
@@ -128,7 +125,7 @@ public final class LocationProperties {
     /**
      * Get the streetAddress2 property: The second line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
@@ -138,7 +135,7 @@ public final class LocationProperties {
     /**
      * Set the streetAddress2 property: The second line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @param streetAddress2 the streetAddress2 value to set.
      * @return the LocationProperties object itself.
      */
@@ -149,7 +146,7 @@ public final class LocationProperties {
 
     /**
      * Get the city property: The city name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -158,7 +155,7 @@ public final class LocationProperties {
 
     /**
      * Set the city property: The city name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param city the city value to set.
      * @return the LocationProperties object itself.
      */
@@ -169,7 +166,7 @@ public final class LocationProperties {
 
     /**
      * Get the stateOrProvince property: The state or province to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
@@ -178,7 +175,7 @@ public final class LocationProperties {
 
     /**
      * Set the stateOrProvince property: The state or province to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param stateOrProvince the stateOrProvince value to set.
      * @return the LocationProperties object itself.
      */
@@ -189,7 +186,7 @@ public final class LocationProperties {
 
     /**
      * Get the postalCode property: The postal code to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -198,7 +195,7 @@ public final class LocationProperties {
 
     /**
      * Set the postalCode property: The postal code to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the LocationProperties object itself.
      */
@@ -209,7 +206,7 @@ public final class LocationProperties {
 
     /**
      * Get the countryOrRegion property: The country or region to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -218,7 +215,7 @@ public final class LocationProperties {
 
     /**
      * Set the countryOrRegion property: The country or region to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the LocationProperties object itself.
      */
@@ -229,7 +226,7 @@ public final class LocationProperties {
 
     /**
      * Get the phone property: The phone number for the Azure data center.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -238,7 +235,7 @@ public final class LocationProperties {
 
     /**
      * Set the phone property: The phone number for the Azure data center.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the LocationProperties object itself.
      */
@@ -250,7 +247,7 @@ public final class LocationProperties {
     /**
      * Get the additionalShippingInformation property: Additional shipping information for customer, specific to
      * datacenter to which customer should send their disks.
-     *
+     * 
      * @return the additionalShippingInformation value.
      */
     public String additionalShippingInformation() {
@@ -260,7 +257,7 @@ public final class LocationProperties {
     /**
      * Set the additionalShippingInformation property: Additional shipping information for customer, specific to
      * datacenter to which customer should send their disks.
-     *
+     * 
      * @param additionalShippingInformation the additionalShippingInformation value to set.
      * @return the LocationProperties object itself.
      */
@@ -271,7 +268,7 @@ public final class LocationProperties {
 
     /**
      * Get the supportedCarriers property: A list of carriers that are supported at this location.
-     *
+     * 
      * @return the supportedCarriers value.
      */
     public List<String> supportedCarriers() {
@@ -280,7 +277,7 @@ public final class LocationProperties {
 
     /**
      * Set the supportedCarriers property: A list of carriers that are supported at this location.
-     *
+     * 
      * @param supportedCarriers the supportedCarriers value to set.
      * @return the LocationProperties object itself.
      */
@@ -293,7 +290,7 @@ public final class LocationProperties {
      * Get the alternateLocations property: A list of location IDs that should be used to ship shipping drives to for
      * jobs created against the current location. If the current location is active, it will be part of the list. If it
      * is temporarily closed due to maintenance, this list may contain other locations.
-     *
+     * 
      * @return the alternateLocations value.
      */
     public List<String> alternateLocations() {
@@ -304,7 +301,7 @@ public final class LocationProperties {
      * Set the alternateLocations property: A list of location IDs that should be used to ship shipping drives to for
      * jobs created against the current location. If the current location is active, it will be part of the list. If it
      * is temporarily closed due to maintenance, this list may contain other locations.
-     *
+     * 
      * @param alternateLocations the alternateLocations value to set.
      * @return the LocationProperties object itself.
      */
@@ -315,9 +312,79 @@ public final class LocationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recipientName", this.recipientName);
+        jsonWriter.writeStringField("streetAddress1", this.streetAddress1);
+        jsonWriter.writeStringField("streetAddress2", this.streetAddress2);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("stateOrProvince", this.stateOrProvince);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("countryOrRegion", this.countryOrRegion);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("additionalShippingInformation", this.additionalShippingInformation);
+        jsonWriter.writeArrayField("supportedCarriers", this.supportedCarriers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("alternateLocations", this.alternateLocations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationProperties.
+     */
+    public static LocationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationProperties deserializedLocationProperties = new LocationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientName".equals(fieldName)) {
+                    deserializedLocationProperties.recipientName = reader.getString();
+                } else if ("streetAddress1".equals(fieldName)) {
+                    deserializedLocationProperties.streetAddress1 = reader.getString();
+                } else if ("streetAddress2".equals(fieldName)) {
+                    deserializedLocationProperties.streetAddress2 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedLocationProperties.city = reader.getString();
+                } else if ("stateOrProvince".equals(fieldName)) {
+                    deserializedLocationProperties.stateOrProvince = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedLocationProperties.postalCode = reader.getString();
+                } else if ("countryOrRegion".equals(fieldName)) {
+                    deserializedLocationProperties.countryOrRegion = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedLocationProperties.phone = reader.getString();
+                } else if ("additionalShippingInformation".equals(fieldName)) {
+                    deserializedLocationProperties.additionalShippingInformation = reader.getString();
+                } else if ("supportedCarriers".equals(fieldName)) {
+                    List<String> supportedCarriers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLocationProperties.supportedCarriers = supportedCarriers;
+                } else if ("alternateLocations".equals(fieldName)) {
+                    List<String> alternateLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLocationProperties.alternateLocations = alternateLocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationProperties;
+        });
     }
 }

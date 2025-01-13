@@ -11,8 +11,7 @@ import reactor.test.StepVerifier;
 
 public class LeaseAsyncErrorMappingTests extends DataLakeTestBase {
     private DataLakeFileAsyncClient createPathAsyncClient() {
-        return getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount())
-            .createFileSystem(generateFileSystemName())
+        return getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount()).createFileSystem(generateFileSystemName())
             .map(fsac -> fsac.getFileAsyncClient(generatePathName()))
             .block();
     }
@@ -33,8 +32,7 @@ public class LeaseAsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void renewLease() {
-        StepVerifier.create(leaseAsyncClient.renewLeaseWithResponse(null))
-            .verifyError(DataLakeStorageException.class);
+        StepVerifier.create(leaseAsyncClient.renewLeaseWithResponse(null)).verifyError(DataLakeStorageException.class);
     }
 
     @Test

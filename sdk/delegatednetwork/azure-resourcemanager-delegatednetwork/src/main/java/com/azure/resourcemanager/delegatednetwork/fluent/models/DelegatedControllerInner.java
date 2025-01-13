@@ -5,41 +5,96 @@
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerResource;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedControllerProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of a DNC controller. */
+/**
+ * Represents an instance of a DNC controller.
+ */
 @Fluent
 public final class DelegatedControllerInner extends ControllerResource {
     /*
      * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private DelegatedControllerProperties properties;
 
-    /** Creates an instance of DelegatedControllerInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DelegatedControllerInner class.
+     */
     public DelegatedControllerInner() {
     }
 
     /**
      * Get the properties property: Properties of the provision operation request.
-     *
+     * 
      * @return the properties value.
      */
     public DelegatedControllerProperties properties() {
         return this.properties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelegatedControllerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelegatedControllerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,14 +103,62 @@ public final class DelegatedControllerInner extends ControllerResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedControllerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedControllerInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DelegatedControllerInner.
+     */
+    public static DelegatedControllerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedControllerInner deserializedDelegatedControllerInner = new DelegatedControllerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDelegatedControllerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDelegatedControllerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDelegatedControllerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDelegatedControllerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDelegatedControllerInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDelegatedControllerInner.properties = DelegatedControllerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedControllerInner;
+        });
     }
 }

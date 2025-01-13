@@ -13,29 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class VMResourcesListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMResourcesListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"jj\",\"agentVersion\":\"v\"},{\"id\":\"dgwdslfhot\",\"agentVersion\":\"cynpwlbjnp\"}],\"nextLink\":\"cftadeh\"}")
-                .toObject(VMResourcesListResponse.class);
-        Assertions.assertEquals("jj", model.value().get(0).id());
-        Assertions.assertEquals("v", model.value().get(0).agentVersion());
-        Assertions.assertEquals("cftadeh", model.nextLink());
+        VMResourcesListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"kpnpulexxbczwtr\",\"agentVersion\":\"iqzbq\"},{\"id\":\"sovmyokacspkwl\",\"agentVersion\":\"dobpxjmflbvvn\"}],\"nextLink\":\"rkcciwwzjuqk\"}")
+            .toObject(VMResourcesListResponse.class);
+        Assertions.assertEquals("kpnpulexxbczwtr", model.value().get(0).id());
+        Assertions.assertEquals("iqzbq", model.value().get(0).agentVersion());
+        Assertions.assertEquals("rkcciwwzjuqk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMResourcesListResponse model =
-            new VMResourcesListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VMResourcesInner().withId("jj").withAgentVersion("v"),
-                            new VMResourcesInner().withId("dgwdslfhot").withAgentVersion("cynpwlbjnp")))
-                .withNextLink("cftadeh");
+        VMResourcesListResponse model = new VMResourcesListResponse()
+            .withValue(Arrays.asList(new VMResourcesInner().withId("kpnpulexxbczwtr").withAgentVersion("iqzbq"),
+                new VMResourcesInner().withId("sovmyokacspkwl").withAgentVersion("dobpxjmflbvvn")))
+            .withNextLink("rkcciwwzjuqk");
         model = BinaryData.fromObject(model).toObject(VMResourcesListResponse.class);
-        Assertions.assertEquals("jj", model.value().get(0).id());
-        Assertions.assertEquals("v", model.value().get(0).agentVersion());
-        Assertions.assertEquals("cftadeh", model.nextLink());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.value().get(0).id());
+        Assertions.assertEquals("iqzbq", model.value().get(0).agentVersion());
+        Assertions.assertEquals("rkcciwwzjuqk", model.nextLink());
     }
 }

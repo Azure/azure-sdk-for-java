@@ -15,7 +15,7 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"dvk\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"nxcvds\",\"privateIpAddress\":\"njivolvtnovq\",\"linkIdentifier\":\"gemjdftuljltdu\",\"groupId\":\"amtmcz\",\"memberName\":\"m\"}]}")
+            "{\"id\":\"kmnwqjnobaiyhddv\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"n\",\"privateIpAddress\":\"tfpmvmemfnczdw\",\"linkIdentifier\":\"b\",\"groupId\":\"xlllchp\",\"memberName\":\"bzevwrd\"},{\"id\":\"fukuvsjcswsmystu\",\"privateIpAddress\":\"qypfcv\",\"linkIdentifier\":\"rchpqbmfpjbabwid\",\"groupId\":\"xsspuunnoxyhk\",\"memberName\":\"qddrihpfhoqcaae\"},{\"id\":\"aomdjvlpjxx\",\"privateIpAddress\":\"brm\",\"linkIdentifier\":\"eivsiykzkdnc\",\"groupId\":\"xonbzoggculapz\",\"memberName\":\"rpgogtqxep\"},{\"id\":\"lbfu\",\"privateIpAddress\":\"lyjt\",\"linkIdentifier\":\"of\",\"groupId\":\"hvfcibyfmow\",\"memberName\":\"rkjpvdwxfzwii\"}]}")
             .toObject(PrivateLinkScopeValidationDetailsInner.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
@@ -24,7 +24,8 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     public void testSerialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model
             = new PrivateLinkScopeValidationDetailsInner().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)
-                .withConnectionDetails(Arrays.asList(new ConnectionDetail()));
+                .withConnectionDetails(Arrays.asList(new ConnectionDetail(), new ConnectionDetail(),
+                    new ConnectionDetail(), new ConnectionDetail()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopeValidationDetailsInner.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }

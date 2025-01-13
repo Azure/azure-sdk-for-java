@@ -11,41 +11,37 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuAvailabilityInner model =
-            BinaryData
-                .fromString(
-                    "{\"dedicatedAvailabilityZoneId\":\"uigdtopbobjog\",\"dedicatedAvailabilityZoneName\":\"e\",\"dedicatedPlacementGroupId\":\"a\",\"dedicatedPlacementGroupName\":\"uhrzayvvt\",\"limit\":1432651590,\"resourceType\":\"dfgiot\",\"skuId\":\"tutqxlngxlefgug\",\"skuName\":\"krxd\"}")
-                .toObject(SkuAvailabilityInner.class);
-        Assertions.assertEquals("uigdtopbobjog", model.dedicatedAvailabilityZoneId());
-        Assertions.assertEquals("e", model.dedicatedAvailabilityZoneName());
-        Assertions.assertEquals("a", model.dedicatedPlacementGroupId());
-        Assertions.assertEquals("uhrzayvvt", model.dedicatedPlacementGroupName());
-        Assertions.assertEquals(1432651590, model.limit());
-        Assertions.assertEquals("dfgiot", model.resourceType());
-        Assertions.assertEquals("tutqxlngxlefgug", model.skuId());
-        Assertions.assertEquals("krxd", model.skuName());
+        SkuAvailabilityInner model = BinaryData.fromString(
+            "{\"dedicatedAvailabilityZoneId\":\"qnwvlrya\",\"dedicatedAvailabilityZoneName\":\"hheunmmqhgyx\",\"dedicatedPlacementGroupId\":\"onocukok\",\"dedicatedPlacementGroupName\":\"axuconuq\",\"limit\":447504444,\"resourceType\":\"kbeype\",\"skuId\":\"mjmwvvjektcx\",\"skuName\":\"nhwlrsffrzpwvl\"}")
+            .toObject(SkuAvailabilityInner.class);
+        Assertions.assertEquals("qnwvlrya", model.dedicatedAvailabilityZoneId());
+        Assertions.assertEquals("hheunmmqhgyx", model.dedicatedAvailabilityZoneName());
+        Assertions.assertEquals("onocukok", model.dedicatedPlacementGroupId());
+        Assertions.assertEquals("axuconuq", model.dedicatedPlacementGroupName());
+        Assertions.assertEquals(447504444, model.limit());
+        Assertions.assertEquals("kbeype", model.resourceType());
+        Assertions.assertEquals("mjmwvvjektcx", model.skuId());
+        Assertions.assertEquals("nhwlrsffrzpwvl", model.skuName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuAvailabilityInner model =
-            new SkuAvailabilityInner()
-                .withDedicatedAvailabilityZoneId("uigdtopbobjog")
-                .withDedicatedAvailabilityZoneName("e")
-                .withDedicatedPlacementGroupId("a")
-                .withDedicatedPlacementGroupName("uhrzayvvt")
-                .withLimit(1432651590)
-                .withResourceType("dfgiot")
-                .withSkuId("tutqxlngxlefgug")
-                .withSkuName("krxd");
+        SkuAvailabilityInner model = new SkuAvailabilityInner().withDedicatedAvailabilityZoneId("qnwvlrya")
+            .withDedicatedAvailabilityZoneName("hheunmmqhgyx")
+            .withDedicatedPlacementGroupId("onocukok")
+            .withDedicatedPlacementGroupName("axuconuq")
+            .withLimit(447504444)
+            .withResourceType("kbeype")
+            .withSkuId("mjmwvvjektcx")
+            .withSkuName("nhwlrsffrzpwvl");
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityInner.class);
-        Assertions.assertEquals("uigdtopbobjog", model.dedicatedAvailabilityZoneId());
-        Assertions.assertEquals("e", model.dedicatedAvailabilityZoneName());
-        Assertions.assertEquals("a", model.dedicatedPlacementGroupId());
-        Assertions.assertEquals("uhrzayvvt", model.dedicatedPlacementGroupName());
-        Assertions.assertEquals(1432651590, model.limit());
-        Assertions.assertEquals("dfgiot", model.resourceType());
-        Assertions.assertEquals("tutqxlngxlefgug", model.skuId());
-        Assertions.assertEquals("krxd", model.skuName());
+        Assertions.assertEquals("qnwvlrya", model.dedicatedAvailabilityZoneId());
+        Assertions.assertEquals("hheunmmqhgyx", model.dedicatedAvailabilityZoneName());
+        Assertions.assertEquals("onocukok", model.dedicatedPlacementGroupId());
+        Assertions.assertEquals("axuconuq", model.dedicatedPlacementGroupName());
+        Assertions.assertEquals(447504444, model.limit());
+        Assertions.assertEquals("kbeype", model.resourceType());
+        Assertions.assertEquals("mjmwvvjektcx", model.skuId());
+        Assertions.assertEquals("nhwlrsffrzpwvl", model.skuName());
     }
 }

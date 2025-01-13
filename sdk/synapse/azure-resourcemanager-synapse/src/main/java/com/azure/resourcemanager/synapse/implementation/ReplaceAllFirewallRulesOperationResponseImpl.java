@@ -12,8 +12,7 @@ public final class ReplaceAllFirewallRulesOperationResponseImpl implements Repla
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    ReplaceAllFirewallRulesOperationResponseImpl(
-        ReplaceAllFirewallRulesOperationResponseInner innerObject,
+    ReplaceAllFirewallRulesOperationResponseImpl(ReplaceAllFirewallRulesOperationResponseInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

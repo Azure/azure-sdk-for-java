@@ -26,22 +26,18 @@ public final class NetworkTapsImpl implements NetworkTaps {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkTapsImpl(
-        NetworkTapsClient innerClient,
+    public NetworkTapsImpl(NetworkTapsClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NetworkTap> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapName, Context context) {
-        Response<NetworkTapInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkTapName, context);
+    public Response<NetworkTap> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
+        Context context) {
+        Response<NetworkTapInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkTapName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkTapImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -67,28 +63,28 @@ public final class NetworkTapsImpl implements NetworkTaps {
 
     public PagedIterable<NetworkTap> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkTapInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTap> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NetworkTapInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTap> list() {
         PagedIterable<NetworkTapInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTap> list(Context context) {
         PagedIterable<NetworkTapInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapImpl(inner1, this.manager()));
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
-        CommonPostActionResponseForDeviceUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, networkTapName, body);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForDeviceUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, networkTapName, body);
         if (inner != null) {
             return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
@@ -96,10 +92,10 @@ public final class NetworkTapsImpl implements NetworkTaps {
         }
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
-        CommonPostActionResponseForDeviceUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, networkTapName, body, context);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, networkTapName, body, context);
         if (inner != null) {
             return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
@@ -108,8 +104,8 @@ public final class NetworkTapsImpl implements NetworkTaps {
     }
 
     public CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String networkTapName) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().resync(resourceGroupName, networkTapName);
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().resync(resourceGroupName, networkTapName);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -117,10 +113,10 @@ public final class NetworkTapsImpl implements NetworkTaps {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate resync(
-        String resourceGroupName, String networkTapName, Context context) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().resync(resourceGroupName, networkTapName, context);
+    public CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String networkTapName,
+        Context context) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().resync(resourceGroupName, networkTapName, context);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -129,77 +125,57 @@ public final class NetworkTapsImpl implements NetworkTaps {
     }
 
     public NetworkTap getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapName = Utils.getValueFromIdByName(id, "networkTaps");
+        String networkTapName = ResourceManagerUtils.getValueFromIdByName(id, "networkTaps");
         if (networkTapName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkTapName, Context.NONE).getValue();
     }
 
     public Response<NetworkTap> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapName = Utils.getValueFromIdByName(id, "networkTaps");
+        String networkTapName = ResourceManagerUtils.getValueFromIdByName(id, "networkTaps");
         if (networkTapName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkTapName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapName = Utils.getValueFromIdByName(id, "networkTaps");
+        String networkTapName = ResourceManagerUtils.getValueFromIdByName(id, "networkTaps");
         if (networkTapName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
         }
         this.delete(resourceGroupName, networkTapName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapName = Utils.getValueFromIdByName(id, "networkTaps");
+        String networkTapName = ResourceManagerUtils.getValueFromIdByName(id, "networkTaps");
         if (networkTapName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkTaps'.", id)));
         }
         this.delete(resourceGroupName, networkTapName, context);
     }

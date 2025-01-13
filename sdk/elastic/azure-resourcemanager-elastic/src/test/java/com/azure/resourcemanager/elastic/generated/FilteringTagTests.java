@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class FilteringTagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilteringTag model =
-            BinaryData
-                .fromString("{\"name\":\"r\",\"value\":\"djwzrlov\",\"action\":\"Exclude\"}")
+        FilteringTag model
+            = BinaryData.fromString("{\"name\":\"icohoqqnwvl\",\"value\":\"avwhheunm\",\"action\":\"Exclude\"}")
                 .toObject(FilteringTag.class);
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("djwzrlov", model.value());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("avwhheunm", model.value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilteringTag model = new FilteringTag().withName("r").withValue("djwzrlov").withAction(TagAction.EXCLUDE);
+        FilteringTag model
+            = new FilteringTag().withName("icohoqqnwvl").withValue("avwhheunm").withAction(TagAction.EXCLUDE);
         model = BinaryData.fromObject(model).toObject(FilteringTag.class);
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("djwzrlov", model.value());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("avwhheunm", model.value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.action());
     }
 }

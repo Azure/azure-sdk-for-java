@@ -4,12 +4,24 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
+import com.azure.resourcemanager.billing.models.InstanceFlexibility;
+import com.azure.resourcemanager.billing.models.RenewPropertiesResponse;
 import com.azure.resourcemanager.billing.models.Reservation;
-import com.azure.resourcemanager.billing.models.ReservationPropertyUtilization;
+import com.azure.resourcemanager.billing.models.ReservationAppliedScopeProperties;
+import com.azure.resourcemanager.billing.models.ReservationBillingPlan;
+import com.azure.resourcemanager.billing.models.ReservationExtendedStatusInfo;
+import com.azure.resourcemanager.billing.models.ReservationMergeProperties;
 import com.azure.resourcemanager.billing.models.ReservationSkuProperty;
+import com.azure.resourcemanager.billing.models.ReservationSplitProperties;
+import com.azure.resourcemanager.billing.models.ReservationSwapProperties;
+import com.azure.resourcemanager.billing.models.ReservationUtilizationAggregates;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class ReservationImpl implements Reservation {
     private ReservationInner innerObject;
@@ -37,8 +49,37 @@ public final class ReservationImpl implements Reservation {
         return this.innerModel().location();
     }
 
+    public Integer etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public ReservationSkuProperty sku() {
         return this.innerModel().sku();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String reservedResourceType() {
+        return this.innerModel().reservedResourceType();
+    }
+
+    public InstanceFlexibility instanceFlexibility() {
+        return this.innerModel().instanceFlexibility();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
     }
 
     public List<String> appliedScopes() {
@@ -54,8 +95,12 @@ public final class ReservationImpl implements Reservation {
         return this.innerModel().appliedScopeType();
     }
 
-    public String reservedResourceType() {
-        return this.innerModel().reservedResourceType();
+    public Boolean archived() {
+        return this.innerModel().archived();
+    }
+
+    public String capabilities() {
+        return this.innerModel().capabilities();
     }
 
     public Float quantity() {
@@ -66,40 +111,76 @@ public final class ReservationImpl implements Reservation {
         return this.innerModel().provisioningState();
     }
 
+    public OffsetDateTime effectiveDateTime() {
+        return this.innerModel().effectiveDateTime();
+    }
+
+    public OffsetDateTime benefitStartTime() {
+        return this.innerModel().benefitStartTime();
+    }
+
+    public OffsetDateTime lastUpdatedDateTime() {
+        return this.innerModel().lastUpdatedDateTime();
+    }
+
     public String expiryDate() {
         return this.innerModel().expiryDate();
     }
 
-    public String provisioningSubState() {
-        return this.innerModel().provisioningSubState();
+    public OffsetDateTime expiryDateTime() {
+        return this.innerModel().expiryDateTime();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String displayProvisioningState() {
-        return this.innerModel().displayProvisioningState();
-    }
-
-    public String userFriendlyRenewState() {
-        return this.innerModel().userFriendlyRenewState();
-    }
-
-    public String userFriendlyAppliedScopeType() {
-        return this.innerModel().userFriendlyAppliedScopeType();
-    }
-
-    public String effectiveDateTime() {
-        return this.innerModel().effectiveDateTime();
+    public OffsetDateTime reviewDateTime() {
+        return this.innerModel().reviewDateTime();
     }
 
     public String skuDescription() {
         return this.innerModel().skuDescription();
     }
 
-    public String term() {
-        return this.innerModel().term();
+    public ReservationExtendedStatusInfo extendedStatusInfo() {
+        return this.innerModel().extendedStatusInfo();
+    }
+
+    public ReservationBillingPlan billingPlan() {
+        return this.innerModel().billingPlan();
+    }
+
+    public String displayProvisioningState() {
+        return this.innerModel().displayProvisioningState();
+    }
+
+    public String provisioningSubState() {
+        return this.innerModel().provisioningSubState();
+    }
+
+    public LocalDate purchaseDate() {
+        return this.innerModel().purchaseDate();
+    }
+
+    public OffsetDateTime purchaseDateTime() {
+        return this.innerModel().purchaseDateTime();
+    }
+
+    public ReservationSplitProperties splitProperties() {
+        return this.innerModel().splitProperties();
+    }
+
+    public ReservationMergeProperties mergeProperties() {
+        return this.innerModel().mergeProperties();
+    }
+
+    public ReservationSwapProperties swapProperties() {
+        return this.innerModel().swapProperties();
+    }
+
+    public ReservationAppliedScopeProperties appliedScopeProperties() {
+        return this.innerModel().appliedScopeProperties();
+    }
+
+    public String billingScopeId() {
+        return this.innerModel().billingScopeId();
     }
 
     public Boolean renew() {
@@ -110,8 +191,41 @@ public final class ReservationImpl implements Reservation {
         return this.innerModel().renewSource();
     }
 
-    public ReservationPropertyUtilization utilization() {
-        return this.innerModel().utilization();
+    public String renewDestination() {
+        return this.innerModel().renewDestination();
+    }
+
+    public RenewPropertiesResponse renewProperties() {
+        return this.innerModel().renewProperties();
+    }
+
+    public String term() {
+        return this.innerModel().term();
+    }
+
+    public String userFriendlyAppliedScopeType() {
+        return this.innerModel().userFriendlyAppliedScopeType();
+    }
+
+    public String userFriendlyRenewState() {
+        return this.innerModel().userFriendlyRenewState();
+    }
+
+    public String productCode() {
+        return this.innerModel().productCode();
+    }
+
+    public String trend() {
+        return this.innerModel().trend();
+    }
+
+    public List<ReservationUtilizationAggregates> aggregates() {
+        List<ReservationUtilizationAggregates> inner = this.innerModel().aggregates();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public ReservationInner innerModel() {

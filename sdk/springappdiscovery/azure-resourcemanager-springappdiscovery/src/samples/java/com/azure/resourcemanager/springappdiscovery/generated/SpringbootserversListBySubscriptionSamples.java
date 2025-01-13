@@ -20,8 +20,9 @@ public final class SpringbootserversListBySubscriptionSamples {
      */
     public static void springbootserversListBySubscriptionMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootservers()
+            .listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class SpringbootserversListBySubscriptionSamples {
      */
     public static void springbootserversListBySubscriptionMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootservers()
+            .listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
+                com.azure.core.util.Context.NONE);
     }
 }

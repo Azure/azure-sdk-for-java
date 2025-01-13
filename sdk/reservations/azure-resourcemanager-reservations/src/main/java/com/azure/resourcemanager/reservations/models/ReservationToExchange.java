@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reservation refund details. */
+/**
+ * Reservation refund details.
+ */
 @Fluent
-public final class ReservationToExchange {
+public final class ReservationToExchange implements JsonSerializable<ReservationToExchange> {
     /*
      * Fully qualified id of the reservation being returned.
      */
-    @JsonProperty(value = "reservationId")
     private String reservationId;
 
     /*
      * Quantity to be returned
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingRefundAmount")
     private Price billingRefundAmount;
 
     /*
      * billing information
      */
-    @JsonProperty(value = "billingInformation")
     private BillingInformation billingInformation;
 
-    /** Creates an instance of ReservationToExchange class. */
+    /**
+     * Creates an instance of ReservationToExchange class.
+     */
     public ReservationToExchange() {
     }
 
     /**
      * Get the reservationId property: Fully qualified id of the reservation being returned.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -49,7 +53,7 @@ public final class ReservationToExchange {
 
     /**
      * Set the reservationId property: Fully qualified id of the reservation being returned.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the ReservationToExchange object itself.
      */
@@ -60,7 +64,7 @@ public final class ReservationToExchange {
 
     /**
      * Get the quantity property: Quantity to be returned.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -69,7 +73,7 @@ public final class ReservationToExchange {
 
     /**
      * Set the quantity property: Quantity to be returned.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationToExchange object itself.
      */
@@ -80,7 +84,7 @@ public final class ReservationToExchange {
 
     /**
      * Get the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingRefundAmount value.
      */
     public Price billingRefundAmount() {
@@ -89,7 +93,7 @@ public final class ReservationToExchange {
 
     /**
      * Set the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingRefundAmount the billingRefundAmount value to set.
      * @return the ReservationToExchange object itself.
      */
@@ -100,7 +104,7 @@ public final class ReservationToExchange {
 
     /**
      * Get the billingInformation property: billing information.
-     *
+     * 
      * @return the billingInformation value.
      */
     public BillingInformation billingInformation() {
@@ -109,7 +113,7 @@ public final class ReservationToExchange {
 
     /**
      * Set the billingInformation property: billing information.
-     *
+     * 
      * @param billingInformation the billingInformation value to set.
      * @return the ReservationToExchange object itself.
      */
@@ -120,7 +124,7 @@ public final class ReservationToExchange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,5 +134,50 @@ public final class ReservationToExchange {
         if (billingInformation() != null) {
             billingInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservationId", this.reservationId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeJsonField("billingRefundAmount", this.billingRefundAmount);
+        jsonWriter.writeJsonField("billingInformation", this.billingInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationToExchange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationToExchange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationToExchange.
+     */
+    public static ReservationToExchange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationToExchange deserializedReservationToExchange = new ReservationToExchange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationId".equals(fieldName)) {
+                    deserializedReservationToExchange.reservationId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedReservationToExchange.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("billingRefundAmount".equals(fieldName)) {
+                    deserializedReservationToExchange.billingRefundAmount = Price.fromJson(reader);
+                } else if ("billingInformation".equals(fieldName)) {
+                    deserializedReservationToExchange.billingInformation = BillingInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationToExchange;
+        });
     }
 }

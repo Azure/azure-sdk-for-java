@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NeighborGroupInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupPatch;
 
-/** An instance of this class provides access to all the operations defined in NeighborGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NeighborGroupsClient.
+ */
 public interface NeighborGroupsClient {
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -30,14 +32,14 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body);
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -48,14 +50,14 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body, Context context);
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -69,9 +71,9 @@ public interface NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -82,14 +84,14 @@ public interface NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NeighborGroupInner create(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context);
+    NeighborGroupInner create(String resourceGroupName, String neighborGroupName, NeighborGroupInner body,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -99,14 +101,14 @@ public interface NeighborGroupsClient {
      * @return the Neighbor Group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NeighborGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context);
+    Response<NeighborGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String neighborGroupName,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,9 +121,9 @@ public interface NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -131,14 +133,14 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body);
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -149,14 +151,14 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body, Context context);
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -170,9 +172,9 @@ public interface NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -183,14 +185,14 @@ public interface NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NeighborGroupInner update(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context);
+    NeighborGroupInner update(String resourceGroupName, String neighborGroupName, NeighborGroupPatch body,
+        Context context);
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +205,9 @@ public interface NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -219,9 +221,9 @@ public interface NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,9 +235,9 @@ public interface NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -248,9 +250,9 @@ public interface NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,9 +264,9 @@ public interface NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,9 +279,9 @@ public interface NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Neighbor Group as paginated response with {@link PagedIterable}.
@@ -289,9 +291,9 @@ public interface NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

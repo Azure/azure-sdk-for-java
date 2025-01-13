@@ -39,12 +39,12 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * users field in the filter
      */
-    protected static final String USERS = "users";
+    protected static final String USERS = "Users";
 
     /**
      * groups field in the filter
      */
-    protected static final String GROUPS = "groups";
+    protected static final String GROUPS = "Groups";
 
     /**
      * Audience in the filter
@@ -125,8 +125,11 @@ public class TargetingFilter implements FeatureFilter {
             parameters = (Map<String, Object>) audienceObject;
         }
 
+        // The correct value is Users/Groups but keeping users/groups to make sure no one is broken.
         FeatureFilterUtils.updateValueFromMapToList(parameters, USERS);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, USERS.toLowerCase());
         FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS.toLowerCase());
 
         Audience audience;
         String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);

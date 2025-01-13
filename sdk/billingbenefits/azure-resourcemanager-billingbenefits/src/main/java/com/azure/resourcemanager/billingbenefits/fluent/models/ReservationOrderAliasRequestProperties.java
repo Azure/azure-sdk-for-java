@@ -5,91 +5,91 @@
 package com.azure.resourcemanager.billingbenefits.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeProperties;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
 import com.azure.resourcemanager.billingbenefits.models.ReservationOrderAliasRequestPropertiesReservedResourceProperties;
 import com.azure.resourcemanager.billingbenefits.models.ReservedResourceType;
 import com.azure.resourcemanager.billingbenefits.models.Term;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Reservation properties. */
+/**
+ * Reservation properties.
+ */
 @Fluent
-public final class ReservationOrderAliasRequestProperties {
+public final class ReservationOrderAliasRequestProperties
+    implements JsonSerializable<ReservationOrderAliasRequestProperties> {
     /*
      * Display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Subscription that will be charged for purchasing the benefit
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Represent benefit term in ISO 8601 format.
      */
-    @JsonProperty(value = "term")
     private Term term;
 
     /*
      * Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private BillingPlan billingPlan;
 
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable.
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Total Quantity of the SKUs purchased in the Reservation.
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Setting this to true will automatically purchase a new benefit on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * The type of the resource that is being reserved.
      */
-    @JsonProperty(value = "reservedResourceType")
     private ReservedResourceType reservedResourceType;
 
     /*
      * This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
      */
-    @JsonProperty(value = "reviewDateTime")
     private OffsetDateTime reviewDateTime;
 
     /*
      * Properties specific to each reserved resource type. Not required if not applicable.
      */
-    @JsonProperty(value = "reservedResourceProperties")
     private ReservationOrderAliasRequestPropertiesReservedResourceProperties reservedResourceProperties;
 
-    /** Creates an instance of ReservationOrderAliasRequestProperties class. */
+    /**
+     * Creates an instance of ReservationOrderAliasRequestProperties class.
+     */
     public ReservationOrderAliasRequestProperties() {
     }
 
     /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -98,7 +98,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -109,7 +109,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -118,7 +118,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -129,7 +129,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Get the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public Term term() {
@@ -138,7 +138,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -150,7 +150,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -160,7 +160,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -171,7 +171,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -180,7 +180,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -192,7 +192,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -202,19 +202,19 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
-    public ReservationOrderAliasRequestProperties withAppliedScopeProperties(
-        AppliedScopeProperties appliedScopeProperties) {
+    public ReservationOrderAliasRequestProperties
+        withAppliedScopeProperties(AppliedScopeProperties appliedScopeProperties) {
         this.appliedScopeProperties = appliedScopeProperties;
         return this;
     }
 
     /**
      * Get the quantity property: Total Quantity of the SKUs purchased in the Reservation.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -223,7 +223,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the quantity property: Total Quantity of the SKUs purchased in the Reservation.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -235,7 +235,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -245,7 +245,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -256,7 +256,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Get the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     public ReservedResourceType reservedResourceType() {
@@ -265,7 +265,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @param reservedResourceType the reservedResourceType value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -276,7 +276,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -285,7 +285,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -297,7 +297,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Get the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @return the reservedResourceProperties value.
      */
     public ReservationOrderAliasRequestPropertiesReservedResourceProperties reservedResourceProperties() {
@@ -307,7 +307,7 @@ public final class ReservationOrderAliasRequestProperties {
     /**
      * Set the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the ReservationOrderAliasRequestProperties object itself.
      */
@@ -319,7 +319,7 @@ public final class ReservationOrderAliasRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -329,5 +329,83 @@ public final class ReservationOrderAliasRequestProperties {
         if (reservedResourceProperties() != null) {
             reservedResourceProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeStringField("reservedResourceType",
+            this.reservedResourceType == null ? null : this.reservedResourceType.toString());
+        jsonWriter.writeStringField("reviewDateTime",
+            this.reviewDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reviewDateTime));
+        jsonWriter.writeJsonField("reservedResourceProperties", this.reservedResourceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationOrderAliasRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationOrderAliasRequestProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationOrderAliasRequestProperties.
+     */
+    public static ReservationOrderAliasRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationOrderAliasRequestProperties deserializedReservationOrderAliasRequestProperties
+                = new ReservationOrderAliasRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.displayName = reader.getString();
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.billingScopeId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.term = Term.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.billingPlan
+                        = BillingPlan.fromString(reader.getString());
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.appliedScopeProperties
+                        = AppliedScopeProperties.fromJson(reader);
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.quantity
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("renew".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.renew
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reservedResourceType".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.reservedResourceType
+                        = ReservedResourceType.fromString(reader.getString());
+                } else if ("reviewDateTime".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.reviewDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reservedResourceProperties".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequestProperties.reservedResourceProperties
+                        = ReservationOrderAliasRequestPropertiesReservedResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationOrderAliasRequestProperties;
+        });
     }
 }

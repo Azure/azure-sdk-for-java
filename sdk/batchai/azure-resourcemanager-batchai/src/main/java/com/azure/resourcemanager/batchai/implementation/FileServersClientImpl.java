@@ -56,8 +56,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @param client the instance of the service client containing this operation class.
      */
     FileServersClientImpl(BatchAIImpl client) {
-        this.service =
-            RestProxy.create(FileServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FileServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,80 +68,55 @@ public final class FileServersClientImpl implements FileServersClient {
     @Host("{$host}")
     @ServiceInterface(name = "BatchAIFileServers")
     private interface FileServersService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/fileServers/{fileServerName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/fileServers/{fileServerName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("fileServerName") String fileServerName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("fileServerName") String fileServerName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") FileServerCreateParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FileServerCreateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/fileServers/{fileServerName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/fileServers/{fileServerName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("fileServerName") String fileServerName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("fileServerName") String fileServerName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/fileServers/{fileServerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/fileServers/{fileServerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileServerInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("fileServerName") String fileServerName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FileServerInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("fileServerName") String fileServerName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/fileServers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/fileServers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileServerListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("maxresults") Integer maxResults,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FileServerListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("maxresults") Integer maxResults, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FileServerListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -160,13 +135,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName, FileServerCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,10 +152,8 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -192,18 +163,8 @@ public final class FileServersClientImpl implements FileServersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            fileServerName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, workspaceName, fileServerName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -224,17 +185,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName, FileServerCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,10 +202,8 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -259,17 +212,8 @@ public final class FileServersClientImpl implements FileServersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                fileServerName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, workspaceName, fileServerName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -288,14 +232,12 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<FileServerInner>, FileServerInner> beginCreateAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, fileServerName, parameters);
-        return this
-            .client
-            .<FileServerInner, FileServerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FileServerInner.class, FileServerInner.class, Context.NONE);
+    private PollerFlux<PollResult<FileServerInner>, FileServerInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, fileServerName, parameters);
+        return this.client.<FileServerInner, FileServerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FileServerInner.class, FileServerInner.class, Context.NONE);
     }
 
     /**
@@ -315,19 +257,13 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<FileServerInner>, FileServerInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<FileServerInner>, FileServerInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String fileServerName, FileServerCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, fileServerName, parameters, context);
-        return this
-            .client
-            .<FileServerInner, FileServerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FileServerInner.class, FileServerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, fileServerName, parameters, context);
+        return this.client.<FileServerInner, FileServerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FileServerInner.class, FileServerInner.class, context);
     }
 
     /**
@@ -346,8 +282,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
+    public SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(String resourceGroupName,
+        String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters).getSyncPoller();
     }
 
@@ -368,12 +304,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context) {
+    public SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(String resourceGroupName,
+        String workspaceName, String fileServerName, FileServerCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters, context).getSyncPoller();
     }
 
@@ -393,10 +325,9 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FileServerInner> createAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters)
-            .last()
+    private Mono<FileServerInner> createAsync(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters) {
+        return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -417,14 +348,9 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FileServerInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters, context)
-            .last()
+    private Mono<FileServerInner> createAsync(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, fileServerName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -444,8 +370,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileServerInner create(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters) {
+    public FileServerInner create(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters) {
         return createAsync(resourceGroupName, workspaceName, fileServerName, parameters).block();
     }
 
@@ -466,12 +392,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileServerInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context) {
+    public FileServerInner create(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters, Context context) {
         return createAsync(resourceGroupName, workspaceName, fileServerName, parameters, context).block();
     }
 
@@ -490,13 +412,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fileServerName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -509,25 +429,13 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            fileServerName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                fileServerName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -547,13 +455,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -566,23 +472,13 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                fileServerName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, fileServerName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -600,13 +496,12 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String fileServerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, fileServerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String fileServerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, fileServerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            Context.NONE);
     }
 
     /**
@@ -625,14 +520,13 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, fileServerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, fileServerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -650,8 +544,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String fileServerName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName).getSyncPoller();
     }
 
@@ -671,8 +565,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName, context).getSyncPoller();
     }
 
@@ -692,8 +586,7 @@ public final class FileServersClientImpl implements FileServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String fileServerName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -713,10 +606,9 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String fileServerName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, fileServerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -772,13 +664,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return information about a File Server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FileServerInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fileServerName) {
+    private Mono<Response<FileServerInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -791,25 +681,13 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            fileServerName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                fileServerName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -829,13 +707,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return information about a File Server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FileServerInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
+    private Mono<Response<FileServerInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -848,23 +724,13 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter fileServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                fileServerName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, workspaceName, fileServerName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -884,14 +750,13 @@ public final class FileServersClientImpl implements FileServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FileServerInner> getAsync(String resourceGroupName, String workspaceName, String fileServerName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, fileServerName)
-            .flatMap(
-                (Response<FileServerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<FileServerInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -929,8 +794,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return information about a File Server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FileServerInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
+    public Response<FileServerInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, fileServerName, context).block();
     }
 
@@ -947,13 +812,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FileServerInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults) {
+    private Mono<PagedResponse<FileServerInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Integer maxResults) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,34 +826,15 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            maxResults,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<FileServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                maxResults, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<FileServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1008,13 +852,11 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FileServerInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    private Mono<PagedResponse<FileServerInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Integer maxResults, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1024,32 +866,16 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                maxResults,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName, maxResults,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1065,10 +891,9 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FileServerInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
+    private PagedFlux<FileServerInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Integer maxResults) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -1086,8 +911,7 @@ public final class FileServersClientImpl implements FileServersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FileServerInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
         final Integer maxResults = null;
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -1105,8 +929,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FileServerInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    private PagedFlux<FileServerInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Integer maxResults, Context context) {
         return new PagedFlux<>(
             () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
@@ -1143,8 +967,8 @@ public final class FileServersClientImpl implements FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FileServerInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    public PagedIterable<FileServerInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Integer maxResults, Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, maxResults, context));
     }
 
@@ -1163,23 +987,14 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FileServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FileServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1199,23 +1014,13 @@ public final class FileServersClientImpl implements FileServersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

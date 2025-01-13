@@ -25,8 +25,11 @@ public final class OperationResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResultInner model = new OperationResultInner().withName("iodjp").withDisplay(new OperationDisplay()
-            .withProvider("ej").withResource("vwryoqpso").withOperation("ctazakljlahbcryf").withDescription("fdosyg"))
+        OperationResultInner model = new OperationResultInner().withName("iodjp")
+            .withDisplay(new OperationDisplay().withProvider("ej")
+                .withResource("vwryoqpso")
+                .withOperation("ctazakljlahbcryf")
+                .withDescription("fdosyg"))
             .withIsDataAction(true);
         model = BinaryData.fromObject(model).toObject(OperationResultInner.class);
         Assertions.assertEquals("iodjp", model.name());

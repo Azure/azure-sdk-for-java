@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePoolRPOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoragePoolRPOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"eitjz\",\"isDataAction\":true,\"actionType\":\"usarhmofc\",\"display\":{\"provider\":\"hs\",\"resource\":\"yurkdtmlxhekuksj\",\"operation\":\"xukcdmpar\",\"description\":\"ryuanzwuxzdxtay\"},\"origin\":\"hmwhfpmrqo\"}")
-                .toObject(StoragePoolRPOperationInner.class);
+        StoragePoolRPOperationInner model = BinaryData.fromString(
+            "{\"name\":\"eitjz\",\"isDataAction\":true,\"actionType\":\"usarhmofc\",\"display\":{\"provider\":\"hs\",\"resource\":\"yurkdtmlxhekuksj\",\"operation\":\"xukcdmpar\",\"description\":\"ryuanzwuxzdxtay\"},\"origin\":\"hmwhfpmrqo\"}")
+            .toObject(StoragePoolRPOperationInner.class);
         Assertions.assertEquals("eitjz", model.name());
         Assertions.assertEquals(true, model.isDataAction());
         Assertions.assertEquals("usarhmofc", model.actionType());
@@ -29,18 +27,14 @@ public final class StoragePoolRPOperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolRPOperationInner model =
-            new StoragePoolRPOperationInner()
-                .withName("eitjz")
-                .withIsDataAction(true)
-                .withActionType("usarhmofc")
-                .withDisplay(
-                    new StoragePoolOperationDisplay()
-                        .withProvider("hs")
-                        .withResource("yurkdtmlxhekuksj")
-                        .withOperation("xukcdmpar")
-                        .withDescription("ryuanzwuxzdxtay"))
-                .withOrigin("hmwhfpmrqo");
+        StoragePoolRPOperationInner model = new StoragePoolRPOperationInner().withName("eitjz")
+            .withIsDataAction(true)
+            .withActionType("usarhmofc")
+            .withDisplay(new StoragePoolOperationDisplay().withProvider("hs")
+                .withResource("yurkdtmlxhekuksj")
+                .withOperation("xukcdmpar")
+                .withDescription("ryuanzwuxzdxtay"))
+            .withOrigin("hmwhfpmrqo");
         model = BinaryData.fromObject(model).toObject(StoragePoolRPOperationInner.class);
         Assertions.assertEquals("eitjz", model.name());
         Assertions.assertEquals(true, model.isDataAction());

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The EdgeUsageDataCollectionPolicy model. */
+/**
+ * The EdgeUsageDataCollectionPolicy model.
+ */
 @Fluent
-public final class EdgeUsageDataCollectionPolicy {
+public final class EdgeUsageDataCollectionPolicy implements JsonSerializable<EdgeUsageDataCollectionPolicy> {
     /*
      * Usage data collection frequency in ISO 8601 duration format e.g. PT10M , PT5H.
      */
-    @JsonProperty(value = "dataCollectionFrequency")
     private String dataCollectionFrequency;
 
     /*
      * Usage data reporting frequency in ISO 8601 duration format e.g. PT10M , PT5H.
      */
-    @JsonProperty(value = "dataReportingFrequency")
     private String dataReportingFrequency;
 
     /*
      * Maximum time for which the functionality of the device will not be hampered for not reporting the usage data.
      */
-    @JsonProperty(value = "maxAllowedUnreportedUsageDuration")
     private String maxAllowedUnreportedUsageDuration;
 
     /*
      * Details of Event Hub where the usage will be reported.
      */
-    @JsonProperty(value = "eventHubDetails")
     private EdgeUsageDataEventHub eventHubDetails;
 
-    /** Creates an instance of EdgeUsageDataCollectionPolicy class. */
+    /**
+     * Creates an instance of EdgeUsageDataCollectionPolicy class.
+     */
     public EdgeUsageDataCollectionPolicy() {
     }
 
     /**
      * Get the dataCollectionFrequency property: Usage data collection frequency in ISO 8601 duration format e.g. PT10M
      * , PT5H.
-     *
+     * 
      * @return the dataCollectionFrequency value.
      */
     public String dataCollectionFrequency() {
@@ -51,7 +55,7 @@ public final class EdgeUsageDataCollectionPolicy {
     /**
      * Set the dataCollectionFrequency property: Usage data collection frequency in ISO 8601 duration format e.g. PT10M
      * , PT5H.
-     *
+     * 
      * @param dataCollectionFrequency the dataCollectionFrequency value to set.
      * @return the EdgeUsageDataCollectionPolicy object itself.
      */
@@ -63,7 +67,7 @@ public final class EdgeUsageDataCollectionPolicy {
     /**
      * Get the dataReportingFrequency property: Usage data reporting frequency in ISO 8601 duration format e.g. PT10M ,
      * PT5H.
-     *
+     * 
      * @return the dataReportingFrequency value.
      */
     public String dataReportingFrequency() {
@@ -73,7 +77,7 @@ public final class EdgeUsageDataCollectionPolicy {
     /**
      * Set the dataReportingFrequency property: Usage data reporting frequency in ISO 8601 duration format e.g. PT10M ,
      * PT5H.
-     *
+     * 
      * @param dataReportingFrequency the dataReportingFrequency value to set.
      * @return the EdgeUsageDataCollectionPolicy object itself.
      */
@@ -85,7 +89,7 @@ public final class EdgeUsageDataCollectionPolicy {
     /**
      * Get the maxAllowedUnreportedUsageDuration property: Maximum time for which the functionality of the device will
      * not be hampered for not reporting the usage data.
-     *
+     * 
      * @return the maxAllowedUnreportedUsageDuration value.
      */
     public String maxAllowedUnreportedUsageDuration() {
@@ -95,19 +99,19 @@ public final class EdgeUsageDataCollectionPolicy {
     /**
      * Set the maxAllowedUnreportedUsageDuration property: Maximum time for which the functionality of the device will
      * not be hampered for not reporting the usage data.
-     *
+     * 
      * @param maxAllowedUnreportedUsageDuration the maxAllowedUnreportedUsageDuration value to set.
      * @return the EdgeUsageDataCollectionPolicy object itself.
      */
-    public EdgeUsageDataCollectionPolicy withMaxAllowedUnreportedUsageDuration(
-        String maxAllowedUnreportedUsageDuration) {
+    public EdgeUsageDataCollectionPolicy
+        withMaxAllowedUnreportedUsageDuration(String maxAllowedUnreportedUsageDuration) {
         this.maxAllowedUnreportedUsageDuration = maxAllowedUnreportedUsageDuration;
         return this;
     }
 
     /**
      * Get the eventHubDetails property: Details of Event Hub where the usage will be reported.
-     *
+     * 
      * @return the eventHubDetails value.
      */
     public EdgeUsageDataEventHub eventHubDetails() {
@@ -116,7 +120,7 @@ public final class EdgeUsageDataCollectionPolicy {
 
     /**
      * Set the eventHubDetails property: Details of Event Hub where the usage will be reported.
-     *
+     * 
      * @param eventHubDetails the eventHubDetails value to set.
      * @return the EdgeUsageDataCollectionPolicy object itself.
      */
@@ -127,12 +131,58 @@ public final class EdgeUsageDataCollectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (eventHubDetails() != null) {
             eventHubDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataCollectionFrequency", this.dataCollectionFrequency);
+        jsonWriter.writeStringField("dataReportingFrequency", this.dataReportingFrequency);
+        jsonWriter.writeStringField("maxAllowedUnreportedUsageDuration", this.maxAllowedUnreportedUsageDuration);
+        jsonWriter.writeJsonField("eventHubDetails", this.eventHubDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdgeUsageDataCollectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeUsageDataCollectionPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EdgeUsageDataCollectionPolicy.
+     */
+    public static EdgeUsageDataCollectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdgeUsageDataCollectionPolicy deserializedEdgeUsageDataCollectionPolicy
+                = new EdgeUsageDataCollectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataCollectionFrequency".equals(fieldName)) {
+                    deserializedEdgeUsageDataCollectionPolicy.dataCollectionFrequency = reader.getString();
+                } else if ("dataReportingFrequency".equals(fieldName)) {
+                    deserializedEdgeUsageDataCollectionPolicy.dataReportingFrequency = reader.getString();
+                } else if ("maxAllowedUnreportedUsageDuration".equals(fieldName)) {
+                    deserializedEdgeUsageDataCollectionPolicy.maxAllowedUnreportedUsageDuration = reader.getString();
+                } else if ("eventHubDetails".equals(fieldName)) {
+                    deserializedEdgeUsageDataCollectionPolicy.eventHubDetails = EdgeUsageDataEventHub.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdgeUsageDataCollectionPolicy;
+        });
     }
 }

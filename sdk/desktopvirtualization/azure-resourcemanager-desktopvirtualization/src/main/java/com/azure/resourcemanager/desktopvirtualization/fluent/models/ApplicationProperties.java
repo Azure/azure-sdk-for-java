@@ -7,105 +7,99 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Schema for Application properties. */
+/**
+ * Schema for Application properties.
+ */
 @Fluent
-public final class ApplicationProperties {
+public final class ApplicationProperties implements JsonSerializable<ApplicationProperties> {
     /*
      * ObjectId of Application. (internal use)
      */
-    @JsonProperty(value = "objectId", access = JsonProperty.Access.WRITE_ONLY)
     private String objectId;
 
     /*
      * Description of Application.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Friendly name of Application.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Specifies a path for the executable file for the application.
      */
-    @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
      * Specifies the package family name for MSIX applications
      */
-    @JsonProperty(value = "msixPackageFamilyName")
     private String msixPackageFamilyName;
 
     /*
      * Specifies the package application Id for MSIX applications
      */
-    @JsonProperty(value = "msixPackageApplicationId")
     private String msixPackageApplicationId;
 
     /*
      * Resource Type of Application.
      */
-    @JsonProperty(value = "applicationType")
     private RemoteApplicationType applicationType;
 
     /*
      * Specifies whether this published application can be launched with command line arguments provided by the client,
      * command line arguments specified at publish time, or no command line arguments at all.
      */
-    @JsonProperty(value = "commandLineSetting", required = true)
     private CommandLineSetting commandLineSetting;
 
     /*
      * Command Line Arguments for Application.
      */
-    @JsonProperty(value = "commandLineArguments")
     private String commandLineArguments;
 
     /*
      * Specifies whether to show the RemoteApp program in the RD Web Access server.
      */
-    @JsonProperty(value = "showInPortal")
     private Boolean showInPortal;
 
     /*
      * Path to icon.
      */
-    @JsonProperty(value = "iconPath")
     private String iconPath;
 
     /*
      * Index of the icon.
      */
-    @JsonProperty(value = "iconIndex")
     private Integer iconIndex;
 
     /*
      * Hash of the icon.
      */
-    @JsonProperty(value = "iconHash", access = JsonProperty.Access.WRITE_ONLY)
     private String iconHash;
 
     /*
      * the icon a 64 bit string as a byte array.
      */
-    @JsonProperty(value = "iconContent", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] iconContent;
 
-    /** Creates an instance of ApplicationProperties class. */
+    /**
+     * Creates an instance of ApplicationProperties class.
+     */
     public ApplicationProperties() {
     }
 
     /**
      * Get the objectId property: ObjectId of Application. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -114,7 +108,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the description property: Description of Application.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -123,7 +117,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the description property: Description of Application.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -134,7 +128,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -143,7 +137,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -154,7 +148,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -163,7 +157,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -174,7 +168,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @return the msixPackageFamilyName value.
      */
     public String msixPackageFamilyName() {
@@ -183,7 +177,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @param msixPackageFamilyName the msixPackageFamilyName value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -194,7 +188,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @return the msixPackageApplicationId value.
      */
     public String msixPackageApplicationId() {
@@ -203,7 +197,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @param msixPackageApplicationId the msixPackageApplicationId value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -214,7 +208,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the applicationType property: Resource Type of Application.
-     *
+     * 
      * @return the applicationType value.
      */
     public RemoteApplicationType applicationType() {
@@ -223,7 +217,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the applicationType property: Resource Type of Application.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -236,7 +230,7 @@ public final class ApplicationProperties {
      * Get the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @return the commandLineSetting value.
      */
     public CommandLineSetting commandLineSetting() {
@@ -247,7 +241,7 @@ public final class ApplicationProperties {
      * Set the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @param commandLineSetting the commandLineSetting value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -258,7 +252,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @return the commandLineArguments value.
      */
     public String commandLineArguments() {
@@ -267,7 +261,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @param commandLineArguments the commandLineArguments value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -278,7 +272,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @return the showInPortal value.
      */
     public Boolean showInPortal() {
@@ -287,7 +281,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @param showInPortal the showInPortal value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -298,7 +292,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the iconPath property: Path to icon.
-     *
+     * 
      * @return the iconPath value.
      */
     public String iconPath() {
@@ -307,7 +301,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the iconPath property: Path to icon.
-     *
+     * 
      * @param iconPath the iconPath value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -318,7 +312,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the iconIndex property: Index of the icon.
-     *
+     * 
      * @return the iconIndex value.
      */
     public Integer iconIndex() {
@@ -327,7 +321,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the iconIndex property: Index of the icon.
-     *
+     * 
      * @param iconIndex the iconIndex value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -338,7 +332,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the iconHash property: Hash of the icon.
-     *
+     * 
      * @return the iconHash value.
      */
     public String iconHash() {
@@ -347,7 +341,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the iconContent property: the icon a 64 bit string as a byte array.
-     *
+     * 
      * @return the iconContent value.
      */
     public byte[] iconContent() {
@@ -356,17 +350,93 @@ public final class ApplicationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (commandLineSetting() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property commandLineSetting in model ApplicationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property commandLineSetting in model ApplicationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commandLineSetting",
+            this.commandLineSetting == null ? null : this.commandLineSetting.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("msixPackageFamilyName", this.msixPackageFamilyName);
+        jsonWriter.writeStringField("msixPackageApplicationId", this.msixPackageApplicationId);
+        jsonWriter.writeStringField("applicationType",
+            this.applicationType == null ? null : this.applicationType.toString());
+        jsonWriter.writeStringField("commandLineArguments", this.commandLineArguments);
+        jsonWriter.writeBooleanField("showInPortal", this.showInPortal);
+        jsonWriter.writeStringField("iconPath", this.iconPath);
+        jsonWriter.writeNumberField("iconIndex", this.iconIndex);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationProperties.
+     */
+    public static ApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationProperties deserializedApplicationProperties = new ApplicationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commandLineSetting".equals(fieldName)) {
+                    deserializedApplicationProperties.commandLineSetting
+                        = CommandLineSetting.fromString(reader.getString());
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedApplicationProperties.objectId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationProperties.description = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedApplicationProperties.friendlyName = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedApplicationProperties.filePath = reader.getString();
+                } else if ("msixPackageFamilyName".equals(fieldName)) {
+                    deserializedApplicationProperties.msixPackageFamilyName = reader.getString();
+                } else if ("msixPackageApplicationId".equals(fieldName)) {
+                    deserializedApplicationProperties.msixPackageApplicationId = reader.getString();
+                } else if ("applicationType".equals(fieldName)) {
+                    deserializedApplicationProperties.applicationType
+                        = RemoteApplicationType.fromString(reader.getString());
+                } else if ("commandLineArguments".equals(fieldName)) {
+                    deserializedApplicationProperties.commandLineArguments = reader.getString();
+                } else if ("showInPortal".equals(fieldName)) {
+                    deserializedApplicationProperties.showInPortal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("iconPath".equals(fieldName)) {
+                    deserializedApplicationProperties.iconPath = reader.getString();
+                } else if ("iconIndex".equals(fieldName)) {
+                    deserializedApplicationProperties.iconIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("iconHash".equals(fieldName)) {
+                    deserializedApplicationProperties.iconHash = reader.getString();
+                } else if ("iconContent".equals(fieldName)) {
+                    deserializedApplicationProperties.iconContent = reader.getBinary();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationProperties;
+        });
+    }
 }

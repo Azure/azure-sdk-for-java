@@ -11,29 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"message\":\"zlobcufpd\",\"available\":false,\"reason\":\"t\",\"name\":\"qjnqglhqgnufoooj\"}")
-                .toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals("zlobcufpd", model.message());
-        Assertions.assertEquals(false, model.available());
-        Assertions.assertEquals("t", model.reason());
-        Assertions.assertEquals("qjnqglhqgnufoooj", model.name());
+        CheckNameAvailabilityResponseInner model = BinaryData
+            .fromString(
+                "{\"message\":\"zevgb\",\"available\":true,\"reason\":\"abcypmivk\",\"name\":\"zuvccfwnfnbacfio\"}")
+            .toObject(CheckNameAvailabilityResponseInner.class);
+        Assertions.assertEquals("zevgb", model.message());
+        Assertions.assertEquals(true, model.available());
+        Assertions.assertEquals("abcypmivk", model.reason());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            new CheckNameAvailabilityResponseInner()
-                .withMessage("zlobcufpd")
-                .withAvailable(false)
-                .withReason("t")
-                .withName("qjnqglhqgnufoooj");
+        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withMessage("zevgb")
+            .withAvailable(true)
+            .withReason("abcypmivk")
+            .withName("zuvccfwnfnbacfio");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals("zlobcufpd", model.message());
-        Assertions.assertEquals(false, model.available());
-        Assertions.assertEquals("t", model.reason());
-        Assertions.assertEquals("qjnqglhqgnufoooj", model.name());
+        Assertions.assertEquals("zevgb", model.message());
+        Assertions.assertEquals(true, model.available());
+        Assertions.assertEquals("abcypmivk", model.reason());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.name());
     }
 }

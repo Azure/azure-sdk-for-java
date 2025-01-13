@@ -12,7 +12,8 @@ import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 public final class SendDtmfTonesResponseConstructorProxy {
     private static SendDtmfTonesResponseConstructorAccessor accessor;
 
-    private SendDtmfTonesResponseConstructorProxy() { }
+    private SendDtmfTonesResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link SendDtmfTonesResponseConstructorAccessor}

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.devspaces {
     exports com.azure.resourcemanager.devspaces.fluent.models;
     exports com.azure.resourcemanager.devspaces.models;
 
-    opens com.azure.resourcemanager.devspaces.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.devspaces.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devspaces.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.devspaces.models to com.azure.core;
 }

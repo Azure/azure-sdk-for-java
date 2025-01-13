@@ -304,6 +304,9 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -374,9 +377,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#getResourceClaims()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -396,9 +398,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @param claims the claims value to set.
      * @return the ResourceWriteCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#setResourceClaims(Map)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceWriteCancelEventData setClaims(String claims) {
@@ -414,9 +415,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#getResourceHttpRequest()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -433,9 +433,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceWriteCancelEventData setHttpRequest(String httpRequest) {
@@ -452,9 +451,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#getResourceAuthorization()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -471,9 +469,8 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      *
      * @param authorization the authorization value to set.
      * @return the ResourceWriteCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceWriteCancelEventData setAuthorization(String authorization) {

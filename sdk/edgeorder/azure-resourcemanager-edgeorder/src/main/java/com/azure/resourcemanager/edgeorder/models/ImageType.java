@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageType. */
+/**
+ * Type of the image.
+ */
 public final class ImageType extends ExpandableStringEnum<ImageType> {
-    /** Static value MainImage for ImageType. */
+    /**
+     * Static value MainImage for ImageType.
+     */
     public static final ImageType MAIN_IMAGE = fromString("MainImage");
 
-    /** Static value BulletImage for ImageType. */
+    /**
+     * Static value BulletImage for ImageType.
+     */
     public static final ImageType BULLET_IMAGE = fromString("BulletImage");
 
-    /** Static value GenericImage for ImageType. */
+    /**
+     * Static value GenericImage for ImageType.
+     */
     public static final ImageType GENERIC_IMAGE = fromString("GenericImage");
 
     /**
+     * Creates a new instance of ImageType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImageType() {
+    }
+
+    /**
      * Creates or finds a ImageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageType.
      */
-    @JsonCreator
     public static ImageType fromString(String name) {
         return fromString(name, ImageType.class);
     }
 
-    /** @return known ImageType values. */
+    /**
+     * Gets known ImageType values.
+     * 
+     * @return known ImageType values.
+     */
     public static Collection<ImageType> values() {
         return values(ImageType.class);
     }

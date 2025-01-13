@@ -24,13 +24,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"s\",\"tier\":\"Basic\",\"capacity\":677804557,\"size\":\"yf\",\"family\":\"fogknygjofjdde\"},\"properties\":{\"administratorLogin\":\"deupewnwrei\",\"version\":\"10.2\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLS1_2\",\"userVisibleState\":\"Dropping\",\"fullyQualifiedDomainName\":\"hmofc\",\"earliestRestoreDate\":\"2021-07-19T23:58:55Z\",\"storageProfile\":{\"backupRetentionDays\":1913554341,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":1304880130,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"he\",\"masterServerId\":\"k\",\"replicaCapacity\":1950851050,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"id\":\"mparcryuanzw\"}]},\"location\":\"zdxtayrlhmwhf\",\"tags\":{\"ryrtihfxtijbpzv\":\"qobmtukk\",\"zufcyzkohdbi\":\"nwzsymg\"},\"id\":\"anufhfcbjysag\",\"name\":\"th\",\"type\":\"qhabifpikxwcz\"}")
-                .toObject(ServerInner.class);
-        Assertions.assertEquals("zdxtayrlhmwhf", model.location());
-        Assertions.assertEquals("qobmtukk", model.tags().get("ryrtihfxtijbpzv"));
+        ServerInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"s\",\"tier\":\"Basic\",\"capacity\":677804557,\"size\":\"yf\",\"family\":\"fogknygjofjdde\"},\"properties\":{\"administratorLogin\":\"deupewnwrei\",\"version\":\"10.2\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLS1_2\",\"userVisibleState\":\"Dropping\",\"fullyQualifiedDomainName\":\"hmofc\",\"earliestRestoreDate\":\"2021-07-19T23:58:55Z\",\"storageProfile\":{\"backupRetentionDays\":1913554341,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":1304880130,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"he\",\"masterServerId\":\"k\",\"replicaCapacity\":1950851050,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"id\":\"mparcryuanzw\",\"properties\":{\"privateEndpoint\":{\"id\":\"xtayr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"whfpmrqobmtu\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Failed\"}}]},\"location\":\"rtihfxtijbpz\",\"tags\":{\"kohdbiha\":\"wzsymglzufcy\",\"ithxqhabifpi\":\"ufhfcbjysa\"},\"id\":\"xwczbyscnp\",\"name\":\"x\",\"type\":\"hiv\"}")
+            .toObject(ServerInner.class);
+        Assertions.assertEquals("rtihfxtijbpz", model.location());
+        Assertions.assertEquals("wzsymglzufcy", model.tags().get("kohdbiha"));
         Assertions.assertEquals("s", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
         Assertions.assertEquals(677804557, model.sku().capacity());
@@ -55,37 +53,31 @@ public final class ServerInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerInner model =
-            new ServerInner()
-                .withLocation("zdxtayrlhmwhf")
-                .withTags(mapOf("ryrtihfxtijbpzv", "qobmtukk", "zufcyzkohdbi", "nwzsymg"))
-                .withSku(
-                    new Sku()
-                        .withName("s")
-                        .withTier(SkuTier.BASIC)
-                        .withCapacity(677804557)
-                        .withSize("yf")
-                        .withFamily("fogknygjofjdde"))
-                .withAdministratorLogin("deupewnwrei")
-                .withVersion(ServerVersion.ONE_ZERO_TWO)
-                .withSslEnforcement(SslEnforcementEnum.DISABLED)
-                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_2)
-                .withUserVisibleState(ServerState.DROPPING)
-                .withFullyQualifiedDomainName("hmofc")
-                .withEarliestRestoreDate(OffsetDateTime.parse("2021-07-19T23:58:55Z"))
-                .withStorageProfile(
-                    new StorageProfile()
-                        .withBackupRetentionDays(1913554341)
-                        .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                        .withStorageMB(1304880130)
-                        .withStorageAutogrow(StorageAutogrow.ENABLED))
-                .withReplicationRole("he")
-                .withMasterServerId("k")
-                .withReplicaCapacity(1950851050)
-                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED);
+        ServerInner model = new ServerInner().withLocation("rtihfxtijbpz")
+            .withTags(mapOf("kohdbiha", "wzsymglzufcy", "ithxqhabifpi", "ufhfcbjysa"))
+            .withSku(new Sku().withName("s")
+                .withTier(SkuTier.BASIC)
+                .withCapacity(677804557)
+                .withSize("yf")
+                .withFamily("fogknygjofjdde"))
+            .withAdministratorLogin("deupewnwrei")
+            .withVersion(ServerVersion.ONE_ZERO_TWO)
+            .withSslEnforcement(SslEnforcementEnum.DISABLED)
+            .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_2)
+            .withUserVisibleState(ServerState.DROPPING)
+            .withFullyQualifiedDomainName("hmofc")
+            .withEarliestRestoreDate(OffsetDateTime.parse("2021-07-19T23:58:55Z"))
+            .withStorageProfile(new StorageProfile().withBackupRetentionDays(1913554341)
+                .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                .withStorageMB(1304880130)
+                .withStorageAutogrow(StorageAutogrow.ENABLED))
+            .withReplicationRole("he")
+            .withMasterServerId("k")
+            .withReplicaCapacity(1950851050)
+            .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED);
         model = BinaryData.fromObject(model).toObject(ServerInner.class);
-        Assertions.assertEquals("zdxtayrlhmwhf", model.location());
-        Assertions.assertEquals("qobmtukk", model.tags().get("ryrtihfxtijbpzv"));
+        Assertions.assertEquals("rtihfxtijbpz", model.location());
+        Assertions.assertEquals("wzsymglzufcy", model.tags().get("kohdbiha"));
         Assertions.assertEquals("s", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
         Assertions.assertEquals(677804557, model.sku().capacity());
@@ -108,6 +100,7 @@ public final class ServerInnerTests {
         Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,7 +12,8 @@ import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 public final class ShareFileDownloadHeadersConstructorProxy {
     private static ShareFileDownloadHeadersConstructorAccessor accessor;
 
-    private ShareFileDownloadHeadersConstructorProxy() { }
+    private ShareFileDownloadHeadersConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link ShareFileDownloadHeaders} instance.

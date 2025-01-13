@@ -5,37 +5,52 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Defines the Sql ElasticPool resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Sql/servers/elasticPools")
+/**
+ * Defines the Sql ElasticPool resource settings.
+ */
 @Fluent
 public final class SqlElasticPoolResourceSettings extends ResourceSettings {
     /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Sql/servers/elasticPools";
+
+    /*
      * Gets or sets the Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Defines the zone redundant resource setting.
      */
-    @JsonProperty(value = "zoneRedundant")
     private ZoneRedundant zoneRedundant;
 
-    /** Creates an instance of SqlElasticPoolResourceSettings class. */
+    /**
+     * Creates an instance of SqlElasticPoolResourceSettings class.
+     */
     public SqlElasticPoolResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -44,7 +59,7 @@ public final class SqlElasticPoolResourceSettings extends ResourceSettings {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SqlElasticPoolResourceSettings object itself.
      */
@@ -55,7 +70,7 @@ public final class SqlElasticPoolResourceSettings extends ResourceSettings {
 
     /**
      * Get the zoneRedundant property: Defines the zone redundant resource setting.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public ZoneRedundant zoneRedundant() {
@@ -64,7 +79,7 @@ public final class SqlElasticPoolResourceSettings extends ResourceSettings {
 
     /**
      * Set the zoneRedundant property: Defines the zone redundant resource setting.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the SqlElasticPoolResourceSettings object itself.
      */
@@ -73,14 +88,18 @@ public final class SqlElasticPoolResourceSettings extends ResourceSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlElasticPoolResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlElasticPoolResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -89,11 +108,61 @@ public final class SqlElasticPoolResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("zoneRedundant", this.zoneRedundant == null ? null : this.zoneRedundant.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlElasticPoolResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlElasticPoolResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlElasticPoolResourceSettings.
+     */
+    public static SqlElasticPoolResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlElasticPoolResourceSettings deserializedSqlElasticPoolResourceSettings
+                = new SqlElasticPoolResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedSqlElasticPoolResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedSqlElasticPoolResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedSqlElasticPoolResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlElasticPoolResourceSettings.tags = tags;
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedSqlElasticPoolResourceSettings.zoneRedundant
+                        = ZoneRedundant.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlElasticPoolResourceSettings;
+        });
     }
 }

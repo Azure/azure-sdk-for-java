@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = SensorMappingsClientBuilder.class)
 public final class SensorMappingsClient {
-    @Generated private final SensorMappingsAsyncClient client;
+    @Generated
+    private final SensorMappingsAsyncClient client;
 
     /**
      * Initializes an instance of SensorMappingsClient class.
@@ -157,8 +158,8 @@ public final class SensorMappingsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorMappingId, BinaryData sensorMappingObject, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorMappingId, BinaryData sensorMappingObject,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(sensorMappingId, sensorMappingObject, requestOptions).block();
     }
 

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtensionEnumPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionEnumProperty model =
-            BinaryData.fromString("{\"extension\":\"NoExtension\"}").toObject(ExtensionEnumProperty.class);
-        Assertions.assertEquals(Extension.NO_EXTENSION, model.extension());
+        ExtensionEnumProperty model
+            = BinaryData.fromString("{\"extension\":\"NPB\"}").toObject(ExtensionEnumProperty.class);
+        Assertions.assertEquals(Extension.NPB, model.extension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionEnumProperty model = new ExtensionEnumProperty().withExtension(Extension.NO_EXTENSION);
+        ExtensionEnumProperty model = new ExtensionEnumProperty().withExtension(Extension.NPB);
         model = BinaryData.fromObject(model).toObject(ExtensionEnumProperty.class);
-        Assertions.assertEquals(Extension.NO_EXTENSION, model.extension());
+        Assertions.assertEquals(Extension.NPB, model.extension());
     }
 }

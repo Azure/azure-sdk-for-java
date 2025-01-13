@@ -6,85 +6,82 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The Edifact agreement protocol settings. */
+/**
+ * The Edifact agreement protocol settings.
+ */
 @Fluent
-public final class EdifactProtocolSettings {
+public final class EdifactProtocolSettings implements JsonSerializable<EdifactProtocolSettings> {
     /*
      * The EDIFACT validation settings.
      */
-    @JsonProperty(value = "validationSettings", required = true)
     private EdifactValidationSettings validationSettings;
 
     /*
      * The EDIFACT framing settings.
      */
-    @JsonProperty(value = "framingSettings", required = true)
     private EdifactFramingSettings framingSettings;
 
     /*
      * The EDIFACT envelope settings.
      */
-    @JsonProperty(value = "envelopeSettings", required = true)
     private EdifactEnvelopeSettings envelopeSettings;
 
     /*
      * The EDIFACT acknowledgement settings.
      */
-    @JsonProperty(value = "acknowledgementSettings", required = true)
     private EdifactAcknowledgementSettings acknowledgementSettings;
 
     /*
      * The EDIFACT message filter.
      */
-    @JsonProperty(value = "messageFilter", required = true)
     private EdifactMessageFilter messageFilter;
 
     /*
      * The EDIFACT processing Settings.
      */
-    @JsonProperty(value = "processingSettings", required = true)
     private EdifactProcessingSettings processingSettings;
 
     /*
      * The EDIFACT envelope override settings.
      */
-    @JsonProperty(value = "envelopeOverrides")
     private List<EdifactEnvelopeOverride> envelopeOverrides;
 
     /*
      * The EDIFACT message filter list.
      */
-    @JsonProperty(value = "messageFilterList")
     private List<EdifactMessageIdentifier> messageFilterList;
 
     /*
      * The EDIFACT schema references.
      */
-    @JsonProperty(value = "schemaReferences", required = true)
     private List<EdifactSchemaReference> schemaReferences;
 
     /*
      * The EDIFACT validation override settings.
      */
-    @JsonProperty(value = "validationOverrides")
     private List<EdifactValidationOverride> validationOverrides;
 
     /*
      * The EDIFACT delimiter override settings.
      */
-    @JsonProperty(value = "edifactDelimiterOverrides")
     private List<EdifactDelimiterOverride> edifactDelimiterOverrides;
 
-    /** Creates an instance of EdifactProtocolSettings class. */
+    /**
+     * Creates an instance of EdifactProtocolSettings class.
+     */
     public EdifactProtocolSettings() {
     }
 
     /**
      * Get the validationSettings property: The EDIFACT validation settings.
-     *
+     * 
      * @return the validationSettings value.
      */
     public EdifactValidationSettings validationSettings() {
@@ -93,7 +90,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the validationSettings property: The EDIFACT validation settings.
-     *
+     * 
      * @param validationSettings the validationSettings value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -104,7 +101,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the framingSettings property: The EDIFACT framing settings.
-     *
+     * 
      * @return the framingSettings value.
      */
     public EdifactFramingSettings framingSettings() {
@@ -113,7 +110,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the framingSettings property: The EDIFACT framing settings.
-     *
+     * 
      * @param framingSettings the framingSettings value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -124,7 +121,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the envelopeSettings property: The EDIFACT envelope settings.
-     *
+     * 
      * @return the envelopeSettings value.
      */
     public EdifactEnvelopeSettings envelopeSettings() {
@@ -133,7 +130,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the envelopeSettings property: The EDIFACT envelope settings.
-     *
+     * 
      * @param envelopeSettings the envelopeSettings value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -144,7 +141,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the acknowledgementSettings property: The EDIFACT acknowledgement settings.
-     *
+     * 
      * @return the acknowledgementSettings value.
      */
     public EdifactAcknowledgementSettings acknowledgementSettings() {
@@ -153,7 +150,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the acknowledgementSettings property: The EDIFACT acknowledgement settings.
-     *
+     * 
      * @param acknowledgementSettings the acknowledgementSettings value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -164,7 +161,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the messageFilter property: The EDIFACT message filter.
-     *
+     * 
      * @return the messageFilter value.
      */
     public EdifactMessageFilter messageFilter() {
@@ -173,7 +170,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the messageFilter property: The EDIFACT message filter.
-     *
+     * 
      * @param messageFilter the messageFilter value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -184,7 +181,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the processingSettings property: The EDIFACT processing Settings.
-     *
+     * 
      * @return the processingSettings value.
      */
     public EdifactProcessingSettings processingSettings() {
@@ -193,7 +190,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the processingSettings property: The EDIFACT processing Settings.
-     *
+     * 
      * @param processingSettings the processingSettings value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -204,7 +201,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the envelopeOverrides property: The EDIFACT envelope override settings.
-     *
+     * 
      * @return the envelopeOverrides value.
      */
     public List<EdifactEnvelopeOverride> envelopeOverrides() {
@@ -213,7 +210,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the envelopeOverrides property: The EDIFACT envelope override settings.
-     *
+     * 
      * @param envelopeOverrides the envelopeOverrides value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -224,7 +221,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the messageFilterList property: The EDIFACT message filter list.
-     *
+     * 
      * @return the messageFilterList value.
      */
     public List<EdifactMessageIdentifier> messageFilterList() {
@@ -233,7 +230,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the messageFilterList property: The EDIFACT message filter list.
-     *
+     * 
      * @param messageFilterList the messageFilterList value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -244,7 +241,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the schemaReferences property: The EDIFACT schema references.
-     *
+     * 
      * @return the schemaReferences value.
      */
     public List<EdifactSchemaReference> schemaReferences() {
@@ -253,7 +250,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the schemaReferences property: The EDIFACT schema references.
-     *
+     * 
      * @param schemaReferences the schemaReferences value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -264,7 +261,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the validationOverrides property: The EDIFACT validation override settings.
-     *
+     * 
      * @return the validationOverrides value.
      */
     public List<EdifactValidationOverride> validationOverrides() {
@@ -273,7 +270,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the validationOverrides property: The EDIFACT validation override settings.
-     *
+     * 
      * @param validationOverrides the validationOverrides value to set.
      * @return the EdifactProtocolSettings object itself.
      */
@@ -284,7 +281,7 @@ public final class EdifactProtocolSettings {
 
     /**
      * Get the edifactDelimiterOverrides property: The EDIFACT delimiter override settings.
-     *
+     * 
      * @return the edifactDelimiterOverrides value.
      */
     public List<EdifactDelimiterOverride> edifactDelimiterOverrides() {
@@ -293,67 +290,61 @@ public final class EdifactProtocolSettings {
 
     /**
      * Set the edifactDelimiterOverrides property: The EDIFACT delimiter override settings.
-     *
+     * 
      * @param edifactDelimiterOverrides the edifactDelimiterOverrides value to set.
      * @return the EdifactProtocolSettings object itself.
      */
-    public EdifactProtocolSettings withEdifactDelimiterOverrides(
-        List<EdifactDelimiterOverride> edifactDelimiterOverrides) {
+    public EdifactProtocolSettings
+        withEdifactDelimiterOverrides(List<EdifactDelimiterOverride> edifactDelimiterOverrides) {
         this.edifactDelimiterOverrides = edifactDelimiterOverrides;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property validationSettings in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property validationSettings in model EdifactProtocolSettings"));
         } else {
             validationSettings().validate();
         }
         if (framingSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property framingSettings in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property framingSettings in model EdifactProtocolSettings"));
         } else {
             framingSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property envelopeSettings in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property envelopeSettings in model EdifactProtocolSettings"));
         } else {
             envelopeSettings().validate();
         }
         if (acknowledgementSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property acknowledgementSettings in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property acknowledgementSettings in model EdifactProtocolSettings"));
         } else {
             acknowledgementSettings().validate();
         }
         if (messageFilter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageFilter in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageFilter in model EdifactProtocolSettings"));
         } else {
             messageFilter().validate();
         }
         if (processingSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property processingSettings in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processingSettings in model EdifactProtocolSettings"));
         } else {
             processingSettings().validate();
         }
@@ -364,10 +355,9 @@ public final class EdifactProtocolSettings {
             messageFilterList().forEach(e -> e.validate());
         }
         if (schemaReferences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaReferences in model EdifactProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schemaReferences in model EdifactProtocolSettings"));
         } else {
             schemaReferences().forEach(e -> e.validate());
         }
@@ -380,4 +370,87 @@ public final class EdifactProtocolSettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactProtocolSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("validationSettings", this.validationSettings);
+        jsonWriter.writeJsonField("framingSettings", this.framingSettings);
+        jsonWriter.writeJsonField("envelopeSettings", this.envelopeSettings);
+        jsonWriter.writeJsonField("acknowledgementSettings", this.acknowledgementSettings);
+        jsonWriter.writeJsonField("messageFilter", this.messageFilter);
+        jsonWriter.writeJsonField("processingSettings", this.processingSettings);
+        jsonWriter.writeArrayField("schemaReferences", this.schemaReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("envelopeOverrides", this.envelopeOverrides,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messageFilterList", this.messageFilterList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validationOverrides", this.validationOverrides,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("edifactDelimiterOverrides", this.edifactDelimiterOverrides,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactProtocolSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactProtocolSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactProtocolSettings.
+     */
+    public static EdifactProtocolSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactProtocolSettings deserializedEdifactProtocolSettings = new EdifactProtocolSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationSettings".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.validationSettings = EdifactValidationSettings.fromJson(reader);
+                } else if ("framingSettings".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.framingSettings = EdifactFramingSettings.fromJson(reader);
+                } else if ("envelopeSettings".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.envelopeSettings = EdifactEnvelopeSettings.fromJson(reader);
+                } else if ("acknowledgementSettings".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.acknowledgementSettings
+                        = EdifactAcknowledgementSettings.fromJson(reader);
+                } else if ("messageFilter".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.messageFilter = EdifactMessageFilter.fromJson(reader);
+                } else if ("processingSettings".equals(fieldName)) {
+                    deserializedEdifactProtocolSettings.processingSettings = EdifactProcessingSettings.fromJson(reader);
+                } else if ("schemaReferences".equals(fieldName)) {
+                    List<EdifactSchemaReference> schemaReferences
+                        = reader.readArray(reader1 -> EdifactSchemaReference.fromJson(reader1));
+                    deserializedEdifactProtocolSettings.schemaReferences = schemaReferences;
+                } else if ("envelopeOverrides".equals(fieldName)) {
+                    List<EdifactEnvelopeOverride> envelopeOverrides
+                        = reader.readArray(reader1 -> EdifactEnvelopeOverride.fromJson(reader1));
+                    deserializedEdifactProtocolSettings.envelopeOverrides = envelopeOverrides;
+                } else if ("messageFilterList".equals(fieldName)) {
+                    List<EdifactMessageIdentifier> messageFilterList
+                        = reader.readArray(reader1 -> EdifactMessageIdentifier.fromJson(reader1));
+                    deserializedEdifactProtocolSettings.messageFilterList = messageFilterList;
+                } else if ("validationOverrides".equals(fieldName)) {
+                    List<EdifactValidationOverride> validationOverrides
+                        = reader.readArray(reader1 -> EdifactValidationOverride.fromJson(reader1));
+                    deserializedEdifactProtocolSettings.validationOverrides = validationOverrides;
+                } else if ("edifactDelimiterOverrides".equals(fieldName)) {
+                    List<EdifactDelimiterOverride> edifactDelimiterOverrides
+                        = reader.readArray(reader1 -> EdifactDelimiterOverride.fromJson(reader1));
+                    deserializedEdifactProtocolSettings.edifactDelimiterOverrides = edifactDelimiterOverrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactProtocolSettings;
+        });
+    }
 }

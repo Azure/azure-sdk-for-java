@@ -29,6 +29,12 @@ public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
     private final List<KeyManager> keyManagers = new ArrayList<>();
 
     /**
+     * Creates a new instance of {@link KeyVaultKeyManagerFactory}.
+     */
+    public KeyVaultKeyManagerFactory() {
+    }
+
+    /**
      * Engine init.
      *
      * @param keystore the keystore
@@ -36,11 +42,7 @@ public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
      */
     @Override
     protected void engineInit(KeyStore keystore, char[] password) {
-        LOGGER.entering(
-            "KeyVaultKeyManagerFactory",
-            "engineInit",
-            new Object[] { keystore, password }
-        );
+        LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", new Object[] { keystore, password });
         KeyVaultKeyManager manager = new KeyVaultKeyManager(keystore, password);
         keyManagers.add(manager);
     }

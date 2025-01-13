@@ -14,34 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class PeriodicTimerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeriodicTimerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sourceInfo\":{\"startTime\":\"2021-04-29T01:54:20Z\",\"schedule\":\"pelol\",\"topic\":\"vk\"},\"sinkInfo\":{\"roleId\":\"r\"},\"customContextTag\":\"vu\"}")
-                .toObject(PeriodicTimerProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T01:54:20Z"), model.sourceInfo().startTime());
-        Assertions.assertEquals("pelol", model.sourceInfo().schedule());
-        Assertions.assertEquals("vk", model.sourceInfo().topic());
-        Assertions.assertEquals("r", model.sinkInfo().roleId());
-        Assertions.assertEquals("vu", model.customContextTag());
+        PeriodicTimerProperties model = BinaryData.fromString(
+            "{\"sourceInfo\":{\"startTime\":\"2021-10-26T20:04:04Z\",\"schedule\":\"pikpz\",\"topic\":\"ejzanlfz\"},\"sinkInfo\":{\"roleId\":\"iavrm\"},\"customContextTag\":\"onok\"}")
+            .toObject(PeriodicTimerProperties.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T20:04:04Z"), model.sourceInfo().startTime());
+        Assertions.assertEquals("pikpz", model.sourceInfo().schedule());
+        Assertions.assertEquals("ejzanlfz", model.sourceInfo().topic());
+        Assertions.assertEquals("iavrm", model.sinkInfo().roleId());
+        Assertions.assertEquals("onok", model.customContextTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeriodicTimerProperties model =
-            new PeriodicTimerProperties()
-                .withSourceInfo(
-                    new PeriodicTimerSourceInfo()
-                        .withStartTime(OffsetDateTime.parse("2021-04-29T01:54:20Z"))
-                        .withSchedule("pelol")
-                        .withTopic("vk"))
-                .withSinkInfo(new RoleSinkInfo().withRoleId("r"))
-                .withCustomContextTag("vu");
+        PeriodicTimerProperties model = new PeriodicTimerProperties()
+            .withSourceInfo(new PeriodicTimerSourceInfo().withStartTime(OffsetDateTime.parse("2021-10-26T20:04:04Z"))
+                .withSchedule("pikpz")
+                .withTopic("ejzanlfz"))
+            .withSinkInfo(new RoleSinkInfo().withRoleId("iavrm"))
+            .withCustomContextTag("onok");
         model = BinaryData.fromObject(model).toObject(PeriodicTimerProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T01:54:20Z"), model.sourceInfo().startTime());
-        Assertions.assertEquals("pelol", model.sourceInfo().schedule());
-        Assertions.assertEquals("vk", model.sourceInfo().topic());
-        Assertions.assertEquals("r", model.sinkInfo().roleId());
-        Assertions.assertEquals("vu", model.customContextTag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T20:04:04Z"), model.sourceInfo().startTime());
+        Assertions.assertEquals("pikpz", model.sourceInfo().schedule());
+        Assertions.assertEquals("ejzanlfz", model.sourceInfo().topic());
+        Assertions.assertEquals("iavrm", model.sinkInfo().roleId());
+        Assertions.assertEquals("onok", model.customContextTag());
     }
 }

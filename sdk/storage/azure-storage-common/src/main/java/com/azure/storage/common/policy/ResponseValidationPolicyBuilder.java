@@ -53,10 +53,9 @@ public class ResponseValidationPolicyBuilder {
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
-                throw logger.logExceptionAsError(new RuntimeException(String.format(
-                    "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
-                    headerName, requestHeaderValue, responseHeaderValue
-                )));
+                throw logger.logExceptionAsError(new RuntimeException(
+                    String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
+                        headerName, requestHeaderValue, responseHeaderValue)));
             }
         });
 
@@ -75,10 +74,9 @@ public class ResponseValidationPolicyBuilder {
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(headerName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
-                throw logger.logExceptionAsError(new RuntimeException(String.format(
-                    "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
-                    headerName, requestHeaderValue, responseHeaderValue
-                )));
+                throw logger.logExceptionAsError(new RuntimeException(
+                    String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
+                        headerName, requestHeaderValue, responseHeaderValue)));
             }
         });
 

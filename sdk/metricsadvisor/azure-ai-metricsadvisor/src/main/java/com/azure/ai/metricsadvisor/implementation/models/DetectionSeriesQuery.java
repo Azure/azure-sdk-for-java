@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -107,6 +108,9 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,11 +139,11 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedDetectionSeriesQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionSeriesQuery.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedDetectionSeriesQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionSeriesQuery.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("series".equals(fieldName)) {
                     List<SeriesIdentity> series = reader.readArray(reader1 -> SeriesIdentity.fromJson(reader1));
                     deserializedDetectionSeriesQuery.series = series;

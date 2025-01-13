@@ -28,6 +28,16 @@ public final class Scale implements JsonSerializable<Scale> {
     private Integer maxReplicas;
 
     /*
+     * Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     */
+    private Integer cooldownPeriod;
+
+    /*
+     * Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     */
+    private Integer pollingInterval;
+
+    /*
      * Scaling rules.
      */
     private List<ScaleRule> rules;
@@ -79,6 +89,46 @@ public final class Scale implements JsonSerializable<Scale> {
     }
 
     /**
+     * Get the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     * 
+     * @return the cooldownPeriod value.
+     */
+    public Integer cooldownPeriod() {
+        return this.cooldownPeriod;
+    }
+
+    /**
+     * Set the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     * 
+     * @param cooldownPeriod the cooldownPeriod value to set.
+     * @return the Scale object itself.
+     */
+    public Scale withCooldownPeriod(Integer cooldownPeriod) {
+        this.cooldownPeriod = cooldownPeriod;
+        return this;
+    }
+
+    /**
+     * Get the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     * 
+     * @return the pollingInterval value.
+     */
+    public Integer pollingInterval() {
+        return this.pollingInterval;
+    }
+
+    /**
+     * Set the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     * 
+     * @param pollingInterval the pollingInterval value to set.
+     * @return the Scale object itself.
+     */
+    public Scale withPollingInterval(Integer pollingInterval) {
+        this.pollingInterval = pollingInterval;
+        return this;
+    }
+
+    /**
      * Get the rules property: Scaling rules.
      * 
      * @return the rules value.
@@ -117,6 +167,8 @@ public final class Scale implements JsonSerializable<Scale> {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("minReplicas", this.minReplicas);
         jsonWriter.writeNumberField("maxReplicas", this.maxReplicas);
+        jsonWriter.writeNumberField("cooldownPeriod", this.cooldownPeriod);
+        jsonWriter.writeNumberField("pollingInterval", this.pollingInterval);
         jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -140,6 +192,10 @@ public final class Scale implements JsonSerializable<Scale> {
                     deserializedScale.minReplicas = reader.getNullable(JsonReader::getInt);
                 } else if ("maxReplicas".equals(fieldName)) {
                     deserializedScale.maxReplicas = reader.getNullable(JsonReader::getInt);
+                } else if ("cooldownPeriod".equals(fieldName)) {
+                    deserializedScale.cooldownPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("pollingInterval".equals(fieldName)) {
+                    deserializedScale.pollingInterval = reader.getNullable(JsonReader::getInt);
                 } else if ("rules".equals(fieldName)) {
                     List<ScaleRule> rules = reader.readArray(reader1 -> ScaleRule.fromJson(reader1));
                     deserializedScale.rules = rules;

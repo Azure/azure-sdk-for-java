@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeAnalyticsAccountBasicInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Data Lake Analytics account list information. */
+/**
+ * Data Lake Analytics account list information.
+ */
 @Immutable
-public final class DataLakeAnalyticsAccountListResult {
+public final class DataLakeAnalyticsAccountListResult implements JsonSerializable<DataLakeAnalyticsAccountListResult> {
     /*
      * The results of the list operation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataLakeAnalyticsAccountBasicInner> value;
 
     /*
      * The current number of data lake analytics accounts under this subscription.
      */
-    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DataLakeAnalyticsAccountListResult class. */
+    /**
+     * Creates an instance of DataLakeAnalyticsAccountListResult class.
+     */
     public DataLakeAnalyticsAccountListResult() {
     }
 
     /**
      * Get the value property: The results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<DataLakeAnalyticsAccountBasicInner> value() {
@@ -45,7 +50,7 @@ public final class DataLakeAnalyticsAccountListResult {
 
     /**
      * Get the count property: The current number of data lake analytics accounts under this subscription.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -54,7 +59,7 @@ public final class DataLakeAnalyticsAccountListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +68,54 @@ public final class DataLakeAnalyticsAccountListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeAnalyticsAccountListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeAnalyticsAccountListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataLakeAnalyticsAccountListResult.
+     */
+    public static DataLakeAnalyticsAccountListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeAnalyticsAccountListResult deserializedDataLakeAnalyticsAccountListResult
+                = new DataLakeAnalyticsAccountListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataLakeAnalyticsAccountBasicInner> value
+                        = reader.readArray(reader1 -> DataLakeAnalyticsAccountBasicInner.fromJson(reader1));
+                    deserializedDataLakeAnalyticsAccountListResult.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountListResult.count = reader.getNullable(JsonReader::getInt);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeAnalyticsAccountListResult;
+        });
     }
 }

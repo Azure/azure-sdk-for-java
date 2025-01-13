@@ -53,7 +53,8 @@ public final class DeidentificationAsyncClient {
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -94,7 +95,8 @@ public final class DeidentificationAsyncClient {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -118,7 +120,8 @@ public final class DeidentificationAsyncClient {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -159,11 +162,13 @@ public final class DeidentificationAsyncClient {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -204,7 +209,8 @@ public final class DeidentificationAsyncClient {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -236,7 +242,8 @@ public final class DeidentificationAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -277,7 +284,8 @@ public final class DeidentificationAsyncClient {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -306,7 +314,8 @@ public final class DeidentificationAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -328,7 +337,8 @@ public final class DeidentificationAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -355,7 +365,8 @@ public final class DeidentificationAsyncClient {
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -396,7 +407,8 @@ public final class DeidentificationAsyncClient {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -438,18 +450,21 @@ public final class DeidentificationAsyncClient {
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     outputText: String (Optional)
      *     taggerResult (Optional): {
@@ -470,7 +485,8 @@ public final class DeidentificationAsyncClient {
      *         etag: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

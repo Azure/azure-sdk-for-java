@@ -5,30 +5,47 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialAnalysisPersonZoneCrossingEventType. */
+/**
+ * The event type.
+ */
 public final class SpatialAnalysisPersonZoneCrossingEventType
-        extends ExpandableStringEnum<SpatialAnalysisPersonZoneCrossingEventType> {
-    /** Static value zoneCrossing for SpatialAnalysisPersonZoneCrossingEventType. */
+    extends ExpandableStringEnum<SpatialAnalysisPersonZoneCrossingEventType> {
+    /**
+     * Zone crossing event type.
+     */
     public static final SpatialAnalysisPersonZoneCrossingEventType ZONE_CROSSING = fromString("zoneCrossing");
 
-    /** Static value zoneDwellTime for SpatialAnalysisPersonZoneCrossingEventType. */
+    /**
+     * Zone dwell time event type.
+     */
     public static final SpatialAnalysisPersonZoneCrossingEventType ZONE_DWELL_TIME = fromString("zoneDwellTime");
 
     /**
+     * Creates a new instance of SpatialAnalysisPersonZoneCrossingEventType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialAnalysisPersonZoneCrossingEventType() {
+    }
+
+    /**
      * Creates or finds a SpatialAnalysisPersonZoneCrossingEventType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SpatialAnalysisPersonZoneCrossingEventType.
      */
-    @JsonCreator
     public static SpatialAnalysisPersonZoneCrossingEventType fromString(String name) {
         return fromString(name, SpatialAnalysisPersonZoneCrossingEventType.class);
     }
 
-    /** @return known SpatialAnalysisPersonZoneCrossingEventType values. */
+    /**
+     * Gets known SpatialAnalysisPersonZoneCrossingEventType values.
+     * 
+     * @return known SpatialAnalysisPersonZoneCrossingEventType values.
+     */
     public static Collection<SpatialAnalysisPersonZoneCrossingEventType> values() {
         return values(SpatialAnalysisPersonZoneCrossingEventType.class);
     }

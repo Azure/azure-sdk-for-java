@@ -7,33 +7,53 @@ package com.azure.resourcemanager.education.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.StudentLabStatus;
 import com.azure.resourcemanager.education.models.StudentRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Student details. */
+/**
+ * Student details.
+ */
 @Fluent
 public final class StudentDetailsInner extends ProxyResource {
     /*
      * Get student response properties.
      */
-    @JsonProperty(value = "properties")
     private StudentProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of StudentDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StudentDetailsInner class.
+     */
     public StudentDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Get student response properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StudentProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,8 +70,38 @@ public final class StudentDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the firstName property: First Name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -60,7 +110,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the firstName property: First Name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -74,7 +124,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the lastName property: Last Name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -83,7 +133,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the lastName property: Last Name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -97,7 +147,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the email property: Student Email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -106,7 +156,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the email property: Student Email.
-     *
+     * 
      * @param email the email value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -120,7 +170,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the role property: Student Role.
-     *
+     * 
      * @return the role value.
      */
     public StudentRole role() {
@@ -129,7 +179,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the role property: Student Role.
-     *
+     * 
      * @param role the role value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -143,7 +193,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the budget property: Student Budget.
-     *
+     * 
      * @return the budget value.
      */
     public Amount budget() {
@@ -152,7 +202,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the budget property: Student Budget.
-     *
+     * 
      * @param budget the budget value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -166,7 +216,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -175,7 +225,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the expirationDate property: Date this student is set to expire from the lab.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -184,7 +234,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the expirationDate property: Date this student is set to expire from the lab.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -198,7 +248,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the status property: Student Lab Status.
-     *
+     * 
      * @return the status value.
      */
     public StudentLabStatus status() {
@@ -207,7 +257,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the effectiveDate property: Date student was added to the lab.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -216,7 +266,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the subscriptionAlias property: Subscription alias.
-     *
+     * 
      * @return the subscriptionAlias value.
      */
     public String subscriptionAlias() {
@@ -225,7 +275,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the subscriptionAlias property: Subscription alias.
-     *
+     * 
      * @param subscriptionAlias the subscriptionAlias value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -239,7 +289,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Get the subscriptionInviteLastSentDate property: subscription invite last sent date.
-     *
+     * 
      * @return the subscriptionInviteLastSentDate value.
      */
     public OffsetDateTime subscriptionInviteLastSentDate() {
@@ -248,7 +298,7 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Set the subscriptionInviteLastSentDate property: subscription invite last sent date.
-     *
+     * 
      * @param subscriptionInviteLastSentDate the subscriptionInviteLastSentDate value to set.
      * @return the StudentDetailsInner object itself.
      */
@@ -262,12 +312,57 @@ public final class StudentDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StudentDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StudentDetailsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StudentDetailsInner.
+     */
+    public static StudentDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StudentDetailsInner deserializedStudentDetailsInner = new StudentDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStudentDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStudentDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStudentDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStudentDetailsInner.innerProperties = StudentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStudentDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStudentDetailsInner;
+        });
     }
 }

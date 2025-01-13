@@ -5,45 +5,58 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the Linux operating system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list of supported
  * Linux distributions, see [Linux on Azure-Endorsed
  * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "osType")
-@JsonTypeName("Linux")
 @Fluent
 public final class LinuxConfiguration extends OSConfiguration {
     /*
+     * The OS Type
+     */
+    private OSType osType = OSType.LINUX;
+
+    /*
      * Specifies whether password authentication should be disabled.
      */
-    @JsonProperty(value = "disablePasswordAuthentication")
     private Boolean disablePasswordAuthentication;
 
     /*
      * Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair'
      * instead)
      */
-    @JsonProperty(value = "ssh")
     private SshConfiguration ssh;
 
     /*
      * The SSH Key-pair used to authenticate with the VM's.
      */
-    @JsonProperty(value = "sshKeyPair")
     private SshKeyPair sshKeyPair;
 
-    /** Creates an instance of LinuxConfiguration class. */
+    /**
+     * Creates an instance of LinuxConfiguration class.
+     */
     public LinuxConfiguration() {
     }
 
     /**
+     * Get the osType property: The OS Type.
+     * 
+     * @return the osType value.
+     */
+    @Override
+    public OSType osType() {
+        return this.osType;
+    }
+
+    /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @return the disablePasswordAuthentication value.
      */
     public Boolean disablePasswordAuthentication() {
@@ -52,7 +65,7 @@ public final class LinuxConfiguration extends OSConfiguration {
 
     /**
      * Set the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -64,7 +77,7 @@ public final class LinuxConfiguration extends OSConfiguration {
     /**
      * Get the ssh property: Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please
      * use 'sshKeyPair' instead).
-     *
+     * 
      * @return the ssh value.
      */
     public SshConfiguration ssh() {
@@ -74,7 +87,7 @@ public final class LinuxConfiguration extends OSConfiguration {
     /**
      * Set the ssh property: Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please
      * use 'sshKeyPair' instead).
-     *
+     * 
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -85,7 +98,7 @@ public final class LinuxConfiguration extends OSConfiguration {
 
     /**
      * Get the sshKeyPair property: The SSH Key-pair used to authenticate with the VM's.
-     *
+     * 
      * @return the sshKeyPair value.
      */
     public SshKeyPair sshKeyPair() {
@@ -94,7 +107,7 @@ public final class LinuxConfiguration extends OSConfiguration {
 
     /**
      * Set the sshKeyPair property: The SSH Key-pair used to authenticate with the VM's.
-     *
+     * 
      * @param sshKeyPair the sshKeyPair value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -105,17 +118,62 @@ public final class LinuxConfiguration extends OSConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (ssh() != null) {
             ssh().validate();
         }
         if (sshKeyPair() != null) {
             sshKeyPair().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeBooleanField("disablePasswordAuthentication", this.disablePasswordAuthentication);
+        jsonWriter.writeJsonField("ssh", this.ssh);
+        jsonWriter.writeJsonField("sshKeyPair", this.sshKeyPair);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxConfiguration.
+     */
+    public static LinuxConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxConfiguration deserializedLinuxConfiguration = new LinuxConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedLinuxConfiguration.osType = OSType.fromString(reader.getString());
+                } else if ("disablePasswordAuthentication".equals(fieldName)) {
+                    deserializedLinuxConfiguration.disablePasswordAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ssh".equals(fieldName)) {
+                    deserializedLinuxConfiguration.ssh = SshConfiguration.fromJson(reader);
+                } else if ("sshKeyPair".equals(fieldName)) {
+                    deserializedLinuxConfiguration.sshKeyPair = SshKeyPair.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxConfiguration;
+        });
     }
 }

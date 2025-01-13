@@ -11,7 +11,8 @@ import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
 public final class CustomFormSubmodelHelper {
     private static CustomFormSubmodelAccessor accessor;
 
-    private CustomFormSubmodelHelper() { }
+    private CustomFormSubmodelHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link CustomFormSubmodel} instance.

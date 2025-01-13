@@ -15,7 +15,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class JobCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobCreateParameters.class);
 
     /*
      * Scheduling priority associated with the job. Possible values: low,

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 
-/** Resource collection API of SqlPoolMaintenanceWindows. */
+/**
+ * Resource collection API of SqlPoolMaintenanceWindows.
+ */
 public interface SqlPoolMaintenanceWindows {
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -23,16 +25,12 @@ public interface SqlPoolMaintenanceWindows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's Maintenance Windows along with {@link Response}.
      */
-    Response<MaintenanceWindows> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        Context context);
+    Response<MaintenanceWindows> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, Context context);
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -42,12 +40,12 @@ public interface SqlPoolMaintenanceWindows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's Maintenance Windows.
      */
-    MaintenanceWindows get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName);
+    MaintenanceWindows get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName);
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -59,17 +57,12 @@ public interface SqlPoolMaintenanceWindows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context);
+    Response<Void> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -79,10 +72,6 @@ public interface SqlPoolMaintenanceWindows {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters);
+    void createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters);
 }

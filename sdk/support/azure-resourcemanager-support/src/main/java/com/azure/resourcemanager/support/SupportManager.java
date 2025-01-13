@@ -11,15 +11,15 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -28,10 +28,10 @@ import com.azure.resourcemanager.support.implementation.ChatTranscriptsImpl;
 import com.azure.resourcemanager.support.implementation.ChatTranscriptsNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.CommunicationsImpl;
 import com.azure.resourcemanager.support.implementation.CommunicationsNoSubscriptionsImpl;
-import com.azure.resourcemanager.support.implementation.FilesImpl;
-import com.azure.resourcemanager.support.implementation.FilesNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.FileWorkspacesImpl;
 import com.azure.resourcemanager.support.implementation.FileWorkspacesNoSubscriptionsImpl;
+import com.azure.resourcemanager.support.implementation.FilesImpl;
+import com.azure.resourcemanager.support.implementation.FilesNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.MicrosoftSupportBuilder;
 import com.azure.resourcemanager.support.implementation.OperationsImpl;
 import com.azure.resourcemanager.support.implementation.ProblemClassificationsImpl;
@@ -42,10 +42,10 @@ import com.azure.resourcemanager.support.models.ChatTranscripts;
 import com.azure.resourcemanager.support.models.ChatTranscriptsNoSubscriptions;
 import com.azure.resourcemanager.support.models.Communications;
 import com.azure.resourcemanager.support.models.CommunicationsNoSubscriptions;
-import com.azure.resourcemanager.support.models.Files;
-import com.azure.resourcemanager.support.models.FilesNoSubscriptions;
 import com.azure.resourcemanager.support.models.FileWorkspaces;
 import com.azure.resourcemanager.support.models.FileWorkspacesNoSubscriptions;
+import com.azure.resourcemanager.support.models.Files;
+import com.azure.resourcemanager.support.models.FilesNoSubscriptions;
 import com.azure.resourcemanager.support.models.Operations;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
 import com.azure.resourcemanager.support.models.Services;
@@ -253,7 +253,7 @@ public final class SupportManager {
                 .append("-")
                 .append("com.azure.resourcemanager.support")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -286,7 +286,7 @@ public final class SupportManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));

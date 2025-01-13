@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Identifies the type of validation request. */
+/**
+ * Identifies the type of validation request.
+ */
 public enum ValidationInputDiscriminator {
-    /** Enum value ValidateAddress. */
+    /**
+     * Enum value ValidateAddress.
+     */
     VALIDATE_ADDRESS("ValidateAddress"),
 
-    /** Enum value ValidateSubscriptionIsAllowedToCreateJob. */
+    /**
+     * Enum value ValidateSubscriptionIsAllowedToCreateJob.
+     */
     VALIDATE_SUBSCRIPTION_IS_ALLOWED_TO_CREATE_JOB("ValidateSubscriptionIsAllowedToCreateJob"),
 
-    /** Enum value ValidatePreferences. */
+    /**
+     * Enum value ValidatePreferences.
+     */
     VALIDATE_PREFERENCES("ValidatePreferences"),
 
-    /** Enum value ValidateCreateOrderLimit. */
+    /**
+     * Enum value ValidateCreateOrderLimit.
+     */
     VALIDATE_CREATE_ORDER_LIMIT("ValidateCreateOrderLimit"),
 
-    /** Enum value ValidateSkuAvailability. */
+    /**
+     * Enum value ValidateSkuAvailability.
+     */
     VALIDATE_SKU_AVAILABILITY("ValidateSkuAvailability"),
 
-    /** Enum value ValidateDataTransferDetails. */
+    /**
+     * Enum value ValidateDataTransferDetails.
+     */
     VALIDATE_DATA_TRANSFER_DETAILS("ValidateDataTransferDetails");
 
-    /** The actual serialized value for a ValidationInputDiscriminator instance. */
+    /**
+     * The actual serialized value for a ValidationInputDiscriminator instance.
+     */
     private final String value;
 
     ValidationInputDiscriminator(String value) {
@@ -36,11 +49,10 @@ public enum ValidationInputDiscriminator {
 
     /**
      * Parses a serialized value to a ValidationInputDiscriminator instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ValidationInputDiscriminator object, or null if unable to parse.
      */
-    @JsonCreator
     public static ValidationInputDiscriminator fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum ValidationInputDiscriminator {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

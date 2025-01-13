@@ -30,22 +30,28 @@ import com.azure.resourcemanager.automation.fluent.models.JobStreamInner;
 import com.azure.resourcemanager.automation.fluent.models.JobStreamListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobStreamsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobStreamsClient.
+ */
 public final class JobStreamsClientImpl implements JobStreamsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobStreamsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of JobStreamsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobStreamsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(JobStreamsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JobStreamsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,58 +61,43 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientJobS")
-    private interface JobStreamsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/jobs/{jobName}/streams/{jobStreamId}")
-        @ExpectedResponses({200})
+    public interface JobStreamsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams/{jobStreamId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStreamInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobStreamInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobStreamId") String jobStreamId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("clientRequestId") String clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("jobName") String jobName,
+            @PathParam("jobStreamId") String jobStreamId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("clientRequestId") String clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/jobs/{jobName}/streams")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStreamListResultInner>> listByJob(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobStreamListResultInner>> listByJob(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("clientRequestId") String clientRequestId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("jobName") String jobName,
+            @QueryParam("$filter") String filter, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("clientRequestId") String clientRequestId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobStreamListResultInner>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("clientRequestId") String clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("clientRequestId") String clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -118,23 +109,15 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobStreamInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId) {
+    private Mono<Response<JobStreamInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String jobName, String jobStreamId, String clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -154,25 +137,14 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            jobName,
-                            jobStreamId,
-                            apiVersion,
-                            clientRequestId,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    automationAccountName, jobName, jobStreamId, apiVersion, clientRequestId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -185,24 +157,15 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobStreamInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId,
-        Context context) {
+    private Mono<Response<JobStreamInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String jobName, String jobStreamId, String clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -221,47 +184,13 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                jobName,
-                jobStreamId,
-                apiVersion,
-                clientRequestId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, jobName, jobStreamId, apiVersion, clientRequestId, accept, context);
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
-     * @param clientRequestId Identifies this specific client request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobStreamInner> getAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -272,8 +201,8 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return definition of the job stream on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobStreamInner> getAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String jobStreamId) {
+    private Mono<JobStreamInner> getAsync(String resourceGroupName, String automationAccountName, String jobName,
+        String jobStreamId) {
         final String clientRequestId = null;
         return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -281,26 +210,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStreamInner get(
-        String resourceGroupName, String automationAccountName, String jobName, String jobStreamId) {
-        final String clientRequestId = null;
-        return getAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId).block();
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -313,21 +223,35 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return definition of the job stream along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobStreamInner> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId, context)
-            .block();
+    public Response<JobStreamInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String jobName, String jobStreamId, String clientRequestId, Context context) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId,
+            context).block();
+    }
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStreamInner get(String resourceGroupName, String automationAccountName, String jobName,
+        String jobStreamId) {
+        final String clientRequestId = null;
+        return getWithResponse(resourceGroupName, automationAccountName, jobName, jobStreamId, clientRequestId,
+            Context.NONE).getValue();
     }
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -337,16 +261,14 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobStreamInner>> listByJobSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String filter, String clientRequestId) {
+    private Mono<PagedResponse<JobStreamInner>> listByJobSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String jobName, String filter, String clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,43 +282,23 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByJob(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            jobName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            clientRequestId,
-                            accept,
-                            context))
-            .<PagedResponse<JobStreamInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByJob(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    jobName, filter, this.client.getSubscriptionId(), apiVersion, clientRequestId, accept, context))
+            .<PagedResponse<JobStreamInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -407,21 +309,14 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobStreamInner>> listByJobSinglePageAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String filter,
-        String clientRequestId,
-        Context context) {
+    private Mono<PagedResponse<JobStreamInner>> listByJobSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String jobName, String filter, String clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,40 +330,22 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJob(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                jobName,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                clientRequestId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByJob(this.client.getEndpoint(), resourceGroupName, automationAccountName, jobName, filter,
+                this.client.getSubscriptionId(), apiVersion, clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -480,8 +357,8 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return the response model for the list job stream operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobStreamInner> listByJobAsync(
-        String resourceGroupName, String automationAccountName, String jobName, String filter, String clientRequestId) {
+    private PagedFlux<JobStreamInner> listByJobAsync(String resourceGroupName, String automationAccountName,
+        String jobName, String filter, String clientRequestId) {
         return new PagedFlux<>(
             () -> listByJobSinglePageAsync(resourceGroupName, automationAccountName, jobName, filter, clientRequestId),
             nextLink -> listByJobNextSinglePageAsync(nextLink, clientRequestId));
@@ -489,7 +366,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -499,8 +376,8 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return the response model for the list job stream operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobStreamInner> listByJobAsync(
-        String resourceGroupName, String automationAccountName, String jobName) {
+    private PagedFlux<JobStreamInner> listByJobAsync(String resourceGroupName, String automationAccountName,
+        String jobName) {
         final String filter = null;
         final String clientRequestId = null;
         return new PagedFlux<>(
@@ -510,7 +387,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -523,23 +400,15 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return the response model for the list job stream operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobStreamInner> listByJobAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String filter,
-        String clientRequestId,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByJobSinglePageAsync(
-                    resourceGroupName, automationAccountName, jobName, filter, clientRequestId, context),
-            nextLink -> listByJobNextSinglePageAsync(nextLink, clientRequestId, context));
+    private PagedFlux<JobStreamInner> listByJobAsync(String resourceGroupName, String automationAccountName,
+        String jobName, String filter, String clientRequestId, Context context) {
+        return new PagedFlux<>(() -> listByJobSinglePageAsync(resourceGroupName, automationAccountName, jobName, filter,
+            clientRequestId, context), nextLink -> listByJobNextSinglePageAsync(nextLink, clientRequestId, context));
     }
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -549,8 +418,8 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return the response model for the list job stream operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStreamInner> listByJob(
-        String resourceGroupName, String automationAccountName, String jobName) {
+    public PagedIterable<JobStreamInner> listByJob(String resourceGroupName, String automationAccountName,
+        String jobName) {
         final String filter = null;
         final String clientRequestId = null;
         return new PagedIterable<>(
@@ -559,7 +428,7 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -572,28 +441,22 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
      * @return the response model for the list job stream operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStreamInner> listByJob(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String filter,
-        String clientRequestId,
-        Context context) {
+    public PagedIterable<JobStreamInner> listByJob(String resourceGroupName, String automationAccountName,
+        String jobName, String filter, String clientRequestId, Context context) {
         return new PagedIterable<>(
             listByJobAsync(resourceGroupName, automationAccountName, jobName, filter, clientRequestId, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId Identifies this specific client request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStreamInner>> listByJobNextSinglePageAsync(String nextLink, String clientRequestId) {
@@ -601,64 +464,44 @@ public final class JobStreamsClientImpl implements JobStreamsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByJobNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
-            .<PagedResponse<JobStreamInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobStreamInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobStreamInner>> listByJobNextSinglePageAsync(
-        String nextLink, String clientRequestId, Context context) {
+    private Mono<PagedResponse<JobStreamInner>> listByJobNextSinglePageAsync(String nextLink, String clientRequestId,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByJobNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByJobNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -269,7 +269,8 @@ public class RouteDirectionsOptions extends BaseRouteOptions<RouteDirectionsOpti
      * @param routeRepresentationForBestOrder {@code RouteRepresentationForBestOrder}
      * @return a reference to this {@code RouteDirectionsOptions}
      */
-    public RouteDirectionsOptions setRouteRepresentationForBestOrder(RouteRepresentationForBestOrder routeRepresentationForBestOrder) {
+    public RouteDirectionsOptions
+        setRouteRepresentationForBestOrder(RouteRepresentationForBestOrder routeRepresentationForBestOrder) {
         this.routeRepresentationForBestOrder = routeRepresentationForBestOrder;
         return this;
     }

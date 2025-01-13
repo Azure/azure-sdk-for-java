@@ -389,8 +389,6 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     }
 
     /**
-     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -420,8 +418,6 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     }
 
     /**
-     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

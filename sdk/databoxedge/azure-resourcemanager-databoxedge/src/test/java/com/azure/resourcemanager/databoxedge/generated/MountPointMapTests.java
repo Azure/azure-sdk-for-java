@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MountPointMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MountPointMap model =
-            BinaryData
-                .fromString(
-                    "{\"shareId\":\"vhqlkthumaqo\",\"roleId\":\"gycdu\",\"mountPoint\":\"r\",\"roleType\":\"Cognitive\"}")
-                .toObject(MountPointMap.class);
-        Assertions.assertEquals("vhqlkthumaqo", model.shareId());
+        MountPointMap model = BinaryData.fromString(
+            "{\"shareId\":\"opcjwvnhd\",\"roleId\":\"wmgxcxrsl\",\"mountPoint\":\"utwu\",\"roleType\":\"Functions\"}")
+            .toObject(MountPointMap.class);
+        Assertions.assertEquals("opcjwvnhd", model.shareId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MountPointMap model = new MountPointMap().withShareId("vhqlkthumaqo");
+        MountPointMap model = new MountPointMap().withShareId("opcjwvnhd");
         model = BinaryData.fromObject(model).toObject(MountPointMap.class);
-        Assertions.assertEquals("vhqlkthumaqo", model.shareId());
+        Assertions.assertEquals("opcjwvnhd", model.shareId());
     }
 }

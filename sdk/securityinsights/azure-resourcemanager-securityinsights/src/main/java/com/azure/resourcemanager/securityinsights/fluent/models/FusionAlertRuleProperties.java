@@ -5,81 +5,72 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.FusionScenarioExclusionPattern;
-import com.azure.resourcemanager.securityinsights.models.FusionSourceSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Fusion alert rule base property bag. */
+/**
+ * Fusion alert rule base property bag.
+ */
 @Fluent
-public final class FusionAlertRuleProperties {
+public final class FusionAlertRuleProperties implements JsonSerializable<FusionAlertRuleProperties> {
     /*
      * The Name of the alert rule template used to create this rule.
      */
-    @JsonProperty(value = "alertRuleTemplateName", required = true)
     private String alertRuleTemplateName;
 
     /*
      * The description of the alert rule.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The display name for alerts created by this alert rule.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Determines whether this alert rule is enabled or disabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
-
-    /*
-     * Configuration for all supported source signals in fusion detection.
-     */
-    @JsonProperty(value = "sourceSettings")
-    private List<FusionSourceSettings> sourceSettings;
-
-    /*
-     * Configuration to exclude scenarios in fusion detection.
-     */
-    @JsonProperty(value = "scenarioExclusionPatterns")
-    private List<FusionScenarioExclusionPattern> scenarioExclusionPatterns;
 
     /*
      * The last time that this alert has been modified.
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
      * The tactics of the alert rule
      */
-    @JsonProperty(value = "tactics", access = JsonProperty.Access.WRITE_ONLY)
     private List<AttackTactic> tactics;
 
     /*
      * The techniques of the alert rule
      */
-    @JsonProperty(value = "techniques", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> techniques;
 
     /**
+     * Creates an instance of FusionAlertRuleProperties class.
+     */
+    public FusionAlertRuleProperties() {
+    }
+
+    /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @return the alertRuleTemplateName value.
      */
     public String alertRuleTemplateName() {
@@ -88,7 +79,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Set the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @param alertRuleTemplateName the alertRuleTemplateName value to set.
      * @return the FusionAlertRuleProperties object itself.
      */
@@ -99,7 +90,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the description property: The description of the alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -108,7 +99,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -117,7 +108,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -126,7 +117,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Set the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FusionAlertRuleProperties object itself.
      */
@@ -136,49 +127,8 @@ public final class FusionAlertRuleProperties {
     }
 
     /**
-     * Get the sourceSettings property: Configuration for all supported source signals in fusion detection.
-     *
-     * @return the sourceSettings value.
-     */
-    public List<FusionSourceSettings> sourceSettings() {
-        return this.sourceSettings;
-    }
-
-    /**
-     * Set the sourceSettings property: Configuration for all supported source signals in fusion detection.
-     *
-     * @param sourceSettings the sourceSettings value to set.
-     * @return the FusionAlertRuleProperties object itself.
-     */
-    public FusionAlertRuleProperties withSourceSettings(List<FusionSourceSettings> sourceSettings) {
-        this.sourceSettings = sourceSettings;
-        return this;
-    }
-
-    /**
-     * Get the scenarioExclusionPatterns property: Configuration to exclude scenarios in fusion detection.
-     *
-     * @return the scenarioExclusionPatterns value.
-     */
-    public List<FusionScenarioExclusionPattern> scenarioExclusionPatterns() {
-        return this.scenarioExclusionPatterns;
-    }
-
-    /**
-     * Set the scenarioExclusionPatterns property: Configuration to exclude scenarios in fusion detection.
-     *
-     * @param scenarioExclusionPatterns the scenarioExclusionPatterns value to set.
-     * @return the FusionAlertRuleProperties object itself.
-     */
-    public FusionAlertRuleProperties withScenarioExclusionPatterns(
-        List<FusionScenarioExclusionPattern> scenarioExclusionPatterns) {
-        this.scenarioExclusionPatterns = scenarioExclusionPatterns;
-        return this;
-    }
-
-    /**
      * Get the lastModifiedUtc property: The last time that this alert has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -187,7 +137,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -196,7 +146,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -205,7 +155,7 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -214,23 +164,72 @@ public final class FusionAlertRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alertRuleTemplateName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertRuleTemplateName in model FusionAlertRuleProperties"));
-        }
-        if (sourceSettings() != null) {
-            sourceSettings().forEach(e -> e.validate());
-        }
-        if (scenarioExclusionPatterns() != null) {
-            scenarioExclusionPatterns().forEach(e -> e.validate());
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertRuleTemplateName in model FusionAlertRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FusionAlertRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alertRuleTemplateName", this.alertRuleTemplateName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionAlertRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionAlertRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FusionAlertRuleProperties.
+     */
+    public static FusionAlertRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionAlertRuleProperties deserializedFusionAlertRuleProperties = new FusionAlertRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRuleTemplateName".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.alertRuleTemplateName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.enabled = reader.getBoolean();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.displayName = reader.getString();
+                } else if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("severity".equals(fieldName)) {
+                    deserializedFusionAlertRuleProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedFusionAlertRuleProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFusionAlertRuleProperties.techniques = techniques;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionAlertRuleProperties;
+        });
+    }
 }

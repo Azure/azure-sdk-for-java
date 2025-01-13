@@ -8,18 +8,12 @@ parameters:
 - name: SDKType
   type: string
   default: client
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 - name: BuildParallelization
   type: string
   default: '2C'
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
-- name: JavadocSafeJavaBuildVersion
-  type: string
-  default: $(JavadocSafeJavaBuildVersion)
 - name: TestPipeline
   type: boolean
   default: false
@@ -126,14 +120,14 @@ extends:
                 JdkVersion: ${{ parameters.JavaBuildVersion }}
 
             - task: Maven@4
-              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
+              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:
                 mavenPomFile: ClientFromSourcePom.xml
                 goals: 'deploy'
                 options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
-                jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }}
+                jdkVersionOption: ${{ parameters.JavaBuildVersion }}
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
 
@@ -165,7 +159,6 @@ extends:
                 filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
                 arguments: >
                   -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
                 pwsh: true
                 workingDirectory: $(Pipeline.Workspace)
               displayName: Update package properties with namespaces
@@ -259,6 +252,11 @@ extends:
                 filePath: eng/versioning/pom_file_version_scanner.ps1
                 arguments: -Debug:$$(IsDebug)
 
+            - task: PythonScript@0
+              displayName: 'Verify version text files'
+              inputs:
+                scriptPath: eng/versioning/find_unused_dependencies.py
+
             # Do all the verifications for all the artifacts after the sparse-checkout.
             - pwsh: |
                 $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
@@ -326,4 +324,3 @@ extends:
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
             ArtifactName: packages
-            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}

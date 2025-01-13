@@ -30,14 +30,14 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
     public PagedIterable<Frontend> listByTrafficController(String resourceGroupName, String trafficControllerName) {
         PagedIterable<FrontendInner> inner
             = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
-        return Utils.mapPage(inner, inner1 -> new FrontendImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontendImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Frontend> listByTrafficController(String resourceGroupName, String trafficControllerName,
         Context context) {
         PagedIterable<FrontendInner> inner
             = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName, context);
-        return Utils.mapPage(inner, inner1 -> new FrontendImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontendImpl(inner1, this.manager()));
     }
 
     public Response<Frontend> getWithResponse(String resourceGroupName, String trafficControllerName,
@@ -70,17 +70,17 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
     }
 
     public Frontend getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
+        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
-        String frontendName = Utils.getValueFromIdByName(id, "frontends");
+        String frontendName = ResourceManagerUtils.getValueFromIdByName(id, "frontends");
         if (frontendName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'frontends'.", id)));
@@ -89,17 +89,17 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
     }
 
     public Response<Frontend> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
+        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
-        String frontendName = Utils.getValueFromIdByName(id, "frontends");
+        String frontendName = ResourceManagerUtils.getValueFromIdByName(id, "frontends");
         if (frontendName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'frontends'.", id)));
@@ -108,17 +108,17 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
+        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
-        String frontendName = Utils.getValueFromIdByName(id, "frontends");
+        String frontendName = ResourceManagerUtils.getValueFromIdByName(id, "frontends");
         if (frontendName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'frontends'.", id)));
@@ -127,17 +127,17 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
+        String trafficControllerName = ResourceManagerUtils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
-        String frontendName = Utils.getValueFromIdByName(id, "frontends");
+        String frontendName = ResourceManagerUtils.getValueFromIdByName(id, "frontends");
         if (frontendName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'frontends'.", id)));

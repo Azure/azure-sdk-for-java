@@ -15,6 +15,8 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_PROTOCOL_V2 = "2.0";
 
+    static final String ENCRYPTION_PROTOCOL_V2_1 = "2.1";
+
     static final String AGENT_METADATA_KEY = "EncryptionLibrary";
 
     static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
@@ -48,11 +50,10 @@ final class CryptographyConstants {
 
     static final int AES_KEY_SIZE_BITS = 256;
 
-    static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
-        + "that it is not encrypted.";
+    static final String DECRYPT_UNENCRYPTED_BLOB
+        = "Encryption client is being used but the blob metadata indicates " + "that it is not encrypted.";
 
     static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
-
 
     private CryptographyConstants() {
     }

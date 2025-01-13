@@ -52,16 +52,14 @@ class BlobServicePropertiesImpl
     @Override
     public Mono<BlobServiceProperties> createResourceAsync() {
         BlobServicesClient client = this.manager().serviceClient().getBlobServices();
-        return client
-            .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.innerModel())
+        return client.setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<BlobServiceProperties> updateResourceAsync() {
         BlobServicesClient client = this.manager().serviceClient().getBlobServices();
-        return client
-            .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.innerModel())
+        return client.setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -169,7 +167,8 @@ class BlobServicePropertiesImpl
 
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicyEnabled(int numDaysEnabled) {
-        this.innerModel().withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
+        this.innerModel()
+            .withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
         return this;
     }
 
@@ -199,7 +198,8 @@ class BlobServicePropertiesImpl
 
     @Override
     public BlobServicePropertiesImpl withContainerDeleteRetentionPolicyEnabled(int numDaysEnabled) {
-        this.innerModel().withContainerDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
+        this.innerModel()
+            .withContainerDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
         return this;
     }
 

@@ -7,17 +7,19 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BenefitRecommendations. */
+/**
+ * Resource collection API of BenefitRecommendations.
+ */
 public interface BenefitRecommendations {
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,19 +29,19 @@ public interface BenefitRecommendations {
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,6 +49,6 @@ public interface BenefitRecommendations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitRecommendationModel> list(
-        String billingScope, String filter, String orderby, String expand, Context context);
+    PagedIterable<BenefitRecommendationModel> list(String billingScope, String filter, String orderby, String expand,
+        Context context);
 }

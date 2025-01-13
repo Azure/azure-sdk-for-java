@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCoreMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreMutableProperties model =
-            BinaryData.fromString("{\"capacityLimit\":100068665}").toObject(AutoScaleVCoreMutableProperties.class);
-        Assertions.assertEquals(100068665, model.capacityLimit());
+        AutoScaleVCoreMutableProperties model
+            = BinaryData.fromString("{\"capacityLimit\":1260987021}").toObject(AutoScaleVCoreMutableProperties.class);
+        Assertions.assertEquals(1260987021, model.capacityLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreMutableProperties model = new AutoScaleVCoreMutableProperties().withCapacityLimit(100068665);
+        AutoScaleVCoreMutableProperties model = new AutoScaleVCoreMutableProperties().withCapacityLimit(1260987021);
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreMutableProperties.class);
-        Assertions.assertEquals(100068665, model.capacityLimit());
+        Assertions.assertEquals(1260987021, model.capacityLimit());
     }
 }

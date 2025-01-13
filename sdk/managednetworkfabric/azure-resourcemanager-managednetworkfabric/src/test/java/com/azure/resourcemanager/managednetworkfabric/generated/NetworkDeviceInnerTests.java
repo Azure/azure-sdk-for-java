@@ -13,38 +13,36 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkDeviceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"version\":\"kbnbmxlxmwtyg\",\"networkDeviceSku\":\"zusitoqcahfs\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"lreesrfwsszvlcwl\",\"managementIpv4Address\":\"olntfx\",\"managementIpv6Address\":\"rqmipfjwf\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"xxbaizabuln\",\"serialNumber\":\"skjto\",\"annotation\":\"dzjs\"},\"location\":\"nvhxqqmqip\",\"tags\":{\"tfshksnyzm\":\"hfnzocx\",\"bnl\":\"pamwbw\",\"kvi\":\"lcefiqdktw\",\"uuzhw\":\"lpfliwoyn\"},\"id\":\"ladpcmhjha\",\"name\":\"sybkekymffzt\",\"type\":\"ilscv\"}")
-                .toObject(NetworkDeviceInner.class);
-        Assertions.assertEquals("nvhxqqmqip", model.location());
-        Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));
-        Assertions.assertEquals("zusitoqcahfs", model.networkDeviceSku());
-        Assertions.assertEquals("xxbaizabuln", model.hostname());
-        Assertions.assertEquals("skjto", model.serialNumber());
-        Assertions.assertEquals("dzjs", model.annotation());
+        NetworkDeviceInner model = BinaryData.fromString(
+            "{\"properties\":{\"version\":\"ffofwan\",\"networkDeviceSku\":\"k\",\"networkDeviceRole\":\"TS\",\"networkRackId\":\"w\",\"managementIpv4Address\":\"cgwdfriwgybjp\",\"managementIpv6Address\":\"ok\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\",\"hostName\":\"dgbyfgwewqkjvxp\",\"serialNumber\":\"pxsoohu\",\"annotation\":\"lcsklt\"},\"location\":\"uugggzlfbgrd\",\"tags\":{\"mdylperp\":\"bsr\",\"cmfpfbodet\":\"lttjzgcz\",\"muqkevzgjypanhx\":\"esrgvtshuvftwai\",\"wot\":\"pdxxzetwwz\"},\"id\":\"xl\",\"name\":\"fhglhrfo\",\"type\":\"qwec\"}")
+            .toObject(NetworkDeviceInner.class);
+        Assertions.assertEquals("uugggzlfbgrd", model.location());
+        Assertions.assertEquals("bsr", model.tags().get("mdylperp"));
+        Assertions.assertEquals("k", model.networkDeviceSku());
+        Assertions.assertEquals("dgbyfgwewqkjvxp", model.hostname());
+        Assertions.assertEquals("pxsoohu", model.serialNumber());
+        Assertions.assertEquals("lcsklt", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDeviceInner model =
-            new NetworkDeviceInner()
-                .withLocation("nvhxqqmqip")
-                .withTags(mapOf("tfshksnyzm", "hfnzocx", "bnl", "pamwbw", "kvi", "lcefiqdktw", "uuzhw", "lpfliwoyn"))
-                .withNetworkDeviceSku("zusitoqcahfs")
-                .withHostname("xxbaizabuln")
-                .withSerialNumber("skjto")
-                .withAnnotation("dzjs");
+        NetworkDeviceInner model = new NetworkDeviceInner().withLocation("uugggzlfbgrd")
+            .withTags(mapOf("mdylperp", "bsr", "cmfpfbodet", "lttjzgcz", "muqkevzgjypanhx", "esrgvtshuvftwai", "wot",
+                "pdxxzetwwz"))
+            .withNetworkDeviceSku("k")
+            .withHostname("dgbyfgwewqkjvxp")
+            .withSerialNumber("pxsoohu")
+            .withAnnotation("lcsklt");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceInner.class);
-        Assertions.assertEquals("nvhxqqmqip", model.location());
-        Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));
-        Assertions.assertEquals("zusitoqcahfs", model.networkDeviceSku());
-        Assertions.assertEquals("xxbaizabuln", model.hostname());
-        Assertions.assertEquals("skjto", model.serialNumber());
-        Assertions.assertEquals("dzjs", model.annotation());
+        Assertions.assertEquals("uugggzlfbgrd", model.location());
+        Assertions.assertEquals("bsr", model.tags().get("mdylperp"));
+        Assertions.assertEquals("k", model.networkDeviceSku());
+        Assertions.assertEquals("dgbyfgwewqkjvxp", model.hostname());
+        Assertions.assertEquals("pxsoohu", model.serialNumber());
+        Assertions.assertEquals("lcsklt", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -13,6 +13,12 @@ public class ETagState {
     private String eTagOnDelete;
 
     /**
+     * Creates a new instance of ETagState.
+     */
+    public ETagState() {
+    }
+
+    /**
      * Specifies if it is in create or update with implicit ETag check.
      * @param isInCreateMode The boolean flag to indicate if it is in create mode.
      * @return the ETag state.
@@ -45,7 +51,6 @@ public class ETagState {
         this.eTagOnDelete = eTagValue;
         return this;
     }
-
 
     /**
      * Clears the stored values in ETag state

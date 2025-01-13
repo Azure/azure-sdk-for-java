@@ -83,17 +83,16 @@ public interface ServiceTopologyResource {
     ServiceTopologyResourceInner innerModel();
 
     /** The entirety of the ServiceTopologyResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The ServiceTopologyResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ServiceTopologyResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ServiceTopologyResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -112,6 +111,7 @@ public interface ServiceTopologyResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ServiceTopologyResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -122,6 +122,7 @@ public interface ServiceTopologyResource {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ServiceTopologyResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -142,6 +143,7 @@ public interface ServiceTopologyResource {
              */
             ServiceTopologyResource create(Context context);
         }
+
         /** The stage of the ServiceTopologyResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -152,6 +154,7 @@ public interface ServiceTopologyResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ServiceTopologyResource definition allowing to specify artifactSourceId. */
         interface WithArtifactSourceId {
             /**
@@ -165,6 +168,7 @@ public interface ServiceTopologyResource {
             WithCreate withArtifactSourceId(String artifactSourceId);
         }
     }
+
     /**
      * Begins update for the ServiceTopologyResource resource.
      *
@@ -189,6 +193,7 @@ public interface ServiceTopologyResource {
          */
         ServiceTopologyResource apply(Context context);
     }
+
     /** The ServiceTopologyResource update stages. */
     interface UpdateStages {
         /** The stage of the ServiceTopologyResource update allowing to specify tags. */
@@ -201,6 +206,7 @@ public interface ServiceTopologyResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ServiceTopologyResource update allowing to specify artifactSourceId. */
         interface WithArtifactSourceId {
             /**
@@ -214,6 +220,7 @@ public interface ServiceTopologyResource {
             Update withArtifactSourceId(String artifactSourceId);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

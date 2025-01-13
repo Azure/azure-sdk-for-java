@@ -24,7 +24,8 @@ public final class FqdnListGlobalRulestackResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FqdnListGlobalRulestackResourceInner model = new FqdnListGlobalRulestackResourceInner().withDescription("d")
-            .withFqdnList(Arrays.asList("atkpnp", "lexxbczwtru", "iqzbq", "vsovmyokac")).withEtag("kwlhzdo")
+            .withFqdnList(Arrays.asList("atkpnp", "lexxbczwtru", "iqzbq", "vsovmyokac"))
+            .withEtag("kwlhzdo")
             .withAuditComment("xjmflbvv");
         model = BinaryData.fromObject(model).toObject(FqdnListGlobalRulestackResourceInner.class);
         Assertions.assertEquals("d", model.description());

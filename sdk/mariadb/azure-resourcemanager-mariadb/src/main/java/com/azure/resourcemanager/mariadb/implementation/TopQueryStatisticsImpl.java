@@ -22,21 +22,18 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public TopQueryStatisticsImpl(
-        TopQueryStatisticsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public TopQueryStatisticsImpl(TopQueryStatisticsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<QueryStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context) {
-        Response<QueryStatisticInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, queryStatisticId, context);
+    public Response<QueryStatistic> getWithResponse(String resourceGroupName, String serverName,
+        String queryStatisticId, Context context) {
+        Response<QueryStatisticInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, queryStatisticId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryStatisticImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,18 +49,18 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
         }
     }
 
-    public PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
-        PagedIterable<QueryStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
-        return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
+    public PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters) {
+        PagedIterable<QueryStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
-        PagedIterable<QueryStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
-        return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
+    public PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context) {
+        PagedIterable<QueryStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 
     private TopQueryStatisticsClient serviceClient() {

@@ -29,8 +29,8 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
     private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
 
     FluxAutoComplete(Flux<? extends ServiceBusMessageContext> upstream, Semaphore completionLock,
-                     Function<ServiceBusMessageContext, Mono<Void>> onComplete,
-                     Function<ServiceBusMessageContext, Mono<Void>> onAbandon) {
+        Function<ServiceBusMessageContext, Mono<Void>> onComplete,
+        Function<ServiceBusMessageContext, Mono<Void>> onAbandon) {
         super(upstream);
         this.completionLock = completionLock;
         this.onComplete = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
@@ -46,8 +46,8 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
     public void subscribe(CoreSubscriber<? super ServiceBusMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
-        final AutoCompleteSubscriber subscriber =
-            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, LOGGER);
+        final AutoCompleteSubscriber subscriber
+            = new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, LOGGER);
 
         source.subscribe(subscriber);
     }
@@ -59,10 +59,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
         private final Semaphore semaphore;
         private final ClientLogger logger;
 
-        AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream,
-                               Semaphore completionLock,
-                               Function<ServiceBusMessageContext, Mono<Void>> onComplete,
-                               Function<ServiceBusMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
+        AutoCompleteSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream, Semaphore completionLock,
+            Function<ServiceBusMessageContext, Mono<Void>> onComplete,
+            Function<ServiceBusMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
             this.downstream = downstream;
             this.onComplete = onComplete;
             this.onAbandon = onAbandon;
@@ -84,8 +83,8 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
             final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
             logger.atVerbose()
-                  .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                  .log("ON NEXT: Passing message downstream.");
+                .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
+                .log("ON NEXT: Passing message downstream.");
             try {
                 semaphore.acquire();
             } catch (InterruptedException e) {
@@ -97,14 +96,12 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
                 applyWithCatch(onComplete, value, "complete");
             } catch (Exception e) {
                 logger.atError()
-                      .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                      .log("Error occurred processing message. Abandoning.", e);
+                    .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
+                    .log("Error occurred processing message. Abandoning.", e);
 
                 applyWithCatch(onAbandon, value, "abandon");
             } finally {
-                logger.atVerbose()
-                    .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                    .log("ON NEXT: Finished.");
+                logger.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber).log("ON NEXT: Finished.");
                 semaphore.release();
             }
         }
@@ -151,9 +148,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
             try {
                 function.apply(context).block();
             } catch (Exception e) {
-                logger.atWarning()
-                    .addKeyValue("operation", operation)
-                    .log("Operation on message failed.", e);
+                logger.atWarning().addKeyValue("operation", operation).log("Operation on message failed.", e);
 
                 // On an error, we'll stop requesting from upstream and pass the error downstream.
                 upstream().cancel();

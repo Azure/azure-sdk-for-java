@@ -11,7 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to deployment operation management API.
  */
 @Fluent
-public interface DeploymentOperations extends
-        SupportsListing<DeploymentOperation>,
-        SupportsGettingById<DeploymentOperation> {
+public interface DeploymentOperations
+    extends SupportsListing<DeploymentOperation>, SupportsGettingById<DeploymentOperation> {
 }

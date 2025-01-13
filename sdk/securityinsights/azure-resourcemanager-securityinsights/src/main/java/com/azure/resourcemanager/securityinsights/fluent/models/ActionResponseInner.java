@@ -5,37 +5,125 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Action for alert rule. */
+/**
+ * Action for alert rule.
+ */
 @Fluent
-public final class ActionResponseInner extends ResourceWithEtag {
+public final class ActionResponseInner extends ProxyResource {
+    /*
+     * Etag of the action.
+     */
+    private String etag;
+
     /*
      * Action properties for get request
      */
-    @JsonProperty(value = "properties")
     private ActionResponseProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ActionResponseInner class.
+     */
+    public ActionResponseInner() {
+    }
+
+    /**
+     * Get the etag property: Etag of the action.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Etag of the action.
+     * 
+     * @param etag the etag value to set.
+     * @return the ActionResponseInner object itself.
+     */
+    public ActionResponseInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: Action properties for get request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActionResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
     @Override
-    public ActionResponseInner withEtag(String etag) {
-        super.withEtag(etag);
-        return this;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Get the workflowId property: The name of the logic app's workflow.
-     *
+     * 
      * @return the workflowId value.
      */
     public String workflowId() {
@@ -44,7 +132,7 @@ public final class ActionResponseInner extends ResourceWithEtag {
 
     /**
      * Set the workflowId property: The name of the logic app's workflow.
-     *
+     * 
      * @param workflowId the workflowId value to set.
      * @return the ActionResponseInner object itself.
      */
@@ -59,7 +147,7 @@ public final class ActionResponseInner extends ResourceWithEtag {
     /**
      * Get the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @return the logicAppResourceId value.
      */
     public String logicAppResourceId() {
@@ -69,7 +157,7 @@ public final class ActionResponseInner extends ResourceWithEtag {
     /**
      * Set the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @param logicAppResourceId the logicAppResourceId value to set.
      * @return the ActionResponseInner object itself.
      */
@@ -83,14 +171,60 @@ public final class ActionResponseInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionResponseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionResponseInner.
+     */
+    public static ActionResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionResponseInner deserializedActionResponseInner = new ActionResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActionResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedActionResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActionResponseInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedActionResponseInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActionResponseInner.innerProperties = ActionResponseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedActionResponseInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionResponseInner;
+        });
     }
 }

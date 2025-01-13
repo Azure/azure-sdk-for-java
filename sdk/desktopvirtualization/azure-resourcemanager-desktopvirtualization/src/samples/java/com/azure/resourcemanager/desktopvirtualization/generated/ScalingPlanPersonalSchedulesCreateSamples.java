@@ -11,26 +11,27 @@ import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
 
-/** Samples for ScalingPlanPersonalSchedules Create. */
+/**
+ * Samples for ScalingPlanPersonalSchedules Create.
+ */
 public final class ScalingPlanPersonalSchedulesCreateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPersonalSchedule_Create.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ScalingPlanPersonalSchedule_Create.json
      */
     /**
      * Sample code: ScalingPlanPersonalSchedules_Create.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void scalingPlanPersonalSchedulesCreate(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .scalingPlanPersonalSchedules()
+        manager.scalingPlanPersonalSchedules()
             .define("scalingPlanScheduleWeekdays1")
             .withExistingScalingPlan("resourceGroup1", "scalingPlan1")
-            .withDaysOfWeek(
-                Arrays
-                    .asList(
-                        DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY))
             .withRampUpStartTime(new Time().withHour(6).withMinute(0))
             .withRampUpAutoStartHosts(StartupBehavior.ALL)
             .withRampUpStartVMOnConnect(SetStartVMOnConnect.ENABLE)

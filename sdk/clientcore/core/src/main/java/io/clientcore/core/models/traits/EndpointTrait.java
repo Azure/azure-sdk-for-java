@@ -15,13 +15,13 @@ public interface EndpointTrait<T extends EndpointTrait<T>> {
     /**
      * Sets the service endpoint that will be connected to by clients.
      *
-     * @param endpoint The URL of the service endpoint.
+     * @param endpoint The URI of the service endpoint.
      *
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      * operations.
      *
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
+     * @throws NullPointerException If {@code endpoint} is null.
+     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
      */
     T endpoint(String endpoint);
 }

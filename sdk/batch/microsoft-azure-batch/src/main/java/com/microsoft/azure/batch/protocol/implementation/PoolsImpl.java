@@ -666,7 +666,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -684,7 +684,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -703,7 +703,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
@@ -719,7 +719,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
@@ -739,7 +739,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
@@ -780,7 +780,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -806,7 +806,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -833,7 +833,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -850,7 +850,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -878,7 +878,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2316,7 +2316,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2331,7 +2331,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2345,7 +2345,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
@@ -2363,7 +2363,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
@@ -2411,7 +2411,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -2427,7 +2427,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2442,7 +2442,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
@@ -2461,7 +2461,7 @@ public class PoolsImpl implements Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
@@ -3708,7 +3708,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3727,7 +3727,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -3748,7 +3748,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3765,7 +3765,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3786,7 +3786,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3820,7 +3820,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -3840,7 +3840,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -3862,7 +3862,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -3880,7 +3880,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -3902,7 +3902,7 @@ public class PoolsImpl implements Pools {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** File share information with Path, Username, and Password. */
+/**
+ * File share information with Path, Username, and Password.
+ */
 @Fluent
-public final class FileShare {
+public final class FileShare implements JsonSerializable<FileShare> {
     /*
      * User name credential to connect to the share location
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Password credential used to connect to the share location.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The folder path for this share.
      */
-    @JsonProperty(value = "path", required = true)
     private String path;
 
-    /** Creates an instance of FileShare class. */
+    /**
+     * Creates an instance of FileShare class.
+     */
     public FileShare() {
     }
 
     /**
      * Get the username property: User name credential to connect to the share location.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -44,7 +49,7 @@ public final class FileShare {
 
     /**
      * Set the username property: User name credential to connect to the share location.
-     *
+     * 
      * @param username the username value to set.
      * @return the FileShare object itself.
      */
@@ -55,7 +60,7 @@ public final class FileShare {
 
     /**
      * Get the password property: Password credential used to connect to the share location.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -64,7 +69,7 @@ public final class FileShare {
 
     /**
      * Set the password property: Password credential used to connect to the share location.
-     *
+     * 
      * @param password the password value to set.
      * @return the FileShare object itself.
      */
@@ -75,7 +80,7 @@ public final class FileShare {
 
     /**
      * Get the path property: The folder path for this share.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -84,7 +89,7 @@ public final class FileShare {
 
     /**
      * Set the path property: The folder path for this share.
-     *
+     * 
      * @param path the path value to set.
      * @return the FileShare object itself.
      */
@@ -95,15 +100,58 @@ public final class FileShare {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property path in model FileShare"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property path in model FileShare"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileShare.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShare from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShare if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileShare.
+     */
+    public static FileShare fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShare deserializedFileShare = new FileShare();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedFileShare.path = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedFileShare.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedFileShare.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShare;
+        });
+    }
 }

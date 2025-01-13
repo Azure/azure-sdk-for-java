@@ -24,8 +24,8 @@ public final class AlertsImpl implements Alerts {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public AlertsImpl(
-        AlertsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public AlertsImpl(AlertsClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,10 +33,7 @@ public final class AlertsImpl implements Alerts {
     public Response<AlertsResult> listWithResponse(String scope, Context context) {
         Response<AlertsResultInner> inner = this.serviceClient().listWithResponse(scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,10 +52,7 @@ public final class AlertsImpl implements Alerts {
     public Response<Alert> getWithResponse(String scope, String alertId, Context context) {
         Response<AlertInner> inner = this.serviceClient().getWithResponse(scope, alertId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,14 +68,11 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<Alert> dismissWithResponse(
-        String scope, String alertId, DismissAlertPayload parameters, Context context) {
+    public Response<Alert> dismissWithResponse(String scope, String alertId, DismissAlertPayload parameters,
+        Context context) {
         Response<AlertInner> inner = this.serviceClient().dismissWithResponse(scope, alertId, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -97,23 +88,20 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<AlertsResult> listExternalWithResponse(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context) {
-        Response<AlertsResultInner> inner =
-            this.serviceClient().listExternalWithResponse(externalCloudProviderType, externalCloudProviderId, context);
+    public Response<AlertsResult> listExternalWithResponse(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, Context context) {
+        Response<AlertsResultInner> inner = this.serviceClient()
+            .listExternalWithResponse(externalCloudProviderType, externalCloudProviderId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AlertsResult listExternal(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
+    public AlertsResult listExternal(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId) {
         AlertsResultInner inner = this.serviceClient().listExternal(externalCloudProviderType, externalCloudProviderId);
         if (inner != null) {
             return new AlertsResultImpl(inner, this.manager());

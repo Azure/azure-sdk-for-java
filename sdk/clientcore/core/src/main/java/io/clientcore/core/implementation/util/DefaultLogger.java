@@ -19,10 +19,9 @@ import static io.clientcore.core.util.ClientLogger.LogLevel;
  * This class is an internal implementation of slf4j logger.
  */
 public final class DefaultLogger {
-
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
+    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] io.clientcore.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";
@@ -83,6 +82,7 @@ public final class DefaultLogger {
      *
      * @param level log level
      * @param message The message itself
+     * @param throwable The exception to log
      */
     public void log(LogLevel level, String message, Throwable throwable) {
         if (!isEnabled(level)) {
@@ -115,18 +115,28 @@ public final class DefaultLogger {
         switch (level) {
             case VERBOSE:
                 return DEBUG;
+
             case INFORMATIONAL:
                 return INFO;
+
             case WARNING:
                 return WARN;
+
             case ERROR:
                 return ERROR;
+
             default:
                 // not possible
                 return NOTSET;
         }
     }
 
+    /**
+     * Append the stack trace of the throwable to the StringBuilder.
+     *
+     * @param stringBuilder The StringBuilder to append the stack trace to.
+     * @param t The Throwable to append the stack trace of.
+     */
     public static void appendThrowable(StringBuilder stringBuilder, Throwable t) {
         if (t != null) {
             StringWriter sw = new StringWriter();

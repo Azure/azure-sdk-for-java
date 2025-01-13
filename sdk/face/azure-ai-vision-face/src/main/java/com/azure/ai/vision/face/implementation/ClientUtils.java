@@ -13,15 +13,16 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class ClientUtils {
-    public static void addRequiredQueryParameterForDetection(
-        RequestOptions requestOptions, FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId) {
+    public static void addRequiredQueryParameterForDetection(RequestOptions requestOptions,
+        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId) {
         ClientUtils.addRequireQueryParameters(requestOptions, "detectionModel", detectionModel);
         ClientUtils.addRequireQueryParameters(requestOptions, "recognitionModel", recognitionModel);
         ClientUtils.addRequireQueryParameters(requestOptions, "returnFaceId", returnFaceId);
     }
 
-    public static void addOptionalQueryParameterForDetection(RequestOptions requestOptions, List<FaceAttributeType> returnFaceAttributes,
-        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+    public static void addOptionalQueryParameterForDetection(RequestOptions requestOptions,
+        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
+        Integer faceIdTimeToLive) {
         if (returnFaceAttributes != null) {
             requestOptions.addQueryParam("returnFaceAttributes",
                 returnFaceAttributes.stream()
@@ -43,7 +44,8 @@ public final class ClientUtils {
         }
     }
 
-    private static void addRequireQueryParameters(RequestOptions requestOptions, String parameterName, Object paramterObject) {
+    private static void addRequireQueryParameters(RequestOptions requestOptions, String parameterName,
+        Object paramterObject) {
         if (paramterObject == null) {
             throw new NullPointerException("Query Parameter '" + parameterName + "' is null");
         }

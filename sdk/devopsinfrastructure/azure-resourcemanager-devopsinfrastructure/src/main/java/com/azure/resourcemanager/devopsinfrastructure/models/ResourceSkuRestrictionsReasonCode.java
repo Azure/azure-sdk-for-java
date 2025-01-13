@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnum<ResourceSkuRestrictionsReasonCode> {
     /**
-     * Static value QuotaId for ResourceSkuRestrictionsReasonCode.
+     * The restriction is due to exceeding a quota limitation.
      */
     public static final ResourceSkuRestrictionsReasonCode QUOTA_ID = fromString("QuotaId");
 
     /**
-     * Static value NotAvailableForSubscription for ResourceSkuRestrictionsReasonCode.
+     * The restriction is not available for this subscription.
      */
     public static final ResourceSkuRestrictionsReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION
         = fromString("NotAvailableForSubscription");

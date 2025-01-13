@@ -15,13 +15,23 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface ApplicationGatewayIpConfiguration
     extends HasInnerModel<ApplicationGatewayIpConfigurationInner>, ChildResource<ApplicationGateway> {
 
-    /** @return the resource ID of the virtual network the application gateway is in */
+    /**
+     * Gets the resource ID of the virtual network the application gateway is in.
+     *
+     * @return the resource ID of the virtual network the application gateway is in
+     */
     String networkId();
 
-    /** @return the name of the subnet the application gateway is in */
+    /**
+     * Gets the name of the subnet the application gateway is in.
+     *
+     * @return the name of the subnet the application gateway is in
+     */
     String subnetName();
 
     /**
+     * Gets the subnet the application gateway is in.
+     *
      * @return the subnet the application gateway is in
      *     <p>Note, this results in a separate call to Azure.
      */
@@ -83,10 +93,8 @@ public interface ApplicationGatewayIpConfiguration
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithSubnet<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithSubnet<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */
@@ -179,9 +187,7 @@ public interface ApplicationGatewayIpConfiguration
      *
      * @param <ParentT> the parent type
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithSubnet<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithSubnet<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

@@ -6,29 +6,54 @@ package com.azure.resourcemanager.alertsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.models.AlertProcessingRuleProperties;
 import com.azure.resourcemanager.alertsmanagement.models.ManagedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Alert processing rule object containing target scopes, conditions and scheduling logic. */
+/**
+ * Alert processing rule object containing target scopes, conditions and scheduling logic.
+ */
 @Fluent
 public final class AlertProcessingRuleInner extends ManagedResource {
     /*
      * Alert processing rule properties.
      */
-    @JsonProperty(value = "properties")
     private AlertProcessingRuleProperties properties;
 
     /*
      * Alert processing rule system data.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AlertProcessingRuleInner class.
+     */
+    public AlertProcessingRuleInner() {
+    }
 
     /**
      * Get the properties property: Alert processing rule properties.
-     *
+     * 
      * @return the properties value.
      */
     public AlertProcessingRuleProperties properties() {
@@ -37,7 +62,7 @@ public final class AlertProcessingRuleInner extends ManagedResource {
 
     /**
      * Set the properties property: Alert processing rule properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlertProcessingRuleInner object itself.
      */
@@ -48,21 +73,55 @@ public final class AlertProcessingRuleInner extends ManagedResource {
 
     /**
      * Get the systemData property: Alert processing rule system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertProcessingRuleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertProcessingRuleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -71,14 +130,72 @@ public final class AlertProcessingRuleInner extends ManagedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AlertProcessingRuleInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AlertProcessingRuleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProcessingRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProcessingRuleInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertProcessingRuleInner.
+     */
+    public static AlertProcessingRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProcessingRuleInner deserializedAlertProcessingRuleInner = new AlertProcessingRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAlertProcessingRuleInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.properties = AlertProcessingRuleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAlertProcessingRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProcessingRuleInner;
+        });
     }
 }

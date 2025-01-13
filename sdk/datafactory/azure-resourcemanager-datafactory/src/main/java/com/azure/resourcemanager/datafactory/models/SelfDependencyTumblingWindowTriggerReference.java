@@ -97,7 +97,6 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
      */
     @Override
     public void validate() {
-        super.validate();
         if (offset() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

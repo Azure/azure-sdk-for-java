@@ -5,31 +5,63 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.IoTRoleProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Compute role. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("IOT")
+/**
+ * Compute role.
+ */
 @Fluent
 public final class IoTRole extends RoleInner {
     /*
+     * Role type.
+     */
+    private RoleTypes kind = RoleTypes.IOT;
+
+    /*
      * Properties specific to IoT role.
      */
-    @JsonProperty(value = "properties")
     private IoTRoleProperties innerProperties;
 
-    /** Creates an instance of IoTRole class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IoTRole class.
+     */
     public IoTRole() {
     }
 
     /**
+     * Get the kind property: Role type.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public RoleTypes kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Properties specific to IoT role.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTRoleProperties innerProperties() {
@@ -37,8 +69,38 @@ public final class IoTRole extends RoleInner {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the hostPlatform property: Host OS supported by the IoT role.
-     *
+     * 
      * @return the hostPlatform value.
      */
     public PlatformType hostPlatform() {
@@ -47,7 +109,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Set the hostPlatform property: Host OS supported by the IoT role.
-     *
+     * 
      * @param hostPlatform the hostPlatform value to set.
      * @return the IoTRole object itself.
      */
@@ -61,7 +123,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Get the ioTDeviceDetails property: IoT device metadata to which data box edge device needs to be connected.
-     *
+     * 
      * @return the ioTDeviceDetails value.
      */
     public IoTDeviceInfo ioTDeviceDetails() {
@@ -70,7 +132,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Set the ioTDeviceDetails property: IoT device metadata to which data box edge device needs to be connected.
-     *
+     * 
      * @param ioTDeviceDetails the ioTDeviceDetails value to set.
      * @return the IoTRole object itself.
      */
@@ -84,7 +146,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Get the ioTEdgeDeviceDetails property: IoT edge device to which the IoT role needs to be configured.
-     *
+     * 
      * @return the ioTEdgeDeviceDetails value.
      */
     public IoTDeviceInfo ioTEdgeDeviceDetails() {
@@ -93,7 +155,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Set the ioTEdgeDeviceDetails property: IoT edge device to which the IoT role needs to be configured.
-     *
+     * 
      * @param ioTEdgeDeviceDetails the ioTEdgeDeviceDetails value to set.
      * @return the IoTRole object itself.
      */
@@ -107,7 +169,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Get the shareMappings property: Mount points of shares in role(s).
-     *
+     * 
      * @return the shareMappings value.
      */
     public List<MountPointMap> shareMappings() {
@@ -116,7 +178,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Set the shareMappings property: Mount points of shares in role(s).
-     *
+     * 
      * @param shareMappings the shareMappings value to set.
      * @return the IoTRole object itself.
      */
@@ -130,7 +192,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Get the roleStatus property: Role status.
-     *
+     * 
      * @return the roleStatus value.
      */
     public RoleStatus roleStatus() {
@@ -139,7 +201,7 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Set the roleStatus property: Role status.
-     *
+     * 
      * @param roleStatus the roleStatus value to set.
      * @return the IoTRole object itself.
      */
@@ -153,14 +215,59 @@ public final class IoTRole extends RoleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTRole from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTRole if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTRole.
+     */
+    public static IoTRole fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTRole deserializedIoTRole = new IoTRole();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIoTRole.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIoTRole.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIoTRole.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTRole.kind = RoleTypes.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTRole.innerProperties = IoTRoleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTRole;
+        });
     }
 }

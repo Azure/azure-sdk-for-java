@@ -35,14 +35,15 @@ public final class VolumesImpl implements Volumes {
 
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
         XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context) {
-        this.serviceClient().delete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
-            xMsForceDelete, context);
+        this.serviceClient()
+            .delete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete,
+                context);
     }
 
     public Response<Volume> getWithResponse(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName, Context context) {
-        Response<VolumeInner> inner = this.serviceClient().getWithResponse(resourceGroupName, elasticSanName,
-            volumeGroupName, volumeName, context);
+        Response<VolumeInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VolumeImpl(inner.getValue(), this.manager()));

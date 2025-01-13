@@ -51,8 +51,8 @@ class FluxAutoCompleteTest {
         final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.create();
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> new FluxAutoComplete(null, completionLock,
-            this::onComplete, this::onAbandon));
+        assertThrows(NullPointerException.class,
+            () -> new FluxAutoComplete(null, completionLock, this::onComplete, this::onAbandon));
         assertThrows(NullPointerException.class,
             () -> new FluxAutoComplete(testPublisher.flux(), completionLock, null, this::onAbandon));
         assertThrows(NullPointerException.class,
@@ -67,8 +67,8 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            this::onComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
 
         // Act
 
@@ -93,8 +93,8 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            this::onComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
 
         // Act
         autoComplete.subscribe(downstream);
@@ -118,8 +118,8 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            this::onComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
 
         final Throwable testError = new IllegalArgumentException("Dummy exception");
 
@@ -150,7 +150,8 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context3 = new ServiceBusMessageContext(message3);
         final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusMessageContext context4 = new ServiceBusMessageContext(message4);
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
 
         // Act
         StepVerifier.create(autoComplete)
@@ -180,8 +181,8 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
         final Throwable testError = new IllegalArgumentException("Dummy error");
-        final Function<ServiceBusMessageContext, Mono<Void>> onCompleteErrorFunction =
-            new Function<ServiceBusMessageContext, Mono<Void>>() {
+        final Function<ServiceBusMessageContext, Mono<Void>> onCompleteErrorFunction
+            = new Function<ServiceBusMessageContext, Mono<Void>>() {
                 private final AtomicInteger iteration = new AtomicInteger();
 
                 @Override
@@ -194,8 +195,8 @@ class FluxAutoCompleteTest {
                 }
             };
 
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            onCompleteErrorFunction, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, onCompleteErrorFunction, this::onAbandon);
 
         // Act
         StepVerifier.create(autoComplete)
@@ -222,8 +223,8 @@ class FluxAutoCompleteTest {
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            this::onComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
 
         // Act
         StepVerifier.create(autoComplete)
@@ -253,8 +254,8 @@ class FluxAutoCompleteTest {
 
         final CloneNotSupportedException testError = new CloneNotSupportedException("TEST error");
 
-        final Function<ServiceBusMessageContext, Mono<Void>> errorOnComplete =
-            new Function<ServiceBusMessageContext, Mono<Void>>() {
+        final Function<ServiceBusMessageContext, Mono<Void>> errorOnComplete
+            = new Function<ServiceBusMessageContext, Mono<Void>>() {
                 private final AtomicBoolean isFirst = new AtomicBoolean(true);
 
                 @Override
@@ -264,8 +265,8 @@ class FluxAutoCompleteTest {
                 }
             };
 
-        final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
-            errorOnComplete, this::onAbandon);
+        final FluxAutoComplete autoComplete
+            = new FluxAutoComplete(testPublisher.flux(), completionLock, errorOnComplete, this::onAbandon);
 
         // Act
         StepVerifier.create(autoComplete)
@@ -285,15 +286,13 @@ class FluxAutoCompleteTest {
         testPublisher.assertCancelled();
     }
 
-    private void verifyLists(ArrayList<ServiceBusMessageContext> actual,
-        ServiceBusMessageContext... messageContexts) {
+    private void verifyLists(ArrayList<ServiceBusMessageContext> actual, ServiceBusMessageContext... messageContexts) {
 
         assertEquals(messageContexts.length, actual.size());
 
         for (int i = 0; i < messageContexts.length; i++) {
             ServiceBusMessageContext expected = messageContexts[i];
-            assertTrue(actual.contains(expected),
-                "invocation " + i + " was not expected. Actual: " + actual);
+            assertTrue(actual.contains(expected), "invocation " + i + " was not expected. Actual: " + actual);
         }
     }
 

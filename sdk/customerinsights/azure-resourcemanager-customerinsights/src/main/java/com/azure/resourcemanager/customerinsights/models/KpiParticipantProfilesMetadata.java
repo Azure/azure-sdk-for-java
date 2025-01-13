@@ -6,24 +6,31 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The KPI participant profile metadata. */
+/**
+ * The KPI participant profile metadata.
+ */
 @Fluent
-public final class KpiParticipantProfilesMetadata {
+public final class KpiParticipantProfilesMetadata implements JsonSerializable<KpiParticipantProfilesMetadata> {
     /*
      * Name of the type.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName;
 
-    /** Creates an instance of KpiParticipantProfilesMetadata class. */
+    /**
+     * Creates an instance of KpiParticipantProfilesMetadata class.
+     */
     public KpiParticipantProfilesMetadata() {
     }
 
     /**
      * Get the typeName property: Name of the type.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -32,7 +39,7 @@ public final class KpiParticipantProfilesMetadata {
 
     /**
      * Set the typeName property: Name of the type.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the KpiParticipantProfilesMetadata object itself.
      */
@@ -43,17 +50,54 @@ public final class KpiParticipantProfilesMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (typeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property typeName in model KpiParticipantProfilesMetadata"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property typeName in model KpiParticipantProfilesMetadata"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KpiParticipantProfilesMetadata.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiParticipantProfilesMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiParticipantProfilesMetadata if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiParticipantProfilesMetadata.
+     */
+    public static KpiParticipantProfilesMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiParticipantProfilesMetadata deserializedKpiParticipantProfilesMetadata
+                = new KpiParticipantProfilesMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeName".equals(fieldName)) {
+                    deserializedKpiParticipantProfilesMetadata.typeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiParticipantProfilesMetadata;
+        });
+    }
 }

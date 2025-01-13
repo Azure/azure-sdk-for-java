@@ -79,22 +79,18 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceRunner create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -109,51 +105,43 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceRunner apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ServiceRunnerImpl(
-        ServiceRunnerInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    ServiceRunnerImpl(ServiceRunnerInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "servicerunners");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servicerunners");
     }
 
     public ServiceRunner refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .getWithResponse(resourceGroupName, labName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .getWithResponse(resourceGroupName, labName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceRunner refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceRunners()
-                .getWithResponse(resourceGroupName, labName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceRunners()
+            .getWithResponse(resourceGroupName, labName, name, context)
+            .getValue();
         return this;
     }
 

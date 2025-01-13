@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.CloudError;
 import com.azure.resourcemanager.databox.models.JobDeliveryInfo;
 import com.azure.resourcemanager.databox.models.JobDeliveryType;
@@ -14,109 +19,98 @@ import com.azure.resourcemanager.databox.models.ReverseShippingDetailsEditStatus
 import com.azure.resourcemanager.databox.models.ReverseTransportPreferenceEditStatus;
 import com.azure.resourcemanager.databox.models.StageName;
 import com.azure.resourcemanager.databox.models.TransferType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Job Properties. */
+/**
+ * Job Properties.
+ */
 @Fluent
-public final class JobProperties {
+public final class JobProperties implements JsonSerializable<JobProperties> {
     /*
      * Type of the data transfer.
      */
-    @JsonProperty(value = "transferType", required = true)
     private TransferType transferType;
 
     /*
      * Describes whether the job is cancellable or not.
      */
-    @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
     /*
      * Describes whether the job is deletable or not.
      */
-    @JsonProperty(value = "isDeletable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeletable;
 
     /*
      * Describes whether the shipping address is editable or not.
      */
-    @JsonProperty(value = "isShippingAddressEditable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isShippingAddressEditable;
 
     /*
      * The Editable status for Reverse Shipping Address and Contact Info
      */
-    @JsonProperty(value = "reverseShippingDetailsUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate;
 
     /*
      * The Editable status for Reverse Transport preferences
      */
-    @JsonProperty(value = "reverseTransportPreferenceUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate;
 
     /*
      * Is Prepare To Ship Enabled on this job
      */
-    @JsonProperty(value = "isPrepareToShipEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrepareToShipEnabled;
 
     /*
      * Name of the stage which is in progress.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StageName status;
 
     /*
      * Time at which the job was started in UTC ISO 8601 format.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Top level error for the job.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
 
     /*
      * Details of a job run. This field will only be sent for expand details filter.
      */
-    @JsonProperty(value = "details")
     private JobDetails details;
 
     /*
      * Reason for cancellation.
      */
-    @JsonProperty(value = "cancellationReason", access = JsonProperty.Access.WRITE_ONLY)
     private String cancellationReason;
 
     /*
      * Delivery type of Job.
      */
-    @JsonProperty(value = "deliveryType")
     private JobDeliveryType deliveryType;
 
     /*
      * Delivery Info of Job.
      */
-    @JsonProperty(value = "deliveryInfo")
     private JobDeliveryInfo deliveryInfo;
 
     /*
      * Flag to indicate cancellation of scheduled job.
      */
-    @JsonProperty(value = "isCancellableWithoutFee", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellableWithoutFee;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the transferType property: Type of the data transfer.
-     *
+     * 
      * @return the transferType value.
      */
     public TransferType transferType() {
@@ -125,7 +119,7 @@ public final class JobProperties {
 
     /**
      * Set the transferType property: Type of the data transfer.
-     *
+     * 
      * @param transferType the transferType value to set.
      * @return the JobProperties object itself.
      */
@@ -136,7 +130,7 @@ public final class JobProperties {
 
     /**
      * Get the isCancellable property: Describes whether the job is cancellable or not.
-     *
+     * 
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
@@ -145,7 +139,7 @@ public final class JobProperties {
 
     /**
      * Get the isDeletable property: Describes whether the job is deletable or not.
-     *
+     * 
      * @return the isDeletable value.
      */
     public Boolean isDeletable() {
@@ -154,7 +148,7 @@ public final class JobProperties {
 
     /**
      * Get the isShippingAddressEditable property: Describes whether the shipping address is editable or not.
-     *
+     * 
      * @return the isShippingAddressEditable value.
      */
     public Boolean isShippingAddressEditable() {
@@ -163,7 +157,7 @@ public final class JobProperties {
 
     /**
      * Get the reverseShippingDetailsUpdate property: The Editable status for Reverse Shipping Address and Contact Info.
-     *
+     * 
      * @return the reverseShippingDetailsUpdate value.
      */
     public ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate() {
@@ -172,7 +166,7 @@ public final class JobProperties {
 
     /**
      * Get the reverseTransportPreferenceUpdate property: The Editable status for Reverse Transport preferences.
-     *
+     * 
      * @return the reverseTransportPreferenceUpdate value.
      */
     public ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate() {
@@ -181,7 +175,7 @@ public final class JobProperties {
 
     /**
      * Get the isPrepareToShipEnabled property: Is Prepare To Ship Enabled on this job.
-     *
+     * 
      * @return the isPrepareToShipEnabled value.
      */
     public Boolean isPrepareToShipEnabled() {
@@ -190,7 +184,7 @@ public final class JobProperties {
 
     /**
      * Get the status property: Name of the stage which is in progress.
-     *
+     * 
      * @return the status value.
      */
     public StageName status() {
@@ -199,7 +193,7 @@ public final class JobProperties {
 
     /**
      * Get the startTime property: Time at which the job was started in UTC ISO 8601 format.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -208,7 +202,7 @@ public final class JobProperties {
 
     /**
      * Get the error property: Top level error for the job.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -217,7 +211,7 @@ public final class JobProperties {
 
     /**
      * Get the details property: Details of a job run. This field will only be sent for expand details filter.
-     *
+     * 
      * @return the details value.
      */
     public JobDetails details() {
@@ -226,7 +220,7 @@ public final class JobProperties {
 
     /**
      * Set the details property: Details of a job run. This field will only be sent for expand details filter.
-     *
+     * 
      * @param details the details value to set.
      * @return the JobProperties object itself.
      */
@@ -237,7 +231,7 @@ public final class JobProperties {
 
     /**
      * Get the cancellationReason property: Reason for cancellation.
-     *
+     * 
      * @return the cancellationReason value.
      */
     public String cancellationReason() {
@@ -246,7 +240,7 @@ public final class JobProperties {
 
     /**
      * Get the deliveryType property: Delivery type of Job.
-     *
+     * 
      * @return the deliveryType value.
      */
     public JobDeliveryType deliveryType() {
@@ -255,7 +249,7 @@ public final class JobProperties {
 
     /**
      * Set the deliveryType property: Delivery type of Job.
-     *
+     * 
      * @param deliveryType the deliveryType value to set.
      * @return the JobProperties object itself.
      */
@@ -266,7 +260,7 @@ public final class JobProperties {
 
     /**
      * Get the deliveryInfo property: Delivery Info of Job.
-     *
+     * 
      * @return the deliveryInfo value.
      */
     public JobDeliveryInfo deliveryInfo() {
@@ -275,7 +269,7 @@ public final class JobProperties {
 
     /**
      * Set the deliveryInfo property: Delivery Info of Job.
-     *
+     * 
      * @param deliveryInfo the deliveryInfo value to set.
      * @return the JobProperties object itself.
      */
@@ -286,7 +280,7 @@ public final class JobProperties {
 
     /**
      * Get the isCancellableWithoutFee property: Flag to indicate cancellation of scheduled job.
-     *
+     * 
      * @return the isCancellableWithoutFee value.
      */
     public Boolean isCancellableWithoutFee() {
@@ -295,14 +289,13 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property transferType in model JobProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property transferType in model JobProperties"));
         }
         if (error() != null) {
             error().validate();
@@ -316,4 +309,75 @@ public final class JobProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transferType", this.transferType == null ? null : this.transferType.toString());
+        jsonWriter.writeJsonField("details", this.details);
+        jsonWriter.writeStringField("deliveryType", this.deliveryType == null ? null : this.deliveryType.toString());
+        jsonWriter.writeJsonField("deliveryInfo", this.deliveryInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobProperties.
+     */
+    public static JobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobProperties deserializedJobProperties = new JobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transferType".equals(fieldName)) {
+                    deserializedJobProperties.transferType = TransferType.fromString(reader.getString());
+                } else if ("isCancellable".equals(fieldName)) {
+                    deserializedJobProperties.isCancellable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeletable".equals(fieldName)) {
+                    deserializedJobProperties.isDeletable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isShippingAddressEditable".equals(fieldName)) {
+                    deserializedJobProperties.isShippingAddressEditable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reverseShippingDetailsUpdate".equals(fieldName)) {
+                    deserializedJobProperties.reverseShippingDetailsUpdate
+                        = ReverseShippingDetailsEditStatus.fromString(reader.getString());
+                } else if ("reverseTransportPreferenceUpdate".equals(fieldName)) {
+                    deserializedJobProperties.reverseTransportPreferenceUpdate
+                        = ReverseTransportPreferenceEditStatus.fromString(reader.getString());
+                } else if ("isPrepareToShipEnabled".equals(fieldName)) {
+                    deserializedJobProperties.isPrepareToShipEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedJobProperties.status = StageName.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedJobProperties.error = CloudError.fromJson(reader);
+                } else if ("details".equals(fieldName)) {
+                    deserializedJobProperties.details = JobDetails.fromJson(reader);
+                } else if ("cancellationReason".equals(fieldName)) {
+                    deserializedJobProperties.cancellationReason = reader.getString();
+                } else if ("deliveryType".equals(fieldName)) {
+                    deserializedJobProperties.deliveryType = JobDeliveryType.fromString(reader.getString());
+                } else if ("deliveryInfo".equals(fieldName)) {
+                    deserializedJobProperties.deliveryInfo = JobDeliveryInfo.fromJson(reader);
+                } else if ("isCancellableWithoutFee".equals(fieldName)) {
+                    deserializedJobProperties.isCancellableWithoutFee = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobProperties;
+        });
+    }
 }

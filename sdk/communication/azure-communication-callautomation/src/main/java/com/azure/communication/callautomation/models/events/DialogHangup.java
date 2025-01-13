@@ -35,7 +35,8 @@ public final class DialogHangup extends CallAutomationEventBase {
     private Object ivrContext;
 
     /** Creates an instance of DialogHangup class. */
-    public DialogHangup() {}
+    public DialogHangup() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

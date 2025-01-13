@@ -51,9 +51,7 @@ public class ManageCdn {
         try {
             // ============================================================
             // Create a resource group for holding all the created resources
-            azureResourceManager.resourceGroups().define(resourceGroupName)
-                .withRegion(Region.US_CENTRAL)
-                .create();
+            azureResourceManager.resourceGroups().define(resourceGroupName).withRegion(Region.US_CENTRAL).create();
 
             // ============================================================
             // Create 8 websites
@@ -85,7 +83,8 @@ public class ManageCdn {
 
             // Create CDN Profile definition object that will let us do a for loop
             // to define all 8 endpoints and then parallelize their creation
-            CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azureResourceManager.cdnProfiles().define(cdnProfileName)
+            CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azureResourceManager.cdnProfiles()
+                .define(cdnProfileName)
                 .withRegion(Region.US_CENTRAL)
                 .withExistingResourceGroup(resourceGroupName)
                 .withStandardVerizonSku();
@@ -137,11 +136,9 @@ public class ManageCdn {
             // Authenticate
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .build();
+            final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -156,7 +153,8 @@ public class ManageCdn {
         }
     }
 
-    private static WebApp createWebApp(String appName, Region region, AzureResourceManager azureResourceManager, String resourceGroupName) {
+    private static WebApp createWebApp(String appName, Region region, AzureResourceManager azureResourceManager,
+        String resourceGroupName) {
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");

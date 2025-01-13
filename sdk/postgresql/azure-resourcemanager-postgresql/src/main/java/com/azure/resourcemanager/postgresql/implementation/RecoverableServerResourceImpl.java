@@ -12,8 +12,7 @@ public final class RecoverableServerResourceImpl implements RecoverableServerRes
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    RecoverableServerResourceImpl(
-        RecoverableServerResourceInner innerObject,
+    RecoverableServerResourceImpl(RecoverableServerResourceInner innerObject,
         com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

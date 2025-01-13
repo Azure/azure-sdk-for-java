@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the request to list caches. It contains a list of caches and a URL link to get the next set of results.
  */
 @Fluent
-public final class CachesListResult {
+public final class CachesListResult implements JsonSerializable<CachesListResult> {
     /*
      * URL to get the next set of cache list results, if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of Caches.
      */
-    @JsonProperty(value = "value")
     private List<CacheInner> value;
 
     /**
@@ -81,5 +83,45 @@ public final class CachesListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CachesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CachesListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CachesListResult.
+     */
+    public static CachesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CachesListResult deserializedCachesListResult = new CachesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedCachesListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<CacheInner> value = reader.readArray(reader1 -> CacheInner.fromJson(reader1));
+                    deserializedCachesListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCachesListResult;
+        });
     }
 }

@@ -18,12 +18,11 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -44,8 +43,6 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
@@ -78,8 +75,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     public void startRecording(File recordFile, Path testClassPath) {
         try {
             String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
-            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/start").setBody(SERIALIZER
-                .serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON))
+            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/start")
+                .setBody(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString())
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
             try (HttpResponse response = client.sendSync(request, Context.NONE)) {
@@ -221,8 +218,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             data.put("Sanitizers", sanitizers);
 
             HttpRequest request;
-            try {
-                request = getRemoveSanitizerRequest().setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
+                request = getRemoveSanitizerRequest().setBody(outputStream.toByteArray())
                     .setHeader(X_RECORDING_ID, xRecordingId);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -240,7 +239,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
         try {
             HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/admin/setrecordingoptions")
-                .setBody(MAPPER.writeValueAsString(testProxyRecordingOptions))
+                .setBody(testProxyRecordingOptions.toJsonString())
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
             client.sendSync(request, Context.NONE).close();
         } catch (IOException ex) {

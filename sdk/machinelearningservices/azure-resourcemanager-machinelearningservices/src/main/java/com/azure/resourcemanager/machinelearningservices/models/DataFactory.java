@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataFactory")
 @Immutable
 public final class DataFactory extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFactory.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DataFactory.class);
 
     /** {@inheritDoc} */
     @Override
