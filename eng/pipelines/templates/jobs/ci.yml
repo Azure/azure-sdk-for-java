@@ -101,4 +101,3 @@ jobs:
             $(Build.SourcesDirectory)/eng/scripts/test_script.ps1
             -ServiceDirectory 'test'
             -ExcludePaths ('${{ convertToJson(parameters.ExcludePaths) }}' | convertFrom-Json)
-          pwsh: true
