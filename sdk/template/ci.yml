@@ -95,10 +95,6 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    ExcludePaths:
-      - sdk/foo
-      - sdk/bar
-      - sdk/foobar
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
