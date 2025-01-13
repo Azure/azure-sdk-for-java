@@ -29,6 +29,8 @@ library. In the following snippet, replace the {bom_version_to_target} placehold
 To learn more about the BOM, see
 the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
+spell checkshouldcatchthis
+srnagarmsftisnotaword
 
 ```xml
 <dependencyManagement>
@@ -55,6 +57,11 @@ tool when you depend on client libraries using it.
         <artifactId>azure-core</artifactId>
     </dependency>
 </dependencies>
+```
+
+```java
+public static final String WELL_KNOWN_ACCOUNT_KEY_VALUE
+        = "95o6TL9jkIjNr6HurD6Xa+zLQ+PX9/VWR8fI2ofHatbrUb8kRJ75B6enwRU3q1OP8fmjghaoxdqnwhN7m3pZow==";
 ```
 
 #### Include direct dependency
