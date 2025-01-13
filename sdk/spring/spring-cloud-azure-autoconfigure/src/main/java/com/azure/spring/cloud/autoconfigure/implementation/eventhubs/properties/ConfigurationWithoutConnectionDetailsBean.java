@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 
 @ConditionalOnMissingBean(type = "com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails")
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 class ConfigurationWithoutConnectionDetailsBean {
 
     private final AzureGlobalProperties globalProperties;

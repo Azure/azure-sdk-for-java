@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
@@ -31,7 +32,8 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     EventHubClientBuilderFactory, AzureEventHubsProperties> {
     private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
@@ -75,7 +77,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configureWithoutConnectionStringAndNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
+            .run(context -> assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class));
     }
 
     @Test
@@ -84,7 +86,6 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=",
                 "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
@@ -95,7 +96,6 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configureWithNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
 
@@ -103,24 +103,20 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configureWithConnectionString() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
 
     @Test
     void configureAzureEventHubsPropertiesWithGlobalDefaults() {
-        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getCredential().setClientId("azure-client-id");
-        azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(2));
-        azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(3));
-
         this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
                 "spring.cloud.azure.eventhubs.retry.exponential.base-delay=2m",
-                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING,
+                "spring.cloud.azure.credential.client-id=azure-client-id",
+                "spring.cloud.azure.credential.client-secret=azure-client-secret",
+                "spring.cloud.azure.retry.exponential.base-delay=2s",
+                "spring.cloud.azure.retry.fixed.delay=3s"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -135,20 +131,18 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
                 assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
 
+                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
     }
 
     @Test
     void configureEventHubsDomainNameOverrideGlobalDefault() {
-        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-
         this.contextRunner
-                .withBean(AzureGlobalProperties.class, () -> azureProperties)
                 .withPropertyValues(
                         "spring.cloud.azure.eventhubs.domain-name=servicebus.chinacloudapi.cn",
-                        "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
+                        "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING,
+                    "spring.cloud.azure.profile.cloud-type=azure_us_government"
                 )
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -167,7 +161,6 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
             )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
@@ -226,7 +219,6 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 "spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval=2h",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true"
             )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
