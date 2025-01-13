@@ -65,7 +65,7 @@ The `test-proxy` tool is integrated with the ability to automatically restore th
 Examples of current assets.json locations:
 
 - [`sdk/data/aztables/assets.json`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/assets.json)
-- [`sdk/keyvault/azure-security-keyvault-keys/assets.json`](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/assets.json)
+- [`sdk/keyvault/azure-keyvault-keys/assets.json`](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/assets.json)
 
 The location of the actual test code is referred to as the `language repo`.
 
