@@ -16,7 +16,6 @@ import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -87,6 +86,7 @@ class ServiceBusReceiverClientTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions())
@@ -644,7 +644,6 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
-    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesWithUserSpecifiedTimeout() {
         // Arrange
         final int maxMessages = 10;
@@ -676,7 +675,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages, receiveTimeout);
@@ -692,7 +691,6 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
-    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesMax() {
         // Arrange
         final int maxMessages = 10;
@@ -724,7 +722,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
@@ -740,7 +738,6 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
-    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesTimeout() {
         // Arrange
         final int maxMessages = 10;
@@ -771,7 +768,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
@@ -866,7 +863,6 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
-    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void iterationReplaysUpstreamTerminalError() {
         // Arrange
         final int messageCount = 10;
@@ -897,7 +893,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(messageSink);
 
         // Assert the first receive get messages.
         final IterableStream<ServiceBusReceivedMessage> messages0 = client.receiveMessages(messageCount);
@@ -908,18 +904,19 @@ class ServiceBusReceiverClientTest {
         // Assert the second receive iteration get terminal error.
         final IterableStream<ServiceBusReceivedMessage> messages1 = client.receiveMessages(messageCount);
         assertNotNull(messages1);
-        final AmqpException e1 = assertThrows(AmqpException.class, () -> messages1.stream().count());
-        assertEquals(terminalError, e1);
+        final RuntimeException e1 = assertThrows(RuntimeException.class, () -> messages1.stream().count());
+        final Throwable e1Cause = e1.getCause();
+        assertEquals(terminalError, e1Cause);
 
         // Assert the same terminal error 'replayed' to further receive iterations.
         final IterableStream<ServiceBusReceivedMessage> messages2 = client.receiveMessages(messageCount);
         assertNotNull(messages2);
-        final AmqpException e2 = assertThrows(AmqpException.class, () -> messages2.stream().count());
-        assertEquals(terminalError, e2);
+        final RuntimeException e2 = assertThrows(RuntimeException.class, () -> messages2.stream().count());
+        final Throwable e2Cause = e2.getCause();
+        assertEquals(terminalError, e2Cause);
     }
 
     @Test
-    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void iterationAfterCloseEmitsError() {
         // Arrange
         final int messageCount = 10;
@@ -946,7 +943,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(messageSink);
         doNothing().when(asyncClient).close();
 
         // Assert the first receive get messages.
@@ -961,7 +958,8 @@ class ServiceBusReceiverClientTest {
         final IterableStream<ServiceBusReceivedMessage> messages1 = client.receiveMessages(messageCount);
         assertNotNull(messages1);
         final RuntimeException e = assertThrows(RuntimeException.class, () -> messages1.stream().count());
-        assertEquals("The receiver client is terminated. Re-create the client to continue receive attempt.",
+        assertEquals(
+            "The receiver client is terminated. Re-create the client to continue receive attempt. (Reason: upstream-error)",
             e.getMessage());
     }
 }
