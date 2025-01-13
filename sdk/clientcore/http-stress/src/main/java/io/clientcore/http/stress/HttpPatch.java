@@ -10,11 +10,11 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
@@ -89,8 +89,8 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     private HttpPipelineBuilder getPipelineBuilder() {
         HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new InstrumentationPolicy(null, logOptions));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().policies(new HttpRetryPolicy(),
+            new HttpInstrumentationPolicy(null, logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

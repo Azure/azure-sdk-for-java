@@ -76,7 +76,7 @@ final class FallbackContextPropagator implements TraceContextPropagator {
         boolean isAllZero = true;
         for (int i = 3; i < 35; i++) {
             char c = traceparent.charAt(i);
-            if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {
+            if (c < '0' || c > 'f' || (c > '9' && c < 'a')) {
                 return false;
             }
             if (c != '0') {
@@ -91,7 +91,7 @@ final class FallbackContextPropagator implements TraceContextPropagator {
         isAllZero = true;
         for (int i = 36; i < 52; i++) {
             char c = traceparent.charAt(i);
-            if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {
+            if (c < '0' || c > 'f' || (c > '9' && c < 'a')) {
                 return false;
             }
             if (c != '0') {
@@ -106,7 +106,7 @@ final class FallbackContextPropagator implements TraceContextPropagator {
         // trace-flags - 2 lower case hex characters
         for (int i = 53; i < 55; i++) {
             char c = traceparent.charAt(i);
-            if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {
+            if (c < '0' || c > 'f' || (c > '9' && c < 'a')) {
                 return false;
             }
         }
