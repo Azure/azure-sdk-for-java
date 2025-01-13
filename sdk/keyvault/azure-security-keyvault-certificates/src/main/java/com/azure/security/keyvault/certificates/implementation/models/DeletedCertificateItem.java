@@ -45,7 +45,7 @@ public final class DeletedCertificateItem extends CertificateItem {
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     * 
+     *
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -55,7 +55,7 @@ public final class DeletedCertificateItem extends CertificateItem {
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     * 
+     *
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedCertificateItem object itself.
      */
@@ -66,7 +66,7 @@ public final class DeletedCertificateItem extends CertificateItem {
 
     /**
      * Get the scheduledPurgeDate property: The time when the certificate is scheduled to be purged, in UTC.
-     * 
+     *
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -78,7 +78,7 @@ public final class DeletedCertificateItem extends CertificateItem {
 
     /**
      * Get the deletedDate property: The time when the certificate was deleted, in UTC.
-     * 
+     *
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -132,17 +132,20 @@ public final class DeletedCertificateItem extends CertificateItem {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeJsonField("attributes", getAttributes());
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), JsonWriter::writeString);
+
         if (getX509Thumbprint() != null) {
-            jsonWriter.writeStringField("x5t", Objects.toString(Base64Url.encode(getX509Thumbprint()), null));
+            jsonWriter.writeStringField("x5t", Base64Url.encode(getX509Thumbprint()).toString());
         }
+
         jsonWriter.writeStringField("recoveryId", this.recoveryId);
+
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of DeletedCertificateItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedCertificateItem if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
