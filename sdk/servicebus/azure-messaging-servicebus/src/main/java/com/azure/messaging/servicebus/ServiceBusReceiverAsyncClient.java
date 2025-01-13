@@ -949,59 +949,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
-     * This Flux continuously receives messages from a Service Bus entity until either:
-     *
-     * <ul>
-     *     <li>The receiver is closed.</li>
-     *     <li>The subscription to the Flux is disposed.</li>
-     *     <li>A terminal signal from a downstream subscriber is propagated upstream (ie. {@link Flux#take(long)} or
-     *     {@link Flux#take(Duration)}).</li>
-     *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
-     * </ul>
-     * <p>
-     * API used only in v1 stack
-     * </p>
-     *
-     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
-     */
-    Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
-        return receiveMessagesWithContext(1);
-    }
-
-    // API used only in v1 stack
-    private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
-        final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
-            ? sessionManager.receive()
-            : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
-
-        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
-        final Flux<ServiceBusMessageContext> withAutoLockRenewal;
-
-        if (!isSessionEnabled && receiverOptions.isAutoLockRenewEnabled()) {
-            withAutoLockRenewal = new FluxAutoLockRenew(messageFluxWithTracing, receiverOptions, renewalContainer,
-                this::renewMessageLock, tracer);
-        } else {
-            withAutoLockRenewal = messageFluxWithTracing;
-        }
-
-        Flux<ServiceBusMessageContext> result;
-        if (receiverOptions.isEnableAutoComplete()) {
-            result = new FluxAutoComplete(withAutoLockRenewal, completionLock,
-                context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
-                context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
-        } else {
-            result = withAutoLockRenewal;
-        }
-
-        if (highTide > 0) {
-            result = result.limitRate(highTide, 0);
-        }
-
-        return result.onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
-    }
-
-    /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
      *
@@ -1899,6 +1846,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
         assert !isSessionEnabled;
+        // TODO: anu - see receiveMessagesWithContext(int highTide) in main and enable tracing for LLC.
 
         final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
         final boolean enableAutoLockRenew = receiverOptions.isAutoLockRenewEnabled();
@@ -1923,6 +1871,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {
         assert sessionManager instanceof ServiceBusSingleSessionManager;
+        // TODO: anu - see receiveMessagesWithContext(int highTide) in main and enable tracing for LLC.
         final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
         // Note: Once side-by-side support for V1 is no longer needed, we'll update the ServiceBusSingleSessionManager::receive()
         // to return Flux<ServiceBusReceivedMessage> and delete ServiceBusSingleSessionManager.receiveMessages(), which removes
