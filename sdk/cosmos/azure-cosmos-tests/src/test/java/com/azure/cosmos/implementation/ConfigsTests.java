@@ -160,7 +160,7 @@ public class ConfigsTests {
     @Test(groups = { "unit" })
     public void thinClientEndpointTest() {
         Configs config = new Configs();
-        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("COSMOS.DEFAULT_THINCLIENT_ENDPOINT"));
+        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create(""));
 
         System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
         assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
