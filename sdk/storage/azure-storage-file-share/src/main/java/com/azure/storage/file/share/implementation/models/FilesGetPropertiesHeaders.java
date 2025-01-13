@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -50,6 +51,11 @@ public final class FilesGetPropertiesHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
+     * The x-ms-mode property.
+     */
+    private String xMsMode;
+
+    /*
      * The x-ms-file-attributes property.
      */
     private String xMsFileAttributes;
@@ -80,9 +86,19 @@ public final class FilesGetPropertiesHeaders {
     private String xMsRequestId;
 
     /*
+     * The x-ms-owner property.
+     */
+    private String xMsOwner;
+
+    /*
      * The Content-Type property.
      */
     private String contentType;
+
+    /*
+     * The x-ms-group property.
+     */
+    private String xMsGroup;
 
     /*
      * The x-ms-version property.
@@ -103,6 +119,11 @@ public final class FilesGetPropertiesHeaders {
      * The x-ms-copy-source property.
      */
     private String xMsCopySource;
+
+    /*
+     * The x-ms-file-file-type property.
+     */
+    private NfsFileType xMsFileFileType;
 
     /*
      * The x-ms-copy-progress property.
@@ -150,6 +171,11 @@ public final class FilesGetPropertiesHeaders {
     private String eTag;
 
     /*
+     * The x-ms-link-count property.
+     */
+    private Long xMsLinkCount;
+
+    /*
      * The Content-Disposition property.
      */
     private String contentDisposition;
@@ -187,12 +213,18 @@ public final class FilesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
 
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
     private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION
         = HttpHeaderName.fromString("x-ms-copy-status-description");
 
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -203,6 +235,8 @@ public final class FilesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_COPY_SOURCE = HttpHeaderName.fromString("x-ms-copy-source");
 
+    private static final HttpHeaderName X_MS_FILE_FILE_TYPE = HttpHeaderName.fromString("x-ms-file-file-type");
+
     private static final HttpHeaderName X_MS_COPY_PROGRESS = HttpHeaderName.fromString("x-ms-copy-progress");
 
     private static final HttpHeaderName X_MS_COPY_COMPLETION_TIME
@@ -211,6 +245,8 @@ public final class FilesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
 
     private static final HttpHeaderName X_MS_TYPE = HttpHeaderName.fromString("x-ms-type");
+
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
 
     private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
 
@@ -245,6 +281,7 @@ public final class FilesGetPropertiesHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
@@ -257,11 +294,17 @@ public final class FilesGetPropertiesHeaders {
             this.contentLength = Long.parseLong(contentLength);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
         this.xMsCopySource = rawHeaders.getValue(X_MS_COPY_SOURCE);
+        String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
+        if (xMsFileFileType != null) {
+            this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);
+        }
         this.xMsCopyProgress = rawHeaders.getValue(X_MS_COPY_PROGRESS);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -282,6 +325,10 @@ public final class FilesGetPropertiesHeaders {
         this.xMsType = rawHeaders.getValue(X_MS_TYPE);
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (xMsLinkCount != null) {
+            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+        }
         this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
@@ -417,6 +464,26 @@ public final class FilesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsMode property: The x-ms-mode property.
+     * 
+     * @return the xMsMode value.
+     */
+    public String getXMsMode() {
+        return this.xMsMode;
+    }
+
+    /**
+     * Set the xMsMode property: The x-ms-mode property.
+     * 
+     * @param xMsMode the xMsMode value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    public FilesGetPropertiesHeaders setXMsMode(String xMsMode) {
+        this.xMsMode = xMsMode;
+        return this;
+    }
+
+    /**
      * Get the xMsFileAttributes property: The x-ms-file-attributes property.
      * 
      * @return the xMsFileAttributes value.
@@ -537,6 +604,26 @@ public final class FilesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsOwner property: The x-ms-owner property.
+     * 
+     * @return the xMsOwner value.
+     */
+    public String getXMsOwner() {
+        return this.xMsOwner;
+    }
+
+    /**
+     * Set the xMsOwner property: The x-ms-owner property.
+     * 
+     * @param xMsOwner the xMsOwner value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    public FilesGetPropertiesHeaders setXMsOwner(String xMsOwner) {
+        this.xMsOwner = xMsOwner;
+        return this;
+    }
+
+    /**
      * Get the contentType property: The Content-Type property.
      * 
      * @return the contentType value.
@@ -553,6 +640,26 @@ public final class FilesGetPropertiesHeaders {
      */
     public FilesGetPropertiesHeaders setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the xMsGroup property: The x-ms-group property.
+     * 
+     * @return the xMsGroup value.
+     */
+    public String getXMsGroup() {
+        return this.xMsGroup;
+    }
+
+    /**
+     * Set the xMsGroup property: The x-ms-group property.
+     * 
+     * @param xMsGroup the xMsGroup value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    public FilesGetPropertiesHeaders setXMsGroup(String xMsGroup) {
+        this.xMsGroup = xMsGroup;
         return this;
     }
 
@@ -633,6 +740,26 @@ public final class FilesGetPropertiesHeaders {
      */
     public FilesGetPropertiesHeaders setXMsCopySource(String xMsCopySource) {
         this.xMsCopySource = xMsCopySource;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileFileType property: The x-ms-file-file-type property.
+     * 
+     * @return the xMsFileFileType value.
+     */
+    public NfsFileType getXMsFileFileType() {
+        return this.xMsFileFileType;
+    }
+
+    /**
+     * Set the xMsFileFileType property: The x-ms-file-file-type property.
+     * 
+     * @param xMsFileFileType the xMsFileFileType value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    public FilesGetPropertiesHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
+        this.xMsFileFileType = xMsFileFileType;
         return this;
     }
 
@@ -827,6 +954,26 @@ public final class FilesGetPropertiesHeaders {
      */
     public FilesGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @return the xMsLinkCount value.
+     */
+    public Long getXMsLinkCount() {
+        return this.xMsLinkCount;
+    }
+
+    /**
+     * Set the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @param xMsLinkCount the xMsLinkCount value to set.
+     * @return the FilesGetPropertiesHeaders object itself.
+     */
+    public FilesGetPropertiesHeaders setXMsLinkCount(Long xMsLinkCount) {
+        this.xMsLinkCount = xMsLinkCount;
         return this;
     }
 
