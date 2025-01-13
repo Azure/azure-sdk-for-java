@@ -87,10 +87,10 @@ public class TestPropertiesValueInjectHelper {
             return;
         }
 
-        Optional<List<Method>> optionalSetters = Optional.ofNullable(setters);
-        Optional<Method> optionalSetter = optionalSetters.stream().flatMap(Collection::stream)
-                                                         .filter(setter -> setter.getName().equals("set" + varName))
-                                                         .findFirst();
+        Optional<Method> optionalSetter = Optional.ofNullable(setters)
+                                                  .stream().flatMap(Collection::stream)
+                                                  .filter(setter -> setter.getName().equals("set" + varName))
+                                                  .findFirst();
         if (optionalSetter.isEmpty()) {
             Class<?> getterReturnType = getter.getReturnType();
             if (getterReturnType.isInterface()) {
