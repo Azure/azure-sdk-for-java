@@ -12,6 +12,7 @@ import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  *
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnBean(AzureEventHubsProperties.class)
 class AzureEventHubsClientBuilderConfiguration {
 
     @Bean

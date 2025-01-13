@@ -45,14 +45,6 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
-    void withoutEventHubConnectionShouldNotConfigure() {
-        this.contextRunner
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean(CheckpointStore.class, TestCheckpointStore::new)
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
-    }
-
-    @Test
     void withoutCheckpointStoreShouldConfigure() {
         this.contextRunner
             .withPropertyValues(

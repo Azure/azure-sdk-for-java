@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
