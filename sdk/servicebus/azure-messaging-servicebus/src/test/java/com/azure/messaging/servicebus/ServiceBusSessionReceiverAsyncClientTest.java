@@ -5,19 +5,11 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
-import com.azure.core.amqp.models.CbsAuthorizationType;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -25,7 +17,6 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKin
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +50,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ServiceBusSessionReceiverAsyncClientTest {
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(20);
     private static final String NAMESPACE = "my-namespace-foo.net";
@@ -74,7 +64,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final ServiceBusReceiverInstrumentation instrumentation
         = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER);
 
-    private ServiceBusConnectionProcessor connectionProcessor;
     private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private ConnectionCacheWrapper connectionCacheWrapper;
     private AutoCloseable autoCloseable;
@@ -83,8 +72,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private ServiceBusReceiveLink amqpReceiveLink;
     @Mock
     private ServiceBusReactorAmqpConnection connection;
-    @Mock
-    private TokenCredential tokenCredential;
     @Mock
     private MessageSerializer messageSerializer;
     @Mock
@@ -96,20 +83,13 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         autoCloseable = MockitoAnnotations.openMocks(this);
 
-        // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
-        // in ReactorExecutor.
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.flux().publishOn(Schedulers.single()));
+        // Publish messages using boundedElastic, similar to what library internally do.
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.flux().publishOn(Schedulers.boundedElastic()));
 
         when(amqpReceiveLink.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
-
-        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS,
-            Schedulers.boundedElastic(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product",
-            "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor.flux());
         endpointProcessor.next(AmqpEndpointState.ACTIVE);
@@ -162,6 +142,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getSessionProperties())
             .thenReturn(Mono.just(new ServiceBusReceiveLink.SessionProperties(sessionId, sessionLockedUntil)));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), eq(sessionId)))
@@ -173,9 +154,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
                 }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
-        StepVerifier
-            .create(
-                client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
+        StepVerifier.create(client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageProcessor.next(message);
@@ -227,7 +206,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         final String lockToken2 = "a-lock-token-2";
         final String linkName2 = "my-link-name-2";
         final TestPublisher<Message> messagePublisher2 = TestPublisher.create();
-        final Flux<Message> messageFlux2 = messagePublisher2.flux().publishOn(Schedulers.single());
+        final Flux<Message> messageFlux2 = messagePublisher2.flux().publishOn(Schedulers.boundedElastic());
 
         when(receivedMessage2.getSessionId()).thenReturn(sessionId2);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);

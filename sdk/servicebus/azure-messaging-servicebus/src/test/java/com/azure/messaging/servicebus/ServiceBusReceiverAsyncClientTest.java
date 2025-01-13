@@ -5,23 +5,17 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
-import com.azure.core.amqp.models.CbsAuthorizationType;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -32,9 +26,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
@@ -50,7 +42,6 @@ import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
-import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -115,7 +106,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
@@ -149,12 +139,10 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private ServiceBusReactorAmqpConnection connection;
     @Mock
-    private TokenCredential tokenCredential;
-    @Mock
     private MessageSerializer messageSerializer;
 
     private final ReceiverKind receiverKind = ReceiverKind.ASYNC_RECEIVER;
-    private ServiceBusReceiverInstrumentation instrumentation
+    private final ServiceBusReceiverInstrumentation instrumentation
         = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, receiverKind);
     @Mock
     private ServiceBusManagementNode managementNode;
@@ -171,26 +159,18 @@ class ServiceBusReceiverAsyncClientTest {
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
-        // in ReactorExecutor.
-        // 5/23/2023: The above note is invalid as the ServiceBusReactorReceiver (i.e., type of amqpReceiveLink
-        // variable) always publishes messages using boundedElastic (irrespective of v1 or v2).
-        when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
+        // Publish messages using boundedElastic, similar to what library internally do.
+        when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.boundedElastic()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointStates.asFlux());
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        when(sessionReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
+        when(sessionReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.boundedElastic()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointStates.asFlux());
         when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
-            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
-
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
-
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
@@ -198,11 +178,10 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class), anyString(), anyString())).thenReturn(Mono.just(sessionReceiveLink));
 
-        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
-
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
+                new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
@@ -210,7 +189,7 @@ class ServiceBusReceiverAsyncClientTest {
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID),
             connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
-            mock(ServiceBusSessionManager.class));
+            mock(ServiceBusSingleSessionManager.class));
     }
 
     @AfterEach
@@ -229,7 +208,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void properties(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         Assertions.assertEquals(ENTITY_PATH, receiver.getEntityPath());
         Assertions.assertEquals(NAMESPACE, receiver.getFullyQualifiedNamespace());
         Assertions.assertEquals(CLIENT_IDENTIFIER, receiver.getIdentifier());
@@ -243,7 +222,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekTwoMessages(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final long sequence1 = 10;
         final long sequence2 = 12;
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
@@ -280,7 +259,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekEmptyEntity(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         when(managementNode.peek(0, null, null)).thenReturn(Mono.empty());
 
         // Act & Assert
@@ -294,7 +273,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekWithSequenceOneMessage(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
@@ -314,7 +293,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesNumberOfEvents() {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -345,7 +324,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesMessageLockRenewSessionOnly() {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -445,7 +424,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void completeNullMessage(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         StepVerifier.create(receiver.complete(null)).expectError(NullPointerException.class).verify(DEFAULT_TIMEOUT);
     }
 
@@ -455,7 +434,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void completeInReceiveAndDeleteMode(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         final ReceiverOptions options
             = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
@@ -478,7 +457,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         final ReceiverOptions options = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
@@ -502,7 +481,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekMessages(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 2;
 
         when(managementNode.peek(0, null, null, numberOfEvents))
@@ -522,7 +501,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekMessagesEmptyEntity(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 2;
 
         when(managementNode.peek(0, null, null, numberOfEvents)).thenReturn(Flux.fromIterable(Collections.emptyList()));
@@ -538,7 +517,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void peekBatchWithSequenceNumberMessages(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 2;
         final int fromSequenceNumber = 10;
 
@@ -572,7 +551,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        arrangeForV2();
+        // arrangeForV2();
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
@@ -601,7 +580,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void errorSourceOnRenewMessageLock(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final String lockToken = "some-token";
 
@@ -641,7 +620,7 @@ class ServiceBusReceiverAsyncClientTest {
             = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
-            messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
+            messageSerializer, onClientClose, mock(ServiceBusSingleSessionManager.class));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock()).expectErrorSatisfies(throwable -> {
@@ -664,7 +643,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        arrangeForV2();
+        // arrangeForV2();
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
@@ -710,7 +689,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void errorSourceAutoCompleteMessage(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 2;
         final int messagesToReceive = 1;
         final List<Message> messages = getMessages();
@@ -761,7 +740,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        arrangeForV2();
+        // arrangeForV2();
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -881,7 +860,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void receiveDeferredWithSequenceOneMessage(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
@@ -901,7 +880,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void receiveDeferredBatchFromSequenceNumber(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final long fromSequenceNumber1 = 10;
         final long fromSequenceNumber2 = 11;
 
@@ -922,7 +901,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void callsClientClose(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         // Act
         receiver.close();
 
@@ -936,7 +915,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void callsClientCloseOnce(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         // Act
         receiver.close();
         receiver.close();
@@ -951,7 +930,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void callsManagementNodeLocksCloseWhenClientIsClosed(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         // Given
         Assertions.assertFalse(receiver.isManagementNodeLocksClosed());
 
@@ -968,7 +947,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void callsRenewalContainerCloseWhenClientIsClosed(boolean isV2) {
-        arrangeForV2();
+        // arrangeForV2();
         // Given
         Assertions.assertFalse(receiver.isRenewalContainerClosed());
 
@@ -1024,7 +1003,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void canPerformMultipleReceive() {
-        arrangeForV2();
+        // arrangeForV2();
         // Arrange
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
@@ -1064,7 +1043,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void cannotPerformGetSessionState(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
 
         // Act & Assert
         StepVerifier.create(receiver.getSessionState())
@@ -1079,7 +1058,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void cannotPerformSetSessionState(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final byte[] sessionState = new byte[] { 10, 11, 8 };
 
         // Act & Assert
@@ -1095,7 +1074,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void cannotPerformRenewSessionLock(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
 
         // Act & Assert
         StepVerifier.create(receiver.renewSessionLock())
@@ -1116,7 +1095,7 @@ class ServiceBusReceiverAsyncClientTest {
                 createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, CLEANUP_INTERVAL, false,
                     SESSION_ID),
                 connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
-                mock(ServiceBusSessionManager.class));
+                mock(ServiceBusSingleSessionManager.class));
 
         when(managementNode.getSessionState(SESSION_ID, null)).thenReturn(Mono.just(bytes));
 
@@ -1190,7 +1169,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void autoRenewMessageLock(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
@@ -1223,7 +1202,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void autoRenewMessageLockErrorNull(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
@@ -1246,7 +1225,7 @@ class ServiceBusReceiverAsyncClientTest {
     @ValueSource(booleans = { true, false })
     void autoRenewMessageLockErrorEmptyString(boolean isV2) {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "";
@@ -1303,7 +1282,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void autoCompleteMessage() {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -1340,7 +1319,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void autoCompleteMessageSessionReceiver() {
         // Arrange
-        arrangeForV2();
+        // arrangeForV2();
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
         final String lockToken = "token1";
