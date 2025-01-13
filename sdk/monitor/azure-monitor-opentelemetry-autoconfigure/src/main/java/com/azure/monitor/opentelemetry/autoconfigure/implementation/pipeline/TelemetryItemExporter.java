@@ -133,7 +133,7 @@ public class TelemetryItemExporter {
         try {
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                 String json = toJson(telemetryItems);
-                String jsonWithoutIKeys = removeIKeys(telemetryItems, json);
+                String jsonWithoutIKeys = maskIKeys(telemetryItems, json);
                 logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), jsonWithoutIKeys);
             }
 
@@ -164,11 +164,12 @@ public class TelemetryItemExporter {
         }
     }
 
-    private static String removeIKeys(List<TelemetryItem> telemetryItems, String json) {
+    private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
         for (String instrumentationKey : iKeys) {
-            json = json.replace(instrumentationKey, "***");
+            String maskedIKey = "*" + instrumentationKey.substring( instrumentationKey.length() - 13, instrumentationKey.length() - 1);
+            json = json.replace(instrumentationKey, maskedIKey);
         }
         return json;
     }
