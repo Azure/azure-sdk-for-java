@@ -383,7 +383,7 @@ jobs:
         displayName: 'Run OWASP Dependency Check'
         inputs:
           mavenPomFile: pom.xml
-          goals: 'org.owasp:dependency-check-maven:6.2.2:check'
+          goals: 'org.owasp:dependency-check-maven:check'
           options: '-DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'

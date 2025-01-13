@@ -219,6 +219,7 @@ org.revapi:revapi-java;0.26.1
 org.revapi:revapi-java-spi;0.23.6
 org.revapi:revapi-reporter-json;0.4.5
 org.revapi:revapi-maven-plugin;0.14.6
+org.owasp:dependency-check-maven;11.1.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
