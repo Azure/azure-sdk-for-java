@@ -16,6 +16,7 @@ import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -94,7 +95,7 @@ class ServiceBusReceiverClientTest {
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
         when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE,
             ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
-        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
 
     @AfterEach
@@ -104,8 +105,8 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void nullConstructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, false, OPERATION_TIMEOUT));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, false, null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, OPERATION_TIMEOUT));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, null));
     }
 
     @Test
@@ -643,6 +644,7 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
+    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesWithUserSpecifiedTimeout() {
         // Arrange
         final int maxMessages = 10;
@@ -690,6 +692,7 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
+    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesMax() {
         // Arrange
         final int maxMessages = 10;
@@ -737,6 +740,7 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
+    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void receiveMessagesTimeout() {
         // Arrange
         final int maxMessages = 10;
@@ -862,6 +866,7 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void iterationReplaysUpstreamTerminalError() {
         // Arrange
         final int messageCount = 10;
@@ -914,6 +919,7 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    @Disabled("The ServiceBusReceiverAsyncClient::receiveMessagesNoBackPressure() used to support old v1 synchronous no longer exists and new synchronous-receiver relies on ServiceBusReceiverAsyncClient::receiveMessages().")
     void iterationAfterCloseEmitsError() {
         // Arrange
         final int messageCount = 10;
