@@ -1862,8 +1862,7 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
-            final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(true), isPrefetchDisabled,
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(true),
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
@@ -2441,8 +2440,7 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusReceiverClient(buildAsyncClient(false, ReceiverKind.SYNC_RECEIVER), isPrefetchDisabled,
+            return new ServiceBusReceiverClient(buildAsyncClient(false, ReceiverKind.SYNC_RECEIVER),
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
