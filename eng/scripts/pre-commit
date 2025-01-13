@@ -1,10 +1,31 @@
 #!/bin/sh
 
+set -e
+
+# Cred Scanner
+
+# Setting up Cred Scanner Pre-Commit Git Hook locally requires installing Guardian and running the
+# initialization first before the pre-commit hook can actually be used.
+# https://eng.ms/docs/products/credential-risk-exposure-defense/solutions/credentials_in_code/precommit-git-hook
+
+echo "########### Running credential scanner ###########"
+if [[ "${CredScanBinDirPosix}" ]]; then
+    "${CredScanBinDirPosix}/CredScanGitHook" -r "${PWD}"
+fi
+
+# Spell Check
+echo "########### Running spell check ###########"
+exec git diff --cached --name-only | npx cspell --no-summary --no-progress --no-must-find-files --file-list stdin
+echo "Spell check completed successfully"
+
 # Validate library versions
+echo "########### Validating package versions ###########"
 pwsh eng/versioning/pom_file_version_scanner.ps1
+echo "Package versions validation completed successfully"
 
-changed_files=$(git diff --name-only)
-
+# Validate links
+echo "########### Validating links ###########"
+changed_files=$(git diff --cached --name-only)
 for file in $changed_files; do
-    pwsh eng/common/spelling/Invoke-Cspell.ps1 $file
+    pwsh eng/common/scripts/Verify-Links.ps1 $file
 done
