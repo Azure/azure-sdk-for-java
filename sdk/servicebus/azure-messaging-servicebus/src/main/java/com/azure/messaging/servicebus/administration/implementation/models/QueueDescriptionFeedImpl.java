@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
@@ -223,7 +221,7 @@ public final class QueueDescriptionFeedImpl implements XmlSerializable<QueueDesc
                 } else if ("updated".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedQueueDescriptionFeed.updated
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("link".equals(elementName.getLocalPart())) {
                     deserializedQueueDescriptionFeed.link.add(ResponseLinkImpl.fromXml(reader, "link"));
                 } else if ("entry".equals(elementName.getLocalPart())) {

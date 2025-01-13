@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Enterprise settings of a Grafana instance.
  */
 @Fluent
-public final class EnterpriseConfigurations {
+public final class EnterpriseConfigurations implements JsonSerializable<EnterpriseConfigurations> {
     /*
      * The Plan Id of the Azure Marketplace subscription for the Enterprise plugins
      */
-    @JsonProperty(value = "marketplacePlanId")
     private String marketplacePlanId;
 
     /*
      * The AutoRenew setting of the Enterprise subscription
      */
-    @JsonProperty(value = "marketplaceAutoRenew")
     private MarketplaceAutoRenew marketplaceAutoRenew;
 
     /**
@@ -31,8 +33,7 @@ public final class EnterpriseConfigurations {
     }
 
     /**
-     * Get the marketplacePlanId property: The Plan Id of the Azure Marketplace subscription for the Enterprise
-     * plugins.
+     * Get the marketplacePlanId property: The Plan Id of the Azure Marketplace subscription for the Enterprise plugins.
      * 
      * @return the marketplacePlanId value.
      */
@@ -41,8 +42,7 @@ public final class EnterpriseConfigurations {
     }
 
     /**
-     * Set the marketplacePlanId property: The Plan Id of the Azure Marketplace subscription for the Enterprise
-     * plugins.
+     * Set the marketplacePlanId property: The Plan Id of the Azure Marketplace subscription for the Enterprise plugins.
      * 
      * @param marketplacePlanId the marketplacePlanId value to set.
      * @return the EnterpriseConfigurations object itself.
@@ -78,5 +78,46 @@ public final class EnterpriseConfigurations {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("marketplacePlanId", this.marketplacePlanId);
+        jsonWriter.writeStringField("marketplaceAutoRenew",
+            this.marketplaceAutoRenew == null ? null : this.marketplaceAutoRenew.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnterpriseConfigurations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnterpriseConfigurations if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnterpriseConfigurations.
+     */
+    public static EnterpriseConfigurations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnterpriseConfigurations deserializedEnterpriseConfigurations = new EnterpriseConfigurations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplacePlanId".equals(fieldName)) {
+                    deserializedEnterpriseConfigurations.marketplacePlanId = reader.getString();
+                } else if ("marketplaceAutoRenew".equals(fieldName)) {
+                    deserializedEnterpriseConfigurations.marketplaceAutoRenew
+                        = MarketplaceAutoRenew.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnterpriseConfigurations;
+        });
     }
 }

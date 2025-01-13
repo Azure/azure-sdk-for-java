@@ -13,28 +13,28 @@ public final class UeQosFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UeQosFlow model = BinaryData.fromString(
-            "{\"qfi\":1071855018,\"fiveqi\":1178102371,\"mbr\":{\"uplink\":\"rsbycucrwn\",\"downlink\":\"mikzeb\"},\"gbr\":{\"uplink\":\"bsmswziqgf\",\"downlink\":\"hokzrusw\"}}")
+            "{\"qfi\":105159032,\"fiveqi\":1099892409,\"mbr\":{\"uplink\":\"jgtixr\",\"downlink\":\"vzuyturmlmu\"},\"gbr\":{\"uplink\":\"olbauirop\",\"downlink\":\"ons\"}}")
             .toObject(UeQosFlow.class);
-        Assertions.assertEquals(1071855018, model.qfi());
-        Assertions.assertEquals(1178102371, model.fiveqi());
-        Assertions.assertEquals("rsbycucrwn", model.mbr().uplink());
-        Assertions.assertEquals("mikzeb", model.mbr().downlink());
-        Assertions.assertEquals("bsmswziqgf", model.gbr().uplink());
-        Assertions.assertEquals("hokzrusw", model.gbr().downlink());
+        Assertions.assertEquals(105159032, model.qfi());
+        Assertions.assertEquals(1099892409, model.fiveqi());
+        Assertions.assertEquals("jgtixr", model.mbr().uplink());
+        Assertions.assertEquals("vzuyturmlmu", model.mbr().downlink());
+        Assertions.assertEquals("olbauirop", model.gbr().uplink());
+        Assertions.assertEquals("ons", model.gbr().downlink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UeQosFlow model = new UeQosFlow().withQfi(1071855018)
-            .withFiveqi(1178102371)
-            .withMbr(new Ambr().withUplink("rsbycucrwn").withDownlink("mikzeb"))
-            .withGbr(new Ambr().withUplink("bsmswziqgf").withDownlink("hokzrusw"));
+        UeQosFlow model = new UeQosFlow().withQfi(105159032)
+            .withFiveqi(1099892409)
+            .withMbr(new Ambr().withUplink("jgtixr").withDownlink("vzuyturmlmu"))
+            .withGbr(new Ambr().withUplink("olbauirop").withDownlink("ons"));
         model = BinaryData.fromObject(model).toObject(UeQosFlow.class);
-        Assertions.assertEquals(1071855018, model.qfi());
-        Assertions.assertEquals(1178102371, model.fiveqi());
-        Assertions.assertEquals("rsbycucrwn", model.mbr().uplink());
-        Assertions.assertEquals("mikzeb", model.mbr().downlink());
-        Assertions.assertEquals("bsmswziqgf", model.gbr().uplink());
-        Assertions.assertEquals("hokzrusw", model.gbr().downlink());
+        Assertions.assertEquals(105159032, model.qfi());
+        Assertions.assertEquals(1099892409, model.fiveqi());
+        Assertions.assertEquals("jgtixr", model.mbr().uplink());
+        Assertions.assertEquals("vzuyturmlmu", model.mbr().downlink());
+        Assertions.assertEquals("olbauirop", model.gbr().uplink());
+        Assertions.assertEquals("ons", model.gbr().downlink());
     }
 }

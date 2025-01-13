@@ -122,7 +122,11 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
             WithAttach<ParentT> withDuration(Duration duration);
         }
 
-        /** A credential definition stage allowing exporting the auth file for the service principal. */
+        /**
+         * A credential definition stage allowing exporting the auth file for the service principal.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAuthFile<ParentT> {
             /**
              * Export the information of this service principal into an auth file.
@@ -135,7 +139,10 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
             WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
         }
 
-        /** A credential definition stage allowing specifying the private key for exporting an auth file. */
+        /** A credential definition stage allowing specifying the private key for exporting an auth file.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAuthFileCertificate<ParentT> {
             /**
              * Export the information of this service principal into an auth file.
@@ -149,6 +156,8 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
         /**
          * A credential definition stage allowing specifying the password for the private key for exporting an auth
          * file.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAuthFileCertificatePassword<ParentT> {
             /**

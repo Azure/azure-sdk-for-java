@@ -33,17 +33,12 @@ public final class SqlPoolSensitivityLabelsUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolSensitivityLabels()
-            .updateWithResponse("eseuugci", "zhogsmgbvmtdw", "qbe",
-                new SensitivityLabelUpdateList().withOperations(Arrays.asList(
-                    new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.REMOVE)
-                        .withSchema("eglabtvkbiwznhtf")
-                        .withTable("ficudyhiz")
-                        .withColumn("aczmuh")
-                        .withSensitivityLabel(new SensitivityLabelInner()),
-                    new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.REMOVE)
-                        .withSchema("cxiqq")
-                        .withTable("jkoxdupna")
-                        .withColumn("gl")
+            .updateWithResponse("wkqyns", "gbvoffbkk", "vdxaexqokmyrljia",
+                new SensitivityLabelUpdateList().withOperations(
+                    Arrays.asList(new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.SET)
+                        .withSchema("brqlpbcjtrpz")
+                        .withTable("yudivbxnhsqeaeo")
+                        .withColumn("qelwgdhuruzytza")
                         .withSensitivityLabel(new SensitivityLabelInner()))),
                 com.azure.core.util.Context.NONE);
 

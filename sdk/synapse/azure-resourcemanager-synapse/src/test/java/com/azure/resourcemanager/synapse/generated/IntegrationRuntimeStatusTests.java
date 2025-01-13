@@ -13,14 +13,14 @@ public final class IntegrationRuntimeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeStatus model = BinaryData.fromString(
-            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"k\",\"state\":\"Offline\",\"\":{\"c\":\"dataunsjlpjrtwszhvvu\"}}")
+            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"ncghkje\",\"state\":\"Limited\",\"\":{\"gx\":\"dataijhtxf\",\"nehmpvecx\":\"datafsm\",\"gr\":\"dataodebfqkkrbmpu\"}}")
             .toObject(IntegrationRuntimeStatus.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeStatus model = new IntegrationRuntimeStatus().withAdditionalProperties(
-            mapOf("dataFactoryName", "k", "state", "Offline", "type", "IntegrationRuntimeStatus"));
+            mapOf("dataFactoryName", "ncghkje", "state", "Limited", "type", "IntegrationRuntimeStatus"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatus.class);
     }
 

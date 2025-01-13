@@ -37,6 +37,10 @@ public final class ModelImpl implements Model {
         return this.innerModel().skuName();
     }
 
+    public String description() {
+        return this.innerModel().description();
+    }
+
     public ModelInner innerModel() {
         return this.innerObject;
     }

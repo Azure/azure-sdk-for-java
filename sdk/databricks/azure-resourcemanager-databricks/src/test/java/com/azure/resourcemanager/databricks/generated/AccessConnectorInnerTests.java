@@ -18,7 +18,7 @@ public final class AccessConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessConnectorInner model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"8e8a3731-8ab3-4728-bd89-58ffb901cb32\",\"tenantId\":\"1da1711b-690c-4e04-973b-ad886661a203\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vnchrkcci\":{\"principalId\":\"8733775c-58cf-45cd-8d71-8fe71785bcc4\",\"clientId\":\"6301bebb-6173-447a-928b-8c8c2279e704\"}}},\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"qkhr\",\"tags\":{\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"id\":\"eggzfb\",\"name\":\"hfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"}")
+            "{\"identity\":{\"principalId\":\"81b89abc-bc7b-4f17-901e-7141e851e9be\",\"tenantId\":\"29e95803-715f-4dc5-9c08-583342f5c98c\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vnchrkcci\":{\"principalId\":\"445da7b5-12f4-4203-a88c-2b134c0eb3d1\",\"clientId\":\"3505b4a1-beda-49d4-853d-09c7225ec85d\"}}},\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"qkhr\",\"tags\":{\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"id\":\"eggzfb\",\"name\":\"hfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"}")
             .toObject(AccessConnectorInner.class);
         Assertions.assertEquals("qkhr", model.location());
         Assertions.assertEquals("iwkuofos", model.tags().get("ghsauuimjmvxied"));

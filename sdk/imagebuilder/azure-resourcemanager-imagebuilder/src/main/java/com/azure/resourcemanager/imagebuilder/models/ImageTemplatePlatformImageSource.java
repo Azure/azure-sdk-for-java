@@ -202,7 +202,6 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      */
     @Override
     public void validate() {
-        super.validate();
         if (planInfo() != null) {
             planInfo().validate();
         }

@@ -11,7 +11,7 @@ public final class ReplicationLinkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationLinkInner model = BinaryData.fromString(
-            "{\"location\":\"wifto\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"uvksgplsaknynfsy\",\"partnerServer\":\"jphuopxodlqi\",\"partnerDatabase\":\"torzih\",\"partnerLocation\":\"osjswsr\",\"role\":\"NonReadableSecondary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-03-30T08:07:03Z\",\"percentComplete\":671314930,\"replicationState\":\"CATCH_UP\"},\"id\":\"ckqqzqioxiysui\",\"name\":\"zynkedya\",\"type\":\"rwyhqmibzyhwitsm\"}")
+            "{\"location\":\"lmywwtkgkxnyed\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"udtjuewbc\",\"partnerServer\":\"xuuwhcj\",\"partnerDatabase\":\"ccybvp\",\"partnerLocation\":\"akkud\",\"role\":\"NonReadableSecondary\",\"partnerRole\":\"Copy\",\"startTime\":\"2021-05-27T09:18:41Z\",\"percentComplete\":704877183,\"replicationState\":\"CATCH_UP\"},\"id\":\"stcyohpfkyrkdbd\",\"name\":\"iogsjkmnwq\",\"type\":\"nobaiyhddviacegf\"}")
             .toObject(ReplicationLinkInner.class);
     }
 

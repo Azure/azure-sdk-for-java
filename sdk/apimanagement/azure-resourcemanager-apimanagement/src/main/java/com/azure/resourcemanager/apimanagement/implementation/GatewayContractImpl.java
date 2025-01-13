@@ -118,9 +118,9 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.gatewayId = Utils.getValueFromIdByName(innerObject.id(), "gateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.gatewayId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "gateways");
     }
 
     public GatewayContract refresh() {

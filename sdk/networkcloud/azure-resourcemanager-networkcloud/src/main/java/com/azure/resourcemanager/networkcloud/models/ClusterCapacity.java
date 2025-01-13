@@ -5,67 +5,67 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ClusterCapacity represents various details regarding compute capacity. */
+/**
+ * ClusterCapacity represents various details regarding compute capacity.
+ */
 @Fluent
-public final class ClusterCapacity {
+public final class ClusterCapacity implements JsonSerializable<ClusterCapacity> {
     /*
-     * The remaining appliance-based storage in GB available for workload use.
+     * The remaining appliance-based storage in GB available for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "availableApplianceStorageGB")
     private Long availableApplianceStorageGB;
 
     /*
      * The remaining number of cores that are available in this cluster for workload use.
      */
-    @JsonProperty(value = "availableCoreCount")
     private Long availableCoreCount;
 
     /*
-     * The remaining machine or host-based storage in GB available for workload use.
+     * The remaining machine or host-based storage in GB available for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "availableHostStorageGB")
     private Long availableHostStorageGB;
 
     /*
-     * The remaining memory in GB that are available in this cluster for workload use.
+     * The remaining memory in GB that are available in this cluster for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "availableMemoryGB")
     private Long availableMemoryGB;
 
     /*
-     * The total appliance-based storage in GB supported by this cluster for workload use.
+     * The total appliance-based storage in GB supported by this cluster for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "totalApplianceStorageGB")
     private Long totalApplianceStorageGB;
 
     /*
      * The total number of cores that are supported by this cluster for workload use.
      */
-    @JsonProperty(value = "totalCoreCount")
     private Long totalCoreCount;
 
     /*
-     * The total machine or host-based storage in GB supported by this cluster for workload use.
+     * The total machine or host-based storage in GB supported by this cluster for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "totalHostStorageGB")
     private Long totalHostStorageGB;
 
     /*
-     * The total memory supported by this cluster for workload use.
+     * The total memory supported by this cluster for workload use. Measured in gibibytes.
      */
-    @JsonProperty(value = "totalMemoryGB")
     private Long totalMemoryGB;
 
-    /** Creates an instance of ClusterCapacity class. */
+    /**
+     * Creates an instance of ClusterCapacity class.
+     */
     public ClusterCapacity() {
     }
 
     /**
      * Get the availableApplianceStorageGB property: The remaining appliance-based storage in GB available for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @return the availableApplianceStorageGB value.
      */
     public Long availableApplianceStorageGB() {
@@ -74,8 +74,8 @@ public final class ClusterCapacity {
 
     /**
      * Set the availableApplianceStorageGB property: The remaining appliance-based storage in GB available for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @param availableApplianceStorageGB the availableApplianceStorageGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -87,7 +87,7 @@ public final class ClusterCapacity {
     /**
      * Get the availableCoreCount property: The remaining number of cores that are available in this cluster for
      * workload use.
-     *
+     * 
      * @return the availableCoreCount value.
      */
     public Long availableCoreCount() {
@@ -97,7 +97,7 @@ public final class ClusterCapacity {
     /**
      * Set the availableCoreCount property: The remaining number of cores that are available in this cluster for
      * workload use.
-     *
+     * 
      * @param availableCoreCount the availableCoreCount value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -108,8 +108,8 @@ public final class ClusterCapacity {
 
     /**
      * Get the availableHostStorageGB property: The remaining machine or host-based storage in GB available for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @return the availableHostStorageGB value.
      */
     public Long availableHostStorageGB() {
@@ -118,8 +118,8 @@ public final class ClusterCapacity {
 
     /**
      * Set the availableHostStorageGB property: The remaining machine or host-based storage in GB available for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @param availableHostStorageGB the availableHostStorageGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -130,8 +130,8 @@ public final class ClusterCapacity {
 
     /**
      * Get the availableMemoryGB property: The remaining memory in GB that are available in this cluster for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @return the availableMemoryGB value.
      */
     public Long availableMemoryGB() {
@@ -140,8 +140,8 @@ public final class ClusterCapacity {
 
     /**
      * Set the availableMemoryGB property: The remaining memory in GB that are available in this cluster for workload
-     * use.
-     *
+     * use. Measured in gibibytes.
+     * 
      * @param availableMemoryGB the availableMemoryGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -152,8 +152,8 @@ public final class ClusterCapacity {
 
     /**
      * Get the totalApplianceStorageGB property: The total appliance-based storage in GB supported by this cluster for
-     * workload use.
-     *
+     * workload use. Measured in gibibytes.
+     * 
      * @return the totalApplianceStorageGB value.
      */
     public Long totalApplianceStorageGB() {
@@ -162,8 +162,8 @@ public final class ClusterCapacity {
 
     /**
      * Set the totalApplianceStorageGB property: The total appliance-based storage in GB supported by this cluster for
-     * workload use.
-     *
+     * workload use. Measured in gibibytes.
+     * 
      * @param totalApplianceStorageGB the totalApplianceStorageGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -174,7 +174,7 @@ public final class ClusterCapacity {
 
     /**
      * Get the totalCoreCount property: The total number of cores that are supported by this cluster for workload use.
-     *
+     * 
      * @return the totalCoreCount value.
      */
     public Long totalCoreCount() {
@@ -183,7 +183,7 @@ public final class ClusterCapacity {
 
     /**
      * Set the totalCoreCount property: The total number of cores that are supported by this cluster for workload use.
-     *
+     * 
      * @param totalCoreCount the totalCoreCount value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -194,8 +194,8 @@ public final class ClusterCapacity {
 
     /**
      * Get the totalHostStorageGB property: The total machine or host-based storage in GB supported by this cluster for
-     * workload use.
-     *
+     * workload use. Measured in gibibytes.
+     * 
      * @return the totalHostStorageGB value.
      */
     public Long totalHostStorageGB() {
@@ -204,8 +204,8 @@ public final class ClusterCapacity {
 
     /**
      * Set the totalHostStorageGB property: The total machine or host-based storage in GB supported by this cluster for
-     * workload use.
-     *
+     * workload use. Measured in gibibytes.
+     * 
      * @param totalHostStorageGB the totalHostStorageGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -215,8 +215,9 @@ public final class ClusterCapacity {
     }
 
     /**
-     * Get the totalMemoryGB property: The total memory supported by this cluster for workload use.
-     *
+     * Get the totalMemoryGB property: The total memory supported by this cluster for workload use. Measured in
+     * gibibytes.
+     * 
      * @return the totalMemoryGB value.
      */
     public Long totalMemoryGB() {
@@ -224,8 +225,9 @@ public final class ClusterCapacity {
     }
 
     /**
-     * Set the totalMemoryGB property: The total memory supported by this cluster for workload use.
-     *
+     * Set the totalMemoryGB property: The total memory supported by this cluster for workload use. Measured in
+     * gibibytes.
+     * 
      * @param totalMemoryGB the totalMemoryGB value to set.
      * @return the ClusterCapacity object itself.
      */
@@ -236,9 +238,66 @@ public final class ClusterCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("availableApplianceStorageGB", this.availableApplianceStorageGB);
+        jsonWriter.writeNumberField("availableCoreCount", this.availableCoreCount);
+        jsonWriter.writeNumberField("availableHostStorageGB", this.availableHostStorageGB);
+        jsonWriter.writeNumberField("availableMemoryGB", this.availableMemoryGB);
+        jsonWriter.writeNumberField("totalApplianceStorageGB", this.totalApplianceStorageGB);
+        jsonWriter.writeNumberField("totalCoreCount", this.totalCoreCount);
+        jsonWriter.writeNumberField("totalHostStorageGB", this.totalHostStorageGB);
+        jsonWriter.writeNumberField("totalMemoryGB", this.totalMemoryGB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterCapacity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCapacity.
+     */
+    public static ClusterCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterCapacity deserializedClusterCapacity = new ClusterCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availableApplianceStorageGB".equals(fieldName)) {
+                    deserializedClusterCapacity.availableApplianceStorageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("availableCoreCount".equals(fieldName)) {
+                    deserializedClusterCapacity.availableCoreCount = reader.getNullable(JsonReader::getLong);
+                } else if ("availableHostStorageGB".equals(fieldName)) {
+                    deserializedClusterCapacity.availableHostStorageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("availableMemoryGB".equals(fieldName)) {
+                    deserializedClusterCapacity.availableMemoryGB = reader.getNullable(JsonReader::getLong);
+                } else if ("totalApplianceStorageGB".equals(fieldName)) {
+                    deserializedClusterCapacity.totalApplianceStorageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("totalCoreCount".equals(fieldName)) {
+                    deserializedClusterCapacity.totalCoreCount = reader.getNullable(JsonReader::getLong);
+                } else if ("totalHostStorageGB".equals(fieldName)) {
+                    deserializedClusterCapacity.totalHostStorageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("totalMemoryGB".equals(fieldName)) {
+                    deserializedClusterCapacity.totalMemoryGB = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterCapacity;
+        });
     }
 }

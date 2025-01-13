@@ -17,6 +17,11 @@ import java.io.IOException;
 @Fluent
 public class DeploymentModel implements JsonSerializable<DeploymentModel> {
     /*
+     * Deployment model publisher.
+     */
+    private String publisher;
+
+    /*
      * Deployment model format.
      */
     private String format;
@@ -39,6 +44,11 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
     private String source;
 
     /*
+     * Optional. Source of the model, another Microsoft.CognitiveServices accounts ARM resource ID.
+     */
+    private String sourceAccount;
+
+    /*
      * The call rate limit Cognitive Services account.
      */
     private CallRateLimit callRateLimit;
@@ -47,6 +57,26 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
      * Creates an instance of DeploymentModel class.
      */
     public DeploymentModel() {
+    }
+
+    /**
+     * Get the publisher property: Deployment model publisher.
+     * 
+     * @return the publisher value.
+     */
+    public String publisher() {
+        return this.publisher;
+    }
+
+    /**
+     * Set the publisher property: Deployment model publisher.
+     * 
+     * @param publisher the publisher value to set.
+     * @return the DeploymentModel object itself.
+     */
+    public DeploymentModel withPublisher(String publisher) {
+        this.publisher = publisher;
+        return this;
     }
 
     /**
@@ -134,6 +164,28 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
     }
 
     /**
+     * Get the sourceAccount property: Optional. Source of the model, another Microsoft.CognitiveServices accounts ARM
+     * resource ID.
+     * 
+     * @return the sourceAccount value.
+     */
+    public String sourceAccount() {
+        return this.sourceAccount;
+    }
+
+    /**
+     * Set the sourceAccount property: Optional. Source of the model, another Microsoft.CognitiveServices accounts ARM
+     * resource ID.
+     * 
+     * @param sourceAccount the sourceAccount value to set.
+     * @return the DeploymentModel object itself.
+     */
+    public DeploymentModel withSourceAccount(String sourceAccount) {
+        this.sourceAccount = sourceAccount;
+        return this;
+    }
+
+    /**
      * Get the callRateLimit property: The call rate limit Cognitive Services account.
      * 
      * @return the callRateLimit value.
@@ -170,10 +222,12 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
         jsonWriter.writeStringField("format", this.format);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("sourceAccount", this.sourceAccount);
         return jsonWriter.writeEndObject();
     }
 
@@ -192,7 +246,9 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("format".equals(fieldName)) {
+                if ("publisher".equals(fieldName)) {
+                    deserializedDeploymentModel.publisher = reader.getString();
+                } else if ("format".equals(fieldName)) {
                     deserializedDeploymentModel.format = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedDeploymentModel.name = reader.getString();
@@ -200,6 +256,8 @@ public class DeploymentModel implements JsonSerializable<DeploymentModel> {
                     deserializedDeploymentModel.version = reader.getString();
                 } else if ("source".equals(fieldName)) {
                     deserializedDeploymentModel.source = reader.getString();
+                } else if ("sourceAccount".equals(fieldName)) {
+                    deserializedDeploymentModel.sourceAccount = reader.getString();
                 } else if ("callRateLimit".equals(fieldName)) {
                     deserializedDeploymentModel.callRateLimit = CallRateLimit.fromJson(reader);
                 } else {

@@ -103,7 +103,7 @@ import java.util.function.Consumer;
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
- *         .setBody&#40;BinaryData.fromString&#40;requestBodyData&#41;&#41;
+ *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
@@ -319,6 +319,26 @@ public final class RequestOptions {
         }
 
         this.context = context;
+
+        return this;
+    }
+
+    /**
+     * Adds a key-value pair to the request context associated with this request.
+     *
+     * @param key The key to add to the context.
+     * @param value The value to add to the context.
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @see #setContext(Context)
+     */
+    public RequestOptions putContext(Object key, Object value) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));
+        }
+
+        this.context = this.context.put(key, value);
 
         return this;
     }

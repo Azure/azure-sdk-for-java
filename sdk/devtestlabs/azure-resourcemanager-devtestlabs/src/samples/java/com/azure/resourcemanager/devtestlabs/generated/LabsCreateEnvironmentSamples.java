@@ -9,43 +9,40 @@ import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationPar
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Labs CreateEnvironment. */
+/**
+ * Samples for Labs CreateEnvironment.
+ */
 public final class LabsCreateEnvironmentSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateEnvironment.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateEnvironment
+     * .json
      */
     /**
      * Sample code: Labs_CreateEnvironment.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsCreateEnvironment(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
-            .createEnvironment(
-                "resourceGroupName",
-                "{labName}",
-                new LabVirtualMachineCreationParameter()
-                    .withName("{vmName}")
-                    .withLocation("{location}")
-                    .withTags(mapOf("tagName1", "tagValue1"))
-                    .withSize("Standard_A2_v2")
-                    .withUsername("{userName}")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withLabSubnetName("{virtualnetwork-subnet-name}")
-                    .withLabVirtualNetworkId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
-                    .withDisallowPublicIpAddress(true)
-                    .withGalleryImageReference(
-                        new GalleryImageReference()
-                            .withOffer("UbuntuServer")
-                            .withPublisher("Canonical")
-                            .withSku("16.04-LTS")
-                            .withOsType("Linux")
-                            .withVersion("Latest"))
-                    .withAllowClaim(true)
-                    .withStorageType("Standard"),
-                com.azure.core.util.Context.NONE);
+        manager.labs()
+            .createEnvironment("resourceGroupName", "{labName}", new LabVirtualMachineCreationParameter()
+                .withName("{vmName}")
+                .withLocation("{location}")
+                .withTags(mapOf("tagName1", "tagValue1"))
+                .withSize("Standard_A2_v2")
+                .withUsername("{userName}")
+                .withPassword("fakeTokenPlaceholder")
+                .withLabSubnetName("{virtualnetwork-subnet-name}")
+                .withLabVirtualNetworkId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
+                .withDisallowPublicIpAddress(true)
+                .withGalleryImageReference(new GalleryImageReference().withOffer("UbuntuServer")
+                    .withPublisher("Canonical")
+                    .withSku("16.04-LTS")
+                    .withOsType("Linux")
+                    .withVersion("Latest"))
+                .withAllowClaim(true)
+                .withStorageType("Standard"), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

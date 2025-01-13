@@ -131,6 +131,8 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     packages = []
     breaking = False
+    changelog = ""
+    breaking_change_items = []
     if "relatedReadmeMdFiles" not in config or not config["relatedReadmeMdFiles"]:
         return packages
 
@@ -199,7 +201,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                     ],
                     "readmeMd": [readme],
                     "artifacts": ["{0}/pom.xml".format(output_folder)]
-                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))],
+                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))] if succeeded else [],
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
@@ -249,6 +251,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
     breaking: bool = False
+    changelog = ""
+    breaking_change_items = []
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID
@@ -294,7 +298,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             ],
             "typespecProject": [tsp_project],
             "packageFolder": sdk_folder,
-            "artifacts": artifacts,
+            "artifacts": artifacts if succeeded else [],
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,

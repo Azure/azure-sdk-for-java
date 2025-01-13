@@ -27,7 +27,8 @@ public final class RegisteredIdentitiesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.registeredIdentities().deleteWithResponse("pjzu", "e", "xdult", com.azure.core.util.Context.NONE);
+        manager.registeredIdentities()
+            .deleteWithResponse("bycnojvkn", "e", "qsgzvahapj", com.azure.core.util.Context.NONE);
 
     }
 }

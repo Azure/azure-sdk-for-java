@@ -19,7 +19,7 @@ parameters:
     default: '-Denforcer.skip=true'
   - name: TestResourceDirectories
     type: object
-    default:
+    default: []
   - name: MatrixConfigs
     type: object
     default:

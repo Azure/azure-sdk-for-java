@@ -34,8 +34,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,16 +54,17 @@ public class BuilderHelperTests {
     private static final RetryOptions CORE_RETRY_OPTIONS
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
 
-    private static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"),
-            Flux.empty());
+    private static HttpRequest request(String url) {
+        return new HttpRequest(HttpMethod.HEAD, url)
+            .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"))
+            .setBody(Flux.empty());
     }
 
     /**
      * Tests that a new date will be applied to every retry when using the default pipeline builder.
      */
     @Test
-    public void freshDateAppliedOnRetry() throws MalformedURLException {
+    public void freshDateAppliedOnRetry() {
         HttpClient httpClient = new FreshDateTestClient();
         HttpLogOptions httpLogOptions = BuilderHelper.getDefaultHttpLogOptions();
         ClientOptions clientOptions = new ClientOptions();
@@ -84,7 +83,7 @@ public class BuilderHelperTests {
      * Tests that a new date will be applied to every retry when using the service client builder's default pipeline.
      */
     @Test
-    public void serviceClientFreshDateOnRetry() throws MalformedURLException {
+    public void serviceClientFreshDateOnRetry() {
         ShareServiceClient serviceClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
@@ -100,7 +99,7 @@ public class BuilderHelperTests {
      * Tests that a new date will be applied to every retry when using the share client builder's default pipeline.
      */
     @Test
-    public void shareClientFreshDateOnRetry() throws MalformedURLException {
+    public void shareClientFreshDateOnRetry() {
         ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .credential(CREDENTIALS)
@@ -117,7 +116,7 @@ public class BuilderHelperTests {
      * Tests that a new date will be applied to every retry when using the file client builder's default pipeline.
      */
     @Test
-    void fileClientFreshDateOnRetry() throws MalformedURLException {
+    void fileClientFreshDateOnRetry() {
         ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("fileSystem")
             .resourcePath("path")
@@ -141,8 +140,7 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
-        throws MalformedURLException {
+    public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
         HttpClient httpClient = new ApplicationIdUAStringTestClient(expectedUA);
         HttpLogOptions httpLogOptions = new HttpLogOptions().setApplicationId(logOptionsUA);
         ClientOptions clientOptions = new ClientOptions().setApplicationId(clientOptionsUA);
@@ -163,8 +161,7 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
-        throws MalformedURLException {
+    void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
         ShareServiceClient serviceClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
@@ -183,8 +180,7 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void shareClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
-        throws MalformedURLException {
+    void shareClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
         ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .credential(CREDENTIALS)
@@ -204,8 +200,7 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void fileClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
-        throws MalformedURLException {
+    void fileClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
         ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("fileSystem")
             .resourcePath("path")
@@ -235,7 +230,7 @@ public class BuilderHelperTests {
      * Tests that a custom headers will be honored when using the default pipeline builder.
      */
     @Test
-    void customHeadersClientOptions() throws MalformedURLException {
+    void customHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -255,7 +250,7 @@ public class BuilderHelperTests {
      * Tests that custom headers will be honored when using the service client builder's default pipeline.
      */
     @Test
-    void serviceClientCustomHeadersClientOptions() throws MalformedURLException {
+    void serviceClientCustomHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -276,7 +271,7 @@ public class BuilderHelperTests {
      * Tests that custom headers will be honored when using the share client builder's default pipeline.
      */
     @Test
-    void shareClientCustomHeadersClientOptions() throws MalformedURLException {
+    void shareClientCustomHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -298,7 +293,7 @@ public class BuilderHelperTests {
      * Tests that custom headers will be honored when using the blob client builder's default pipeline.
      */
     @Test
-    void blobClientCustomHeadersClientOptions() throws MalformedURLException {
+    void blobClientCustomHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));

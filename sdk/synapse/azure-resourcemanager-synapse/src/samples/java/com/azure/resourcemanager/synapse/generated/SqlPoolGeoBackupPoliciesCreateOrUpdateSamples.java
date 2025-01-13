@@ -12,7 +12,7 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
  */
 public final class SqlPoolGeoBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateGeoBackupPolicies.json
      */
     /**

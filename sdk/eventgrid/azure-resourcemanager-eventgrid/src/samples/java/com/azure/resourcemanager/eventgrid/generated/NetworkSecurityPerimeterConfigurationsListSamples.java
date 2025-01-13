@@ -11,7 +11,9 @@ import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterResour
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NetworkSecurityPerimeterConfigurations_List.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * NetworkSecurityPerimeterConfigurations_List.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterConfigurations_List.

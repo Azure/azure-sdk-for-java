@@ -11,6 +11,8 @@ import java.time.Duration;
 
 /**
  * Injects the event handling into the result
+ *
+ * @param <TEventResult> the type of the event result
  */
 public abstract class ResultWithEventHandling<TEventResult> {
     /**
@@ -25,6 +27,12 @@ public abstract class ResultWithEventHandling<TEventResult> {
      * Operation context from the api request.
      */
     protected String operationContextFromRequest;
+
+    /**
+     * Creates a new instance of {@link ResultWithEventHandling}.
+     */
+    public ResultWithEventHandling() {
+    }
 
     /**
      * Sets the event processor

@@ -21,7 +21,7 @@ public final class VirtualNetworkLinksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"tkfa\",\"properties\":{\"virtualNetwork\":{\"id\":\"opqgikyzirtxdyux\"},\"metadata\":{\"wgioilqukry\":\"ntps\",\"gufhyaomtbg\":\"xtqmieoxor\",\"fo\":\"havgrvk\",\"mv\":\"jzhpjbibgjmfx\"},\"provisioningState\":\"Deleting\"},\"id\":\"yo\",\"name\":\"wxnb\",\"type\":\"fezzxscyhwzdg\"}";
+            = "{\"etag\":\"fvpdbo\",\"properties\":{\"virtualNetwork\":{\"id\":\"cizsjqlhkrribdei\"},\"metadata\":{\"kghv\":\"p\",\"pjorwkqnyhg\":\"ndzwmkrefa\",\"jivfxzsjabib\":\"ij\",\"jxbkzbzkdvn\":\"ystawfsdjpvkvp\"},\"provisioningState\":\"Succeeded\"},\"id\":\"udurgkakmokz\",\"name\":\"jjklff\",\"type\":\"mouwqlgzrfzeey\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class VirtualNetworkLinksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkLink response = manager.virtualNetworkLinks()
-            .getWithResponse("rnsvbuswd", "z", "ybycnunvj", com.azure.core.util.Context.NONE)
+            .getWithResponse("byqunyow", "wlmdjrkv", "g", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("opqgikyzirtxdyux", response.virtualNetwork().id());
-        Assertions.assertEquals("ntps", response.metadata().get("wgioilqukry"));
+        Assertions.assertEquals("cizsjqlhkrribdei", response.virtualNetwork().id());
+        Assertions.assertEquals("p", response.metadata().get("kghv"));
     }
 }

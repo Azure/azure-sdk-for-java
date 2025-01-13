@@ -22,7 +22,7 @@ public final class CredentialOperationsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"qfzvvtifcqsuem\",\"annotations\":[\"datautovbpnrfu\"],\"\":{\"psdpfwjcw\":\"datamhmzc\",\"ajtbmjokttqgo\":\"databunfymbwinu\"}},\"name\":\"ajuylkfl\",\"type\":\"ofjskndwywbptvym\",\"etag\":\"pdcddbeozhprlxxb\",\"id\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"phieqgo\",\"annotations\":[\"dataxhottykfkwzk\"],\"\":{\"versu\":\"datag\",\"gzcwrhhgnmjxxov\":\"dataveknwldqj\"}},\"name\":\"wnggyv\",\"type\":\"g\",\"etag\":\"papzb\",\"id\":\"fuac\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class CredentialOperationsListByFactoryMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CredentialResource> response = manager.credentialOperations()
-            .listByFactory("wugpnses", "wkhkcdtofakm", com.azure.core.util.Context.NONE);
+        PagedIterable<CredentialResource> response
+            = manager.credentialOperations().listByFactory("n", "nts", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("z", response.iterator().next().id());
-        Assertions.assertEquals("qfzvvtifcqsuem", response.iterator().next().properties().description());
+        Assertions.assertEquals("fuac", response.iterator().next().id());
+        Assertions.assertEquals("phieqgo", response.iterator().next().properties().description());
     }
 }

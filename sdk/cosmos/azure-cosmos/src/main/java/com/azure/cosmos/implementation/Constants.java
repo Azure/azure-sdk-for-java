@@ -129,6 +129,19 @@ public final class Constants {
         public static final String FULL_TEXT_POLICY = "fullTextPolicy";
         public static final String FULL_TEXT_PATHS = "fullTextPaths";
 
+        // Hybrid Search Query
+        public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
+        public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
+        public static final String SKIP = "skip";
+        public static final String TAKE = "take";
+        public static final String REQUIRES_GLOBAL_STATISTICS = "requiresGlobalStatistics";
+        public static final String TOTAL_WORD_COUNT = "totalWordCount";
+        public static final String HIT_COUNTS = "hitCounts";
+        public static final String DOCUMENT_COUNT = "documentCount";
+        public static final String FULL_TEXT_QUERY_STATISTICS = "fullTextStatistics";
+        public static final String PAYLOAD = "payload";
+        public static final String COMPONENT_SCORES = "componentScores";
 
         // Vector Embedding Policy
         public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";

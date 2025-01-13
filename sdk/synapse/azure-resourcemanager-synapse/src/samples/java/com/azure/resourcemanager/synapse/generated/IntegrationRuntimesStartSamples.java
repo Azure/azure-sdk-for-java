@@ -9,8 +9,9 @@ package com.azure.resourcemanager.synapse.generated;
  */
 public final class IntegrationRuntimesStartSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Start.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Start.
+     * json
      */
     /**
      * Sample code: Start integration runtime.

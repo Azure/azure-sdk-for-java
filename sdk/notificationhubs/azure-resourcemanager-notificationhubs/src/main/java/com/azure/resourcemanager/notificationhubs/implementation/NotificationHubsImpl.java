@@ -22,8 +22,9 @@ import com.azure.resourcemanager.notificationhubs.models.DebugSendResponse;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubResource;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubs;
 import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyResource;
+import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
+import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
 
 public final class NotificationHubsImpl implements NotificationHubs {
@@ -62,6 +63,15 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
     }
 
+    public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String notificationHubName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
+    }
+
+    public void delete(String resourceGroupName, String namespaceName, String notificationHubName) {
+        this.serviceClient().delete(resourceGroupName, namespaceName, notificationHubName);
+    }
+
     public Response<NotificationHubResource> getWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, Context context) {
         Response<NotificationHubResourceInner> inner
@@ -84,31 +94,10 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String notificationHubName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
-    }
-
-    public void delete(String resourceGroupName, String namespaceName, String notificationHubName) {
-        this.serviceClient().delete(resourceGroupName, namespaceName, notificationHubName);
-    }
-
-    public PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName) {
-        PagedIterable<NotificationHubResourceInner> inner = this.serviceClient().list(resourceGroupName, namespaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationHubResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName, String skipToken,
-        Integer top, Context context) {
-        PagedIterable<NotificationHubResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, namespaceName, skipToken, top, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationHubResourceImpl(inner1, this.manager()));
-    }
-
     public Response<DebugSendResponse> debugSendWithResponse(String resourceGroupName, String namespaceName,
-        String notificationHubName, Context context) {
+        String notificationHubName, Object parameters, Context context) {
         Response<DebugSendResponseInner> inner = this.serviceClient()
-            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
+            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DebugSendResponseImpl(inner.getValue(), this.manager()));
@@ -122,6 +111,33 @@ public final class NotificationHubsImpl implements NotificationHubs {
             = this.serviceClient().debugSend(resourceGroupName, namespaceName, notificationHubName);
         if (inner != null) {
             return new DebugSendResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SharedAccessAuthorizationRuleResource> createOrUpdateAuthorizationRuleWithResponse(
+        String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters, Context context) {
+        Response<SharedAccessAuthorizationRuleResourceInner> inner = this.serviceClient()
+            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SharedAccessAuthorizationRuleResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SharedAccessAuthorizationRuleResource createOrUpdateAuthorizationRule(String resourceGroupName,
+        String namespaceName, String notificationHubName, String authorizationRuleName,
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
+        SharedAccessAuthorizationRuleResourceInner inner = this.serviceClient()
+            .createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, parameters);
+        if (inner != null) {
+            return new SharedAccessAuthorizationRuleResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -162,6 +178,18 @@ public final class NotificationHubsImpl implements NotificationHubs {
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName) {
+        PagedIterable<NotificationHubResourceInner> inner = this.serviceClient().list(resourceGroupName, namespaceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationHubResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName,
+        Context context) {
+        PagedIterable<NotificationHubResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, namespaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationHubResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(String resourceGroupName,
@@ -205,7 +233,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     }
 
     public Response<ResourceListKeys> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
-        String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters, Context context) {
+        String notificationHubName, String authorizationRuleName, PolicykeyResource parameters, Context context) {
         Response<ResourceListKeysInner> inner = this.serviceClient()
             .regenerateKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
                 parameters, context);
@@ -218,7 +246,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     }
 
     public ResourceListKeys regenerateKeys(String resourceGroupName, String namespaceName, String notificationHubName,
-        String authorizationRuleName, PolicyKeyResource parameters) {
+        String authorizationRuleName, PolicykeyResource parameters) {
         ResourceListKeysInner inner = this.serviceClient()
             .regenerateKeys(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters);
         if (inner != null) {
@@ -289,59 +317,6 @@ public final class NotificationHubsImpl implements NotificationHubs {
         return this.getWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
-    public SharedAccessAuthorizationRuleResource getAuthorizationRuleById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String notificationHubName = ResourceManagerUtils.getValueFromIdByName(id, "notificationHubs");
-        if (notificationHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationHubs'.", id)));
-        }
-        String authorizationRuleName = ResourceManagerUtils.getValueFromIdByName(id, "authorizationRules");
-        if (authorizationRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationRules'.", id)));
-        }
-        return this
-            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
-                authorizationRuleName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleByIdWithResponse(String id,
-        Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String notificationHubName = ResourceManagerUtils.getValueFromIdByName(id, "notificationHubs");
-        if (notificationHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationHubs'.", id)));
-        }
-        String authorizationRuleName = ResourceManagerUtils.getValueFromIdByName(id, "authorizationRules");
-        if (authorizationRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationRules'.", id)));
-        }
-        return this.getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName, context);
-    }
-
     public void deleteById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -380,56 +355,6 @@ public final class NotificationHubsImpl implements NotificationHubs {
         return this.deleteWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
-    public void deleteAuthorizationRuleById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String notificationHubName = ResourceManagerUtils.getValueFromIdByName(id, "notificationHubs");
-        if (notificationHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationHubs'.", id)));
-        }
-        String authorizationRuleName = ResourceManagerUtils.getValueFromIdByName(id, "authorizationRules");
-        if (authorizationRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationRules'.", id)));
-        }
-        this.deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName, Context.NONE);
-    }
-
-    public Response<Void> deleteAuthorizationRuleByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String notificationHubName = ResourceManagerUtils.getValueFromIdByName(id, "notificationHubs");
-        if (notificationHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationHubs'.", id)));
-        }
-        String authorizationRuleName = ResourceManagerUtils.getValueFromIdByName(id, "authorizationRules");
-        if (authorizationRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationRules'.", id)));
-        }
-        return this.deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName, context);
-    }
-
     private NotificationHubsClient serviceClient() {
         return this.innerClient;
     }
@@ -440,9 +365,5 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public NotificationHubResourceImpl define(String name) {
         return new NotificationHubResourceImpl(name, this.manager());
-    }
-
-    public SharedAccessAuthorizationRuleResourceImpl defineAuthorizationRule(String name) {
-        return new SharedAccessAuthorizationRuleResourceImpl(name, this.manager());
     }
 }

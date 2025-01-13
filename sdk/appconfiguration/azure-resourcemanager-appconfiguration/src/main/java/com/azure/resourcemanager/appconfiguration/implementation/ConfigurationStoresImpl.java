@@ -34,24 +34,24 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
 
     public PagedIterable<ConfigurationStore> list() {
         PagedIterable<ConfigurationStoreInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationStore> list(String skipToken, Context context) {
         PagedIterable<ConfigurationStoreInner> inner = this.serviceClient().list(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationStore> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConfigurationStoreInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationStore> listByResourceGroup(String resourceGroupName, String skipToken,
         Context context) {
         PagedIterable<ConfigurationStoreInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public Response<ConfigurationStore> getByResourceGroupWithResponse(String resourceGroupName, String configStoreName,
@@ -85,14 +85,14 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
 
     public PagedIterable<ApiKey> listKeys(String resourceGroupName, String configStoreName) {
         PagedIterable<ApiKeyInner> inner = this.serviceClient().listKeys(resourceGroupName, configStoreName);
-        return Utils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiKey> listKeys(String resourceGroupName, String configStoreName, String skipToken,
         Context context) {
         PagedIterable<ApiKeyInner> inner
             = this.serviceClient().listKeys(resourceGroupName, configStoreName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
     }
 
     public Response<ApiKey> regenerateKeyWithResponse(String resourceGroupName, String configStoreName,
@@ -120,12 +120,12 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
 
     public PagedIterable<DeletedConfigurationStore> listDeleted() {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted();
-        return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DeletedConfigurationStore> listDeleted(Context context) {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted(context);
-        return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
     }
 
     public Response<DeletedConfigurationStore> getDeletedWithResponse(String location, String configStoreName,
@@ -158,12 +158,12 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public ConfigurationStore getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
@@ -172,12 +172,12 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public Response<ConfigurationStore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
@@ -186,12 +186,12 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
@@ -200,12 +200,12 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));

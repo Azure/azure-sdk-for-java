@@ -16,12 +16,7 @@ public enum ResourceIdentityType {
     /**
      * Enum value SystemAssigned.
      */
-    SYSTEM_ASSIGNED("SystemAssigned"),
-
-    /**
-     * Enum value SystemAssigned,UserAssigned.
-     */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned,UserAssigned");
+    SYSTEM_ASSIGNED("SystemAssigned");
 
     /**
      * The actual serialized value for a ResourceIdentityType instance.

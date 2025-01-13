@@ -10,12 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicelinker.fluent.LinkersClient;
-import com.azure.resourcemanager.servicelinker.fluent.models.ConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
-import com.azure.resourcemanager.servicelinker.models.ConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.LinkerResource;
 import com.azure.resourcemanager.servicelinker.models.Linkers;
+import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
 
 public final class LinkersImpl implements Linkers {
@@ -86,22 +86,22 @@ public final class LinkersImpl implements Linkers {
         }
     }
 
-    public Response<ConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
+    public Response<SourceConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
         Context context) {
-        Response<ConfigurationResultInner> inner
+        Response<SourceConfigurationResultInner> inner
             = this.serviceClient().listConfigurationsWithResponse(resourceUri, linkerName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationResultImpl(inner.getValue(), this.manager()));
+                new SourceConfigurationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ConfigurationResult listConfigurations(String resourceUri, String linkerName) {
-        ConfigurationResultInner inner = this.serviceClient().listConfigurations(resourceUri, linkerName);
+    public SourceConfigurationResult listConfigurations(String resourceUri, String linkerName) {
+        SourceConfigurationResultInner inner = this.serviceClient().listConfigurations(resourceUri, linkerName);
         if (inner != null) {
-            return new ConfigurationResultImpl(inner, this.manager());
+            return new SourceConfigurationResultImpl(inner, this.manager());
         } else {
             return null;
         }

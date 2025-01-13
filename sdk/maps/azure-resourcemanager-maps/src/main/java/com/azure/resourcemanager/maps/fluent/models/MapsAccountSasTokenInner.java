@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed identity
  * permissions on Azure (IAM) Role Based Access Control.
  */
 @Immutable
-public final class MapsAccountSasTokenInner {
+public final class MapsAccountSasTokenInner implements JsonSerializable<MapsAccountSasTokenInner> {
     /*
      * The shared access signature access token.
      */
-    @JsonProperty(value = "accountSasToken", access = JsonProperty.Access.WRITE_ONLY)
     private String accountSasToken;
 
-    /** Creates an instance of MapsAccountSasTokenInner class. */
+    /**
+     * Creates an instance of MapsAccountSasTokenInner class.
+     */
     public MapsAccountSasTokenInner() {
     }
 
     /**
      * Get the accountSasToken property: The shared access signature access token.
-     *
+     * 
      * @return the accountSasToken value.
      */
     public String accountSasToken() {
@@ -34,9 +39,44 @@ public final class MapsAccountSasTokenInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsAccountSasTokenInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsAccountSasTokenInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsAccountSasTokenInner.
+     */
+    public static MapsAccountSasTokenInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsAccountSasTokenInner deserializedMapsAccountSasTokenInner = new MapsAccountSasTokenInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountSasToken".equals(fieldName)) {
+                    deserializedMapsAccountSasTokenInner.accountSasToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsAccountSasTokenInner;
+        });
     }
 }

@@ -58,6 +58,8 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
     }
 
     /**
+     * Gets known DataLakeAudience values.
+     *
      * @return known DataLakeAudience values.
      */
     public static Collection<DataLakeAudience> values() {

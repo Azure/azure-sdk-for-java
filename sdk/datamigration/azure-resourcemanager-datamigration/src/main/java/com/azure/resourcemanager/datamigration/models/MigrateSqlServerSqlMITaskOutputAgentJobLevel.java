@@ -58,11 +58,6 @@ public final class MigrateSqlServerSqlMITaskOutputAgentJobLevel extends MigrateS
      */
     private List<ReportableException> exceptionsAndWarnings;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMITaskOutputAgentJobLevel class.
      */
@@ -143,16 +138,6 @@ public final class MigrateSqlServerSqlMITaskOutputAgentJobLevel extends MigrateS
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -191,7 +176,7 @@ public final class MigrateSqlServerSqlMITaskOutputAgentJobLevel extends MigrateS
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMITaskOutputAgentJobLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMITaskOutputAgentJobLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskOutputAgentJobLevel.resultType = reader.getString();
                 } else if ("name".equals(fieldName)) {

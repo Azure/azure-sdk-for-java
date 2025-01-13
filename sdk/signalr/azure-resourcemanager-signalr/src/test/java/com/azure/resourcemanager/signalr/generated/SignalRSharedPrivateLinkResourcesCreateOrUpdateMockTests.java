@@ -21,7 +21,7 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"mkfqlwxldy\",\"privateLinkResourceId\":\"alsygao\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"nnbmjksibjgsjj\",\"status\":\"Disconnected\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"}";
+            = "{\"properties\":{\"groupId\":\"hhvnewgnxkymp\",\"privateLinkResourceId\":\"anxrj\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"wbtaoyp\",\"status\":\"Rejected\"},\"id\":\"hshxcylhkgmnsghp\",\"name\":\"ycphdrwjjkhvyo\",\"type\":\"ac\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SharedPrivateLinkResource response = manager.signalRSharedPrivateLinkResources()
-            .define("lz")
-            .withExistingSignalR("zjknyuxg", "ttxpnrupza")
-            .withGroupId("rdixt")
-            .withPrivateLinkResourceId("ekidswyskb")
-            .withRequestMessage("gllukkutvlxhrpqh")
+            .define("eeyaswl")
+            .withExistingSignalR("augmrmfjlr", "wtoaukhfk")
+            .withGroupId("sizmoae")
+            .withPrivateLinkResourceId("sx")
+            .withRequestMessage("vedwcgyeewx")
             .create();
 
-        Assertions.assertEquals("mkfqlwxldy", response.groupId());
-        Assertions.assertEquals("alsygao", response.privateLinkResourceId());
-        Assertions.assertEquals("nnbmjksibjgsjj", response.requestMessage());
+        Assertions.assertEquals("hhvnewgnxkymp", response.groupId());
+        Assertions.assertEquals("anxrj", response.privateLinkResourceId());
+        Assertions.assertEquals("wbtaoyp", response.requestMessage());
     }
 }

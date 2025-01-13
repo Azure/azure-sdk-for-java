@@ -19,7 +19,8 @@ public final class WorkspacesGetByResourceGroupSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesGet(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaces().getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
+                com.azure.core.util.Context.NONE);
     }
 }

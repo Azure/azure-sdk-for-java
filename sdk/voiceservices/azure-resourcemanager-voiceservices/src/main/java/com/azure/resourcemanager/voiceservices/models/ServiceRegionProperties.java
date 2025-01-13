@@ -6,30 +6,36 @@ package com.azure.resourcemanager.voiceservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The service region configuration needed for Teams Callings. */
+/**
+ * The service region configuration needed for Teams Callings.
+ */
 @Fluent
-public final class ServiceRegionProperties {
+public final class ServiceRegionProperties implements JsonSerializable<ServiceRegionProperties> {
     /*
      * The name of the region in which the resources needed for Teams Calling will be deployed.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The configuration used in this region as primary, and other regions as backup.
      */
-    @JsonProperty(value = "primaryRegionProperties", required = true)
     private PrimaryRegionProperties primaryRegionProperties;
 
-    /** Creates an instance of ServiceRegionProperties class. */
+    /**
+     * Creates an instance of ServiceRegionProperties class.
+     */
     public ServiceRegionProperties() {
     }
 
     /**
      * Get the name property: The name of the region in which the resources needed for Teams Calling will be deployed.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class ServiceRegionProperties {
 
     /**
      * Set the name property: The name of the region in which the resources needed for Teams Calling will be deployed.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceRegionProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class ServiceRegionProperties {
     /**
      * Get the primaryRegionProperties property: The configuration used in this region as primary, and other regions as
      * backup.
-     *
+     * 
      * @return the primaryRegionProperties value.
      */
     public PrimaryRegionProperties primaryRegionProperties() {
@@ -60,7 +66,7 @@ public final class ServiceRegionProperties {
     /**
      * Set the primaryRegionProperties property: The configuration used in this region as primary, and other regions as
      * backup.
-     *
+     * 
      * @param primaryRegionProperties the primaryRegionProperties value to set.
      * @return the ServiceRegionProperties object itself.
      */
@@ -71,21 +77,63 @@ public final class ServiceRegionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ServiceRegionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ServiceRegionProperties"));
         }
         if (primaryRegionProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property primaryRegionProperties in model ServiceRegionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryRegionProperties in model ServiceRegionProperties"));
         } else {
             primaryRegionProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceRegionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("primaryRegionProperties", this.primaryRegionProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceRegionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceRegionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceRegionProperties.
+     */
+    public static ServiceRegionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceRegionProperties deserializedServiceRegionProperties = new ServiceRegionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServiceRegionProperties.name = reader.getString();
+                } else if ("primaryRegionProperties".equals(fieldName)) {
+                    deserializedServiceRegionProperties.primaryRegionProperties
+                        = PrimaryRegionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceRegionProperties;
+        });
+    }
 }

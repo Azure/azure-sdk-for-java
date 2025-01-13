@@ -73,16 +73,30 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          # TODO: Remove/Refactor this to work in test code, as here it will only work in public cloud.
+          PreTestRunSteps:
+            - task: AzureCLI@2
+              displayName: Refresh OIDC token
+              env:
+                ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+              inputs:
+                azureSubscription: azure-sdk-tests-public
+                addSpnToEnvironment: true
+                scriptLocation: inlineScript
+                scriptType: pscore
+                inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN;issecret=true]$($env:idToken)"
+          PersistOidcToken: true
+          Location: 'westus2'
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
-          UseFederatedAuth: false
           EnvVars:
-            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+            AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity

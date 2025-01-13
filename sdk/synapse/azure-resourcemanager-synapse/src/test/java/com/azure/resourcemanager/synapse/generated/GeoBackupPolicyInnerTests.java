@@ -13,15 +13,15 @@ public final class GeoBackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GeoBackupPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"dxbx\"},\"kind\":\"kbogqxndlkzgx\",\"location\":\"ripl\",\"id\":\"podxunkb\",\"name\":\"bxmubyynt\",\"type\":\"lrb\"}")
+            "{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"kokwbqplhlvnu\"},\"kind\":\"pzlrphw\",\"location\":\"oldweyuqdu\",\"id\":\"vmnnrw\",\"name\":\"biorktal\",\"type\":\"wjhhgdnhxmsivf\"}")
             .toObject(GeoBackupPolicyInner.class);
-        Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.state());
+        Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GeoBackupPolicyInner model = new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED);
+        GeoBackupPolicyInner model = new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED);
         model = BinaryData.fromObject(model).toObject(GeoBackupPolicyInner.class);
-        Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.state());
+        Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.state());
     }
 }

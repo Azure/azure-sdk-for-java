@@ -9,7 +9,9 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file:
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ListPrivateLinkResources.json
      */
     /**
      * Sample code: List PrivateLinkResources.

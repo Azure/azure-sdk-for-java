@@ -364,7 +364,7 @@ public final class ServiceFabricManagedClustersMgmtClientImpl implements Service
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-06-01-preview";
+        this.apiVersion = "2024-04-01";
         this.applicationTypes = new ApplicationTypesClientImpl(this);
         this.applicationTypeVersions = new ApplicationTypeVersionsClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);

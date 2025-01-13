@@ -5,26 +5,50 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the key vault resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.KeyVault/vaults")
+/**
+ * Defines the key vault resource settings.
+ */
 @Fluent
 public final class KeyVaultResourceSettings extends ResourceSettings {
-    /** Creates an instance of KeyVaultResourceSettings class. */
+    /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.KeyVault/vaults";
+
+    /**
+     * Creates an instance of KeyVaultResourceSettings class.
+     */
     public KeyVaultResourceSettings() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -33,11 +57,52 @@ public final class KeyVaultResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultResourceSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultResourceSettings.
+     */
+    public static KeyVaultResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultResourceSettings deserializedKeyVaultResourceSettings = new KeyVaultResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedKeyVaultResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedKeyVaultResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedKeyVaultResourceSettings.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultResourceSettings;
+        });
     }
 }

@@ -8,10 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEntityInner;
 import com.azure.resourcemanager.quota.models.AdditionalAttributes;
 import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import com.azure.resourcemanager.quota.models.GroupQuotaList;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
+import com.azure.resourcemanager.quota.models.GroupingId;
+import com.azure.resourcemanager.quota.models.GroupingIdType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 

@@ -21,7 +21,9 @@ public final class MonitoredSubscriptionsCreateorUpdateSamples {
      */
     public static void monitorsAddMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().define(ConfigurationName.DEFAULT)
-            .withExistingMonitor("myResourceGroup", "myMonitor").create();
+        manager.monitoredSubscriptions()
+            .define(ConfigurationName.DEFAULT)
+            .withExistingMonitor("myResourceGroup", "myMonitor")
+            .create();
     }
 }

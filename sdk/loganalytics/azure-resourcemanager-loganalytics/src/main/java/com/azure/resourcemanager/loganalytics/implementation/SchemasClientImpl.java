@@ -25,17 +25,23 @@ import com.azure.resourcemanager.loganalytics.fluent.SchemasClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SchemasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchemasClient.
+ */
 public final class SchemasClientImpl implements SchemasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SchemasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of SchemasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SchemasClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -62,7 +68,7 @@ public final class SchemasClientImpl implements SchemasClient {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +104,7 @@ public final class SchemasClientImpl implements SchemasClient {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -134,7 +140,7 @@ public final class SchemasClientImpl implements SchemasClient {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +155,7 @@ public final class SchemasClientImpl implements SchemasClient {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -166,7 +172,7 @@ public final class SchemasClientImpl implements SchemasClient {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

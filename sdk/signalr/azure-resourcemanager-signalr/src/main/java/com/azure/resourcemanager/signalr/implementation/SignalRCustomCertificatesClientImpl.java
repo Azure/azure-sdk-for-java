@@ -121,7 +121,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,7 +159,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +198,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -212,7 +215,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +234,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,7 +250,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * List all custom certificates.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +267,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,7 +308,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param context The context to associate with this operation.
@@ -341,7 +349,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +368,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param context The context to associate with this operation.
@@ -377,7 +387,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +404,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -440,7 +452,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -486,7 +499,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -508,7 +522,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -532,7 +547,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -551,7 +567,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -572,7 +589,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -591,7 +609,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -611,7 +630,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -629,7 +649,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Create or update a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param parameters The parameters parameter.
@@ -648,7 +669,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Delete a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,7 +710,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Delete a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param context The context to associate with this operation.
@@ -728,7 +751,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Delete a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -745,7 +769,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Delete a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @param context The context to associate with this operation.
@@ -763,7 +788,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Delete a custom certificate.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

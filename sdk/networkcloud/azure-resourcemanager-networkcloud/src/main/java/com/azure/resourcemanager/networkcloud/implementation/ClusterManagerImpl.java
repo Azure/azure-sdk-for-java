@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchParamete
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,10 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -180,8 +185,8 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterManagerName = Utils.getValueFromIdByName(innerObject.id(), "clusterManagers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterManagers");
     }
 
     public ClusterManager refresh() {
@@ -221,6 +226,16 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
             return this;
         } else {
             this.updateClusterManagerUpdateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public ClusterManagerImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateClusterManagerUpdateParameters.withIdentity(identity);
             return this;
         }
     }

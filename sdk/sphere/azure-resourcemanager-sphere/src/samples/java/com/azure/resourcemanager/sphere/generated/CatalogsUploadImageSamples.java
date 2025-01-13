@@ -22,8 +22,9 @@ public final class CatalogsUploadImageSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsUploadImage(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().uploadImage("MyResourceGroup1", "MyCatalog1",
-            new ImageInner().withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")),
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .uploadImage("MyResourceGroup1", "MyCatalog1",
+                new ImageInner().withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")),
+                com.azure.core.util.Context.NONE);
     }
 }

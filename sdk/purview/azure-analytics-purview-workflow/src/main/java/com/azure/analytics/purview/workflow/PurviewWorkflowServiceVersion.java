@@ -6,9 +6,13 @@ package com.azure.analytics.purview.workflow;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of PurviewWorkflowClient. */
+/**
+ * Service version of PurviewWorkflowClient.
+ */
 public enum PurviewWorkflowServiceVersion implements ServiceVersion {
-    /** Enum value 2023-10-01-preview. */
+    /**
+     * Enum value 2023-10-01-preview.
+     */
     V2023_10_01_PREVIEW("2023-10-01-preview");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum PurviewWorkflowServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum PurviewWorkflowServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link PurviewWorkflowServiceVersion}.
      */
     public static PurviewWorkflowServiceVersion getLatest() {

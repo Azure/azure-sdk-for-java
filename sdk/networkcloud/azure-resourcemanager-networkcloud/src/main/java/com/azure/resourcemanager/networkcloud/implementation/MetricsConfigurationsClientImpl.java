@@ -34,23 +34,30 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.MetricsConfigurationsClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterMetricsConfigurationInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationList;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MetricsConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MetricsConfigurationsClient.
+ */
 public final class MetricsConfigurationsClientImpl implements MetricsConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MetricsConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of MetricsConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MetricsConfigurationsClientImpl(NetworkCloudImpl client) {
@@ -128,16 +135,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of metrics configurations for the provided cluster along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -168,9 +175,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -178,7 +185,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of metrics configurations for the provided cluster along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -209,9 +216,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,9 +235,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -248,16 +255,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -266,17 +273,17 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
@@ -286,9 +293,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -296,7 +303,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metrics configuration of the provided cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(String resourceGroupName,
@@ -328,9 +335,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -339,7 +346,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metrics configuration of the provided cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(String resourceGroupName,
@@ -371,9 +378,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -391,9 +398,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -411,9 +418,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -430,9 +437,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -441,7 +448,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -482,9 +489,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -494,7 +501,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -534,9 +541,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -545,7 +552,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -560,9 +567,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -572,7 +579,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -588,9 +595,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -599,7 +606,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -613,9 +620,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -625,7 +632,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -639,9 +646,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -650,7 +657,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
@@ -661,9 +668,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -673,7 +680,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
@@ -685,9 +692,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -706,9 +713,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Create or update metrics configuration of the cluster.
-     *
-     * <p>Create new or update the existing metrics configuration of the provided cluster.
-     *
+     * 
+     * Create new or update the existing metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -729,16 +736,17 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
@@ -770,9 +778,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -780,7 +788,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
@@ -812,31 +821,32 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String metricsConfigurationName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -844,42 +854,42 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String metricsConfigurationName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
+        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
-        String metricsConfigurationName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName).getSyncPoller();
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -887,38 +897,39 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
-        String metricsConfigurationName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).getSyncPoller();
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -926,37 +937,39 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String metricsConfigurationName,
-        Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName) {
-        deleteAsync(resourceGroupName, clusterName, metricsConfigurationName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
+        return deleteAsync(resourceGroupName, clusterName, metricsConfigurationName).block();
     }
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -964,18 +977,20 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
+        return deleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).block();
     }
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -984,7 +999,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1022,10 +1037,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1035,7 +1050,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1072,10 +1087,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1084,7 +1099,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdateAsync(
@@ -1099,10 +1114,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1110,7 +1125,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -1125,10 +1140,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1138,7 +1153,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdateAsync(
@@ -1154,10 +1169,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1165,7 +1180,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
@@ -1179,10 +1194,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1192,7 +1207,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     *     an on-premises Network Cloud cluster.
+     * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
@@ -1206,10 +1221,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1218,7 +1233,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1230,10 +1245,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1241,7 +1256,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1253,10 +1268,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1266,7 +1281,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1278,10 +1293,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1300,10 +1315,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Patch metrics configuration of the cluster.
-     *
-     * <p>Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+     * 
+     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -1324,14 +1339,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfigurationList represents a list of metrics configuration of the cluster along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -1352,15 +1366,14 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterMetricsConfigurationList represents a list of metrics configuration of the cluster along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterNextSinglePageAsync(String nextLink,

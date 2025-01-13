@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.fluent.models.ChatTranscriptDetailsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of Chat Transcripts resources.
  */
 @Fluent
-public final class ChatTranscriptsListResult {
+public final class ChatTranscriptsListResult implements JsonSerializable<ChatTranscriptsListResult> {
     /*
      * List of Chat Transcripts resources.
      */
-    @JsonProperty(value = "value")
     private List<ChatTranscriptDetailsInner> value;
 
     /*
      * The URI to fetch the next page of Chat Transcripts resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class ChatTranscriptsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatTranscriptsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatTranscriptsListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChatTranscriptsListResult.
+     */
+    public static ChatTranscriptsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatTranscriptsListResult deserializedChatTranscriptsListResult = new ChatTranscriptsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ChatTranscriptDetailsInner> value
+                        = reader.readArray(reader1 -> ChatTranscriptDetailsInner.fromJson(reader1));
+                    deserializedChatTranscriptsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedChatTranscriptsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatTranscriptsListResult;
+        });
     }
 }

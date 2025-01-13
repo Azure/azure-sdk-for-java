@@ -246,10 +246,8 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> createOrUpdateSparkConfigurationWithResponseAsync(
         String sparkConfigurationName, SparkConfigurationResource sparkConfiguration, String ifMatch) {
-        final String apiVersion = "2021-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateSparkConfiguration(this.client.getEndpoint(),
-            sparkConfigurationName, apiVersion, ifMatch, sparkConfiguration, accept, context));
+        return FluxUtil.withContext(context -> createOrUpdateSparkConfigurationWithResponseAsync(sparkConfigurationName,
+            sparkConfiguration, ifMatch, context));
     }
 
     /**
@@ -402,10 +400,8 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>>
         getSparkConfigurationWithResponseAsync(String sparkConfigurationName, String ifNoneMatch) {
-        final String apiVersion = "2021-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkConfiguration(this.client.getEndpoint(),
-            sparkConfigurationName, apiVersion, ifNoneMatch, accept, context));
+        return FluxUtil.withContext(
+            context -> getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch, context));
     }
 
     /**
@@ -542,10 +538,8 @@ public final class SparkConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkConfigurationWithResponseAsync(String sparkConfigurationName) {
-        final String apiVersion = "2021-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSparkConfiguration(this.client.getEndpoint(),
-            sparkConfigurationName, apiVersion, accept, context));
+        return FluxUtil
+            .withContext(context -> deleteSparkConfigurationWithResponseAsync(sparkConfigurationName, context));
     }
 
     /**
@@ -638,10 +632,8 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkConfigurationWithResponseAsync(String sparkConfigurationName,
         ArtifactRenameRequest request) {
-        final String apiVersion = "2021-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameSparkConfiguration(this.client.getEndpoint(),
-            sparkConfigurationName, apiVersion, request, accept, context));
+        return FluxUtil.withContext(
+            context -> renameSparkConfigurationWithResponseAsync(sparkConfigurationName, request, context));
     }
 
     /**
@@ -732,9 +724,7 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,9 +745,7 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -777,9 +765,7 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -793,9 +779,7 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

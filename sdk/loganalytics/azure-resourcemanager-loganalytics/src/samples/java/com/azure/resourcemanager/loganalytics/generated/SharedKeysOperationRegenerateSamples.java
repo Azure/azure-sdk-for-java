@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for SharedKeysOperation Regenerate. */
+/**
+ * Samples for SharedKeysOperation Regenerate.
+ */
 public final class SharedKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesRegenerateSharedKeys.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesRegenerateSharedKeys.json
      */
     /**
      * Sample code: RegenerateSharedKeys.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void regenerateSharedKeys(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

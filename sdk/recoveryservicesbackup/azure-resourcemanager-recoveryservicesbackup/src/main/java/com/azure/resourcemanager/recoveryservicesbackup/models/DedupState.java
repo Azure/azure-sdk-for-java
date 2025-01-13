@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DedupState extends ExpandableStringEnum<DedupState> {
      * @param name a name to look for.
      * @return the corresponding DedupState.
      */
-    @JsonCreator
     public static DedupState fromString(String name) {
         return fromString(name, DedupState.class);
     }

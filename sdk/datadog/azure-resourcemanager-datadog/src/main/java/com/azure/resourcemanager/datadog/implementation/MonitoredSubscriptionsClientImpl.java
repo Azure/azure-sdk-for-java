@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MonitoredSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitoredSubscriptionsClient.
+ */
 public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitoredSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of MonitoredSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MonitoredSubscriptionsClientImpl(MicrosoftDatadogClientImpl client) {
@@ -119,7 +125,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +162,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -194,7 +200,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +215,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -226,7 +232,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +247,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -258,7 +264,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -266,7 +272,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
@@ -299,7 +305,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -308,7 +314,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
@@ -340,7 +346,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -348,7 +354,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> getAsync(String resourceGroupName, String monitorName,
@@ -359,7 +365,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -368,7 +374,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
@@ -378,7 +384,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -395,16 +401,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
@@ -440,17 +446,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
@@ -485,16 +491,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -509,7 +515,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -517,7 +523,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -532,17 +538,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -558,7 +564,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -566,7 +572,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -577,17 +583,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -599,16 +605,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
@@ -619,7 +625,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -627,7 +633,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
@@ -639,17 +645,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
@@ -660,7 +666,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -678,11 +684,11 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -697,16 +703,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
@@ -742,17 +748,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
@@ -787,16 +793,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -811,7 +817,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -819,7 +825,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -834,17 +840,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -860,7 +866,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -868,7 +874,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -879,17 +885,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -900,16 +906,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
@@ -920,7 +926,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -928,7 +934,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
@@ -940,17 +946,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
@@ -961,7 +967,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -979,11 +985,11 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,7 +1004,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1038,7 +1044,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1078,7 +1084,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1098,7 +1104,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1120,7 +1126,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1137,7 +1143,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1155,7 +1161,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1172,7 +1178,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1191,7 +1197,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -1206,7 +1212,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.

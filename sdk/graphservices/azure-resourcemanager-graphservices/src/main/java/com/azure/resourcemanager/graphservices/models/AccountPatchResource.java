@@ -5,16 +5,26 @@
 package com.azure.resourcemanager.graphservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Account patch properties. */
+/**
+ * Account patch properties.
+ */
 @Fluent
 public final class AccountPatchResource extends TagUpdate {
-    /** Creates an instance of AccountPatchResource class. */
+    /**
+     * Creates an instance of AccountPatchResource class.
+     */
     public AccountPatchResource() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountPatchResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -23,11 +33,47 @@ public final class AccountPatchResource extends TagUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountPatchResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountPatchResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountPatchResource.
+     */
+    public static AccountPatchResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountPatchResource deserializedAccountPatchResource = new AccountPatchResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountPatchResource.withTags(tags);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountPatchResource;
+        });
     }
 }

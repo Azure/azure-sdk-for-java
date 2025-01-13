@@ -202,8 +202,9 @@ public final class CloudServicesNetworkImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudServicesNetworkName = Utils.getValueFromIdByName(innerObject.id(), "cloudServicesNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.cloudServicesNetworkName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudServicesNetworks");
     }
 
     public CloudServicesNetwork refresh() {

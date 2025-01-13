@@ -5,63 +5,96 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtensionCategory. */
+/**
+ * Defines values for ExtensionCategory.
+ */
 public final class ExtensionCategory extends ExpandableStringEnum<ExtensionCategory> {
-    /** Static value NotSpecified for ExtensionCategory. */
+    /**
+     * Static value NotSpecified for ExtensionCategory.
+     */
     public static final ExtensionCategory NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value ResourceCreationValidate for ExtensionCategory. */
+    /**
+     * Static value ResourceCreationValidate for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_CREATION_VALIDATE = fromString("ResourceCreationValidate");
 
-    /** Static value ResourceCreationBegin for ExtensionCategory. */
+    /**
+     * Static value ResourceCreationBegin for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_CREATION_BEGIN = fromString("ResourceCreationBegin");
 
-    /** Static value ResourceCreationCompleted for ExtensionCategory. */
+    /**
+     * Static value ResourceCreationCompleted for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_CREATION_COMPLETED = fromString("ResourceCreationCompleted");
 
-    /** Static value ResourceReadValidate for ExtensionCategory. */
+    /**
+     * Static value ResourceReadValidate for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_READ_VALIDATE = fromString("ResourceReadValidate");
 
-    /** Static value ResourceReadBegin for ExtensionCategory. */
+    /**
+     * Static value ResourceReadBegin for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_READ_BEGIN = fromString("ResourceReadBegin");
 
-    /** Static value ResourcePatchValidate for ExtensionCategory. */
+    /**
+     * Static value ResourcePatchValidate for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_PATCH_VALIDATE = fromString("ResourcePatchValidate");
 
-    /** Static value ResourcePatchCompleted for ExtensionCategory. */
+    /**
+     * Static value ResourcePatchCompleted for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_PATCH_COMPLETED = fromString("ResourcePatchCompleted");
 
-    /** Static value ResourceDeletionValidate for ExtensionCategory. */
+    /**
+     * Static value ResourceDeletionValidate for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_DELETION_VALIDATE = fromString("ResourceDeletionValidate");
 
-    /** Static value ResourceDeletionBegin for ExtensionCategory. */
+    /**
+     * Static value ResourceDeletionBegin for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_DELETION_BEGIN = fromString("ResourceDeletionBegin");
 
-    /** Static value ResourceDeletionCompleted for ExtensionCategory. */
+    /**
+     * Static value ResourceDeletionCompleted for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_DELETION_COMPLETED = fromString("ResourceDeletionCompleted");
 
-    /** Static value ResourcePostAction for ExtensionCategory. */
+    /**
+     * Static value ResourcePostAction for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_POST_ACTION = fromString("ResourcePostAction");
 
-    /** Static value SubscriptionLifecycleNotification for ExtensionCategory. */
+    /**
+     * Static value SubscriptionLifecycleNotification for ExtensionCategory.
+     */
     public static final ExtensionCategory SUBSCRIPTION_LIFECYCLE_NOTIFICATION
         = fromString("SubscriptionLifecycleNotification");
 
-    /** Static value ResourcePatchBegin for ExtensionCategory. */
+    /**
+     * Static value ResourcePatchBegin for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_PATCH_BEGIN = fromString("ResourcePatchBegin");
 
-    /** Static value ResourceMoveBegin for ExtensionCategory. */
+    /**
+     * Static value ResourceMoveBegin for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_MOVE_BEGIN = fromString("ResourceMoveBegin");
 
-    /** Static value ResourceMoveCompleted for ExtensionCategory. */
+    /**
+     * Static value ResourceMoveCompleted for ExtensionCategory.
+     */
     public static final ExtensionCategory RESOURCE_MOVE_COMPLETED = fromString("ResourceMoveCompleted");
 
     /**
      * Creates a new instance of ExtensionCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -70,18 +103,17 @@ public final class ExtensionCategory extends ExpandableStringEnum<ExtensionCateg
 
     /**
      * Creates or finds a ExtensionCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExtensionCategory.
      */
-    @JsonCreator
     public static ExtensionCategory fromString(String name) {
         return fromString(name, ExtensionCategory.class);
     }
 
     /**
      * Gets known ExtensionCategory values.
-     *
+     * 
      * @return known ExtensionCategory values.
      */
     public static Collection<ExtensionCategory> values() {

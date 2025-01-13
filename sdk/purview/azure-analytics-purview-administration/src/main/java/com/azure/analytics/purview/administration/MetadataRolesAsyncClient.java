@@ -17,7 +17,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the asynchronous PurviewMetadataClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewMetadataClient type.
+ */
 @ServiceClient(builder = MetadataRolesClientBuilder.class, isAsync = true)
 public final class MetadataRolesAsyncClient {
     @Generated
@@ -25,7 +27,7 @@ public final class MetadataRolesAsyncClient {
 
     /**
      * Initializes an instance of MetadataRolesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,10 +37,10 @@ public final class MetadataRolesAsyncClient {
 
     /**
      * Lists roles for Purview Account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -71,8 +73,9 @@ public final class MetadataRolesAsyncClient {
      *         version: Long (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

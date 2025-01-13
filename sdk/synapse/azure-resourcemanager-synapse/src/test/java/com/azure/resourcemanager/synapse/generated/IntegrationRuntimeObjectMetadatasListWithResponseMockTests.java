@@ -22,7 +22,7 @@ public final class IntegrationRuntimeObjectMetadatasListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":6051952918182430761,\"name\":\"ql\",\"description\":\"fbqhsujkaf\"},{\"type\":\"SsisObjectMetadata\",\"id\":1793846288500636594,\"name\":\"qpwnikxkcajgr\",\"description\":\"ct\"},{\"type\":\"SsisObjectMetadata\",\"id\":4612818814853928220,\"name\":\"cq\",\"description\":\"zmz\"},{\"type\":\"SsisObjectMetadata\",\"id\":2995506655563936313,\"name\":\"tm\",\"description\":\"xrq\"}],\"nextLink\":\"fzfvwj\"}";
+            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":617729007391101899,\"name\":\"kl\",\"description\":\"l\"},{\"type\":\"SsisObjectMetadata\",\"id\":2463823139091327595,\"name\":\"h\",\"description\":\"zyqu\"},{\"type\":\"SsisObjectMetadata\",\"id\":5858060139563890420,\"name\":\"utrpbr\",\"description\":\"yuuatvlmbjwcolbm\"},{\"type\":\"SsisObjectMetadata\",\"id\":1108556269139033179,\"name\":\"tpc\",\"description\":\"hprzrvxhmtfho\"}],\"nextLink\":\"xzcmjhngxno\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class IntegrationRuntimeObjectMetadatasListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SsisObjectMetadataListResponse response = manager.integrationRuntimeObjectMetadatas()
-            .listWithResponse("psshr", "nkcclpctuog", "scxjfsgmosp",
-                new GetSsisObjectMetadataRequest().withMetadataPath("bnxsqc"), com.azure.core.util.Context.NONE)
+            .listWithResponse("ukecpx", "azvdhctmmkosz", "dblnsntrp",
+                new GetSsisObjectMetadataRequest().withMetadataPath("qkio"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(6051952918182430761L, response.value().get(0).id());
-        Assertions.assertEquals("ql", response.value().get(0).name());
-        Assertions.assertEquals("fbqhsujkaf", response.value().get(0).description());
-        Assertions.assertEquals("fzfvwj", response.nextLink());
+        Assertions.assertEquals(617729007391101899L, response.value().get(0).id());
+        Assertions.assertEquals("kl", response.value().get(0).name());
+        Assertions.assertEquals("l", response.value().get(0).description());
+        Assertions.assertEquals("xzcmjhngxno", response.nextLink());
     }
 }

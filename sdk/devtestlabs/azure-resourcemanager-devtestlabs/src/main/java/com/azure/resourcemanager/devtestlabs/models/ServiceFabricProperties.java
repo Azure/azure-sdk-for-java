@@ -6,11 +6,13 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceFabricPropertiesInner;
 
-/** An immutable client-side representation of ServiceFabricProperties. */
+/**
+ * An immutable client-side representation of ServiceFabricProperties.
+ */
 public interface ServiceFabricProperties {
     /**
      * Gets the externalServiceFabricId property: The backing service fabric resource's id.
-     *
+     * 
      * @return the externalServiceFabricId value.
      */
     String externalServiceFabricId();
@@ -18,35 +20,35 @@ public interface ServiceFabricProperties {
     /**
      * Gets the environmentId property: The resource id of the environment under which the service fabric resource is
      * present.
-     *
+     * 
      * @return the environmentId value.
      */
     String environmentId();
 
     /**
      * Gets the applicableSchedule property: The applicable schedule for the virtual machine.
-     *
+     * 
      * @return the applicableSchedule value.
      */
     ApplicableSchedule applicableSchedule();
 
     /**
      * Gets the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     String uniqueIdentifier();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.ServiceFabricPropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     ServiceFabricPropertiesInner innerModel();

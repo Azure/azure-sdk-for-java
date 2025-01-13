@@ -54,7 +54,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsPr
     private boolean managedIdentityEnabled;
 
     /**
-     * Custom Get the custom {@link com.azure.core.credential.TokenCredential} bean name, it's used for Service builder factory or passwordless authentication.
+     * Custom Get the custom 'com.azure.core.credential.TokenCredential' bean name, it's used for Service builder factory or passwordless authentication.
      */
     private String tokenCredentialBeanName;
 

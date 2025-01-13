@@ -31,15 +31,19 @@ import reactor.core.publisher.Mono;
  */
 public final class OutboundNetworkDependenciesEndpointsClientImpl
     implements OutboundNetworkDependenciesEndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OutboundNetworkDependenciesEndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of OutboundNetworkDependenciesEndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OutboundNetworkDependenciesEndpointsClientImpl(ApiManagementClientImpl client) {
@@ -67,14 +71,14 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a ApiManagement service along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OutboundEnvironmentEndpointListInner>>
@@ -103,7 +107,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -111,7 +115,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a ApiManagement service along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OutboundEnvironmentEndpointListInner>>
@@ -139,14 +143,14 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a ApiManagement service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OutboundEnvironmentEndpointListInner> listByServiceAsync(String resourceGroupName,
@@ -157,15 +161,15 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a ApiManagement service along with {@link
-     *     Response}.
+     * @return the network endpoints of all outbound dependencies of a ApiManagement service along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundEnvironmentEndpointListInner> listByServiceWithResponse(String resourceGroupName,
@@ -175,7 +179,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -8,58 +8,68 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * CloudServicesNetwork represents additional egress information that will be used by associated virtual machines or
  * hybrid AKS clusters.
- *
- * <p>Upon creation, the additional services that are provided by the platform will be allocated and represented in the
- * status of this resource. All resources associated with this cloud services network will be part of the same layer 2
- * (L2) isolation domain. At least one service network must be created but may be reused across many virtual machines
- * and/or Hybrid AKS clusters.
+ * 
+ * Upon creation, the additional services that are provided by the platform will be allocated and
+ * represented in the status of this resource. All resources associated with this cloud services network will be part
+ * of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
+ * virtual machines and/or Hybrid AKS clusters.
  */
 @Fluent
 public final class CloudServicesNetworkInner extends Resource {
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location of the cluster associated with the resource.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
     /*
-     * CloudServicesNetworkProperties represents properties of the cloud services network.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private CloudServicesNetworkProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CloudServicesNetworkInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CloudServicesNetworkInner class.
+     */
     public CloudServicesNetworkInner() {
     }
 
     /**
-     * Get the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Get the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -67,11 +77,8 @@ public final class CloudServicesNetworkInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Set the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the CloudServicesNetworkInner object itself.
      */
@@ -81,11 +88,8 @@ public final class CloudServicesNetworkInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: CloudServicesNetworkProperties represents properties of the cloud services
-     * network.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private CloudServicesNetworkProperties innerProperties() {
@@ -94,21 +98,55 @@ public final class CloudServicesNetworkInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudServicesNetworkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudServicesNetworkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -118,7 +156,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @return the additionalEgressEndpoints value.
      */
     public List<EgressEndpoint> additionalEgressEndpoints() {
@@ -128,7 +166,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Set the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @param additionalEgressEndpoints the additionalEgressEndpoints value to set.
      * @return the CloudServicesNetworkInner object itself.
      */
@@ -143,7 +181,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     public List<String> associatedResourceIds() {
@@ -153,7 +191,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster this cloud services network is
      * associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -162,7 +200,7 @@ public final class CloudServicesNetworkInner extends Resource {
 
     /**
      * Get the detailedStatus property: The more detailed status of the cloud services network.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public CloudServicesNetworkDetailedStatus detailedStatus() {
@@ -171,7 +209,7 @@ public final class CloudServicesNetworkInner extends Resource {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -181,7 +219,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @return the enableDefaultEgressEndpoints value.
      */
     public CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints() {
@@ -191,7 +229,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Set the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @param enableDefaultEgressEndpoints the enableDefaultEgressEndpoints value to set.
      * @return the CloudServicesNetworkInner object itself.
      */
@@ -207,7 +245,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the enabledEgressEndpoints property: The full list of additional and default egress endpoints that are
      * currently enabled.
-     *
+     * 
      * @return the enabledEgressEndpoints value.
      */
     public List<EgressEndpoint> enabledEgressEndpoints() {
@@ -217,7 +255,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     public List<String> hybridAksClustersAssociatedIds() {
@@ -227,7 +265,7 @@ public final class CloudServicesNetworkInner extends Resource {
     /**
      * Get the interfaceName property: The name of the interface that will be present in the virtual machine to
      * represent this network.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -236,7 +274,7 @@ public final class CloudServicesNetworkInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the cloud services network.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CloudServicesNetworkProvisioningState provisioningState() {
@@ -247,7 +285,7 @@ public final class CloudServicesNetworkInner extends Resource {
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
      * services network.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     public List<String> virtualMachinesAssociatedIds() {
@@ -256,13 +294,14 @@ public final class CloudServicesNetworkInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property extendedLocation in model CloudServicesNetworkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model CloudServicesNetworkInner"));
         } else {
             extendedLocation().validate();
         }
@@ -272,4 +311,60 @@ public final class CloudServicesNetworkInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudServicesNetworkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServicesNetworkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServicesNetworkInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudServicesNetworkInner.
+     */
+    public static CloudServicesNetworkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServicesNetworkInner deserializedCloudServicesNetworkInner = new CloudServicesNetworkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCloudServicesNetworkInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.innerProperties
+                        = CloudServicesNetworkProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServicesNetworkInner;
+        });
+    }
 }

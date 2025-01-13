@@ -20,7 +20,7 @@ public final class SqlPoolRestorePointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"z\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-03-10T16:16:19Z\",\"restorePointCreationDate\":\"2021-07-24T02:08:36Z\",\"restorePointLabel\":\"djufbnkl\"},\"id\":\"laxp\",\"name\":\"gjwdab\",\"type\":\"lfdxaglz\"}";
+            = "{\"location\":\"opazdazgbs\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-04-08T11:25:56Z\",\"restorePointCreationDate\":\"2021-04-10T22:50:46Z\",\"restorePointLabel\":\"tmdpvozglqjbknlz\"},\"id\":\"lctzeyowmndcovd\",\"name\":\"zqauxzan\",\"type\":\"mk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class SqlPoolRestorePointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RestorePoint response = manager.sqlPoolRestorePoints()
-            .getWithResponse("gkifmmainwh", "d", "kp", "qwuntob", com.azure.core.util.Context.NONE)
+            .getWithResponse("jdxwnazkurrdre", "zjwhsetwwjwz", "qseuzuukykcyqhy", "qzzdcykeyste",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

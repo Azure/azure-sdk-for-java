@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains the localized display information for this particular operation / action. These value will be used by
@@ -13,22 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * audit history / records for management operations.
  */
 @Fluent
-public final class Display {
+public final class Display implements JsonSerializable<Display> {
     /*
      * The provider. The localized friendly form of the resource provider name - it is expected to also include the
-     * publisher/company responsible. It should use Title Casing and begin with "Microsoft" for 1st party services.
-     * e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
+     * publisher/company responsible. It should use Title Casing and begin with "Microsoft" for 1st party services. e.g.
+     * "Microsoft Monitoring Insights" or "Microsoft Compute.".
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * The resource. The localized friendly form of the resource related to this action/operation - it should match the
      * public documentation for the resource provider. It should use Title Casing. This value should be unique for a
-     * particular URL type (e.g. nested types should *not* reuse their parent's display.resource field). e.g. "Virtual
-     * Machines" or "Scheduler Job Collections", or "Virtual Machine VM Sizes" or "Scheduler Jobs".
+     * particular URL type (e.g. nested types should *not* reuse their parent's display.resource field). e.g.
+     * "Virtual Machines" or "Scheduler Job Collections", or "Virtual Machine VM Sizes" or "Scheduler Jobs".
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
@@ -36,18 +38,16 @@ public final class Display {
      * concise (to fit in drop downs) but clear (i.e. self-documenting). It should use Title Casing. Prescriptive
      * guidance: Read Create or Update Delete 'ActionName'.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * The description. The localized friendly description for the operation, as it should be shown to the user. It
      * should be thorough, yet concise - it will be used in tool tips and detailed views. Prescriptive guidance for
      * namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource Delete any
-     * 'display.provider' resource Perform any other action on any 'display.provider' resource Prescriptive guidance
-     * for namespaces: Read any 'display.resource' Create or Update any 'display.resource' Delete any
-     * 'display.resource' 'ActionName' any 'display.resources'.
+     * 'display.provider' resource Perform any other action on any 'display.provider' resource Prescriptive guidance for
+     * namespaces: Read any 'display.resource' Create or Update any 'display.resource' Delete any 'display.resource'
+     * 'ActionName' any 'display.resources'.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -58,8 +58,8 @@ public final class Display {
 
     /**
      * Get the provider property: The provider. The localized friendly form of the resource provider name - it is
-     * expected to also include the publisher/company responsible. It should use Title Casing and begin with
-     * "Microsoft" for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
+     * expected to also include the publisher/company responsible. It should use Title Casing and begin with "Microsoft"
+     * for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
      * 
      * @return the provider value.
      */
@@ -69,8 +69,8 @@ public final class Display {
 
     /**
      * Set the provider property: The provider. The localized friendly form of the resource provider name - it is
-     * expected to also include the publisher/company responsible. It should use Title Casing and begin with
-     * "Microsoft" for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
+     * expected to also include the publisher/company responsible. It should use Title Casing and begin with "Microsoft"
+     * for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
      * 
      * @param provider the provider value to set.
      * @return the Display object itself.
@@ -133,9 +133,9 @@ public final class Display {
     }
 
     /**
-     * Get the description property: The description. The localized friendly description for the operation, as it
-     * should be shown to the user. It should be thorough, yet concise - it will be used in tool tips and detailed
-     * views. Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any
+     * Get the description property: The description. The localized friendly description for the operation, as it should
+     * be shown to the user. It should be thorough, yet concise - it will be used in tool tips and detailed views.
+     * Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any
      * 'display.provider' resource Delete any 'display.provider' resource Perform any other action on any
      * 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update
      * any 'display.resource' Delete any 'display.resource' 'ActionName' any 'display.resources'.
@@ -147,9 +147,9 @@ public final class Display {
     }
 
     /**
-     * Set the description property: The description. The localized friendly description for the operation, as it
-     * should be shown to the user. It should be thorough, yet concise - it will be used in tool tips and detailed
-     * views. Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any
+     * Set the description property: The description. The localized friendly description for the operation, as it should
+     * be shown to the user. It should be thorough, yet concise - it will be used in tool tips and detailed views.
+     * Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any
      * 'display.provider' resource Delete any 'display.provider' resource Perform any other action on any
      * 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update
      * any 'display.resource' Delete any 'display.resource' 'ActionName' any 'display.resources'.
@@ -168,5 +168,50 @@ public final class Display {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Display from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Display if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Display.
+     */
+    public static Display fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Display deserializedDisplay = new Display();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDisplay;
+        });
     }
 }

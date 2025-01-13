@@ -12,7 +12,7 @@ public final class StorageTaskReportInstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskReportInstanceInner model = BinaryData.fromString(
-            "{\"properties\":{\"taskAssignmentId\":\"baiuebbaumny\",\"storageAccountId\":\"ped\",\"startTime\":\"jn\",\"finishTime\":\"ckhsmtxpsieb\",\"objectsTargetedCount\":\"hvpesapskrdqm\",\"objectsOperatedOnCount\":\"jdhtldwkyzxu\",\"objectFailedCount\":\"kn\",\"objectsSucceededCount\":\"scwsv\",\"runStatusError\":\"otogtwrupqs\",\"runStatusEnum\":\"InProgress\",\"summaryReportPath\":\"i\",\"taskId\":\"kvceoveilovnotyf\",\"taskVersion\":\"cnjbkcnxdhbt\",\"runResult\":\"Succeeded\"},\"id\":\"ywpnvjt\",\"name\":\"qnermclfplphoxu\",\"type\":\"crpab\"}")
+            "{\"properties\":{\"taskAssignmentId\":\"puozmyzydag\",\"storageAccountId\":\"axbezyiuo\",\"startTime\":\"twhrdxwzywqsm\",\"finishTime\":\"ureximoryocfs\",\"objectsTargetedCount\":\"s\",\"objectsOperatedOnCount\":\"ddystkiiuxhqy\",\"objectFailedCount\":\"xorrqnb\",\"objectsSucceededCount\":\"czvyifq\",\"runStatusError\":\"kdvjsll\",\"runStatusEnum\":\"Finished\",\"summaryReportPath\":\"d\",\"taskId\":\"atkpnp\",\"taskVersion\":\"exxbczwtr\",\"runResult\":\"Succeeded\"},\"id\":\"zb\",\"name\":\"j\",\"type\":\"sovmyokacspkwl\"}")
             .toObject(StorageTaskReportInstanceInner.class);
     }
 

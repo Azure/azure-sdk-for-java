@@ -43,7 +43,6 @@ public final class DistributeVersionerSource extends DistributeVersioner {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

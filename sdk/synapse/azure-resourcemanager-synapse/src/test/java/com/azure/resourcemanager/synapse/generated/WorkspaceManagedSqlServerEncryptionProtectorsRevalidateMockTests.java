@@ -29,7 +29,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsRevalidateMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workspaceManagedSqlServerEncryptionProtectors()
-            .revalidate("xzqfcwr", "iomxeezw", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE);
+            .revalidate("bnlblfxlupibaqzi", "xz", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE);
 
     }
 }

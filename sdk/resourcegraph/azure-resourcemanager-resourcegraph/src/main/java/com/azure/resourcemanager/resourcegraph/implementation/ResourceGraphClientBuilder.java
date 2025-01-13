@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ResourceGraphClientImpl type. */
+/**
+ * A builder for creating a new instance of the ResourceGraphClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { ResourceGraphClientImpl.class })
 public final class ResourceGraphClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -99,7 +101,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Builds an instance of ResourceGraphClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceGraphClientImpl.
      */
     public ResourceGraphClientImpl buildClient() {

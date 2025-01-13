@@ -70,8 +70,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -410,8 +412,19 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gatewayDiagnostgiticsOnNonCosmosException() {
+    public void gatewayDiagnosticsOnNonCosmosException() {
         CosmosAsyncClient testClient = null;
+
+        // TODO[Http2]: Re-evaluate this test with http2 public API
+        boolean isHttp2Enabled = false;
+        if (!System.getProperty("COSMOS.HTTP2_ENABLED", StringUtils.EMPTY).isEmpty()) {
+            isHttp2Enabled = Boolean.parseBoolean(System.getProperty("COSMOS.HTTP2_ENABLED"));
+        }
+
+        if (isHttp2Enabled) {
+            throw new SkipException("Test gatewayDiagnosticsOnNonCosmosException only with http1.1");
+        }
+
         try {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(1); // using a small value to force pendingAcquisitionTimeout happen

@@ -3,8 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -43,9 +42,11 @@ public final class CreateCallOptions {
     private TranscriptionOptions transcriptionOptions;
 
     /**
-     * Custom Context
+     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     * Required for creating call with Teams resource account ID.
+     * This is per-operation setting and does not change the client's default source.
      */
-    private final CustomCallingContext customContext;
+    private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
      * Constructor
@@ -55,7 +56,6 @@ public final class CreateCallOptions {
     public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUrl;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -70,9 +70,9 @@ public final class CreateCallOptions {
     /**
      * Get the Transcription configuration.
      *
-     * @return the transcriptionConfiguration.
+     * @return the transcriptionOptions
      */
-    public TranscriptionOptions getTranscriptionConfiguration() {
+    public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
 
@@ -90,10 +90,10 @@ public final class CreateCallOptions {
     /**
      * Set the transcription configuration.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+    public CreateCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
     }
@@ -138,28 +138,42 @@ public final class CreateCallOptions {
     /**
      * Get the Media Streaming configuration.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the mediaStreamingOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
+    public MediaStreamingOptions getMediaStreamingOptions() {
         return mediaStreamingOptions;
     }
 
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public CreateCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 
     /**
-     *  get custom context
-     * @return custom context
+     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     *
+     * @return the teamsAppSource.
      */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
+    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
+        return teamsAppSource;
+    }
+
+    /**
+     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     * Required for creating call with Teams resource account ID.
+     * This is per-operation setting and does not change the client's default source.
+     *
+     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
+        return this;
     }
 }

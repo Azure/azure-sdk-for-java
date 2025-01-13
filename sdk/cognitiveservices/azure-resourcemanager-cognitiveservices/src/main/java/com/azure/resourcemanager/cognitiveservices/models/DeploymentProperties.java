@@ -29,7 +29,7 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     private DeploymentModel model;
 
     /*
-     * Properties of Cognitive Services account deployment model.
+     * Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
      */
     private DeploymentScaleSettings scaleSettings;
 
@@ -57,6 +57,26 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      * Deployment model version upgrade option.
      */
     private DeploymentModelVersionUpgradeOption versionUpgradeOption;
+
+    /*
+     * If the dynamic throttling is enabled.
+     */
+    private Boolean dynamicThrottlingEnabled;
+
+    /*
+     * The current capacity.
+     */
+    private Integer currentCapacity;
+
+    /*
+     * Internal use only.
+     */
+    private DeploymentCapacitySettings capacitySettings;
+
+    /*
+     * The name of parent deployment.
+     */
+    private String parentDeploymentName;
 
     /**
      * Creates an instance of DeploymentProperties class.
@@ -94,7 +114,8 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
-     * Get the scaleSettings property: Properties of Cognitive Services account deployment model.
+     * Get the scaleSettings property: Properties of Cognitive Services account deployment model. (Deprecated, please
+     * use Deployment.sku instead.).
      * 
      * @return the scaleSettings value.
      */
@@ -103,7 +124,8 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
-     * Set the scaleSettings property: Properties of Cognitive Services account deployment model.
+     * Set the scaleSettings property: Properties of Cognitive Services account deployment model. (Deprecated, please
+     * use Deployment.sku instead.).
      * 
      * @param scaleSettings the scaleSettings value to set.
      * @return the DeploymentProperties object itself.
@@ -181,6 +203,75 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
+     * Get the dynamicThrottlingEnabled property: If the dynamic throttling is enabled.
+     * 
+     * @return the dynamicThrottlingEnabled value.
+     */
+    public Boolean dynamicThrottlingEnabled() {
+        return this.dynamicThrottlingEnabled;
+    }
+
+    /**
+     * Get the currentCapacity property: The current capacity.
+     * 
+     * @return the currentCapacity value.
+     */
+    public Integer currentCapacity() {
+        return this.currentCapacity;
+    }
+
+    /**
+     * Set the currentCapacity property: The current capacity.
+     * 
+     * @param currentCapacity the currentCapacity value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withCurrentCapacity(Integer currentCapacity) {
+        this.currentCapacity = currentCapacity;
+        return this;
+    }
+
+    /**
+     * Get the capacitySettings property: Internal use only.
+     * 
+     * @return the capacitySettings value.
+     */
+    public DeploymentCapacitySettings capacitySettings() {
+        return this.capacitySettings;
+    }
+
+    /**
+     * Set the capacitySettings property: Internal use only.
+     * 
+     * @param capacitySettings the capacitySettings value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withCapacitySettings(DeploymentCapacitySettings capacitySettings) {
+        this.capacitySettings = capacitySettings;
+        return this;
+    }
+
+    /**
+     * Get the parentDeploymentName property: The name of parent deployment.
+     * 
+     * @return the parentDeploymentName value.
+     */
+    public String parentDeploymentName() {
+        return this.parentDeploymentName;
+    }
+
+    /**
+     * Set the parentDeploymentName property: The name of parent deployment.
+     * 
+     * @param parentDeploymentName the parentDeploymentName value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withParentDeploymentName(String parentDeploymentName) {
+        this.parentDeploymentName = parentDeploymentName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,6 +289,9 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         if (rateLimits() != null) {
             rateLimits().forEach(e -> e.validate());
         }
+        if (capacitySettings() != null) {
+            capacitySettings().validate();
+        }
     }
 
     /**
@@ -211,6 +305,9 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         jsonWriter.writeStringField("raiPolicyName", this.raiPolicyName);
         jsonWriter.writeStringField("versionUpgradeOption",
             this.versionUpgradeOption == null ? null : this.versionUpgradeOption.toString());
+        jsonWriter.writeNumberField("currentCapacity", this.currentCapacity);
+        jsonWriter.writeJsonField("capacitySettings", this.capacitySettings);
+        jsonWriter.writeStringField("parentDeploymentName", this.parentDeploymentName);
         return jsonWriter.writeEndObject();
     }
 
@@ -249,6 +346,15 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                 } else if ("versionUpgradeOption".equals(fieldName)) {
                     deserializedDeploymentProperties.versionUpgradeOption
                         = DeploymentModelVersionUpgradeOption.fromString(reader.getString());
+                } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
+                    deserializedDeploymentProperties.dynamicThrottlingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("currentCapacity".equals(fieldName)) {
+                    deserializedDeploymentProperties.currentCapacity = reader.getNullable(JsonReader::getInt);
+                } else if ("capacitySettings".equals(fieldName)) {
+                    deserializedDeploymentProperties.capacitySettings = DeploymentCapacitySettings.fromJson(reader);
+                } else if ("parentDeploymentName".equals(fieldName)) {
+                    deserializedDeploymentProperties.parentDeploymentName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

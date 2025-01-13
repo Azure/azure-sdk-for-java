@@ -9,7 +9,9 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotaLocationSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotasEnforcement/
+     * GetGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotasEnforcement_Get.

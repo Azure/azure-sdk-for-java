@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -13,83 +18,70 @@ import java.util.List;
  * Reprotect agent details.
  */
 @Immutable
-public final class ReprotectAgentDetails {
+public final class ReprotectAgentDetails implements JsonSerializable<ReprotectAgentDetails> {
     /*
      * The reprotect agent Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The reprotect agent name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The reprotect agent Bios Id.
      */
-    @JsonProperty(value = "biosId", access = JsonProperty.Access.WRITE_ONLY)
     private String biosId;
 
     /*
      * The fabric object Id.
      */
-    @JsonProperty(value = "fabricObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricObjectId;
 
     /*
      * The reprotect agent Fqdn.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * The version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The last heartbeat received from the reprotect agent.
      */
-    @JsonProperty(value = "lastHeartbeatUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeatUtc;
 
     /*
      * The health of the reprotect agent.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth health;
 
     /*
      * The health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
     /*
      * The protected item count.
      */
-    @JsonProperty(value = "protectedItemCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer protectedItemCount;
 
     /*
      * The list of accessible datastores fetched from discovery.
      */
-    @JsonProperty(value = "accessibleDatastores", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> accessibleDatastores;
 
     /*
      * The Vcenter Id.
      */
-    @JsonProperty(value = "vcenterId", access = JsonProperty.Access.WRITE_ONLY)
     private String vcenterId;
 
     /*
      * The last time when SDS information discovered in SRS.
      */
-    @JsonProperty(value = "lastDiscoveryInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastDiscoveryInUtc;
 
     /**
@@ -224,5 +216,68 @@ public final class ReprotectAgentDetails {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReprotectAgentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReprotectAgentDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReprotectAgentDetails.
+     */
+    public static ReprotectAgentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReprotectAgentDetails deserializedReprotectAgentDetails = new ReprotectAgentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.name = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.biosId = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.fabricObjectId = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.fqdn = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.version = reader.getString();
+                } else if ("lastHeartbeatUtc".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.lastHeartbeatUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("health".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.health = ProtectionHealth.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedReprotectAgentDetails.healthErrors = healthErrors;
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.protectedItemCount = reader.getNullable(JsonReader::getInt);
+                } else if ("accessibleDatastores".equals(fieldName)) {
+                    List<String> accessibleDatastores = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReprotectAgentDetails.accessibleDatastores = accessibleDatastores;
+                } else if ("vcenterId".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.vcenterId = reader.getString();
+                } else if ("lastDiscoveryInUtc".equals(fieldName)) {
+                    deserializedReprotectAgentDetails.lastDiscoveryInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReprotectAgentDetails;
+        });
     }
 }

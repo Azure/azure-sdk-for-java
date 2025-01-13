@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.models.VersionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Publisher configuration group schema update request definition.
  */
 @Fluent
-public final class ConfigurationGroupSchemaVersionUpdateStateInner {
+public final class ConfigurationGroupSchemaVersionUpdateStateInner
+    implements JsonSerializable<ConfigurationGroupSchemaVersionUpdateStateInner> {
     /*
      * The configuration group schema state.
      */
-    @JsonProperty(value = "versionState")
     private VersionState versionState;
 
     /**
@@ -51,5 +55,43 @@ public final class ConfigurationGroupSchemaVersionUpdateStateInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("versionState", this.versionState == null ? null : this.versionState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationGroupSchemaVersionUpdateStateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationGroupSchemaVersionUpdateStateInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationGroupSchemaVersionUpdateStateInner.
+     */
+    public static ConfigurationGroupSchemaVersionUpdateStateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationGroupSchemaVersionUpdateStateInner deserializedConfigurationGroupSchemaVersionUpdateStateInner
+                = new ConfigurationGroupSchemaVersionUpdateStateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("versionState".equals(fieldName)) {
+                    deserializedConfigurationGroupSchemaVersionUpdateStateInner.versionState
+                        = VersionState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationGroupSchemaVersionUpdateStateInner;
+        });
     }
 }

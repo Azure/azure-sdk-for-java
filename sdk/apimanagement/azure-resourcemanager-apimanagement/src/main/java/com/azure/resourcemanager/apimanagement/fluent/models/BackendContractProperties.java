@@ -6,36 +6,41 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.BackendBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
 import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Create Backend operation. */
+/**
+ * Parameters supplied to the Create Backend operation.
+ */
 @Fluent
 public final class BackendContractProperties extends BackendBaseParameters {
     /*
      * Runtime Url of the Backend.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Backend communication protocol.
      */
-    @JsonProperty(value = "protocol", required = true)
     private BackendProtocol protocol;
 
-    /** Creates an instance of BackendContractProperties class. */
+    /**
+     * Creates an instance of BackendContractProperties class.
+     */
     public BackendContractProperties() {
     }
 
     /**
      * Get the url property: Runtime Url of the Backend.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -44,7 +49,7 @@ public final class BackendContractProperties extends BackendBaseParameters {
 
     /**
      * Set the url property: Runtime Url of the Backend.
-     *
+     * 
      * @param url the url value to set.
      * @return the BackendContractProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class BackendContractProperties extends BackendBaseParameters {
 
     /**
      * Get the protocol property: Backend communication protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public BackendProtocol protocol() {
@@ -64,7 +69,7 @@ public final class BackendContractProperties extends BackendBaseParameters {
 
     /**
      * Set the protocol property: Backend communication protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the BackendContractProperties object itself.
      */
@@ -73,49 +78,63 @@ public final class BackendContractProperties extends BackendBaseParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withTitle(String title) {
         super.withTitle(title);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withProperties(BackendProperties properties) {
         super.withProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withCredentials(BackendCredentialsContract credentials) {
         super.withCredentials(credentials);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withProxy(BackendProxyContract proxy) {
         super.withProxy(proxy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendContractProperties withTls(BackendTlsProperties tls) {
         super.withTls(tls);
@@ -124,21 +143,94 @@ public final class BackendContractProperties extends BackendBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model BackendContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model BackendContractProperties"));
         }
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property protocol in model BackendContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model BackendContractProperties"));
+        }
+        if (properties() != null) {
+            properties().validate();
+        }
+        if (credentials() != null) {
+            credentials().validate();
+        }
+        if (proxy() != null) {
+            proxy().validate();
+        }
+        if (tls() != null) {
+            tls().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackendContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", title());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("resourceId", resourceId());
+        jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeJsonField("credentials", credentials());
+        jsonWriter.writeJsonField("proxy", proxy());
+        jsonWriter.writeJsonField("tls", tls());
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendContractProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackendContractProperties.
+     */
+    public static BackendContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendContractProperties deserializedBackendContractProperties = new BackendContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedBackendContractProperties.withTitle(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedBackendContractProperties.withDescription(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedBackendContractProperties.withResourceId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendContractProperties.withProperties(BackendProperties.fromJson(reader));
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedBackendContractProperties.withCredentials(BackendCredentialsContract.fromJson(reader));
+                } else if ("proxy".equals(fieldName)) {
+                    deserializedBackendContractProperties.withProxy(BackendProxyContract.fromJson(reader));
+                } else if ("tls".equals(fieldName)) {
+                    deserializedBackendContractProperties.withTls(BackendTlsProperties.fromJson(reader));
+                } else if ("url".equals(fieldName)) {
+                    deserializedBackendContractProperties.url = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedBackendContractProperties.protocol = BackendProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendContractProperties;
+        });
+    }
 }

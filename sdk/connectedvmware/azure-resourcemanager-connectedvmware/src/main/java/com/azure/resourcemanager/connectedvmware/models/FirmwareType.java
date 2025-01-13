@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Firmware type. */
+/**
+ * Firmware type.
+ */
 public final class FirmwareType extends ExpandableStringEnum<FirmwareType> {
-    /** Static value bios for FirmwareType. */
+    /**
+     * Static value bios for FirmwareType.
+     */
     public static final FirmwareType BIOS = fromString("bios");
 
-    /** Static value efi for FirmwareType. */
+    /**
+     * Static value efi for FirmwareType.
+     */
     public static final FirmwareType EFI = fromString("efi");
 
     /**
      * Creates a new instance of FirmwareType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class FirmwareType extends ExpandableStringEnum<FirmwareType> {
 
     /**
      * Creates or finds a FirmwareType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirmwareType.
      */
-    @JsonCreator
     public static FirmwareType fromString(String name) {
         return fromString(name, FirmwareType.class);
     }
 
     /**
      * Gets known FirmwareType values.
-     *
+     * 
      * @return known FirmwareType values.
      */
     public static Collection<FirmwareType> values() {

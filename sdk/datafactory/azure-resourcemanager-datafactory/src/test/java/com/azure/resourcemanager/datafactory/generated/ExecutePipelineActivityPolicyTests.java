@@ -14,7 +14,7 @@ public final class ExecutePipelineActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutePipelineActivityPolicy model = BinaryData.fromString(
-            "{\"secureInput\":false,\"\":{\"nlfzq\":\"dataomtzpukmxgslzb\",\"wzesejdcpcpeu\":\"datamxuo\",\"jrptltytbqhejhn\":\"databofzmvtwyjc\"}}")
+            "{\"secureInput\":false,\"\":{\"rbmfobtmljobg\":\"dataqgwvxwqqmv\",\"hebyc\":\"dataoyownygbralc\",\"dp\":\"datawegt\"}}")
             .toObject(ExecutePipelineActivityPolicy.class);
         Assertions.assertEquals(false, model.secureInput());
     }

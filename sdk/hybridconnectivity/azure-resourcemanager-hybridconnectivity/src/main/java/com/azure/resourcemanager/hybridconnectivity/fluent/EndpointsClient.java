@@ -17,11 +17,13 @@ import com.azure.resourcemanager.hybridconnectivity.models.ListCredentialsReques
 import com.azure.resourcemanager.hybridconnectivity.models.ListIngressGatewayCredentialsRequest;
 import com.azure.resourcemanager.hybridconnectivity.models.ManagedProxyRequest;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public interface EndpointsClient {
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -60,7 +62,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +75,7 @@ public interface EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -89,7 +91,7 @@ public interface EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -104,7 +106,7 @@ public interface EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -120,7 +122,7 @@ public interface EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -134,7 +136,7 @@ public interface EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -148,7 +150,7 @@ public interface EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -177,7 +179,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +192,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -208,7 +210,7 @@ public interface EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +223,7 @@ public interface EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -237,7 +239,7 @@ public interface EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.

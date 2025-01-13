@@ -26,13 +26,12 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
     /*
      * The type property.
      */
-    private String type;
+    private String type = "RuleAction";
 
     /**
      * Creates an instance of RuleAction class.
      */
     public RuleActionImpl() {
-        this.type = "RuleAction";
     }
 
     /**
@@ -65,6 +64,7 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of RuleAction if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the RuleAction.
      */
     public static RuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -79,6 +79,7 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of RuleAction if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the RuleAction.
      */
     public static RuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

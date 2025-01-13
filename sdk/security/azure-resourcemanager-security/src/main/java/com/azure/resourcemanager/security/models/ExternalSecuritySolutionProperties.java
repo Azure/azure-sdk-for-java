@@ -5,40 +5,37 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * The solution properties (correspond to the solution kind).
  */
 @Fluent
-public class ExternalSecuritySolutionProperties {
+public class ExternalSecuritySolutionProperties implements JsonSerializable<ExternalSecuritySolutionProperties> {
     /*
      * The deviceVendor property.
      */
-    @JsonProperty(value = "deviceVendor")
     private String deviceVendor;
 
     /*
      * The deviceType property.
      */
-    @JsonProperty(value = "deviceType")
     private String deviceType;
 
     /*
      * Represents an OMS workspace to which the solution is connected
      */
-    @JsonProperty(value = "workspace")
     private ConnectedWorkspace workspace;
 
     /*
      * The solution properties (correspond to the solution kind)
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -112,7 +109,6 @@ public class ExternalSecuritySolutionProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -128,14 +124,6 @@ public class ExternalSecuritySolutionProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
@@ -145,5 +133,59 @@ public class ExternalSecuritySolutionProperties {
         if (workspace() != null) {
             workspace().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVendor", this.deviceVendor);
+        jsonWriter.writeStringField("deviceType", this.deviceType);
+        jsonWriter.writeJsonField("workspace", this.workspace);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalSecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalSecuritySolutionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalSecuritySolutionProperties.
+     */
+    public static ExternalSecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalSecuritySolutionProperties deserializedExternalSecuritySolutionProperties
+                = new ExternalSecuritySolutionProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVendor".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionProperties.deviceVendor = reader.getString();
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionProperties.deviceType = reader.getString();
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionProperties.workspace = ConnectedWorkspace.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExternalSecuritySolutionProperties.additionalProperties = additionalProperties;
+
+            return deserializedExternalSecuritySolutionProperties;
+        });
     }
 }

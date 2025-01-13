@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
      * @param name a name to look for.
      * @return the corresponding EnvironmentType.
      */
-    @JsonCreator
     public static EnvironmentType fromString(String name) {
         return fromString(name, EnvironmentType.class);
     }

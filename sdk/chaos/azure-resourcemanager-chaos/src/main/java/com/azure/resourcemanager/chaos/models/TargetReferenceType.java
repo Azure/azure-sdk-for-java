@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class TargetReferenceType extends ExpandableStringEnum<TargetRefere
      * @param name a name to look for.
      * @return the corresponding TargetReferenceType.
      */
-    @JsonCreator
     public static TargetReferenceType fromString(String name) {
         return fromString(name, TargetReferenceType.class);
     }

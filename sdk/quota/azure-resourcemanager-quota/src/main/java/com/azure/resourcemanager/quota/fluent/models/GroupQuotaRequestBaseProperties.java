@@ -5,35 +5,37 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GroupQuotaRequestBaseProperties model.
  */
 @Fluent
-public final class GroupQuotaRequestBaseProperties {
+public final class GroupQuotaRequestBaseProperties implements JsonSerializable<GroupQuotaRequestBaseProperties> {
     /*
      * The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
-     * Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response.
+     * Name of the resource provided by the resource provider. This property is already included in the request URI, so
+     * it is a readonly property returned in the response.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private GroupQuotaRequestBasePropertiesName innerName;
 
     /*
      * Location/Azure region for the quota requested for resource.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
-     * GroupQuota Request comments and details for request. This is optional paramter to provide more details related to the requested resource.
+     * GroupQuota Request comments and details for request. This is optional paramter to provide more details related to
+     * the requested resource.
      */
-    @JsonProperty(value = "comments")
     private String comments;
 
     /**
@@ -143,5 +145,51 @@ public final class GroupQuotaRequestBaseProperties {
         if (innerName() != null) {
             innerName().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("comments", this.comments);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotaRequestBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotaRequestBaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotaRequestBaseProperties.
+     */
+    public static GroupQuotaRequestBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotaRequestBaseProperties deserializedGroupQuotaRequestBaseProperties
+                = new GroupQuotaRequestBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedGroupQuotaRequestBaseProperties.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedGroupQuotaRequestBaseProperties.innerName
+                        = GroupQuotaRequestBasePropertiesName.fromJson(reader);
+                } else if ("region".equals(fieldName)) {
+                    deserializedGroupQuotaRequestBaseProperties.region = reader.getString();
+                } else if ("comments".equals(fieldName)) {
+                    deserializedGroupQuotaRequestBaseProperties.comments = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotaRequestBaseProperties;
+        });
     }
 }

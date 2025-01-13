@@ -5,61 +5,64 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties of a lab's announcement banner. */
+/**
+ * Properties of a lab's announcement banner.
+ */
 @Fluent
-public final class LabAnnouncementProperties {
+public final class LabAnnouncementProperties implements JsonSerializable<LabAnnouncementProperties> {
     /*
      * The plain text title for the lab announcement
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The markdown text (if any) that this lab displays in the UI. If left empty/null, nothing will be shown.
      */
-    @JsonProperty(value = "markdown")
     private String markdown;
 
     /*
      * Is the lab announcement active/enabled at this time?
      */
-    @JsonProperty(value = "enabled")
     private EnableStatus enabled;
 
     /*
      * The time at which the announcement expires (null for never)
      */
-    @JsonProperty(value = "expirationDate")
     private OffsetDateTime expirationDate;
 
     /*
      * Has this announcement expired?
      */
-    @JsonProperty(value = "expired")
     private Boolean expired;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of LabAnnouncementProperties class. */
+    /**
+     * Creates an instance of LabAnnouncementProperties class.
+     */
     public LabAnnouncementProperties() {
     }
 
     /**
      * Get the title property: The plain text title for the lab announcement.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -68,7 +71,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Set the title property: The plain text title for the lab announcement.
-     *
+     * 
      * @param title the title value to set.
      * @return the LabAnnouncementProperties object itself.
      */
@@ -80,7 +83,7 @@ public final class LabAnnouncementProperties {
     /**
      * Get the markdown property: The markdown text (if any) that this lab displays in the UI. If left empty/null,
      * nothing will be shown.
-     *
+     * 
      * @return the markdown value.
      */
     public String markdown() {
@@ -90,7 +93,7 @@ public final class LabAnnouncementProperties {
     /**
      * Set the markdown property: The markdown text (if any) that this lab displays in the UI. If left empty/null,
      * nothing will be shown.
-     *
+     * 
      * @param markdown the markdown value to set.
      * @return the LabAnnouncementProperties object itself.
      */
@@ -101,7 +104,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Get the enabled property: Is the lab announcement active/enabled at this time?.
-     *
+     * 
      * @return the enabled value.
      */
     public EnableStatus enabled() {
@@ -110,7 +113,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Set the enabled property: Is the lab announcement active/enabled at this time?.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the LabAnnouncementProperties object itself.
      */
@@ -121,7 +124,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Get the expirationDate property: The time at which the announcement expires (null for never).
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -130,7 +133,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Set the expirationDate property: The time at which the announcement expires (null for never).
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the LabAnnouncementProperties object itself.
      */
@@ -141,7 +144,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Get the expired property: Has this announcement expired?.
-     *
+     * 
      * @return the expired value.
      */
     public Boolean expired() {
@@ -150,7 +153,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Set the expired property: Has this announcement expired?.
-     *
+     * 
      * @param expired the expired value to set.
      * @return the LabAnnouncementProperties object itself.
      */
@@ -161,7 +164,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -170,7 +173,7 @@ public final class LabAnnouncementProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -179,9 +182,63 @@ public final class LabAnnouncementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("markdown", this.markdown);
+        jsonWriter.writeStringField("enabled", this.enabled == null ? null : this.enabled.toString());
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        jsonWriter.writeBooleanField("expired", this.expired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabAnnouncementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabAnnouncementProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabAnnouncementProperties.
+     */
+    public static LabAnnouncementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabAnnouncementProperties deserializedLabAnnouncementProperties = new LabAnnouncementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.title = reader.getString();
+                } else if ("markdown".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.markdown = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.enabled = EnableStatus.fromString(reader.getString());
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expired".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.expired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedLabAnnouncementProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabAnnouncementProperties;
+        });
     }
 }

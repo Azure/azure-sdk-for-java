@@ -12,15 +12,16 @@ public final class GatewayMessageBusStreamInputDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayMessageBusStreamInputDataSource model
-            = BinaryData.fromString("{\"type\":\"GatewayMessageBus\",\"properties\":{\"topic\":\"mdbl\"}}")
+            = BinaryData.fromString("{\"type\":\"GatewayMessageBus\",\"properties\":{\"topic\":\"eoellwptfdygp\"}}")
                 .toObject(GatewayMessageBusStreamInputDataSource.class);
-        Assertions.assertEquals("mdbl", model.topic());
+        Assertions.assertEquals("eoellwptfdygp", model.topic());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayMessageBusStreamInputDataSource model = new GatewayMessageBusStreamInputDataSource().withTopic("mdbl");
+        GatewayMessageBusStreamInputDataSource model
+            = new GatewayMessageBusStreamInputDataSource().withTopic("eoellwptfdygp");
         model = BinaryData.fromObject(model).toObject(GatewayMessageBusStreamInputDataSource.class);
-        Assertions.assertEquals("mdbl", model.topic());
+        Assertions.assertEquals("eoellwptfdygp", model.topic());
     }
 }

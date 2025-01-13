@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomImagesClient.
+ */
 public final class CustomImagesClientImpl implements CustomImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of CustomImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomImagesClientImpl(DevTestLabsClientImpl client) {
@@ -129,7 +135,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -139,8 +145,8 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -171,7 +177,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -182,8 +188,8 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -214,7 +220,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -235,7 +241,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +261,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -278,7 +284,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +303,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -318,7 +324,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -358,7 +364,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -398,7 +404,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -416,7 +422,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -435,7 +441,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -452,7 +458,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -497,7 +503,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -542,7 +548,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -563,7 +569,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -586,7 +592,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -604,7 +610,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -623,7 +629,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -642,7 +648,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -662,7 +668,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -680,7 +686,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -699,7 +705,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -738,7 +744,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -777,7 +783,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -795,7 +801,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -816,7 +822,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -832,7 +838,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -850,7 +856,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -866,7 +872,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -884,7 +890,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -899,7 +905,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -915,7 +921,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -960,7 +966,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -1005,7 +1011,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -1024,7 +1030,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -1043,7 +1049,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -1061,14 +1067,13 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listNextSinglePageAsync(String nextLink) {
@@ -1088,15 +1093,14 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listNextSinglePageAsync(String nextLink, Context context) {

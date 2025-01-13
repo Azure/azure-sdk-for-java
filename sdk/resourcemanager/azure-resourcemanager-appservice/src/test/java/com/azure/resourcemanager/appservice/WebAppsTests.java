@@ -61,7 +61,7 @@ public class WebAppsTests extends AppServiceTest {
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .create();
         Assertions.assertNotNull(webApp1);
         Assertions.assertEquals(Region.US_WEST, webApp1.region());
@@ -134,7 +134,7 @@ public class WebAppsTests extends AppServiceTest {
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .withHttpsOnly(true)
             .defineDiagnosticLogsConfiguration()
             .withApplicationLogging()
@@ -275,7 +275,7 @@ public class WebAppsTests extends AppServiceTest {
             .withExistingResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .disablePublicNetworkAccess()
-            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .create();
         webApp.refresh();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, webApp.publicNetworkAccess());
@@ -290,7 +290,7 @@ public class WebAppsTests extends AppServiceTest {
             .withRegion(Region.US_WEST)
             .withExistingResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .create();
 
         webApp.update().disablePublicNetworkAccess().apply();

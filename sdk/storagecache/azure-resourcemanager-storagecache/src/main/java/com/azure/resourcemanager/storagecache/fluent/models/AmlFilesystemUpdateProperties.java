@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemRootSquashSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemUpdatePropertiesMaintenanceWindow;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the AML file system.
  */
 @Fluent
-public final class AmlFilesystemUpdateProperties {
+public final class AmlFilesystemUpdateProperties implements JsonSerializable<AmlFilesystemUpdateProperties> {
     /*
      * Specifies encryption settings of the AML file system.
      */
-    @JsonProperty(value = "encryptionSettings")
     private AmlFilesystemEncryptionSettings encryptionSettings;
 
     /*
      * Start time of a 30-minute weekly maintenance window.
      */
-    @JsonProperty(value = "maintenanceWindow")
     private AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow;
 
     /*
      * Specifies root squash settings of the AML file system.
      */
-    @JsonProperty(value = "rootSquashSettings")
     private AmlFilesystemRootSquashSettings rootSquashSettings;
 
     /**
@@ -115,5 +116,51 @@ public final class AmlFilesystemUpdateProperties {
         if (rootSquashSettings() != null) {
             rootSquashSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryptionSettings", this.encryptionSettings);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        jsonWriter.writeJsonField("rootSquashSettings", this.rootSquashSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemUpdateProperties.
+     */
+    public static AmlFilesystemUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemUpdateProperties deserializedAmlFilesystemUpdateProperties
+                = new AmlFilesystemUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionSettings".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdateProperties.encryptionSettings
+                        = AmlFilesystemEncryptionSettings.fromJson(reader);
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdateProperties.maintenanceWindow
+                        = AmlFilesystemUpdatePropertiesMaintenanceWindow.fromJson(reader);
+                } else if ("rootSquashSettings".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdateProperties.rootSquashSettings
+                        = AmlFilesystemRootSquashSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemUpdateProperties;
+        });
     }
 }

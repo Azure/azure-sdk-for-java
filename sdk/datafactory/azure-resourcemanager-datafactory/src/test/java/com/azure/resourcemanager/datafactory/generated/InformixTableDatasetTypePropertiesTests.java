@@ -10,14 +10,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.InformixTableDatasetT
 public final class InformixTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InformixTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datacsqosecxlngo\"}")
-            .toObject(InformixTableDatasetTypeProperties.class);
+        InformixTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"datat\"}").toObject(InformixTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixTableDatasetTypeProperties model
-            = new InformixTableDatasetTypeProperties().withTableName("datacsqosecxlngo");
+        InformixTableDatasetTypeProperties model = new InformixTableDatasetTypeProperties().withTableName("datat");
         model = BinaryData.fromObject(model).toObject(InformixTableDatasetTypeProperties.class);
     }
 }

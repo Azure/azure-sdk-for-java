@@ -11,7 +11,7 @@ public final class MessageServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MessageServerProperties model = BinaryData.fromString(
-            "{\"msPort\":2253353584396123190,\"internalMsPort\":4756233524739772773,\"httpPort\":159667534034002555,\"httpsPort\":8346750306601023663,\"hostname\":\"zrlovmclwhijcoej\",\"ipAddress\":\"bzaqsqsycbkbfk\",\"health\":\"Healthy\"}")
+            "{\"msPort\":3011777543730351640,\"internalMsPort\":3760414146947165367,\"httpPort\":896381788369123832,\"httpsPort\":643106143486636349,\"hostname\":\"ierhhbcsglummaj\",\"ipAddress\":\"aodxo\",\"health\":\"Unhealthy\"}")
             .toObject(MessageServerProperties.class);
     }
 

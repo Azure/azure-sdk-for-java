@@ -25,7 +25,7 @@ public final class SignalRPrivateEndpointConnectionsUpdateWithResponseMockTests 
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Moving\",\"privateEndpoint\":{\"id\":\"czezkhhlt\"},\"groupIds\":[\"dhqoawj\",\"oyueayfbpcmsp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ueq\",\"actionsRequired\":\"wmgn\"}},\"id\":\"scbbxig\",\"name\":\"hxiidlopedb\",\"type\":\"dpyqyybxubmd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"znnhd\"},\"groupIds\":[\"tgjcsgguxheml\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"eczgfb\",\"actionsRequired\":\"klelssxb\"}},\"id\":\"ycsxzu\",\"name\":\"ksrl\",\"type\":\"mdesqp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,19 @@ public final class SignalRPrivateEndpointConnectionsUpdateWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.signalRPrivateEndpointConnections()
-            .updateWithResponse("fx", "dcoxnbk", "ja",
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("bnqbpizxqltgrd"))
+            .updateWithResponse("y", "rhpw", "gddeimaw",
+                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("muikjcjcaztbws"))
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                        .withDescription("li")
-                        .withActionsRequired("xihspnxwq")),
+                        .withDescription("lvhbwrnf")
+                        .withActionsRequired("gddpq")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("czezkhhlt", response.privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals("znnhd", response.privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ueq", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("wmgn", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("eczgfb", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("klelssxb", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

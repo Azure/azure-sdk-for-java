@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The environment associated with this object.
  */
 @Fluent
-public final class SchemaRegistryClusterEnvironmentRegionEntity {
+public final class SchemaRegistryClusterEnvironmentRegionEntity
+    implements JsonSerializable<SchemaRegistryClusterEnvironmentRegionEntity> {
     /*
      * ID of the referred resource
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * API URL for accessing or modifying the referred object
      */
-    @JsonProperty(value = "related")
     private String related;
 
     /*
      * CRN reference to the referred resource
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /**
@@ -102,5 +104,48 @@ public final class SchemaRegistryClusterEnvironmentRegionEntity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("related", this.related);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SchemaRegistryClusterEnvironmentRegionEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SchemaRegistryClusterEnvironmentRegionEntity if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SchemaRegistryClusterEnvironmentRegionEntity.
+     */
+    public static SchemaRegistryClusterEnvironmentRegionEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SchemaRegistryClusterEnvironmentRegionEntity deserializedSchemaRegistryClusterEnvironmentRegionEntity
+                = new SchemaRegistryClusterEnvironmentRegionEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterEnvironmentRegionEntity.id = reader.getString();
+                } else if ("related".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterEnvironmentRegionEntity.related = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterEnvironmentRegionEntity.resourceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchemaRegistryClusterEnvironmentRegionEntity;
+        });
     }
 }

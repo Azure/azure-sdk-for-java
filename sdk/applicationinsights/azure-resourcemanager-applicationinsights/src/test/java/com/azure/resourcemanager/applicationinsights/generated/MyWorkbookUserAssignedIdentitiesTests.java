@@ -11,7 +11,7 @@ public final class MyWorkbookUserAssignedIdentitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MyWorkbookUserAssignedIdentities model
-            = BinaryData.fromString("{\"principalId\":\"jvp\",\"tenantId\":\"qgxy\"}")
+            = BinaryData.fromString("{\"principalId\":\"urgkakmokzhjjk\",\"tenantId\":\"fhmouwq\"}")
                 .toObject(MyWorkbookUserAssignedIdentities.class);
     }
 

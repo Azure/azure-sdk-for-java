@@ -23,7 +23,7 @@ public final class ForwardingRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"mhjglikkxwslolb\",\"properties\":{\"domainName\":\"pvuzlmv\",\"targetDnsServers\":[{\"ipAddress\":\"lfktgplcrpwjxe\",\"port\":282428927}],\"metadata\":{\"pn\":\"brnjwmw\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"joqkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"}]}";
+            = "{\"value\":[{\"etag\":\"fkifr\",\"properties\":{\"domainName\":\"tpuqujmq\",\"targetDnsServers\":[{\"ipAddress\":\"kfbtndoaongbjc\",\"port\":905406491},{\"ipAddress\":\"jitcjedftwwaez\",\"port\":1301478988},{\"ipAddress\":\"v\",\"port\":2090841381}],\"metadata\":{\"oxciqopidoamcio\":\"oqouicybxarzgszu\",\"zxkhnzbonlwnto\":\"hkh\",\"zcmrvexztvb\":\"gokdwbwhks\"},\"forwardingRuleState\":\"Disabled\",\"provisioningState\":\"Failed\"},\"id\":\"aoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ForwardingRulesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ForwardingRule> response
-            = manager.forwardingRules().list("krrjrea", "xt", 1090066080, com.azure.core.util.Context.NONE);
+            = manager.forwardingRules().list("l", "wabm", 1200703069, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pvuzlmv", response.iterator().next().domainName());
-        Assertions.assertEquals("lfktgplcrpwjxe", response.iterator().next().targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(282428927, response.iterator().next().targetDnsServers().get(0).port());
-        Assertions.assertEquals("brnjwmw", response.iterator().next().metadata().get("pn"));
-        Assertions.assertEquals(ForwardingRuleState.ENABLED, response.iterator().next().forwardingRuleState());
+        Assertions.assertEquals("tpuqujmq", response.iterator().next().domainName());
+        Assertions.assertEquals("kfbtndoaongbjc", response.iterator().next().targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(905406491, response.iterator().next().targetDnsServers().get(0).port());
+        Assertions.assertEquals("oqouicybxarzgszu", response.iterator().next().metadata().get("oxciqopidoamcio"));
+        Assertions.assertEquals(ForwardingRuleState.DISABLED, response.iterator().next().forwardingRuleState());
     }
 }

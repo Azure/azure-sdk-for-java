@@ -98,6 +98,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the eTag of the block blob.
+     *
      * @return the eTag of the block blob
      */
     public String getETag() {
@@ -105,6 +107,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the last time the block blob was modified.
+     *
      * @return the last time the block blob was modified
      */
     public OffsetDateTime getLastModified() {
@@ -112,6 +116,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the encryption status of the block blob on the server.
+     *
      * @return the encryption status of the block blob on the server
      */
     public Boolean isServerEncrypted() {
@@ -119,6 +125,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the key used to encrypt the block blob.
+     *
      * @return the key used to encrypt the block blob
      */
     public String getEncryptionKeySha256() {
@@ -126,6 +134,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the encryption scope used to encrypt the block blob.
+     *
      * @return the encryption scope used to encrypt the block blob
      */
     public String getEncryptionScope() {
@@ -133,6 +143,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the MD5 of the block blob's content.
+     *
      * @return the MD5 of the block blob's comment
      */
     public byte[] getContentMd5() {
@@ -140,6 +152,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the version identifier of the block blob.
+     *
      * @return the version identifier of the block blob
      */
     public String getVersionId() {

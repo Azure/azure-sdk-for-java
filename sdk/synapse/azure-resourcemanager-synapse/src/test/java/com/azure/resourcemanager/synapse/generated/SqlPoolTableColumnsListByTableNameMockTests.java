@@ -23,7 +23,7 @@ public final class SqlPoolTableColumnsListByTableNameMockTests {
     @Test
     public void testListByTableName() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"columnType\":\"uniqueidentifier\",\"isComputed\":false},\"id\":\"bafeb\",\"name\":\"xfkjqutibh\",\"type\":\"enntrvrkpsabdux\"}]}";
+            = "{\"value\":[{\"properties\":{\"columnType\":\"hierarchyid\",\"isComputed\":true},\"id\":\"vzgjyp\",\"name\":\"nhxmpdxxze\",\"type\":\"wwzjwotnxlkfhglh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class SqlPoolTableColumnsListByTableNameMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SqlPoolColumn> response = manager.sqlPoolTableColumns()
-            .listByTableName("hvazjpwexcdr", "probzzxezmnrkjgp", "euxsphlokfpmijp", "vzvfb", "wbdq", "fvcgnrglaqr",
+            .listByTableName("xlcskltez", "ugggzlfbgrdcgu", "srtmdylperpiltt", "zgczfcmfpfbode", "resrgvtshuvft", "ai",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ColumnDataType.UNIQUEIDENTIFIER, response.iterator().next().columnType());
+        Assertions.assertEquals(ColumnDataType.HIERARCHYID, response.iterator().next().columnType());
     }
 }

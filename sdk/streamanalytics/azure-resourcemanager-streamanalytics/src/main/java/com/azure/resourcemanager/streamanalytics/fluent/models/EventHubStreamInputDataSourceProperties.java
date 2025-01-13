@@ -24,11 +24,6 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
      */
     private String consumerGroupName;
 
-    /*
-     * The number of messages that the message receiver can simultaneously request.
-     */
-    private Integer prefetchCount;
-
     /**
      * Creates an instance of EventHubStreamInputDataSourceProperties class.
      */
@@ -62,40 +57,11 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
     }
 
     /**
-     * Get the prefetchCount property: The number of messages that the message receiver can simultaneously request.
-     * 
-     * @return the prefetchCount value.
-     */
-    public Integer prefetchCount() {
-        return this.prefetchCount;
-    }
-
-    /**
-     * Set the prefetchCount property: The number of messages that the message receiver can simultaneously request.
-     * 
-     * @param prefetchCount the prefetchCount value to set.
-     * @return the EventHubStreamInputDataSourceProperties object itself.
-     */
-    public EventHubStreamInputDataSourceProperties withPrefetchCount(Integer prefetchCount) {
-        this.prefetchCount = prefetchCount;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public EventHubStreamInputDataSourceProperties withEventHubName(String eventHubName) {
         super.withEventHubName(eventHubName);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EventHubStreamInputDataSourceProperties withPartitionCount(Integer partitionCount) {
-        super.withPartitionCount(partitionCount);
         return this;
     }
 
@@ -156,9 +122,7 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
         jsonWriter.writeStringField("authenticationMode",
             authenticationMode() == null ? null : authenticationMode().toString());
         jsonWriter.writeStringField("eventHubName", eventHubName());
-        jsonWriter.writeNumberField("partitionCount", partitionCount());
         jsonWriter.writeStringField("consumerGroupName", this.consumerGroupName);
-        jsonWriter.writeNumberField("prefetchCount", this.prefetchCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,14 +153,8 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
                         .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
                 } else if ("eventHubName".equals(fieldName)) {
                     deserializedEventHubStreamInputDataSourceProperties.withEventHubName(reader.getString());
-                } else if ("partitionCount".equals(fieldName)) {
-                    deserializedEventHubStreamInputDataSourceProperties
-                        .withPartitionCount(reader.getNullable(JsonReader::getInt));
                 } else if ("consumerGroupName".equals(fieldName)) {
                     deserializedEventHubStreamInputDataSourceProperties.consumerGroupName = reader.getString();
-                } else if ("prefetchCount".equals(fieldName)) {
-                    deserializedEventHubStreamInputDataSourceProperties.prefetchCount
-                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

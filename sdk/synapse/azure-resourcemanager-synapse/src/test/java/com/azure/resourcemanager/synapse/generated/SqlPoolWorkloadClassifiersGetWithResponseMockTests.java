@@ -21,7 +21,7 @@ public final class SqlPoolWorkloadClassifiersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"memberName\":\"oiauesugmocpcj\",\"label\":\"boel\",\"context\":\"ttwfldsiuorini\",\"startTime\":\"edpksriwmmtmqrxr\",\"endTime\":\"vvyczy\",\"importance\":\"ubt\"},\"id\":\"mbxiqahra\",\"name\":\"pxmib\",\"type\":\"lnupoyryefqmw\"}";
+            = "{\"properties\":{\"memberName\":\"ubanlxunpq\",\"label\":\"kqiawzlzklasl\",\"context\":\"ciz\",\"startTime\":\"lrarwpewsaudo\",\"endTime\":\"tighsxjpy\",\"importance\":\"kqbalah\"},\"id\":\"vuuwxhmeh\",\"name\":\"nhjiotiffb\",\"type\":\"cngkegxcypxb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class SqlPoolWorkloadClassifiersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadClassifier response = manager.sqlPoolWorkloadClassifiers()
-            .getWithResponse("ewikfyaqandmym", "qoq", "umov", "fbpbvzopaxmfmvsm", "woxfaxdtnqifbsa",
+            .getWithResponse("hqwhitxnmxgnmguz", "uwvorbalkjn", "kbd", "lltqstqkqs", "gxiynecovagzk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("oiauesugmocpcj", response.memberName());
-        Assertions.assertEquals("boel", response.label());
-        Assertions.assertEquals("ttwfldsiuorini", response.context());
-        Assertions.assertEquals("edpksriwmmtmqrxr", response.startTime());
-        Assertions.assertEquals("vvyczy", response.endTime());
-        Assertions.assertEquals("ubt", response.importance());
+        Assertions.assertEquals("ubanlxunpq", response.memberName());
+        Assertions.assertEquals("kqiawzlzklasl", response.label());
+        Assertions.assertEquals("ciz", response.context());
+        Assertions.assertEquals("lrarwpewsaudo", response.startTime());
+        Assertions.assertEquals("tighsxjpy", response.endTime());
+        Assertions.assertEquals("kqbalah", response.importance());
     }
 }

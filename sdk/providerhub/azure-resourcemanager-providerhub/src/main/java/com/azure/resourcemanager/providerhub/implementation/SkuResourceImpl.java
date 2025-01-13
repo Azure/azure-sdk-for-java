@@ -96,9 +96,9 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.resourceType = Utils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
-        this.sku = Utils.getValueFromIdByName(innerObject.id(), "skus");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.resourceType = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
+        this.sku = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "skus");
     }
 
     public SkuResource refresh() {

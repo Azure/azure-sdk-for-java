@@ -29,14 +29,14 @@ public final class GroupUsersImpl implements GroupUsers {
 
     public PagedIterable<UserContract> list(String resourceGroupName, String serviceName, String groupId) {
         PagedIterable<UserContractInner> inner = this.serviceClient().list(resourceGroupName, serviceName, groupId);
-        return Utils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<UserContract> list(String resourceGroupName, String serviceName, String groupId, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<UserContractInner> inner
             = this.serviceClient().list(resourceGroupName, serviceName, groupId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
     }
 
     public Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String groupId,

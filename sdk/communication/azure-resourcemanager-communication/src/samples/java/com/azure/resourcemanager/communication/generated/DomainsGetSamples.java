@@ -18,7 +18,8 @@ public final class DomainsGetSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ConfigurationStores. */
+/**
+ * Resource collection API of ConfigurationStores.
+ */
 public interface ConfigurationStores {
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores as paginated response with {@link PagedIterable}.
@@ -21,10 +23,10 @@ public interface ConfigurationStores {
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,7 +37,7 @@ public interface ConfigurationStores {
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,11 +48,11 @@ public interface ConfigurationStores {
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,7 +63,7 @@ public interface ConfigurationStores {
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -75,7 +77,7 @@ public interface ConfigurationStores {
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface ConfigurationStores {
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +100,7 @@ public interface ConfigurationStores {
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -110,7 +112,7 @@ public interface ConfigurationStores {
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,12 +124,12 @@ public interface ConfigurationStores {
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +140,7 @@ public interface ConfigurationStores {
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
@@ -153,7 +155,7 @@ public interface ConfigurationStores {
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
@@ -167,29 +169,29 @@ public interface ConfigurationStores {
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DeletedConfigurationStore> listDeleted();
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DeletedConfigurationStore> listDeleted(Context context);
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -203,7 +205,7 @@ public interface ConfigurationStores {
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +217,7 @@ public interface ConfigurationStores {
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +228,7 @@ public interface ConfigurationStores {
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -238,7 +240,7 @@ public interface ConfigurationStores {
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -249,7 +251,7 @@ public interface ConfigurationStores {
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface ConfigurationStores {
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,7 +273,7 @@ public interface ConfigurationStores {
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +284,7 @@ public interface ConfigurationStores {
 
     /**
      * Begins definition for a new ConfigurationStore resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ConfigurationStore definition.
      */

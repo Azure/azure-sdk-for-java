@@ -84,7 +84,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         MonitorManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
-    /** @return the Azure Activity Logs API entry point */
+    /**
+     * Gets the Azure Activity Logs API entry point.
+     *
+     * @return the Azure Activity Logs API entry point
+     */
     public ActivityLogs activityLogs() {
         if (this.activityLogs == null) {
             this.activityLogs = new ActivityLogsImpl(this);
@@ -92,7 +96,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         return this.activityLogs;
     }
 
-    /** @return the Azure Metric Definitions API entry point */
+    /**
+     * Gets the Azure Metric Definitions API entry point.
+     *
+     * @return the Azure Metric Definitions API entry point
+     */
     public MetricDefinitions metricDefinitions() {
         if (this.metricDefinitions == null) {
             this.metricDefinitions = new MetricDefinitionsImpl(this);
@@ -100,7 +108,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         return this.metricDefinitions;
     }
 
-    /** @return the Azure Diagnostic Settings API entry point */
+    /**
+     * Gets the Azure Diagnostic Settings API entry point.
+     *
+     * @return the Azure Diagnostic Settings API entry point
+     */
     public DiagnosticSettings diagnosticSettings() {
         if (this.diagnosticSettings == null) {
             this.diagnosticSettings = new DiagnosticSettingsImpl(this);
@@ -108,7 +120,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         return this.diagnosticSettings;
     }
 
-    /** @return the Azure Action Groups API entry point */
+    /**
+     * Gets the Azure Action Groups API entry point.
+     *
+     * @return the Azure Action Groups API entry point
+     */
     public ActionGroups actionGroups() {
         if (this.actionGroups == null) {
             this.actionGroups = new ActionGroupsImpl(this);
@@ -116,7 +132,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         return this.actionGroups;
     }
 
-    /** @return the Azure AlertRules API entry point */
+    /**
+     * Gets the Azure AlertRules API entry point.
+     *
+     * @return the Azure AlertRules API entry point
+     */
     public AlertRules alertRules() {
         if (this.alerts == null) {
             this.alerts = new AlertRulesImpl(this);
@@ -124,7 +144,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
         return this.alerts;
     }
 
-    /** @return the Azure AutoscaleSettings API entry point */
+    /**
+     * Gets the Azure AutoscaleSettings API entry point.
+     *
+     * @return the Azure AutoscaleSettings API entry point
+     */
     public AutoscaleSettings autoscaleSettings() {
         if (this.autoscaleSettings == null) {
             this.autoscaleSettings = new AutoscaleSettingsImpl(this);

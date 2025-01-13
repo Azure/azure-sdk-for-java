@@ -12,15 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterManagerInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in ClusterManagersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClusterManagersClient.
+ */
 public interface ClusterManagersClient {
     /**
      * List cluster managers in the subscription.
-     *
-     * <p>Get a list of cluster managers in the provided subscription.
-     *
+     * 
+     * Get a list of cluster managers in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cluster managers in the provided subscription as paginated response with {@link PagedIterable}.
@@ -30,9 +33,9 @@ public interface ClusterManagersClient {
 
     /**
      * List cluster managers in the subscription.
-     *
-     * <p>Get a list of cluster managers in the provided subscription.
-     *
+     * 
+     * Get a list of cluster managers in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,40 +47,40 @@ public interface ClusterManagersClient {
 
     /**
      * List cluster managers in the resource group.
-     *
-     * <p>Get a list of cluster managers in the provided resource group.
-     *
+     * 
+     * Get a list of cluster managers in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cluster managers in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ClusterManagerInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List cluster managers in the resource group.
-     *
-     * <p>Get a list of cluster managers in the provided resource group.
-     *
+     * 
+     * Get a list of cluster managers in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cluster managers in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cluster managers in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ClusterManagerInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the cluster manager.
-     *
-     * <p>Get the properties of the provided cluster manager.
-     *
+     * 
+     * Get the properties of the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param context The context to associate with this operation.
@@ -92,9 +95,9 @@ public interface ClusterManagersClient {
 
     /**
      * Retrieve the cluster manager.
-     *
-     * <p>Get the properties of the provided cluster manager.
-     *
+     * 
+     * Get the properties of the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,9 +110,9 @@ public interface ClusterManagersClient {
 
     /**
      * Create or update the cluster manager.
-     *
-     * <p>Create a new cluster manager or update properties of the cluster manager if it exists.
-     *
+     * 
+     * Create a new cluster manager or update properties of the cluster manager if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
@@ -117,7 +120,7 @@ public interface ClusterManagersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterManager represents a control-plane to manage one or more
-     *     on-premises clusters.
+     * on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(String resourceGroupName,
@@ -125,9 +128,9 @@ public interface ClusterManagersClient {
 
     /**
      * Create or update the cluster manager.
-     *
-     * <p>Create a new cluster manager or update properties of the cluster manager if it exists.
-     *
+     * 
+     * Create a new cluster manager or update properties of the cluster manager if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
@@ -136,7 +139,7 @@ public interface ClusterManagersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of clusterManager represents a control-plane to manage one or more
-     *     on-premises clusters.
+     * on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(String resourceGroupName,
@@ -144,9 +147,9 @@ public interface ClusterManagersClient {
 
     /**
      * Create or update the cluster manager.
-     *
-     * <p>Create a new cluster manager or update properties of the cluster manager if it exists.
-     *
+     * 
+     * Create a new cluster manager or update properties of the cluster manager if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
@@ -161,9 +164,9 @@ public interface ClusterManagersClient {
 
     /**
      * Create or update the cluster manager.
-     *
-     * <p>Create a new cluster manager or update properties of the cluster manager if it exists.
-     *
+     * 
+     * Create a new cluster manager or update properties of the cluster manager if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerParameters The request body.
@@ -179,71 +182,74 @@ public interface ClusterManagersClient {
 
     /**
      * Delete the cluster manager.
-     *
-     * <p>Delete the provided cluster manager.
-     *
+     * 
+     * Delete the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String clusterManagerName);
 
     /**
      * Delete the cluster manager.
-     *
-     * <p>Delete the provided cluster manager.
-     *
+     * 
+     * Delete the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
-        Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String clusterManagerName, Context context);
 
     /**
      * Delete the cluster manager.
-     *
-     * <p>Delete the provided cluster manager.
-     *
+     * 
+     * Delete the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterManagerName);
+    OperationStatusResultInner delete(String resourceGroupName, String clusterManagerName);
 
     /**
      * Delete the cluster manager.
-     *
-     * <p>Delete the provided cluster manager.
-     *
+     * 
+     * Delete the provided cluster manager.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterManagerName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String clusterManagerName, Context context);
 
     /**
      * Patch the cluster manager.
-     *
-     * <p>Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager.
-     * Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager. Properties
+     * and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @param clusterManagerUpdateParameters The request body.
@@ -251,8 +257,8 @@ public interface ClusterManagersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterManager represents a control-plane to manage one or more on-premises clusters along with {@link
-     *     Response}.
+     * @return clusterManager represents a control-plane to manage one or more on-premises clusters along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterManagerInner> updateWithResponse(String resourceGroupName, String clusterManagerName,
@@ -260,10 +266,10 @@ public interface ClusterManagersClient {
 
     /**
      * Patch the cluster manager.
-     *
-     * <p>Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager.
-     * Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of the provided cluster manager, or update the tags assigned to the cluster manager. Properties
+     * and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

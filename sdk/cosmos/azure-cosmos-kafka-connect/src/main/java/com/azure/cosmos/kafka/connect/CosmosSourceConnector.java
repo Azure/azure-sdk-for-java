@@ -215,12 +215,28 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     }
 
     private Mono<CosmosContainerResponse> createMetadataContainer() {
+        return this.createMetadataContainer(METADATA_CONTAINER_DEFAULT_RU_CONFIG)
+            .onErrorResume(throwable -> {
+                // for serverless database account, creating container with throughput configured will get 400/0 exceptions
+                if (KafkaCosmosExceptionsHelper.isBadRequestException(throwable)) {
+                    LOGGER.info(
+                        "Getting exception '{}' when creating metadata container with throughput, retrying creating without throughput.",
+                        throwable.getMessage());
+                    return this.createMetadataContainer(null);
+                }
+
+                return Mono.error(throwable);
+            });
+    }
+
+    private Mono<CosmosContainerResponse> createMetadataContainer(Integer throughput) {
         return this.cosmosClient
             .getDatabase(this.config.getContainersConfig().getDatabaseName())
             .createContainer(
                 this.config.getMetadataConfig().getStorageName(),
                 "/id",
-                ThroughputProperties.createAutoscaledThroughput(METADATA_CONTAINER_DEFAULT_RU_CONFIG));
+                throughput == null
+                    ? null : ThroughputProperties.createAutoscaledThroughput(throughput));
     }
 
     private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {

@@ -25,7 +25,7 @@ public final class PartnerTopicsActivateWithResponseMockTests {
     @Test
     public void testActivateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"3565650d-eac5-47a5-a420-4b191ca7ed6a\",\"source\":\"joxtdahne\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"e\":{\"description\":\"ztivfwjl\",\"displayName\":\"zekfsrmauklajv\",\"documentationUrl\":\"oczhapejovtk\",\"dataSchemaUrl\":\"nhwhhnoyrzaao\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-09T20:50:13Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"eat\",\"messageForActivation\":\"xxcrxoxdjxld\"},\"identity\":{\"type\":\"None\",\"principalId\":\"nzkdolrndwdbvxvz\",\"tenantId\":\"edoyqxlunkft\",\"userAssignedIdentities\":{\"divznl\":{\"principalId\":\"qqxmyzklaoanpoh\",\"clientId\":\"mzrqraz\"},\"roigbsfsgsaenwld\":{\"principalId\":\"slkskhjqjpvbai\",\"clientId\":\"jtgzgtaiywbq\"},\"ryldsxeb\":{\"principalId\":\"hljqlxsp\",\"clientId\":\"jc\"},\"yckhefrbhseue\":{\"principalId\":\"sxrznmg\",\"clientId\":\"al\"}}},\"location\":\"bgpxebjlu\",\"tags\":{\"d\":\"ytujra\",\"gtnse\":\"pryj\",\"s\":\"ouxly\",\"lmpctwj\":\"vyljurkeposehqq\"},\"id\":\"dsdlzmk\",\"name\":\"erxxxoteehkhowgo\",\"type\":\"vvh\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"4dbeb995-792e-4cd0-85d9-727e42a1c19c\",\"source\":\"joxtdahne\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"e\":{\"description\":\"ztivfwjl\",\"displayName\":\"zekfsrmauklajv\",\"documentationUrl\":\"oczhapejovtk\",\"dataSchemaUrl\":\"nhwhhnoyrzaao\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-09T20:50:13Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"eat\",\"messageForActivation\":\"xxcrxoxdjxld\"},\"identity\":{\"type\":\"None\",\"principalId\":\"nzkdolrndwdbvxvz\",\"tenantId\":\"edoyqxlunkft\",\"userAssignedIdentities\":{\"divznl\":{\"principalId\":\"qqxmyzklaoanpoh\",\"clientId\":\"mzrqraz\"},\"roigbsfsgsaenwld\":{\"principalId\":\"slkskhjqjpvbai\",\"clientId\":\"jtgzgtaiywbq\"},\"ryldsxeb\":{\"principalId\":\"hljqlxsp\",\"clientId\":\"jc\"},\"yckhefrbhseue\":{\"principalId\":\"sxrznmg\",\"clientId\":\"al\"}}},\"location\":\"bgpxebjlu\",\"tags\":{\"d\":\"ytujra\",\"gtnse\":\"pryj\",\"s\":\"ouxly\",\"lmpctwj\":\"vyljurkeposehqq\"},\"id\":\"dsdlzmk\",\"name\":\"erxxxoteehkhowgo\",\"type\":\"vvh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -46,7 +46,7 @@ public final class PartnerTopicsActivateWithResponseMockTests {
         Assertions.assertEquals("qqxmyzklaoanpoh",
             response.identity().userAssignedIdentities().get("divznl").principalId());
         Assertions.assertEquals("mzrqraz", response.identity().userAssignedIdentities().get("divznl").clientId());
-        Assertions.assertEquals(UUID.fromString("3565650d-eac5-47a5-a420-4b191ca7ed6a"),
+        Assertions.assertEquals(UUID.fromString("4dbeb995-792e-4cd0-85d9-727e42a1c19c"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("joxtdahne", response.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());

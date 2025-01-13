@@ -6,65 +6,46 @@ package com.azure.resourcemanager.largeinstance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.largeinstance.LargeInstanceManager;
 import com.azure.resourcemanager.largeinstance.models.AzureLargeInstanceHardwareTypeNamesEnum;
 import com.azure.resourcemanager.largeinstance.models.AzureLargeStorageInstance;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AzureLargeStorageInstancesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"azureLargeStorageInstanceUniqueIdentifier\":\"dnw\",\"storageProperties\":{\"provisioningState\":\"Canceled\",\"offeringType\":\"zsyyceuzso\",\"storageType\":\"judpfrxt\",\"generation\":\"hzv\",\"hardwareType\":\"Cisco_UCS\",\"workloadType\":\"wkqbrqu\",\"storageBillingProperties\":{\"billingMode\":\"xhexiilivpdti\",\"sku\":\"q\"}}},\"location\":\"qoaxoruzfgs\",\"tags\":{\"tramxjez\":\"fxrxxle\",\"tdooaoj\":\"lwnwxuqlcvydyp\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"}";
+            = "{\"properties\":{\"azureLargeStorageInstanceUniqueIdentifier\":\"ooxdjebwpuc\",\"storageProperties\":{\"provisioningState\":\"Accepted\",\"offeringType\":\"vbvmeu\",\"storageType\":\"ivyhzceuojgjrwju\",\"generation\":\"otwmcdyt\",\"hardwareType\":\"Cisco_UCS\",\"workloadType\":\"txnrjaw\",\"storageBillingProperties\":{\"billingMode\":\"gxhnisk\",\"sku\":\"bkpyc\"}}},\"location\":\"lwn\",\"tags\":{\"wzbtdhxu\":\"jdauwhvy\",\"veual\":\"znbmpowuwprzq\",\"wsrtjriplrbpbe\":\"pjmkhfxobbc\"},\"id\":\"tghfgblcgwxzvl\",\"name\":\"qhjk\",\"type\":\"egibtnmxiebww\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LargeInstanceManager manager = LargeInstanceManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureLargeStorageInstance response = manager.azureLargeStorageInstances()
-            .getByResourceGroupWithResponse("imrzrtuzqog", "exn", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("hashsfwxosow", "xcug", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qoaxoruzfgs", response.location());
-        Assertions.assertEquals("fxrxxle", response.tags().get("tramxjez"));
-        Assertions.assertEquals("dnw", response.properties().azureLargeStorageInstanceUniqueIdentifier());
-        Assertions.assertEquals("zsyyceuzso", response.properties().storageProperties().offeringType());
-        Assertions.assertEquals("judpfrxt", response.properties().storageProperties().storageType());
-        Assertions.assertEquals("hzv", response.properties().storageProperties().generation());
+        Assertions.assertEquals("lwn", response.location());
+        Assertions.assertEquals("jdauwhvy", response.tags().get("wzbtdhxu"));
+        Assertions.assertEquals("ooxdjebwpuc", response.properties().azureLargeStorageInstanceUniqueIdentifier());
+        Assertions.assertEquals("vbvmeu", response.properties().storageProperties().offeringType());
+        Assertions.assertEquals("ivyhzceuojgjrwju", response.properties().storageProperties().storageType());
+        Assertions.assertEquals("otwmcdyt", response.properties().storageProperties().generation());
         Assertions.assertEquals(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS,
             response.properties().storageProperties().hardwareType());
-        Assertions.assertEquals("wkqbrqu", response.properties().storageProperties().workloadType());
-        Assertions.assertEquals("xhexiilivpdti",
+        Assertions.assertEquals("txnrjaw", response.properties().storageProperties().workloadType());
+        Assertions.assertEquals("gxhnisk",
             response.properties().storageProperties().storageBillingProperties().billingMode());
-        Assertions.assertEquals("q", response.properties().storageProperties().storageBillingProperties().sku());
+        Assertions.assertEquals("bkpyc", response.properties().storageProperties().storageBillingProperties().sku());
     }
 }

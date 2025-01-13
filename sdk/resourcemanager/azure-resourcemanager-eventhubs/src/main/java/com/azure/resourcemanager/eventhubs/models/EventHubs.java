@@ -19,11 +19,15 @@ import reactor.core.publisher.Mono;
 public interface EventHubs extends SupportsCreating<EventHub.DefinitionStages.Blank>, SupportsDeletingById,
     SupportsGettingById<EventHub>, HasManager<EventHubsManager> {
     /**
+     * Gets entry point to manage authorization rules of event hubs..
+     *
      * @return entry point to manage authorization rules of event hubs.
      */
     EventHubAuthorizationRules authorizationRules();
 
     /**
+     * Gets entry point to manage consumer group of event hubs.
+     *
      * @return entry point to manage consumer group of event hubs.
      */
 

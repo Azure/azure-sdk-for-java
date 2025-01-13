@@ -15,21 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model = BinaryData.fromString("{\"type\":\"SystemAssigned,"
-            + " UserAssigned\",\"userAssignedIdentities\":{\"aeqjhqjbasvms\":{\"principalId\":\"tzfkufubl\",\"clientId\":\"fxqeof\"},\"douskcqvkocrcjdk\":{\"principalId\":\"qulngsntnbybkzgc\",\"clientId\":\"wclxxwrl\"},\"p\":{\"principalId\":\"nh\",\"clientId\":\"njbiksqrglssain\"}},\"principalId\":\"nzl\",\"tenantId\":\"fmppe\"}")
+        ResourceIdentity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"rtihfxtijbpz\":{\"principalId\":\"xzdxtayrlhmwh\",\"clientId\":\"mrqobmtukknr\"}},\"principalId\":\"nwzsymg\",\"tenantId\":\"uf\"}")
             .toObject(ResourceIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model = new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("aeqjhqjbasvms", new UserIdentity(), "douskcqvkocrcjdk",
-                new UserIdentity(), "p", new UserIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("rtihfxtijbpz", new UserIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

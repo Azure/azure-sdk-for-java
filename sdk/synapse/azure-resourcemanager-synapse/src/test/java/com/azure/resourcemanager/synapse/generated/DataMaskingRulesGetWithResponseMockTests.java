@@ -23,7 +23,7 @@ public final class DataMaskingRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"walzyxwhoeamoeo\",\"aliasName\":\"oeysfp\",\"ruleState\":\"Disabled\",\"schemaName\":\"twuuhauegnk\",\"tableName\":\"mnfeub\",\"columnName\":\"zjy\",\"maskingFunction\":\"Number\",\"numberFrom\":\"fugiphrrkuu\",\"numberTo\":\"qdurhzzfopue\",\"prefixSize\":\"usvwluj\",\"suffixSize\":\"wnibittoz\",\"replacementString\":\"dqumqvfm\"},\"location\":\"ad\",\"kind\":\"gctxegtvgwyur\",\"id\":\"elfnzzryiz\",\"name\":\"bxgde\",\"type\":\"xlayunomir\"}";
+            = "{\"properties\":{\"id\":\"a\",\"aliasName\":\"janormovdxxu\",\"ruleState\":\"Disabled\",\"schemaName\":\"ujmoi\",\"tableName\":\"unwemhd\",\"columnName\":\"e\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"lkyozdsfzj\",\"numberTo\":\"grhrh\",\"prefixSize\":\"l\",\"suffixSize\":\"tv\",\"replacementString\":\"nxvgjb\"},\"location\":\"obpnjodf\",\"kind\":\"jqqwmtqsmoxsazu\",\"id\":\"ejgwe\",\"name\":\"ywnfyszzaczs\",\"type\":\"nqbdnddbboz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class DataMaskingRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataMaskingRule response = manager.dataMaskingRules()
-            .getWithResponse("gyuqwrldaxurfqa", "csozjv", "dzciggb", "vt", com.azure.core.util.Context.NONE)
+            .getWithResponse("harls", "rncclabv", "yngsuxxcz", "myqjog", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("oeysfp", response.aliasName());
+        Assertions.assertEquals("janormovdxxu", response.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, response.ruleState());
-        Assertions.assertEquals("twuuhauegnk", response.schemaName());
-        Assertions.assertEquals("mnfeub", response.tableName());
-        Assertions.assertEquals("zjy", response.columnName());
-        Assertions.assertEquals(DataMaskingFunction.NUMBER, response.maskingFunction());
-        Assertions.assertEquals("fugiphrrkuu", response.numberFrom());
-        Assertions.assertEquals("qdurhzzfopue", response.numberTo());
-        Assertions.assertEquals("usvwluj", response.prefixSize());
-        Assertions.assertEquals("wnibittoz", response.suffixSize());
-        Assertions.assertEquals("dqumqvfm", response.replacementString());
+        Assertions.assertEquals("ujmoi", response.schemaName());
+        Assertions.assertEquals("unwemhd", response.tableName());
+        Assertions.assertEquals("e", response.columnName());
+        Assertions.assertEquals(DataMaskingFunction.CCN, response.maskingFunction());
+        Assertions.assertEquals("lkyozdsfzj", response.numberFrom());
+        Assertions.assertEquals("grhrh", response.numberTo());
+        Assertions.assertEquals("l", response.prefixSize());
+        Assertions.assertEquals("tv", response.suffixSize());
+        Assertions.assertEquals("nxvgjb", response.replacementString());
     }
 }
