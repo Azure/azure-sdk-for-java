@@ -16,13 +16,25 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface TransparentDataEncryption extends Refreshable<TransparentDataEncryption>,
     HasInnerModel<LogicalDatabaseTransparentDataEncryptionInner>, HasResourceGroup, HasName, HasId {
-    /** @return name of the SQL Server to which this replication belongs */
+    /**
+     * Gets the name of the SQL Server to which this replication belongs.
+     *
+     * @return name of the SQL Server to which this replication belongs
+     */
     String sqlServerName();
 
-    /** @return name of the SQL Database to which this replication belongs */
+    /**
+     * Gets the name of the SQL Database to which this replication belongs.
+     *
+     * @return name of the SQL Database to which this replication belongs
+     */
     String databaseName();
 
-    /** @return the status of the Azure SQL Database Transparent Data Encryption */
+    /**
+     * Gets the status of the Azure SQL Database Transparent Data Encryption.
+     *
+     * @return the status of the Azure SQL Database Transparent Data Encryption
+     */
     TransparentDataEncryptionState status();
 
     /**

@@ -9,6 +9,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
 
 import java.util.Set;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.HashSet;
 import java.util.HashMap;
 
 public class FilteringConfiguration {
-    private final Set<String> seenMetricIds = new HashSet<>();
 
     // key is the telemetry type
     private final Map<TelemetryType, List<DerivedMetricInfo>> validDerivedMetricInfos;
@@ -30,6 +30,8 @@ public class FilteringConfiguration {
 
     // key is the derived metric id
     private final Map<String, AggregationType> validProjectionInfo;
+
+    private final Validator validator = new Validator();
 
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
@@ -80,21 +82,19 @@ public class FilteringConfiguration {
                 .getDocumentFilterGroups()) {
                 TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
+                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo)) {
+                    if (!result.containsKey(telemetryType)) {
+                        result.put(telemetryType, new HashMap<>());
+                    }
 
-                // TODO (harskaur): In later PR, validate input before adding it to newValidDocumentsConfig
-                // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
-
-                if (!result.containsKey(telemetryType)) {
-                    result.put(telemetryType, new HashMap<>());
-                }
-
-                Map<String, List<FilterConjunctionGroupInfo>> innerMap = result.get(telemetryType);
-                if (innerMap.containsKey(documentStreamId)) {
-                    innerMap.get(documentStreamId).add(filterGroup);
-                } else {
-                    List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
-                    filterGroups.add(filterGroup);
-                    innerMap.put(documentStreamId, filterGroups);
+                    Map<String, List<FilterConjunctionGroupInfo>> innerMap = result.get(telemetryType);
+                    if (innerMap.containsKey(documentStreamId)) {
+                        innerMap.get(documentStreamId).add(filterGroup);
+                    } else {
+                        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
+                        filterGroups.add(filterGroup);
+                        innerMap.put(documentStreamId, filterGroups);
+                    }
                 }
             }
         }
@@ -103,23 +103,29 @@ public class FilteringConfiguration {
 
     private Map<TelemetryType, List<DerivedMetricInfo>>
         parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
+        Set<String> seenMetricIds = new HashSet<>();
         Map<TelemetryType, List<DerivedMetricInfo>> result = new HashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
             TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
             String id = derivedMetricInfo.getId();
+
             if (!seenMetricIds.contains(id)) {
                 seenMetricIds.add(id);
-                // TODO (harskaur): In later PR, validate input before adding it to newValidConfig
-                // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
-
-                if (result.containsKey(telemetryType)) {
-                    result.get(telemetryType).add(derivedMetricInfo);
-                } else {
-                    List<DerivedMetricInfo> infos = new ArrayList<>();
-                    infos.add(derivedMetricInfo);
-                    result.put(telemetryType, infos);
+                if (validator.isValidDerivedMetricInfo(derivedMetricInfo)) {
+                    if (result.containsKey(telemetryType)) {
+                        result.get(telemetryType).add(derivedMetricInfo);
+                    } else {
+                        List<DerivedMetricInfo> infos = new ArrayList<>();
+                        infos.add(derivedMetricInfo);
+                        result.put(telemetryType, infos);
+                    }
                 }
+            } else {
+                validator.constructAndTrackCollectionConfigurationError(
+                    CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS,
+                    "A duplicate metric id was found in this configuration", configuration.getETag(), id, true);
             }
+
         }
         return result;
     }

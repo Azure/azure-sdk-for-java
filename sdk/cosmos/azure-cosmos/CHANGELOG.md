@@ -10,11 +10,21 @@
 
 #### Other Changes
 * Added support to enable thin client mode with system property `COSMOS.THINCLIENT_ENABLED`, setting the thin client endpoint with system property `COSMOS.THINCLIENT_ENDPOINT`, and default thin client endpoint with system property `COSMOS.DEFAULT_THINCLIENT_ENDPOINT`. - [PR 43188](https://github.com/Azure/azure-sdk-for-java/pull/43188)
+* Added client vmId info to Rntbd health check logs - See [43079](https://github.com/Azure/azure-sdk-for-java/pull/43079)
 * Added support to enable http2 for gateway mode with system property `COSMOS.HTTP2_ENABLED` and system variable `COSMOS_HTTP2_ENABLED`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added options to fine-tune settings for bulk operations. - [PR 43509](https://github.com/Azure/azure-sdk-for-java/pull/43509)
- 
+* Added the following metrics. - See [PR 43716](https://github.com/Azure/azure-sdk-for-java/pull/43716)
+  *`cosmos.client.req.gw.bulkOpCountPerEvaluation`
+  *`cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation`
+  *`cosmos.client.req.gw.bulkGlobalOpCount`
+  *`cosmos.client.req.gw.bulkTargetMaxMicroBatchSize`
+  *`cosmos.client.req.rntbd.bulkOpCountPerEvaluation`
+  *`cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation`
+  *`cosmos.client.req.rntbd.bulkGlobalOpCount`
+  *`cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize`
+
 ### 4.65.0 (2024-11-19)
 
 #### Features Added

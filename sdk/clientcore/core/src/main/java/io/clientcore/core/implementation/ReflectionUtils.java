@@ -136,6 +136,31 @@ public abstract class ReflectionUtils {
         }
 
         @Override
+        public Object invoke() {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {
+            return null;
+        }
+
+        @Override
         public int getParameterCount() {
             return 0;
         }

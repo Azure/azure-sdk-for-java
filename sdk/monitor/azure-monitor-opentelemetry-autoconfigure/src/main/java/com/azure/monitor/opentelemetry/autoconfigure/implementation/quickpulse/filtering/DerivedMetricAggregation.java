@@ -50,7 +50,6 @@ public class DerivedMetricAggregation {
                 return aggregation / count;
             }
             return aggregation;
-
         }
     }
 }

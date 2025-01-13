@@ -13,7 +13,11 @@ import java.io.IOException;
  */
 @Fluent
 public interface HasSslCertificate<T> {
-    /** @return the associated SSL certificate, if any */
+    /**
+     * Gets the associated SSL certificate.
+     *
+     * @return the associated SSL certificate, if any
+     */
     T sslCertificate();
 
     /** Grouping of definition stages involving specifying an SSL certificate. */
