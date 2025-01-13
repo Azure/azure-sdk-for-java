@@ -131,6 +131,8 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     packages = []
     breaking = False
+    changelog = ""
+    breaking_change_items = []
     if "relatedReadmeMdFiles" not in config or not config["relatedReadmeMdFiles"]:
         return packages
 
