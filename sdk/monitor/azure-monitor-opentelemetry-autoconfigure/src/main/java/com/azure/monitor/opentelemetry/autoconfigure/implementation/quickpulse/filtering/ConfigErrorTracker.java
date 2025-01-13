@@ -15,8 +15,7 @@ public class ConfigErrorTracker {
 
     private static final ClientLogger LOGGER = new ClientLogger(ConfigErrorTracker.class);
 
-    public void constructAndTrackCollectionConfigurationError(String message, String eTag, String id,
-        boolean isDerivedMetricId) {
+    public void addError(String message, String eTag, String id, boolean isDerivedMetricId) {
         CollectionConfigurationError error = new CollectionConfigurationError();
         error.setMessage(message);
         error.setCollectionConfigurationErrorType(setErrorType(message));
@@ -52,6 +51,6 @@ public class ConfigErrorTracker {
     }
 
     public List<CollectionConfigurationError> getErrors() {
-        return new ArrayList<CollectionConfigurationError>(errors);
+        return new ArrayList<>(errors);
     }
 }

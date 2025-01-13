@@ -101,8 +101,7 @@ public class FilteringConfiguration {
                     = validator.validateDocConjunctionGroupInfo(documentFilterGroupInfo);
 
                 if (docFilterGroupError.isPresent()) {
-                    errorTracker.constructAndTrackCollectionConfigurationError(docFilterGroupError.get(),
-                        configuration.getETag(), documentStreamId, false);
+                    errorTracker.addError(docFilterGroupError.get(), configuration.getETag(), documentStreamId, false);
                 } else { // passed validation, store valid docFilterGroupInfo
                     if (!result.containsKey(telemetryType)) {
                         result.put(telemetryType, new HashMap<>());
@@ -135,8 +134,7 @@ public class FilteringConfiguration {
                 seenMetricIds.add(id);
                 Optional<String> dmiError = validator.validateDerivedMetricInfo(derivedMetricInfo);
                 if (dmiError.isPresent()) {
-                    errorTracker.constructAndTrackCollectionConfigurationError(dmiError.get(), configuration.getETag(),
-                        id, true);
+                    errorTracker.addError(dmiError.get(), configuration.getETag(), id, true);
 
                 } else { // validation passed, store valid dmi
                     if (result.containsKey(telemetryType)) {
@@ -148,8 +146,8 @@ public class FilteringConfiguration {
                     }
                 }
             } else {
-                errorTracker.constructAndTrackCollectionConfigurationError(
-                    "A duplicate metric id was found in this configuration", configuration.getETag(), id, true);
+                errorTracker.addError("A duplicate metric id was found in this configuration", configuration.getETag(),
+                    id, true);
             }
 
         }

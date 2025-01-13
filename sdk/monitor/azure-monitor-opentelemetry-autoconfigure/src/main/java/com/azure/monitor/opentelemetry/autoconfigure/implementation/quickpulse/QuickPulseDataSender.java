@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
@@ -81,8 +82,10 @@ class QuickPulseDataSender implements Runnable {
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             String etag = configuration.get().getETag();
 
-            logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
-                printListOfMonitoringPoints(dataPointList));
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
+                    printListOfMonitoringPoints(dataPointList));
+            }
 
             try {
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
