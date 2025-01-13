@@ -8,6 +8,9 @@ parameters:
   - name: AdditionalModules
     type: object
     default: []
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: SDKType
     type: string
     default: client
@@ -85,6 +88,7 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               SDKType: ${{ parameters.SDKType }}
               Artifacts: ${{ parameters.Artifacts }}
+              ExcludePaths: ${{ parameters.ExcludePaths }}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
               ReleaseArtifacts:
