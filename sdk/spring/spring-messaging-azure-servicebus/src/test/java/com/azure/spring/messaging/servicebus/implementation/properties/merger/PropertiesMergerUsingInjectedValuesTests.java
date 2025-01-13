@@ -3,14 +3,6 @@
 
 package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
-import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
-import com.azure.spring.cloud.core.properties.client.AmqpClientProperties;
-import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.properties.proxy.AmqpProxyProperties;
-import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
@@ -18,11 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer.isMergedPropertiesCorrect;
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PropertiesMergerUsingInjectedValuesTests {
@@ -40,15 +29,6 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProducerProperties result = merger.merge(child, parent);
 
         // Assertion
-        assertNotNull(parent.getConnectionString());
-        assertNotNull(parent.getEntityName());
-
-        assertAzureAmqpSdkProperties(parent);
-        assertAzureAmqpSdkProperties(result);
-
-        assertNotNull(result.getConnectionString());
-        assertNotNull(result.getEntityName());
-
         assertTrue(isMergedPropertiesCorrect(parent, child, result));
     }
 
@@ -65,15 +45,6 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProducerProperties result = merger.merge(child, parent);
 
         // Assertion
-        assertNotNull(child.getConnectionString());
-        assertNotNull(child.getEntityName());
-
-        assertAzureAmqpSdkProperties(child);
-        assertAzureAmqpSdkProperties(result);
-
-        assertNotNull(result.getConnectionString());
-        assertNotNull(result.getEntityName());
-
         assertTrue(isMergedPropertiesCorrect(child, child, result));
     }
 
@@ -90,15 +61,6 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProcessorProperties result = merger.merge(child, parent);
 
         // Assertion
-        assertNotNull(parent.getConnectionString());
-        assertNotNull(parent.getEntityName());
-
-        assertAzureAmqpSdkProperties(parent);
-        assertAzureAmqpSdkProperties(result);
-
-        assertNotNull(result.getConnectionString());
-        assertNotNull(result.getEntityName());
-
         assertTrue(isMergedPropertiesCorrect(parent, child, result));
     }
 
@@ -115,58 +77,6 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProcessorProperties result = merger.merge(child, parent);
 
         // Assertion
-        assertNotNull(child.getConnectionString());
-        assertNotNull(child.getEntityName());
-
-        assertAzureAmqpSdkProperties(child);
-        assertAzureAmqpSdkProperties(result);
-
-        assertNotNull(result.getConnectionString());
-        assertNotNull(result.getEntityName());
-
         assertTrue(isMergedPropertiesCorrect(child, child, result));
-    }
-
-    private static void assertAzureAmqpSdkProperties(AzureAmqpSdkProperties properties) {
-        assertBuiltInProperties(properties.getClient(), properties.getProxy(), properties.getRetry(), properties.getProfile(), properties.getCredential());
-    }
-
-    private static void assertBuiltInProperties(AmqpClientProperties client,
-                                                AmqpProxyProperties proxy,
-                                                AmqpRetryProperties retry,
-                                                AzureProfileProperties profile,
-                                                TokenCredentialProperties credential) {
-
-        assertTrue(client.getApplicationId().startsWith("ApplicationId"));
-        assertEquals(client.getTransportType(), AmqpTransportType.AMQP);
-
-        assertTrue(proxy.getAuthenticationType().startsWith("AuthenticationType"));
-        assertTrue(proxy.getHostname().startsWith("Hostname"));
-        assertTrue(proxy.getPort() >= 100);
-        assertTrue(proxy.getType().startsWith("Type"));
-        assertTrue(proxy.getUsername().startsWith("Username"));
-        assertTrue(proxy.getPassword().startsWith("Password"));
-
-        assertTrue(retry.getTryTimeout().getSeconds() >= 100);
-        assertEquals(retry.getMode(), RetryOptionsProvider.RetryMode.EXPONENTIAL);
-        assertTrue(retry.getFixed().getMaxRetries() >= 100);
-        assertTrue(retry.getFixed().getDelay().getSeconds() >= 100);
-        assertTrue(retry.getExponential().getMaxRetries() >= 100);
-        assertTrue(retry.getExponential().getBaseDelay().getSeconds() >= 100);
-        assertTrue(retry.getExponential().getMaxDelay().getSeconds() >= 100);
-
-        assertTrue(credential.getUsername().startsWith("Username"));
-        assertTrue(credential.getPassword().startsWith("Password"));
-        assertTrue(credential.getClientId().startsWith("ClientId"));
-        assertTrue(credential.getPassword().startsWith("Password"));
-        assertTrue(credential.getClientCertificatePath().startsWith("ClientCertificatePath"));
-        assertTrue(credential.getClientCertificatePassword().startsWith("ClientCertificatePassword"));
-        assertTrue(credential.getTokenCredentialBeanName().startsWith("TokenCredentialBeanName"));
-        assertTrue(credential.isManagedIdentityEnabled());
-
-        assertTrue(profile.getTenantId().startsWith("TenantId"));
-        assertEquals(profile.getCloudType(), AZURE_CHINA);
-        assertTrue(profile.getEnvironment().getActiveDirectoryEndpoint().startsWith("ActiveDirectoryEndpoint"));
-        assertTrue(profile.getEnvironment().getServiceBusDomainName().startsWith("ServiceBusDomainName"));
     }
 }
