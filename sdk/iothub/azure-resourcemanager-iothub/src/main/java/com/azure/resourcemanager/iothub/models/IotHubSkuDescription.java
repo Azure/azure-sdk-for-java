@@ -6,32 +6,34 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner;
 
-/** An immutable client-side representation of IotHubSkuDescription. */
+/**
+ * An immutable client-side representation of IotHubSkuDescription.
+ */
 public interface IotHubSkuDescription {
     /**
      * Gets the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     String resourceType();
 
     /**
      * Gets the sku property: The type of the resource.
-     *
+     * 
      * @return the sku value.
      */
     IotHubSkuInfo sku();
 
     /**
      * Gets the capacity property: IotHub capacity.
-     *
+     * 
      * @return the capacity value.
      */
     IotHubCapacity capacity();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     IotHubSkuDescriptionInner innerModel();

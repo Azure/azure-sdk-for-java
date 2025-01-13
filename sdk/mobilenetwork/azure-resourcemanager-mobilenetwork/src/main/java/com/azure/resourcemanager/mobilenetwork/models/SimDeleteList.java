@@ -6,18 +6,21 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SIMs to delete.
  */
 @Fluent
-public final class SimDeleteList {
+public final class SimDeleteList implements JsonSerializable<SimDeleteList> {
     /*
      * A list of SIM resource names to delete.
      */
-    @JsonProperty(value = "sims", required = true)
     private List<String> sims;
 
     /**
@@ -59,4 +62,42 @@ public final class SimDeleteList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimDeleteList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sims", this.sims, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimDeleteList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimDeleteList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimDeleteList.
+     */
+    public static SimDeleteList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimDeleteList deserializedSimDeleteList = new SimDeleteList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sims".equals(fieldName)) {
+                    List<String> sims = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSimDeleteList.sims = sims;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimDeleteList;
+        });
+    }
 }

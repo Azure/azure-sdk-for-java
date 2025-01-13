@@ -38,12 +38,20 @@ public class FunctionRuntimeStack {
         this.linuxFxVersion = Objects.requireNonNull(linuxFxVersion);
     }
 
-    /** @return the name of the language runtime */
+    /**
+     * Gets the name of the language runtime.
+     *
+     * @return the name of the language runtime
+     */
     public String runtime() {
         return runtime;
     }
 
-    /** @return the version of the Language runtime */
+    /**
+     * Gets the version of the Language runtime.
+     *
+     * @return the version of the Language runtime
+     */
     public String version() {
         return version;
     }

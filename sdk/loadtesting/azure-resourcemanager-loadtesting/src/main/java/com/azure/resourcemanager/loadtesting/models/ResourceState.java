@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resources provisioning states. */
+/**
+ * Resources provisioning states.
+ */
 public final class ResourceState extends ExpandableStringEnum<ResourceState> {
-    /** Static value Succeeded for ResourceState. */
+    /**
+     * Static value Succeeded for ResourceState.
+     */
     public static final ResourceState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ResourceState. */
+    /**
+     * Static value Failed for ResourceState.
+     */
     public static final ResourceState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ResourceState. */
+    /**
+     * Static value Canceled for ResourceState.
+     */
     public static final ResourceState CANCELED = fromString("Canceled");
 
-    /** Static value Deleted for ResourceState. */
+    /**
+     * Static value Deleted for ResourceState.
+     */
     public static final ResourceState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of ResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
 
     /**
      * Creates or finds a ResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceState.
      */
-    @JsonCreator
     public static ResourceState fromString(String name) {
         return fromString(name, ResourceState.class);
     }
 
     /**
      * Gets known ResourceState values.
-     *
+     * 
      * @return known ResourceState values.
      */
     public static Collection<ResourceState> values() {

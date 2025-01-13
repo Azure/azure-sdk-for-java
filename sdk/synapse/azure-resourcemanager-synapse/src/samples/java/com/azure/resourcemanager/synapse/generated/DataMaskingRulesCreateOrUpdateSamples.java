@@ -12,7 +12,7 @@ import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
  */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
@@ -33,7 +33,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
@@ -56,7 +56,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateText.json
      */
     /**
@@ -79,7 +79,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateNumber.json
      */
     /**

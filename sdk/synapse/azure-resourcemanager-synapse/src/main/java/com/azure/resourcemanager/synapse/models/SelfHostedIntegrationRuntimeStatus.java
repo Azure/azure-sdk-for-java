@@ -33,16 +33,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties
         = new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
-    /*
-     * The state of integration runtime.
-     */
-    private IntegrationRuntimeState state;
-
-    /*
-     * The workspace name which the integration runtime belong to.
-     */
-    private String dataFactoryName;
-
     /**
      * Creates an instance of SelfHostedIntegrationRuntimeStatus class.
      */
@@ -66,26 +56,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      */
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the state property: The state of integration runtime.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public IntegrationRuntimeState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the dataFactoryName property: The workspace name which the integration runtime belong to.
-     * 
-     * @return the dataFactoryName value.
-     */
-    @Override
-    public String dataFactoryName() {
-        return this.dataFactoryName;
     }
 
     /**
@@ -277,70 +247,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     }
 
     /**
-     * Get the serviceRegion property: The service region of the integration runtime.
-     * 
-     * @return the serviceRegion value.
-     */
-    public String serviceRegion() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceRegion();
-    }
-
-    /**
-     * Set the serviceRegion property: The service region of the integration runtime.
-     * 
-     * @param serviceRegion the serviceRegion value to set.
-     * @return the SelfHostedIntegrationRuntimeStatus object itself.
-     */
-    public SelfHostedIntegrationRuntimeStatus withServiceRegion(String serviceRegion) {
-        if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
-        }
-        this.innerTypeProperties().withServiceRegion(serviceRegion);
-        return this;
-    }
-
-    /**
-     * Get the newerVersions property: The newer versions on download center.
-     * 
-     * @return the newerVersions value.
-     */
-    public List<String> newerVersions() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().newerVersions();
-    }
-
-    /**
-     * Set the newerVersions property: The newer versions on download center.
-     * 
-     * @param newerVersions the newerVersions value to set.
-     * @return the SelfHostedIntegrationRuntimeStatus object itself.
-     */
-    public SelfHostedIntegrationRuntimeStatus withNewerVersions(List<String> newerVersions) {
-        if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
-        }
-        this.innerTypeProperties().withNewerVersions(newerVersions);
-        return this;
-    }
-
-    /**
-     * Get the osType property: The osType property.
-     * 
-     * @return the osType value.
-     */
-    public Integer osType() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().osType();
-    }
-
-    /**
-     * Get the targetFramework property: The targetFramework property.
-     * 
-     * @return the targetFramework value.
-     */
-    public Integer targetFramework() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetFramework();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -393,10 +299,10 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
                 reader.nextToken();
 
                 if ("dataFactoryName".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                    deserializedSelfHostedIntegrationRuntimeStatus.withDataFactoryName(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatus.state
-                        = IntegrationRuntimeState.fromString(reader.getString());
+                    deserializedSelfHostedIntegrationRuntimeStatus
+                        .withState(IntegrationRuntimeState.fromString(reader.getString()));
                 } else if ("typeProperties".equals(fieldName)) {
                     deserializedSelfHostedIntegrationRuntimeStatus.innerTypeProperties
                         = SelfHostedIntegrationRuntimeStatusTypeProperties.fromJson(reader);

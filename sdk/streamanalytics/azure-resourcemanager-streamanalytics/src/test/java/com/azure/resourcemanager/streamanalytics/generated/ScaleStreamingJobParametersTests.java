@@ -12,14 +12,14 @@ public final class ScaleStreamingJobParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleStreamingJobParameters model
-            = BinaryData.fromString("{\"streamingUnits\":147839675}").toObject(ScaleStreamingJobParameters.class);
-        Assertions.assertEquals(147839675, model.streamingUnits());
+            = BinaryData.fromString("{\"streamingUnits\":1382743089}").toObject(ScaleStreamingJobParameters.class);
+        Assertions.assertEquals(1382743089, model.streamingUnits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScaleStreamingJobParameters model = new ScaleStreamingJobParameters().withStreamingUnits(147839675);
+        ScaleStreamingJobParameters model = new ScaleStreamingJobParameters().withStreamingUnits(1382743089);
         model = BinaryData.fromObject(model).toObject(ScaleStreamingJobParameters.class);
-        Assertions.assertEquals(147839675, model.streamingUnits());
+        Assertions.assertEquals(1382743089, model.streamingUnits());
     }
 }

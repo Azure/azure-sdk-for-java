@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * Disable this IT in China cloud, because it can't provision MySQL resource in China cloud with test subscription.
  * This test will resume running after 2024-04-20 .
+ * 2024/11/28 Still can't provision
  */
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
 @Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")

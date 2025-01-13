@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.securityinsights.implementation;
 
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentEntitiesResponseInner;
 import com.azure.resourcemanager.securityinsights.models.Entity;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResponse;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResultsMetadata;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class IncidentEntitiesResponseImpl implements IncidentEntitiesResponse {
     private IncidentEntitiesResponseInner innerObject;
@@ -25,10 +23,9 @@ public final class IncidentEntitiesResponseImpl implements IncidentEntitiesRespo
     }
 
     public List<Entity> entities() {
-        List<EntityInner> inner = this.innerModel().entities();
+        List<Entity> inner = this.innerModel().entities();
         if (inner != null) {
-            return Collections.unmodifiableList(
-                inner.stream().map(inner1 -> new EntityImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
         }

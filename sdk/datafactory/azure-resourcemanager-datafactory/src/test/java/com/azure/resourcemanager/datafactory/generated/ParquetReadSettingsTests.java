@@ -14,7 +14,7 @@ public final class ParquetReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetReadSettings model = BinaryData.fromString(
-            "{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"q\":\"dataqzikvg\",\"rzxvffq\":\"datawodhaslpaae\",\"mhrztbyulk\":\"dataht\",\"qcidiwkxikxiqxl\":\"dataepssoqdibyg\"}},\"\":{\"pftrdicstrbq\":\"datasy\",\"katccetyyv\":\"dataatkliopgw\",\"nsdp\":\"datakwobb\"}}")
+            "{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"efabgtcggoppm\":\"datapb\"}},\"\":{\"mzq\":\"dataougddycfyfaun\"}}")
             .toObject(ParquetReadSettings.class);
     }
 

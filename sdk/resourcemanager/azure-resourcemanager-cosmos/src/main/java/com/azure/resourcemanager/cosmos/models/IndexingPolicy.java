@@ -47,6 +47,11 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
      */
     private List<SpatialSpec> spatialIndexes;
 
+    /*
+     * List of paths to include in the vector indexing
+     */
+    private List<VectorIndex> vectorIndexes;
+
     /**
      * Creates an instance of IndexingPolicy class.
      */
@@ -174,6 +179,26 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
     }
 
     /**
+     * Get the vectorIndexes property: List of paths to include in the vector indexing.
+     * 
+     * @return the vectorIndexes value.
+     */
+    public List<VectorIndex> vectorIndexes() {
+        return this.vectorIndexes;
+    }
+
+    /**
+     * Set the vectorIndexes property: List of paths to include in the vector indexing.
+     * 
+     * @param vectorIndexes the vectorIndexes value to set.
+     * @return the IndexingPolicy object itself.
+     */
+    public IndexingPolicy withVectorIndexes(List<VectorIndex> vectorIndexes) {
+        this.vectorIndexes = vectorIndexes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -191,6 +216,9 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
         if (spatialIndexes() != null) {
             spatialIndexes().forEach(e -> e.validate());
         }
+        if (vectorIndexes() != null) {
+            vectorIndexes().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -207,6 +235,7 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeArrayField("spatialIndexes", this.spatialIndexes,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vectorIndexes", this.vectorIndexes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -242,6 +271,9 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
                 } else if ("spatialIndexes".equals(fieldName)) {
                     List<SpatialSpec> spatialIndexes = reader.readArray(reader1 -> SpatialSpec.fromJson(reader1));
                     deserializedIndexingPolicy.spatialIndexes = spatialIndexes;
+                } else if ("vectorIndexes".equals(fieldName)) {
+                    List<VectorIndex> vectorIndexes = reader.readArray(reader1 -> VectorIndex.fromJson(reader1));
+                    deserializedIndexingPolicy.vectorIndexes = vectorIndexes;
                 } else {
                     reader.skipChildren();
                 }

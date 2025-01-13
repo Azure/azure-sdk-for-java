@@ -17,81 +17,171 @@ import java.util.Map;
 public interface KubernetesClusterAgentPool
     extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile>, AgentPool {
 
-    /** @return the provisioning state of the agent pool */
+    /**
+     * Gets the provisioning state of the agent pool.
+     *
+     * @return the provisioning state of the agent pool
+     */
     String provisioningState();
 
-    /** @return the number of agents (virtual machines) to host docker containers */
+    /**
+     * Gets the number of agents (virtual machines) to host docker containers.
+     *
+     * @return the number of agents (virtual machines) to host docker containers
+     */
     int count();
 
-    /** @return size of each agent virtual machine in the agent pool */
+    /**
+     * Gets size of each agent virtual machine in the agent pool.
+     *
+     * @return size of each agent virtual machine in the agent pool
+     */
     ContainerServiceVMSizeTypes vmSize();
 
-    /** @return OS disk size in GB set for each virtual machine in the agent pool */
+    /**
+     * Gets OS disk size in GB set for each virtual machine in the agent pool.
+     *
+     * @return OS disk size in GB set for each virtual machine in the agent pool
+     */
     int osDiskSizeInGB();
 
-    /** @return OS of each virtual machine in the agent pool */
+    /**
+     * Gets OS of each virtual machine in the agent pool.
+     *
+     * @return OS of each virtual machine in the agent pool
+     */
     OSType osType();
 
-    /** @return agent pool type */
+    /**
+     * Gets agent pool type.
+     *
+     * @return agent pool type
+     */
     AgentPoolType type();
 
-    /** @return agent pool mode */
+    /**
+     * Gets agent pool mode.
+     *
+     * @return agent pool mode
+     */
     AgentPoolMode mode();
 
-    /** @return the name of the subnet used by each virtual machine in the agent pool */
+    /**
+     * Gets the name of the subnet used by each virtual machine in the agent pool.
+     *
+     * @return the name of the subnet used by each virtual machine in the agent pool
+     */
     String subnetName();
 
-    /** @return the ID of the virtual network used by each virtual machine in the agent pool */
+    /**
+     * Gets the ID of the virtual network used by each virtual machine in the agent pool.
+     *
+     * @return the ID of the virtual network used by each virtual machine in the agent pool
+     */
     String networkId();
 
-    /** @return the list of availability zones */
+    /**
+     * Gets the list of availability zones.
+     *
+     * @return the list of availability zones
+     */
     List<String> availabilityZones();
 
-    /** @return the map of node labels */
+    /**
+     * Gets the map of node labels.
+     *
+     * @return the map of node labels
+     */
     Map<String, String> nodeLabels();
 
-    /** @return the list of node taints */
+    /**
+     * Gets the list of node taints.
+     *
+     * @return the list of node taints
+     */
     List<String> nodeTaints();
 
-    /** @return the power state, Running or Stopped */
+    /**
+     * Gets the power state.
+     *
+     * @return the power state, Running or Stopped
+     */
     PowerState powerState();
 
-    /** @return the number of agents (VMs) to host docker containers */
+    /**
+     * Gets the number of agents (VMs) to host docker containers.
+     *
+     * @return the number of agents (VMs) to host docker containers
+     */
     int nodeSize();
 
-    /** @return the maximum number of pods per node */
+    /**
+     * Gets the maximum number of pods per node.
+     *
+     * @return the maximum number of pods per node
+     */
     int maximumPodsPerNode();
 
-    /** @return whether auto-scaling is enabled */
+    /**
+     * Checks whether auto-scaling is enabled.
+     *
+     * @return whether auto-scaling is enabled
+     */
     boolean isAutoScalingEnabled();
 
-    /** @return the minimum number of nodes for auto-scaling */
+    /**
+     * Gets the minimum number of nodes for auto-scaling.
+     *
+     * @return the minimum number of nodes for auto-scaling
+     */
     int minimumNodeSize();
 
-    /** @return the maximum number of nodes for auto-scaling */
+    /**
+     * Gets the maximum number of nodes for auto-scaling.
+     *
+     * @return the maximum number of nodes for auto-scaling
+     */
     int maximumNodeSize();
 
-    /** @return the priority of each virtual machines in the agent pool */
+    /**
+     * Gets the priority of each virtual machines in the agent pool.
+     *
+     * @return the priority of each virtual machines in the agent pool
+     */
     ScaleSetPriority virtualMachinePriority();
 
-    /** @return the eviction policy of each virtual machines in the agent pool */
+    /**
+     * Gets the eviction policy of each virtual machines in the agent pool.
+     *
+     * @return the eviction policy of each virtual machines in the agent pool
+     */
     ScaleSetEvictionPolicy virtualMachineEvictionPolicy();
 
-    /** @return the maximum price of each spot virtual machines in the agent pool, -1 means pay-as-you-go prices */
+    /**
+     * Gets the maximum price of each spot virtual machines in the agent pool.
+     *
+     * @return the maximum price of each spot virtual machines in the agent pool, -1 means pay-as-you-go prices
+     */
     Double virtualMachineMaximumPrice();
 
     /**
+     * Gets the OS disk type to be used for machines in the agent pool.
+     *
      * @return the OS disk type to be used for machines in the agent pool
      */
     OSDiskType osDiskType();
 
     /**
+     * Gets the disk type for the placement.
+     *
      * @return the disk type for the placement of emptyDir volumes, container runtime data root,
      * and Kubelet ephemeral storage
      */
     KubeletDiskType kubeletDiskType();
 
     /**
+     * Gets the tags of the agents.
+     *
      * @return the tags of the agents.
      */
     Map<String, String> tags();
@@ -461,7 +551,11 @@ public interface KubernetesClusterAgentPool
         }
     }
 
-    /** The template for an update operation, containing all the settings that can be modified. */
+    /**
+     * The template for an update operation, containing all the settings that can be modified.
+     *
+     * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+     */
     interface Update<ParentT> extends Settable<ParentT>, UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
         UpdateStages.WithAutoScaling<ParentT>, UpdateStages.WithAgentPoolMode<ParentT>,
         UpdateStages.WithDiskType<ParentT>, UpdateStages.WithTags<ParentT> {

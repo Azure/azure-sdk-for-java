@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value. */
+/**
+ * Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value.
+ */
 public final class FileUploadOptions extends ExpandableStringEnum<FileUploadOptions> {
-    /** Static value UploadFilesAndGenerateSasTokens for FileUploadOptions. */
+    /**
+     * Static value UploadFilesAndGenerateSasTokens for FileUploadOptions.
+     */
     public static final FileUploadOptions UPLOAD_FILES_AND_GENERATE_SAS_TOKENS
         = fromString("UploadFilesAndGenerateSasTokens");
 
-    /** Static value None for FileUploadOptions. */
+    /**
+     * Static value None for FileUploadOptions.
+     */
     public static final FileUploadOptions NONE = fromString("None");
 
     /**
      * Creates a new instance of FileUploadOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class FileUploadOptions extends ExpandableStringEnum<FileUploadOpti
 
     /**
      * Creates or finds a FileUploadOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FileUploadOptions.
      */
-    @JsonCreator
     public static FileUploadOptions fromString(String name) {
         return fromString(name, FileUploadOptions.class);
     }
 
     /**
      * Gets known FileUploadOptions values.
-     *
+     * 
      * @return known FileUploadOptions values.
      */
     public static Collection<FileUploadOptions> values() {

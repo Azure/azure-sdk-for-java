@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionsListCollections {
     public static void main(String[] args) {
-        CollectionsClient collectionsClient =
-                new CollectionsClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{endpoint}")
-                        .buildClient();
+        CollectionsClient collectionsClient
+            = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.collectionslistcollections.collectionslistcollections
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = collectionsClient.listCollections(requestOptions);

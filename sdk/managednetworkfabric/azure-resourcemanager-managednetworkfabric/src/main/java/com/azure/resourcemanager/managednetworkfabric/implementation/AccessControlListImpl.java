@@ -14,6 +14,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPa
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
@@ -81,6 +82,10 @@ public final class AccessControlListImpl
 
     public String aclsUrl() {
         return this.innerModel().aclsUrl();
+    }
+
+    public CommunityActionTypes defaultAction() {
+        return this.innerModel().defaultAction();
     }
 
     public List<AccessControlListMatchConfiguration> matchConfigurations() {
@@ -180,8 +185,8 @@ public final class AccessControlListImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accessControlListName = Utils.getValueFromIdByName(innerObject.id(), "accessControlLists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accessControlListName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessControlLists");
     }
 
     public AccessControlList refresh() {
@@ -264,6 +269,16 @@ public final class AccessControlListImpl
             return this;
         } else {
             this.updateBody.withAclsUrl(aclsUrl);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl withDefaultAction(CommunityActionTypes defaultAction) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultAction(defaultAction);
+            return this;
+        } else {
+            this.updateBody.withDefaultAction(defaultAction);
             return this;
         }
     }

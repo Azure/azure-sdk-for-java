@@ -19,10 +19,18 @@ import java.util.List;
 public interface ManagedHsm extends GroupableResource<KeyVaultManager, ManagedHsmInner>, Refreshable<ManagedHsm>,
     SupportsListingPrivateLinkResource, SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return the AAD tenant ID that should be used for authenticating requests to the managed HSM */
+    /**
+     * Gets the AAD tenant ID that should be used for authenticating requests to the managed HSM.
+     *
+     * @return the AAD tenant ID that should be used for authenticating requests to the managed HSM
+     */
     String tenantId();
 
-    /** @return Managed HSM SKU */
+    /**
+     * Gets managed HSM SKU.
+     *
+     * @return Managed HSM SKU
+     */
     ManagedHsmSku sku();
 
     /**
@@ -33,27 +41,59 @@ public interface ManagedHsm extends GroupableResource<KeyVaultManager, ManagedHs
      */
     List<String> initialAdminObjectIds();
 
-    /** @return the URI of the managed hsm pool for performing operations on keys */
+    /**
+     * Gets the URI of the managed hsm pool for performing operations on keys.
+     *
+     * @return the URI of the managed hsm pool for performing operations on keys
+     */
     String hsmUri();
 
-    /** @return whether the 'soft delete' functionality is enabled for this managed HSM */
+    /**
+     * Checks whether the 'soft delete' functionality is enabled for this managed HSM.
+     *
+     * @return whether the 'soft delete' functionality is enabled for this managed HSM
+     */
     boolean isSoftDeleteEnabled();
 
-    /** @return softDelete data retention days. It accepts value between 7 and 90 (both included) */
+    /**
+     * Gets softDelete data retention days.
+     *
+     * @return softDelete data retention days. It accepts value between 7 and 90 (both included)
+     */
     Integer softDeleteRetentionInDays();
 
-    /** @return whether protection against purge is enabled for this managed HSM */
+    /**
+     * Checks whether protection against purge is enabled for this managed HSM.
+     *
+     * @return whether protection against purge is enabled for this managed HSM
+     */
     boolean isPurgeProtectionEnabled();
 
-    /** @return rules governing the accessibility of the key vault from specific network locations */
+    /**
+     * Gets rules governing the accessibility of the key vault from specific network locations.
+     *
+     * @return rules governing the accessibility of the key vault from specific network locations
+     */
     MhsmNetworkRuleSet networkRuleSet();
 
-    /** @return the Key Vault key API entry point */
+    /**
+     * Gets the Key Vault key API entry point.
+     *
+     * @return the Key Vault key API entry point
+     */
     Keys keys();
 
-    /** @return the scheduled purge date in UTC */
+    /**
+     * Gets the scheduled purge date in UTC.
+     *
+     * @return the scheduled purge date in UTC
+     */
     OffsetDateTime scheduledPurgeDate();
 
-    /** @return whether data plane traffic coming from public networks is allowed while private endpoint is enabled */
+    /**
+     * Checks whether data plane traffic coming from public networks is allowed while private endpoint is enabled.
+     *
+     * @return whether data plane traffic coming from public networks is allowed while private endpoint is enabled
+     */
     PublicNetworkAccess publicNetworkAccess();
 }

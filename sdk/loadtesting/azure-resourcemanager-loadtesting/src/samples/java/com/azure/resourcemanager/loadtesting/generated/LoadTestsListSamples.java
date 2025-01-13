@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-/** Samples for LoadTests List. */
+/**
+ * Samples for LoadTests List.
+ */
 public final class LoadTestsListSamples {
     /*
-     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
+     * LoadTests_ListBySubscription.json
      */
     /**
-     * Sample code: LoadTests_ListBySubscription.
-     *
+     * Sample code: List LoadTestResource resources by subscription ID.
+     * 
      * @param manager Entry point to LoadTestManager.
      */
-    public static void loadTestsListBySubscription(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+    public static void
+        listLoadTestResourceResourcesBySubscriptionID(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         manager.loadTests().list(com.azure.core.util.Context.NONE);
     }
 }

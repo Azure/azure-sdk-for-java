@@ -85,7 +85,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       }
       # Check whether or not the yml's serviceDirectory matches the actual path of
       # the yml file relative to the sdkRoot
-      # Note: Need to strip off the directory seperator character which is based upon the OS
+      # Note: Need to strip off the directory separator character which is based upon the OS
       $computedServiceDirectory = $ymlDir.Replace($sdkRoot + [System.IO.Path]::DirectorySeparatorChar, "")
       # .Replace and -replace have different behaviors. .Replace will not replace a backslash meaning
       # that "foo\bar".Replace("\\","/") would result in foo\bar instead of foo/bar which is why
@@ -222,7 +222,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
         return $false
       }
 
-      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with statuscode $statusCode"
+      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with status code $statusCode"
     }
     catch
     {
@@ -406,16 +406,20 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   if ($pkgName.Contains("-spark")) {
     return $null
   }
-  # skip azure-cosmos-test package because it needs to be releaesd
+  # skip azure-cosmos-test package because it needs to be released
   if ($pkgName.Contains("azure-cosmos-test")) {
     return $null
   }
 
   # Find all source jar files in given artifact directory
-  # Filter for package in "com.azure*" groupid.
+  # Filter for package in "com.azure*" groupId.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
   Write-Host "Checking for source jar in artifact path $($artifactPath)"
   $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  # And filter for packages in "io.clientcore*" groupId.
+  # (Is there a way to pass more information here to know the explicit groupId?)
+  $artifactPath = Join-Path $artifactDir "io.clientcore*" $pkgName
+  $files += @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"
@@ -497,7 +501,7 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   # Note how the end of the URL doesn't look like:
   # ".../azure/azure-storage-blobs-readme"
 
-  # This logic eliminates a preceeding "azure-" in the readme filename.
+  # This logic eliminates a preceding "azure-" in the readme filename.
   # "azure-storage-blobs" -> "storage-blobs"
   if ($readmeName.StartsWith('azure-')) {
     $readmeName = $readmeName.Substring(6)
@@ -539,7 +543,7 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
         $updateScript = Get-Item -Path "sdk/$directory/swagger/Update-CodeGeneration.ps1" -ErrorAction SilentlyContinue
 
         if ($tspLocationFile) {
-            Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
+            Write-Host "Found tsp-location.yaml in $directory, using TypeSpec to generate projects"
             ./eng/common/scripts/TypeSpec-Project-Sync.ps1 "sdk/$directory"
             ./eng/common/scripts/TypeSpec-Project-Generate.ps1 "sdk/$directory"
         } elseif ($updateScript) {

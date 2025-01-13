@@ -37,21 +37,6 @@ public final class AuthType extends ExpandableStringEnum<AuthType> {
     public static final AuthType SECRET = fromString("secret");
 
     /**
-     * Static value accessKey for AuthType.
-     */
-    public static final AuthType ACCESS_KEY = fromString("accessKey");
-
-    /**
-     * Static value userAccount for AuthType.
-     */
-    public static final AuthType USER_ACCOUNT = fromString("userAccount");
-
-    /**
-     * Static value easyAuthMicrosoftEntraID for AuthType.
-     */
-    public static final AuthType EASY_AUTH_MICROSOFT_ENTRA_ID = fromString("easyAuthMicrosoftEntraID");
-
-    /**
      * Creates a new instance of AuthType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

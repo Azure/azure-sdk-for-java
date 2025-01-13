@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner;
 
-/** Contains all response data for the listSecrets operation. */
+/**
+ * Contains all response data for the listSecrets operation.
+ */
 public final class OpenIdConnectProvidersListSecretsResponse
     extends ResponseBase<OpenIdConnectProvidersListSecretsHeaders, ClientSecretContractInner> {
     /**
      * Creates an instance of OpenIdConnectProvidersListSecretsResponse.
-     *
+     * 
      * @param request the request which resulted in this OpenIdConnectProvidersListSecretsResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class OpenIdConnectProvidersListSecretsResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

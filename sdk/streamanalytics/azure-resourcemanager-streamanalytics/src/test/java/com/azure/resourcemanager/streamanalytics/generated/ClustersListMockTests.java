@@ -23,7 +23,7 @@ public final class ClustersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"Default\",\"capacity\":1572027776},\"etag\":\"ubyjaffmmf\",\"properties\":{\"createdDate\":\"2021-07-27T20:38:38Z\",\"clusterId\":\"u\",\"provisioningState\":\"InProgress\",\"capacityAllocated\":1215063805,\"capacityAssigned\":1612515115},\"location\":\"talmett\",\"tags\":{\"ypxiutcxap\":\"dslqxihhrmooizqs\",\"hvnh\":\"hyrpetogebjoxs\",\"jb\":\"abrqnkkzj\",\"toqbeitpkxztmoob\":\"rgaehvvibrxjj\"},\"id\":\"lftidgfcwqmpim\",\"name\":\"qxzhem\",\"type\":\"yhohujswtwkozzwc\"}]}";
+            = "{\"value\":[{\"sku\":{\"name\":\"Default\",\"capacity\":508950619},\"etag\":\"yeozphvwauyqncy\",\"properties\":{\"createdDate\":\"2021-10-13T06:23:37Z\",\"clusterId\":\"ipmdscwx\",\"provisioningState\":\"Failed\",\"capacityAllocated\":852128353,\"capacityAssigned\":1875273166},\"location\":\"f\",\"tags\":{\"pelmcuvhixbjxyf\":\"txhojujb\",\"lrcoolsttpki\":\"n\",\"rywvtylbfpn\":\"kkbnu\"},\"id\":\"urdoi\",\"name\":\"iithtywu\",\"type\":\"xcbihw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class ClustersListMockTests {
 
         PagedIterable<Cluster> response = manager.clusters().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("talmett", response.iterator().next().location());
-        Assertions.assertEquals("dslqxihhrmooizqs", response.iterator().next().tags().get("ypxiutcxap"));
+        Assertions.assertEquals("f", response.iterator().next().location());
+        Assertions.assertEquals("txhojujb", response.iterator().next().tags().get("pelmcuvhixbjxyf"));
         Assertions.assertEquals(ClusterSkuName.DEFAULT, response.iterator().next().sku().name());
-        Assertions.assertEquals(1572027776, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(508950619, response.iterator().next().sku().capacity());
     }
 }

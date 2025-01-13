@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitionParameter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of an environment definition.
  */
 @Immutable
-public final class EnvironmentDefinitionProperties {
+public final class EnvironmentDefinitionProperties implements JsonSerializable<EnvironmentDefinitionProperties> {
     /*
      * A short description of the environment definition.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Input parameters passed to an environment.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<EnvironmentDefinitionParameter> parameters;
 
     /*
      * Path to the Environment Definition entrypoint file.
      */
-    @JsonProperty(value = "templatePath", access = JsonProperty.Access.WRITE_ONLY)
     private String templatePath;
 
     /*
      * Validation status for the environment definition.
      */
-    @JsonProperty(value = "validationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogResourceValidationStatus validationStatus;
 
     /**
@@ -90,5 +90,50 @@ public final class EnvironmentDefinitionProperties {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentDefinitionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentDefinitionProperties.
+     */
+    public static EnvironmentDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentDefinitionProperties deserializedEnvironmentDefinitionProperties
+                = new EnvironmentDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedEnvironmentDefinitionProperties.description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<EnvironmentDefinitionParameter> parameters
+                        = reader.readArray(reader1 -> EnvironmentDefinitionParameter.fromJson(reader1));
+                    deserializedEnvironmentDefinitionProperties.parameters = parameters;
+                } else if ("templatePath".equals(fieldName)) {
+                    deserializedEnvironmentDefinitionProperties.templatePath = reader.getString();
+                } else if ("validationStatus".equals(fieldName)) {
+                    deserializedEnvironmentDefinitionProperties.validationStatus
+                        = CatalogResourceValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentDefinitionProperties;
+        });
     }
 }

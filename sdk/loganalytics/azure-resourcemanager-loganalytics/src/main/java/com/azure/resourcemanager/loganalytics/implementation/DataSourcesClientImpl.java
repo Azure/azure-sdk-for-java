@@ -33,17 +33,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataSourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataSourcesClient.
+ */
 public final class DataSourcesClientImpl implements DataSourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataSourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of DataSourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataSourcesClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -109,7 +115,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -155,7 +161,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -201,7 +207,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -220,7 +226,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -240,7 +246,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -259,7 +265,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -298,7 +304,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -337,7 +343,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -354,7 +360,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -372,7 +378,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -387,7 +393,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -427,7 +433,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -467,7 +473,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -484,7 +490,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -502,7 +508,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -518,7 +524,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -526,8 +532,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the first page of data source instances in a workspace with the link to the next page along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -562,7 +568,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -571,8 +577,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the first page of data source instances in a workspace with the link to the next page along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -607,7 +613,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -616,7 +622,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
@@ -628,7 +634,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -636,7 +642,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
@@ -649,7 +655,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -659,7 +665,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
@@ -671,7 +677,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -679,7 +685,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
@@ -690,7 +696,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -700,7 +706,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
@@ -710,14 +716,13 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list data source by workspace operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataSourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -738,15 +743,14 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list data source by workspace operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataSourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink, Context context) {

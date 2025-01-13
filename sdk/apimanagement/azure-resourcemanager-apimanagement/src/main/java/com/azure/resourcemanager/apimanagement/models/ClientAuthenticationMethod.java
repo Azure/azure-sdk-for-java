@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClientAuthenticationMethod. */
+/**
+ * Defines values for ClientAuthenticationMethod.
+ */
 public final class ClientAuthenticationMethod extends ExpandableStringEnum<ClientAuthenticationMethod> {
-    /** Static value Basic for ClientAuthenticationMethod. */
+    /**
+     * Static value Basic for ClientAuthenticationMethod.
+     */
     public static final ClientAuthenticationMethod BASIC = fromString("Basic");
 
-    /** Static value Body for ClientAuthenticationMethod. */
+    /**
+     * Static value Body for ClientAuthenticationMethod.
+     */
     public static final ClientAuthenticationMethod BODY = fromString("Body");
 
     /**
      * Creates a new instance of ClientAuthenticationMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ClientAuthenticationMethod extends ExpandableStringEnum<Clien
 
     /**
      * Creates or finds a ClientAuthenticationMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClientAuthenticationMethod.
      */
-    @JsonCreator
     public static ClientAuthenticationMethod fromString(String name) {
         return fromString(name, ClientAuthenticationMethod.class);
     }
 
     /**
      * Gets known ClientAuthenticationMethod values.
-     *
+     * 
      * @return known ClientAuthenticationMethod values.
      */
     public static Collection<ClientAuthenticationMethod> values() {

@@ -20,14 +20,14 @@ import java.io.IOException;
 @Fluent
 public final class CustomCertificateInner extends ProxyResource {
     /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
+
+    /*
      * Custom certificate properties.
      */
     private CustomCertificateProperties innerProperties = new CustomCertificateProperties();
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -51,21 +51,21 @@ public final class CustomCertificateInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the innerProperties property: Custom certificate properties.
      * 
      * @return the innerProperties value.
      */
     private CustomCertificateProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

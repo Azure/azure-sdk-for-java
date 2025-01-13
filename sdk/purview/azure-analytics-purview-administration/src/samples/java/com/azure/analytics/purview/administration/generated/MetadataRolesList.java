@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataRolesList {
     public static void main(String[] args) {
-        MetadataRolesClient metadataRolesClient =
-                new MetadataRolesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClient();
+        MetadataRolesClient metadataRolesClient
+            = new MetadataRolesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.metadataroleslist.metadataroleslist
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = metadataRolesClient.list(requestOptions);

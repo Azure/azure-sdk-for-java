@@ -29,7 +29,6 @@ import com.azure.resourcemanager.streamanalytics.fluent.InputsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.OperationsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.OutputsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.PrivateEndpointsClient;
-import com.azure.resourcemanager.streamanalytics.fluent.SkusClient;
 import com.azure.resourcemanager.streamanalytics.fluent.StreamAnalyticsManagementClient;
 import com.azure.resourcemanager.streamanalytics.fluent.StreamingJobsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.SubscriptionsClient;
@@ -77,6 +76,20 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
     }
 
     /**
+     * Api Version.
+     */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
      * The HTTP pipeline to send requests through.
      */
     private final HttpPipeline httpPipeline;
@@ -119,17 +132,31 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
     }
 
     /**
-     * The FunctionsClient object to access its operations.
+     * The OperationsClient object to access its operations.
      */
-    private final FunctionsClient functions;
+    private final OperationsClient operations;
 
     /**
-     * Gets the FunctionsClient object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      * 
-     * @return the FunctionsClient object.
+     * @return the OperationsClient object.
      */
-    public FunctionsClient getFunctions() {
-        return this.functions;
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The StreamingJobsClient object to access its operations.
+     */
+    private final StreamingJobsClient streamingJobs;
+
+    /**
+     * Gets the StreamingJobsClient object to access its operations.
+     * 
+     * @return the StreamingJobsClient object.
+     */
+    public StreamingJobsClient getStreamingJobs() {
+        return this.streamingJobs;
     }
 
     /**
@@ -161,45 +188,31 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
     }
 
     /**
-     * The OperationsClient object to access its operations.
+     * The TransformationsClient object to access its operations.
      */
-    private final OperationsClient operations;
+    private final TransformationsClient transformations;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the TransformationsClient object to access its operations.
      * 
-     * @return the OperationsClient object.
+     * @return the TransformationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public TransformationsClient getTransformations() {
+        return this.transformations;
     }
 
     /**
-     * The StreamingJobsClient object to access its operations.
+     * The FunctionsClient object to access its operations.
      */
-    private final StreamingJobsClient streamingJobs;
+    private final FunctionsClient functions;
 
     /**
-     * Gets the StreamingJobsClient object to access its operations.
+     * Gets the FunctionsClient object to access its operations.
      * 
-     * @return the StreamingJobsClient object.
+     * @return the FunctionsClient object.
      */
-    public StreamingJobsClient getStreamingJobs() {
-        return this.streamingJobs;
-    }
-
-    /**
-     * The SkusClient object to access its operations.
-     */
-    private final SkusClient skus;
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     * 
-     * @return the SkusClient object.
-     */
-    public SkusClient getSkus() {
-        return this.skus;
+    public FunctionsClient getFunctions() {
+        return this.functions;
     }
 
     /**
@@ -214,20 +227,6 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
      */
     public SubscriptionsClient getSubscriptions() {
         return this.subscriptions;
-    }
-
-    /**
-     * The TransformationsClient object to access its operations.
-     */
-    private final TransformationsClient transformations;
-
-    /**
-     * Gets the TransformationsClient object to access its operations.
-     * 
-     * @return the TransformationsClient object.
-     */
-    public TransformationsClient getTransformations() {
-        return this.transformations;
     }
 
     /**
@@ -275,14 +274,14 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.functions = new FunctionsClientImpl(this);
-        this.inputs = new InputsClientImpl(this);
-        this.outputs = new OutputsClientImpl(this);
+        this.apiVersion = "2020-03-01";
         this.operations = new OperationsClientImpl(this);
         this.streamingJobs = new StreamingJobsClientImpl(this);
-        this.skus = new SkusClientImpl(this);
-        this.subscriptions = new SubscriptionsClientImpl(this);
+        this.inputs = new InputsClientImpl(this);
+        this.outputs = new OutputsClientImpl(this);
         this.transformations = new TransformationsClientImpl(this);
+        this.functions = new FunctionsClientImpl(this);
+        this.subscriptions = new SubscriptionsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.privateEndpoints = new PrivateEndpointsClientImpl(this);
     }

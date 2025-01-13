@@ -6,6 +6,10 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ActionEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Category;
@@ -15,132 +19,112 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SourceAddr;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.StateEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.TagInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * definition of rule.
  */
 @Fluent
-public final class RuleEntry {
+public final class RuleEntry implements JsonSerializable<RuleEntry> {
     /*
      * etag info
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * rule name
      */
-    @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
      * The priority property.
      */
-    @JsonProperty(value = "priority", access = JsonProperty.Access.WRITE_ONLY)
     private Integer priority;
 
     /*
      * rule description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * state of this rule
      */
-    @JsonProperty(value = "ruleState")
     private StateEnum ruleState;
 
     /*
      * source address
      */
-    @JsonProperty(value = "source")
     private SourceAddr source;
 
     /*
      * cidr should not be 'any'
      */
-    @JsonProperty(value = "negateSource")
     private BooleanEnum negateSource;
 
     /*
      * destination address
      */
-    @JsonProperty(value = "destination")
     private DestinationAddr destination;
 
     /*
      * cidr should not be 'any'
      */
-    @JsonProperty(value = "negateDestination")
     private BooleanEnum negateDestination;
 
     /*
      * array of rule applications
      */
-    @JsonProperty(value = "applications")
     private List<String> applications;
 
     /*
      * rule category
      */
-    @JsonProperty(value = "category")
     private Category category;
 
     /*
      * any, application-default, TCP:number, UDP:number
      */
-    @JsonProperty(value = "protocol")
     private String protocol;
 
     /*
      * prot port list
      */
-    @JsonProperty(value = "protocolPortList")
     private List<String> protocolPortList;
 
     /*
      * inbound Inspection Certificate
      */
-    @JsonProperty(value = "inboundInspectionCertificate")
     private String inboundInspectionCertificate;
 
     /*
      * rule comment
      */
-    @JsonProperty(value = "auditComment")
     private String auditComment;
 
     /*
      * rule action
      */
-    @JsonProperty(value = "actionType")
     private ActionEnum actionType;
 
     /*
      * enable or disable logging
      */
-    @JsonProperty(value = "enableLogging")
     private StateEnum enableLogging;
 
     /*
      * enable or disable decryption
      */
-    @JsonProperty(value = "decryptionRuleType")
     private DecryptionRuleTypeEnum decryptionRuleType;
 
     /*
      * tag for rule
      */
-    @JsonProperty(value = "tags")
     private List<TagInfo> tags;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -534,8 +518,8 @@ public final class RuleEntry {
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleName in model RuleEntry"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleName in model RuleEntry"));
         }
         if (source() != null) {
             source().validate();
@@ -552,4 +536,102 @@ public final class RuleEntry {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RuleEntry.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("ruleState", this.ruleState == null ? null : this.ruleState.toString());
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeStringField("negateSource", this.negateSource == null ? null : this.negateSource.toString());
+        jsonWriter.writeJsonField("destination", this.destination);
+        jsonWriter.writeStringField("negateDestination",
+            this.negateDestination == null ? null : this.negateDestination.toString());
+        jsonWriter.writeArrayField("applications", this.applications, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("category", this.category);
+        jsonWriter.writeStringField("protocol", this.protocol);
+        jsonWriter.writeArrayField("protocolPortList", this.protocolPortList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("inboundInspectionCertificate", this.inboundInspectionCertificate);
+        jsonWriter.writeStringField("auditComment", this.auditComment);
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeStringField("enableLogging", this.enableLogging == null ? null : this.enableLogging.toString());
+        jsonWriter.writeStringField("decryptionRuleType",
+            this.decryptionRuleType == null ? null : this.decryptionRuleType.toString());
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleEntry if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RuleEntry.
+     */
+    public static RuleEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleEntry deserializedRuleEntry = new RuleEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleName".equals(fieldName)) {
+                    deserializedRuleEntry.ruleName = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRuleEntry.etag = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedRuleEntry.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("description".equals(fieldName)) {
+                    deserializedRuleEntry.description = reader.getString();
+                } else if ("ruleState".equals(fieldName)) {
+                    deserializedRuleEntry.ruleState = StateEnum.fromString(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedRuleEntry.source = SourceAddr.fromJson(reader);
+                } else if ("negateSource".equals(fieldName)) {
+                    deserializedRuleEntry.negateSource = BooleanEnum.fromString(reader.getString());
+                } else if ("destination".equals(fieldName)) {
+                    deserializedRuleEntry.destination = DestinationAddr.fromJson(reader);
+                } else if ("negateDestination".equals(fieldName)) {
+                    deserializedRuleEntry.negateDestination = BooleanEnum.fromString(reader.getString());
+                } else if ("applications".equals(fieldName)) {
+                    List<String> applications = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRuleEntry.applications = applications;
+                } else if ("category".equals(fieldName)) {
+                    deserializedRuleEntry.category = Category.fromJson(reader);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedRuleEntry.protocol = reader.getString();
+                } else if ("protocolPortList".equals(fieldName)) {
+                    List<String> protocolPortList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRuleEntry.protocolPortList = protocolPortList;
+                } else if ("inboundInspectionCertificate".equals(fieldName)) {
+                    deserializedRuleEntry.inboundInspectionCertificate = reader.getString();
+                } else if ("auditComment".equals(fieldName)) {
+                    deserializedRuleEntry.auditComment = reader.getString();
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedRuleEntry.actionType = ActionEnum.fromString(reader.getString());
+                } else if ("enableLogging".equals(fieldName)) {
+                    deserializedRuleEntry.enableLogging = StateEnum.fromString(reader.getString());
+                } else if ("decryptionRuleType".equals(fieldName)) {
+                    deserializedRuleEntry.decryptionRuleType = DecryptionRuleTypeEnum.fromString(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    List<TagInfo> tags = reader.readArray(reader1 -> TagInfo.fromJson(reader1));
+                    deserializedRuleEntry.tags = tags;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRuleEntry.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleEntry;
+        });
+    }
 }

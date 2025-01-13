@@ -22,7 +22,7 @@ public final class FunctionsListByStreamingJobMockTests {
     @Test
     public void testListByStreamingJob() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"dmsyqtfihwhbo\",\"properties\":{\"inputs\":[{\"dataType\":\"amvpphoszqzudph\",\"isConfigurationParameter\":false},{\"dataType\":\"dkfw\",\"isConfigurationParameter\":true},{\"dataType\":\"vtbvkayh\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"qiatkzwpcnp\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"jaesgvvsccya\",\"type\":\"uq\",\"id\":\"wygzlvdnkfxusem\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"ikpzimejza\",\"properties\":{\"inputs\":[{\"dataType\":\"iavrm\",\"isConfigurationParameter\":false},{\"dataType\":\"okixrjqcir\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"lazszrn\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"indfpwpjyl\",\"type\":\"tlhflsjcdhszf\",\"id\":\"fbgofeljagrqmqh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class FunctionsListByStreamingJobMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Function> response = manager.functions()
-            .listByStreamingJob("wspughftqsxhqx", "j", "ukndxdigrjgu", com.azure.core.util.Context.NONE);
+            .listByStreamingJob("smwutwbdsrezpd", "hneuyowqkd", "ytisibir", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wygzlvdnkfxusem", response.iterator().next().id());
-        Assertions.assertEquals("amvpphoszqzudph", response.iterator().next().properties().inputs().get(0).dataType());
+        Assertions.assertEquals("fbgofeljagrqmqh", response.iterator().next().id());
+        Assertions.assertEquals("iavrm", response.iterator().next().properties().inputs().get(0).dataType());
         Assertions.assertEquals(false,
             response.iterator().next().properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("qiatkzwpcnp", response.iterator().next().properties().output().dataType());
-        Assertions.assertEquals("jaesgvvsccya", response.iterator().next().name());
+        Assertions.assertEquals("lazszrn", response.iterator().next().properties().output().dataType());
+        Assertions.assertEquals("indfpwpjyl", response.iterator().next().name());
     }
 }

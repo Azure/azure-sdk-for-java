@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redis.fluent.models.RedisCacheAccessPolicyInner
  */
 public final class AccessPolicyCreateUpdateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/
      * RedisCacheAccessPolicyCreateUpdate.json
      */
     /**

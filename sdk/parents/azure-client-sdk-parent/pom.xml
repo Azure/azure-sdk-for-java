@@ -770,10 +770,11 @@
           <configuration>
             <skip>${spotbugs.skip}</skip>
             <effort>max</effort>
-            <threshold>Low</threshold>
+            <threshold>low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
+            <includeFilterFile>spotbugs/spotbugs-include.xml</includeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -1033,7 +1034,7 @@
             <pipelineConfiguration>
               <filters>
                 <include>
-                  <item>azure-sdk-tree-provider</item>
+                  <item>class-and-package-tree-filter-provider</item>
                 </include>
               </filters>
             </pipelineConfiguration>
@@ -1053,6 +1054,11 @@
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-databind</artifactId>
+              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>

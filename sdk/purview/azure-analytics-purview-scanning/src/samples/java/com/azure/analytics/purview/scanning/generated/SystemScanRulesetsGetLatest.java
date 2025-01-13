@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SystemScanRulesetsGetLatest {
     public static void main(String[] args) {
-        SystemScanRulesetsClient systemScanRulesetsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildSystemScanRulesetsClient();
+        SystemScanRulesetsClient systemScanRulesetsClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildSystemScanRulesetsClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetlatest.systemscanrulesetsgetlatest
         RequestOptions requestOptions = new RequestOptions().addQueryParam("dataSourceType", "AzureStorage");
         Response<BinaryData> response = systemScanRulesetsClient.getLatestWithResponse(requestOptions);

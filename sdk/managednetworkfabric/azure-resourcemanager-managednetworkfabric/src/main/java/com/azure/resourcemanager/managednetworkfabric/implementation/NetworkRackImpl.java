@@ -150,8 +150,8 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkRackName = Utils.getValueFromIdByName(innerObject.id(), "networkRacks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkRackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkRacks");
     }
 
     public NetworkRack refresh() {

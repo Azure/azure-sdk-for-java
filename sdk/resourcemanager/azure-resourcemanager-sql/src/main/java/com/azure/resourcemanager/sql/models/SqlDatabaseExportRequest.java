@@ -25,12 +25,16 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
         /** Sets the storage URI to use. */
         interface ExportTo {
             /**
+             * Sets the storage URI to use.
+             *
              * @param storageUri the storage URI to use
              * @return next definition stage
              */
             SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey exportTo(String storageUri);
 
             /**
+             * Export database file to the container of storage.
+             *
              * @param storageAccount an existing storage account to be used
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
@@ -40,6 +44,8 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
                 exportTo(StorageAccount storageAccount, String containerName, String fileName);
 
             /**
+             * Export database file to the container of storage.
+             *
              * @param storageAccountCreatable a storage account to be created as part of this execution flow
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
@@ -52,6 +58,8 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
         /** Sets the storage key type and value to use. */
         interface WithStorageTypeAndKey {
             /**
+             * Specifies storage access key.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
@@ -59,6 +67,8 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
                 withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies share access key.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
@@ -69,6 +79,8 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
         interface WithAuthenticationTypeAndLoginPassword {
             /**
+             * Sets the SQL login administrator and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -77,6 +89,8 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Sets the login Active Directory and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Single sign on Info of the NewRelic account.
  */
 @Fluent
-public final class NewRelicSingleSignOnProperties {
+public final class NewRelicSingleSignOnProperties implements JsonSerializable<NewRelicSingleSignOnProperties> {
     /*
      * Single sign-on state
      */
-    @JsonProperty(value = "singleSignOnState")
     private SingleSignOnStates singleSignOnState;
 
     /*
      * The Id of the Enterprise App used for Single sign-on.
      */
-    @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
 
     /*
      * The login URL specific to this NewRelic Organization
      */
-    @JsonProperty(value = "singleSignOnUrl")
     private String singleSignOnUrl;
 
     /*
      * Provisioning state
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -128,5 +128,55 @@ public final class NewRelicSingleSignOnProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("singleSignOnState",
+            this.singleSignOnState == null ? null : this.singleSignOnState.toString());
+        jsonWriter.writeStringField("enterpriseAppId", this.enterpriseAppId);
+        jsonWriter.writeStringField("singleSignOnUrl", this.singleSignOnUrl);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewRelicSingleSignOnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewRelicSingleSignOnProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NewRelicSingleSignOnProperties.
+     */
+    public static NewRelicSingleSignOnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewRelicSingleSignOnProperties deserializedNewRelicSingleSignOnProperties
+                = new NewRelicSingleSignOnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("singleSignOnState".equals(fieldName)) {
+                    deserializedNewRelicSingleSignOnProperties.singleSignOnState
+                        = SingleSignOnStates.fromString(reader.getString());
+                } else if ("enterpriseAppId".equals(fieldName)) {
+                    deserializedNewRelicSingleSignOnProperties.enterpriseAppId = reader.getString();
+                } else if ("singleSignOnUrl".equals(fieldName)) {
+                    deserializedNewRelicSingleSignOnProperties.singleSignOnUrl = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNewRelicSingleSignOnProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewRelicSingleSignOnProperties;
+        });
     }
 }

@@ -12,14 +12,14 @@ public final class VirtualNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkProfile model
-            = BinaryData.fromString("{\"computeSubnetId\":\"prtujwsawdd\"}").toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("prtujwsawdd", model.computeSubnetId());
+            = BinaryData.fromString("{\"computeSubnetId\":\"ijtk\"}").toObject(VirtualNetworkProfile.class);
+        Assertions.assertEquals("ijtk", model.computeSubnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkProfile model = new VirtualNetworkProfile().withComputeSubnetId("prtujwsawdd");
+        VirtualNetworkProfile model = new VirtualNetworkProfile().withComputeSubnetId("ijtk");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("prtujwsawdd", model.computeSubnetId());
+        Assertions.assertEquals("ijtk", model.computeSubnetId());
     }
 }

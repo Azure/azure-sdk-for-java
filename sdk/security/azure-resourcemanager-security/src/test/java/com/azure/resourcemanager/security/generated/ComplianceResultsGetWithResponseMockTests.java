@@ -20,7 +20,7 @@ public final class ComplianceResultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"fxzspfyvslazippl\",\"name\":\"gtdumjty\",\"type\":\"i\"}";
+            = "{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"qzrdzsylollg\",\"name\":\"rc\",\"type\":\"zydmxzjijpvuaurk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class ComplianceResultsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ComplianceResult response = manager.complianceResults()
-            .getWithResponse("njqswshesgcsqos", "cxlngoufpi", com.azure.core.util.Context.NONE)
-            .getValue();
+        ComplianceResult response
+            = manager.complianceResults().getWithResponse("mcs", "p", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

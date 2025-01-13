@@ -17,7 +17,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowRunsClientBuilder.class)
 public final class WorkflowRunsClient {
     @Generated
@@ -25,7 +27,7 @@ public final class WorkflowRunsClient {
 
     /**
      * Initializes an instance of WorkflowRunsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,26 +37,30 @@ public final class WorkflowRunsClient {
 
     /**
      * List workflow runs.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's workflow runs or view as admin.</td></tr>
-     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
-     *     <tr><td>runStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow runs by workflow run status. In the form of "," separated string.</td></tr>
-     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
-     *     <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The default value is 100.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's workflow runs or view as admin.</td></tr>
+     * <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d",
+     * "30d", "90d".</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values:
+     * "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime
+     * desc", "createdTime asc".</td></tr>
+     * <tr><td>runStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow runs by workflow run status. In
+     * the form of "," separated string.</td></tr>
+     * <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The
+     * default value is 100.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     workflowId: String (Required)
@@ -70,8 +76,9 @@ public final class WorkflowRunsClient {
      *     cancelTime: OffsetDateTime (Optional)
      *     cancelComment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

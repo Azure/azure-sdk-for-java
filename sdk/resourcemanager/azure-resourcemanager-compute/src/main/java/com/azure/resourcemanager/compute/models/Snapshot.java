@@ -20,22 +20,46 @@ import java.time.Duration;
 @Fluent
 public interface Snapshot
     extends GroupableResource<ComputeManager, SnapshotInner>, Refreshable<Snapshot>, Updatable<Snapshot.Update> {
-    /** @return the snapshot SKU type. */
+    /**
+     * Gets the snapshot SKU type.
+     *
+     * @return the snapshot SKU type.
+     */
     SnapshotSkuType skuType();
 
-    /** @return whether a snapshot is incremental */
+    /**
+     * Checks whether a snapshot id incremental.
+     *
+     * @return whether a snapshot is incremental
+     */
     boolean incremental();
 
-    /** @return the snapshot creation method */
+    /**
+     * Gets the snapshot creation method.
+     *
+     * @return the snapshot creation method
+     */
     DiskCreateOption creationMethod();
 
-    /** @return disk size in GB */
+    /**
+     * Gets disk size in GB.
+     *
+     * @return disk size in GB
+     */
     int sizeInGB();
 
-    /** @return the type of operating system in the snapshot */
+    /**
+     * Gets the type of operating system in the snapshot.
+     *
+     * @return the type of operating system in the snapshot
+     */
     OperatingSystemTypes osType();
 
-    /** @return the details of the source from which snapshot is created */
+    /**
+     * Gets the details of the source from which snapshot is created.
+     *
+     * @return the details of the source from which snapshot is created
+     */
     CreationSource source();
 
     /**
@@ -96,7 +120,7 @@ public interface Snapshot
     Boolean awaitCopyStartCompletion(Duration maxWaitTime);
 
     /**
-     * Whether the snapshot can be accessed from public network.
+     * Checks whether the snapshot can be accessed from public network.
      *
      * @return whether the snapshot can be accessed from public network.
      */

@@ -20,7 +20,8 @@ public final class ArtifactManifestsGetSamples {
      */
     public static void
         getAArtifactManifestResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().getWithResponse("rg", "TestPublisher", "TestArtifactStore", "TestManifest",
-            com.azure.core.util.Context.NONE);
+        manager.artifactManifests()
+            .getWithResponse("rg", "TestPublisher", "TestArtifactStore", "TestManifest",
+                com.azure.core.util.Context.NONE);
     }
 }

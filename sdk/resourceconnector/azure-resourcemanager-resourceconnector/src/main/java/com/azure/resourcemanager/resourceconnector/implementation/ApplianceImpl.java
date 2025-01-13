@@ -158,8 +158,8 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "appliances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appliances");
     }
 
     public Appliance refresh() {

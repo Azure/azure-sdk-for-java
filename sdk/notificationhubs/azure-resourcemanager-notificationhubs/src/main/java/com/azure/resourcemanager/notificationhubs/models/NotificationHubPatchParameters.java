@@ -5,36 +5,45 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Patch parameter for NamespaceResource.
+ * Parameters supplied to the patch NotificationHub operation.
  */
 @Fluent
-public final class NotificationHubPatchParameters {
+public final class NotificationHubPatchParameters extends Resource {
     /*
-     * NotificationHub properties.
+     * Properties of the NotificationHub.
      */
-    @JsonProperty(value = "properties")
     private NotificationHubProperties innerProperties;
 
     /*
-     * The Sku description for a namespace
+     * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Dictionary of <string>
+     * The type of the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of NotificationHubPatchParameters class.
@@ -43,7 +52,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the innerProperties property: NotificationHub properties.
+     * Get the innerProperties property: Properties of the NotificationHub.
      * 
      * @return the innerProperties value.
      */
@@ -52,7 +61,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the sku property: The Sku description for a namespace.
+     * Get the sku property: The sku of the created namespace.
      * 
      * @return the sku value.
      */
@@ -61,7 +70,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the sku property: The Sku description for a namespace.
+     * Set the sku property: The sku of the created namespace.
      * 
      * @param sku the sku value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -72,41 +81,69 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the tags property: Dictionary of &lt;string&gt;.
+     * Get the type property: The type of the resource.
      * 
-     * @return the tags value.
+     * @return the type value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the tags property: Dictionary of &lt;string&gt;.
+     * Get the name property: The name of the resource.
      * 
-     * @param tags the tags value to set.
-     * @return the NotificationHubPatchParameters object itself.
+     * @return the name value.
      */
-    public NotificationHubPatchParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NotificationHubPatchParameters withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 
     /**
-     * Get the name property: Gets or sets the NotificationHub name.
+     * {@inheritDoc}
+     */
+    @Override
+    public NotificationHubPatchParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the name property: The NotificationHub name.
      * 
      * @return the name value.
      */
-    public String name() {
+    public String namePropertiesName() {
         return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
-     * Set the name property: Gets or sets the NotificationHub name.
+     * Set the name property: The NotificationHub name.
      * 
      * @param name the name value to set.
      * @return the NotificationHubPatchParameters object itself.
      */
-    public NotificationHubPatchParameters withName(String name) {
+    public NotificationHubPatchParameters withNamePropertiesName(String name) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NotificationHubProperties();
         }
@@ -115,7 +152,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+     * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
      * 
      * @return the registrationTtl value.
      */
@@ -124,7 +161,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+     * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
      * 
      * @param registrationTtl the registrationTtl value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -138,7 +175,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the authorizationRules property: Gets or sets the AuthorizationRules of the created NotificationHub.
+     * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
      * 
      * @return the authorizationRules value.
      */
@@ -147,7 +184,22 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
+     * 
+     * @param authorizationRules the authorizationRules value to set.
+     * @return the NotificationHubPatchParameters object itself.
+     */
+    public NotificationHubPatchParameters
+        withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withAuthorizationRules(authorizationRules);
+        return this;
+    }
+
+    /**
+     * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
      * 
      * @return the apnsCredential value.
      */
@@ -156,7 +208,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
      * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -170,7 +222,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
      * 
      * @return the wnsCredential value.
      */
@@ -179,7 +231,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
      * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -193,7 +245,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
      * 
      * @return the gcmCredential value.
      */
@@ -202,7 +254,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
      * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -216,7 +268,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
      * 
      * @return the mpnsCredential value.
      */
@@ -225,7 +277,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
      * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -239,7 +291,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the admCredential property: Description of a NotificationHub AdmCredential.
+     * Get the admCredential property: The AdmCredential of the created NotificationHub.
      * 
      * @return the admCredential value.
      */
@@ -248,7 +300,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the admCredential property: Description of a NotificationHub AdmCredential.
+     * Set the admCredential property: The AdmCredential of the created NotificationHub.
      * 
      * @param admCredential the admCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -262,7 +314,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Get the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
      * 
      * @return the baiduCredential value.
      */
@@ -271,7 +323,7 @@ public final class NotificationHubPatchParameters {
     }
 
     /**
-     * Set the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
      * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the NotificationHubPatchParameters object itself.
@@ -282,84 +334,6 @@ public final class NotificationHubPatchParameters {
         }
         this.innerProperties().withBaiduCredential(baiduCredential);
         return this;
-    }
-
-    /**
-     * Get the browserCredential property: Description of a NotificationHub BrowserCredential.
-     * 
-     * @return the browserCredential value.
-     */
-    public BrowserCredential browserCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().browserCredential();
-    }
-
-    /**
-     * Set the browserCredential property: Description of a NotificationHub BrowserCredential.
-     * 
-     * @param browserCredential the browserCredential value to set.
-     * @return the NotificationHubPatchParameters object itself.
-     */
-    public NotificationHubPatchParameters withBrowserCredential(BrowserCredential browserCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NotificationHubProperties();
-        }
-        this.innerProperties().withBrowserCredential(browserCredential);
-        return this;
-    }
-
-    /**
-     * Get the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
-     * 
-     * @return the xiaomiCredential value.
-     */
-    public XiaomiCredential xiaomiCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().xiaomiCredential();
-    }
-
-    /**
-     * Set the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
-     * 
-     * @param xiaomiCredential the xiaomiCredential value to set.
-     * @return the NotificationHubPatchParameters object itself.
-     */
-    public NotificationHubPatchParameters withXiaomiCredential(XiaomiCredential xiaomiCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NotificationHubProperties();
-        }
-        this.innerProperties().withXiaomiCredential(xiaomiCredential);
-        return this;
-    }
-
-    /**
-     * Get the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
-     * 
-     * @return the fcmV1Credential value.
-     */
-    public FcmV1Credential fcmV1Credential() {
-        return this.innerProperties() == null ? null : this.innerProperties().fcmV1Credential();
-    }
-
-    /**
-     * Set the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
-     * 
-     * @param fcmV1Credential the fcmV1Credential value to set.
-     * @return the NotificationHubPatchParameters object itself.
-     */
-    public NotificationHubPatchParameters withFcmV1Credential(FcmV1Credential fcmV1Credential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NotificationHubProperties();
-        }
-        this.innerProperties().withFcmV1Credential(fcmV1Credential);
-        return this;
-    }
-
-    /**
-     * Get the dailyMaxActiveDevices property: The dailyMaxActiveDevices property.
-     * 
-     * @return the dailyMaxActiveDevices value.
-     */
-    public Long dailyMaxActiveDevices() {
-        return this.innerProperties() == null ? null : this.innerProperties().dailyMaxActiveDevices();
     }
 
     /**
@@ -374,5 +348,60 @@ public final class NotificationHubPatchParameters {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationHubPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationHubPatchParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationHubPatchParameters.
+     */
+    public static NotificationHubPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationHubPatchParameters deserializedNotificationHubPatchParameters
+                = new NotificationHubPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNotificationHubPatchParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.innerProperties
+                        = NotificationHubProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNotificationHubPatchParameters.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationHubPatchParameters;
+        });
     }
 }

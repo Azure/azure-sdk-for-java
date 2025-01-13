@@ -19,11 +19,15 @@ public interface PrivateDnsZoneGroup extends IndependentChild<NetworkManager>, H
     Refreshable<PrivateDnsZoneGroup>, Updatable<PrivateDnsZoneGroup.Update> {
 
     /**
+     * Gets the provisioning state.
+     *
      * @return the provisioning state.
      */
     ProvisioningState provisioningState();
 
     /**
+     * Gets the collection of private DNS zone configurations.
+     *
      * @return the collection of private DNS zone configurations.
      */
     List<PrivateDnsZoneConfig> privateDnsZoneConfigures();

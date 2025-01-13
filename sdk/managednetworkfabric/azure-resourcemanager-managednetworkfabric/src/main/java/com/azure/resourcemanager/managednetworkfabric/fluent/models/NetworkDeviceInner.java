@@ -8,35 +8,55 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Network Device resource definition. */
+/**
+ * The Network Device resource definition.
+ */
 @Fluent
 public final class NetworkDeviceInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkDeviceProperties innerProperties = new NetworkDeviceProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkDeviceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkDeviceInner class.
+     */
     public NetworkDeviceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkDeviceProperties innerProperties() {
@@ -45,21 +65,55 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkDeviceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkDeviceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -68,7 +122,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the version property: Current version of the device as defined in SKU.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -77,7 +131,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the networkDeviceSku property: Network Device SKU name.
-     *
+     * 
      * @return the networkDeviceSku value.
      */
     public String networkDeviceSku() {
@@ -86,7 +140,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Set the networkDeviceSku property: Network Device SKU name.
-     *
+     * 
      * @param networkDeviceSku the networkDeviceSku value to set.
      * @return the NetworkDeviceInner object itself.
      */
@@ -100,7 +154,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the networkDeviceRole property: NetworkDeviceRole is the device role: Example: CE | ToR.
-     *
+     * 
      * @return the networkDeviceRole value.
      */
     public NetworkDeviceRole networkDeviceRole() {
@@ -109,7 +163,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the networkRackId property: Reference to network rack resource id.
-     *
+     * 
      * @return the networkRackId value.
      */
     public String networkRackId() {
@@ -118,7 +172,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the managementIpv4Address property: Management IPv4 Address.
-     *
+     * 
      * @return the managementIpv4Address value.
      */
     public String managementIpv4Address() {
@@ -127,7 +181,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the managementIpv6Address property: Management IPv6 Address.
-     *
+     * 
      * @return the managementIpv6Address value.
      */
     public String managementIpv6Address() {
@@ -136,7 +190,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -145,7 +199,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -154,7 +208,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -163,7 +217,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the hostname property: The host name of the device.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -172,7 +226,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Set the hostname property: The host name of the device.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the NetworkDeviceInner object itself.
      */
@@ -187,7 +241,7 @@ public final class NetworkDeviceInner extends Resource {
     /**
      * Get the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -197,7 +251,7 @@ public final class NetworkDeviceInner extends Resource {
     /**
      * Set the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDeviceInner object itself.
      */
@@ -211,7 +265,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -220,7 +274,7 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkDeviceInner object itself.
      */
@@ -234,17 +288,70 @@ public final class NetworkDeviceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model NetworkDeviceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NetworkDeviceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkDeviceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkDeviceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkDeviceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkDeviceInner.
+     */
+    public static NetworkDeviceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkDeviceInner deserializedNetworkDeviceInner = new NetworkDeviceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkDeviceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.innerProperties = NetworkDeviceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkDeviceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkDeviceInner;
+        });
+    }
 }

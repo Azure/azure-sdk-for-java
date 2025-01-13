@@ -23,7 +23,7 @@ public final class SqlPoolTransparentDataEncryptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"tqstqkqsygxiyne\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"gzkheubanl\",\"name\":\"u\",\"type\":\"pqcckqiawzlz\"}";
+            = "{\"location\":\"xljtxbusqtbxxn\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"dzhgbdgzpags\",\"name\":\"cnadbuwqrgxf\",\"type\":\"lmqiynezoel\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class SqlPoolTransparentDataEncryptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TransparentDataEncryption response = manager.sqlPoolTransparentDataEncryptions()
-            .getWithResponse("hqwhitxnmxgnmguz", "uwvorbalkjn", "kbd", TransparentDataEncryptionName.CURRENT,
+            .getWithResponse("gfquwz", "w", "ibelwcerwkw", TransparentDataEncryptionName.CURRENT,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(TransparentDataEncryptionStatus.ENABLED, response.status());
+        Assertions.assertEquals(TransparentDataEncryptionStatus.DISABLED, response.status());
     }
 }

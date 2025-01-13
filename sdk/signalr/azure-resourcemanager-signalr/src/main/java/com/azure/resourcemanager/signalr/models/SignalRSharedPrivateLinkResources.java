@@ -15,7 +15,8 @@ public interface SignalRSharedPrivateLinkResources {
     /**
      * List shared private link resources.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +28,8 @@ public interface SignalRSharedPrivateLinkResources {
     /**
      * List shared private link resources.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,8 @@ public interface SignalRSharedPrivateLinkResources {
      * Get the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +59,8 @@ public interface SignalRSharedPrivateLinkResources {
      * Get the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,7 +73,8 @@ public interface SignalRSharedPrivateLinkResources {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,7 +86,8 @@ public interface SignalRSharedPrivateLinkResources {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

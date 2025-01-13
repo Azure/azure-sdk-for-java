@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -52,7 +52,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ResourceHealthManager. The Resource Health Client. */
+/**
+ * Entry point to ResourceHealthManager.
+ * The Resource Health Client.
+ */
 public final class ResourceHealthManager {
     private AvailabilityStatuses availabilityStatuses;
 
@@ -88,7 +91,7 @@ public final class ResourceHealthManager {
 
     /**
      * Creates an instance of ResourceHealth service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ResourceHealth service API instance.
@@ -101,7 +104,7 @@ public final class ResourceHealthManager {
 
     /**
      * Creates an instance of ResourceHealth service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ResourceHealth service API instance.
@@ -114,14 +117,16 @@ public final class ResourceHealthManager {
 
     /**
      * Gets a Configurable instance that can be used to create ResourceHealthManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ResourceHealthManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -193,8 +198,8 @@ public final class ResourceHealthManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -236,7 +241,7 @@ public final class ResourceHealthManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcehealth")
                 .append("/")
-                .append("1.1.0-beta.2");
+                .append("1.1.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -269,7 +274,7 @@ public final class ResourceHealthManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -284,7 +289,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of AvailabilityStatuses.
-     *
+     * 
      * @return Resource collection API of AvailabilityStatuses.
      */
     public AvailabilityStatuses availabilityStatuses() {
@@ -296,7 +301,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -308,7 +313,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of Metadatas.
-     *
+     * 
      * @return Resource collection API of Metadatas.
      */
     public Metadatas metadatas() {
@@ -320,7 +325,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of ImpactedResources.
-     *
+     * 
      * @return Resource collection API of ImpactedResources.
      */
     public ImpactedResources impactedResources() {
@@ -332,7 +337,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of SecurityAdvisoryImpactedResources.
-     *
+     * 
      * @return Resource collection API of SecurityAdvisoryImpactedResources.
      */
     public SecurityAdvisoryImpactedResources securityAdvisoryImpactedResources() {
@@ -345,7 +350,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of EventsOperations.
-     *
+     * 
      * @return Resource collection API of EventsOperations.
      */
     public EventsOperations eventsOperations() {
@@ -357,7 +362,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of EventOperations.
-     *
+     * 
      * @return Resource collection API of EventOperations.
      */
     public EventOperations eventOperations() {
@@ -369,7 +374,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of ChildAvailabilityStatuses.
-     *
+     * 
      * @return Resource collection API of ChildAvailabilityStatuses.
      */
     public ChildAvailabilityStatuses childAvailabilityStatuses() {
@@ -382,7 +387,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of ChildResources.
-     *
+     * 
      * @return Resource collection API of ChildResources.
      */
     public ChildResources childResources() {
@@ -394,7 +399,7 @@ public final class ResourceHealthManager {
 
     /**
      * Gets the resource collection API of EmergingIssues.
-     *
+     * 
      * @return Resource collection API of EmergingIssues.
      */
     public EmergingIssues emergingIssues() {
@@ -407,7 +412,7 @@ public final class ResourceHealthManager {
     /**
      * Gets wrapped service client MicrosoftResourceHealth providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client MicrosoftResourceHealth.
      */
     public MicrosoftResourceHealth serviceClient() {

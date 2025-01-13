@@ -29,7 +29,7 @@ public final class ChannelsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"lyc\",\"provisioningState\":\"uhpkxkgymar\",\"location\":\"n\"},\"sku\":{\"name\":\"S1\",\"tier\":\"Free\"},\"kind\":\"sdk\",\"etag\":\"ky\",\"zones\":[\"eddgssofw\",\"mzqa\",\"krmnjijpxacqqud\"],\"location\":\"nbyxbaaabjyv\",\"tags\":{\"nevfdnw\":\"fimrzrtuzqogse\",\"euzsoi\":\"wmewzsyy\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}";
+            = "{\"properties\":{\"channelName\":\"Channel\",\"etag\":\"itc\",\"provisioningState\":\"fcktqumiekke\",\"location\":\"ikh\"},\"sku\":{\"name\":\"F0\",\"tier\":\"Free\"},\"kind\":\"sdk\",\"etag\":\"gge\",\"zones\":[\"nyga\",\"qidbqfatpxllrxcy\",\"moadsuvarmy\"],\"location\":\"dmjsjqb\",\"tags\":{\"kxkgymareqna\":\"yxxrwlycoduh\",\"ssofwqmzqa\":\"xqugjhkycubedd\",\"nbyxbaaabjyv\":\"krmnjijpxacqqud\",\"xnevfdnwn\":\"yffimrzrtuzqogs\"},\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,24 +39,23 @@ public final class ChannelsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BotChannel response = manager.channels()
-            .createWithResponse("wi", "fnjhfjxwmszkkfo", ChannelName.SEARCH_ASSISTANT,
-                new BotChannelInner().withLocation("osphyoul")
-                    .withTags(mapOf("ag", "v", "cktqumiekkezzi", "rvimjwosytxitcsk", "bdunygaeqid", "hlyfjhdgqgg", "a",
-                        "qfatpxllrxcyjm"))
-                    .withProperties(new Channel().withEtag("fkzikfj").withLocation("ivx"))
+            .createWithResponse("cjzkzivgvvcna", "rhyrnxxmueed", ChannelName.FACEBOOK_CHANNEL,
+                new BotChannelInner().withLocation("fnjhfjxwmszkkfo")
+                    .withTags(mapOf("jawneaiv", "yfkzik", "elsfeaen", "wczelpci", "dxbjhwuaanozj", "abfatkl"))
+                    .withProperties(new Channel().withEtag("v").withLocation("d"))
                     .withSku(new Sku().withName(SkuName.F0))
-                    .withKind(Kind.DESIGNER)
-                    .withEtag("r"),
+                    .withKind(Kind.FUNCTION)
+                    .withEtag("gpiohgwxrtfudxe"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nbyxbaaabjyv", response.location());
-        Assertions.assertEquals("fimrzrtuzqogse", response.tags().get("nevfdnw"));
-        Assertions.assertEquals("lyc", response.properties().etag());
-        Assertions.assertEquals("n", response.properties().location());
-        Assertions.assertEquals(SkuName.S1, response.sku().name());
+        Assertions.assertEquals("dmjsjqb", response.location());
+        Assertions.assertEquals("yxxrwlycoduh", response.tags().get("kxkgymareqna"));
+        Assertions.assertEquals("itc", response.properties().etag());
+        Assertions.assertEquals("ikh", response.properties().location());
+        Assertions.assertEquals(SkuName.F0, response.sku().name());
         Assertions.assertEquals(Kind.SDK, response.kind());
-        Assertions.assertEquals("ky", response.etag());
+        Assertions.assertEquals("gge", response.etag());
     }
 
     // Use "Map.of" if available

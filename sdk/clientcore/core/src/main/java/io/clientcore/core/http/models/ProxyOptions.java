@@ -205,8 +205,8 @@ public class ProxyOptions {
      *     <li>Java HTTP</li>
      * </ol>
      *
-     * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
-     * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
+     * Client Core proxy configurations will be preferred over Java proxy configurations as they are more closely scoped
+     * to the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      *
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
@@ -229,14 +229,14 @@ public class ProxyOptions {
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
-     *     <li>Azure HTTPS</li>
-     *     <li>Azure HTTP</li>
+     *     <li>Client Core HTTPS</li>
+     *     <li>Client Core HTTP</li>
      *     <li>Java HTTPS</li>
      *     <li>Java HTTP</li>
      * </ol>
      *
-     * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
-     * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
+     * Client Core proxy configurations will be preferred over Java proxy configurations as they are more closely scoped
+     * to the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
      *
@@ -491,7 +491,7 @@ public class ProxyOptions {
                 /*
                  * Replace the non-proxy host with the sanitized value.
                  *
-                 * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com'
+                 * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.somecloud.com'
                  * where without quoting the '.' in the string would be treated as the match any character instead of
                  * the literal '.' character.
                  */

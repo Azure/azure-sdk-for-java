@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The ResourceTypeExtension model. */
+/**
+ * The ResourceTypeExtension model.
+ */
 @Fluent
-public final class ResourceTypeExtension {
+public final class ResourceTypeExtension implements JsonSerializable<ResourceTypeExtension> {
     /*
      * The endpointUri property.
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
      * The extensionCategories property.
      */
-    @JsonProperty(value = "extensionCategories")
     private List<ExtensionCategory> extensionCategories;
 
     /*
      * The timeout property.
      */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
-    /** Creates an instance of ResourceTypeExtension class. */
+    /**
+     * Creates an instance of ResourceTypeExtension class.
+     */
     public ResourceTypeExtension() {
     }
 
     /**
      * Get the endpointUri property: The endpointUri property.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -45,7 +51,7 @@ public final class ResourceTypeExtension {
 
     /**
      * Set the endpointUri property: The endpointUri property.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the ResourceTypeExtension object itself.
      */
@@ -56,7 +62,7 @@ public final class ResourceTypeExtension {
 
     /**
      * Get the extensionCategories property: The extensionCategories property.
-     *
+     * 
      * @return the extensionCategories value.
      */
     public List<ExtensionCategory> extensionCategories() {
@@ -65,7 +71,7 @@ public final class ResourceTypeExtension {
 
     /**
      * Set the extensionCategories property: The extensionCategories property.
-     *
+     * 
      * @param extensionCategories the extensionCategories value to set.
      * @return the ResourceTypeExtension object itself.
      */
@@ -76,7 +82,7 @@ public final class ResourceTypeExtension {
 
     /**
      * Get the timeout property: The timeout property.
-     *
+     * 
      * @return the timeout value.
      */
     public Duration timeout() {
@@ -85,7 +91,7 @@ public final class ResourceTypeExtension {
 
     /**
      * Set the timeout property: The timeout property.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ResourceTypeExtension object itself.
      */
@@ -96,9 +102,55 @@ public final class ResourceTypeExtension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeArrayField("extensionCategories", this.extensionCategories,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeExtension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeExtension if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeExtension.
+     */
+    public static ResourceTypeExtension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeExtension deserializedResourceTypeExtension = new ResourceTypeExtension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointUri".equals(fieldName)) {
+                    deserializedResourceTypeExtension.endpointUri = reader.getString();
+                } else if ("extensionCategories".equals(fieldName)) {
+                    List<ExtensionCategory> extensionCategories
+                        = reader.readArray(reader1 -> ExtensionCategory.fromString(reader1.getString()));
+                    deserializedResourceTypeExtension.extensionCategories = extensionCategories;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedResourceTypeExtension.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeExtension;
+        });
     }
 }

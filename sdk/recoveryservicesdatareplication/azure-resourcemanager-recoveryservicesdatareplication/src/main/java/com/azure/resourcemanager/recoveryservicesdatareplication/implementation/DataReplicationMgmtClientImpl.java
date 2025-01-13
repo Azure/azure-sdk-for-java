@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -50,291 +51,341 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DataReplicationMgmtClientImpl type. */
+/**
+ * Initializes a new instance of the DataReplicationMgmtClientImpl type.
+ */
 @ServiceClient(builder = DataReplicationMgmtClientBuilder.class)
 public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The DrasClient object to access its operations. */
+    /**
+     * The DrasClient object to access its operations.
+     */
     private final DrasClient dras;
 
     /**
      * Gets the DrasClient object to access its operations.
-     *
+     * 
      * @return the DrasClient object.
      */
     public DrasClient getDras() {
         return this.dras;
     }
 
-    /** The DraOperationStatusClient object to access its operations. */
+    /**
+     * The DraOperationStatusClient object to access its operations.
+     */
     private final DraOperationStatusClient draOperationStatus;
 
     /**
      * Gets the DraOperationStatusClient object to access its operations.
-     *
+     * 
      * @return the DraOperationStatusClient object.
      */
     public DraOperationStatusClient getDraOperationStatus() {
         return this.draOperationStatus;
     }
 
-    /** The EmailConfigurationsClient object to access its operations. */
+    /**
+     * The EmailConfigurationsClient object to access its operations.
+     */
     private final EmailConfigurationsClient emailConfigurations;
 
     /**
      * Gets the EmailConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the EmailConfigurationsClient object.
      */
     public EmailConfigurationsClient getEmailConfigurations() {
         return this.emailConfigurations;
     }
 
-    /** The EventsClient object to access its operations. */
+    /**
+     * The EventsClient object to access its operations.
+     */
     private final EventsClient events;
 
     /**
      * Gets the EventsClient object to access its operations.
-     *
+     * 
      * @return the EventsClient object.
      */
     public EventsClient getEvents() {
         return this.events;
     }
 
-    /** The FabricsClient object to access its operations. */
+    /**
+     * The FabricsClient object to access its operations.
+     */
     private final FabricsClient fabrics;
 
     /**
      * Gets the FabricsClient object to access its operations.
-     *
+     * 
      * @return the FabricsClient object.
      */
     public FabricsClient getFabrics() {
         return this.fabrics;
     }
 
-    /** The FabricOperationsStatusClient object to access its operations. */
+    /**
+     * The FabricOperationsStatusClient object to access its operations.
+     */
     private final FabricOperationsStatusClient fabricOperationsStatus;
 
     /**
      * Gets the FabricOperationsStatusClient object to access its operations.
-     *
+     * 
      * @return the FabricOperationsStatusClient object.
      */
     public FabricOperationsStatusClient getFabricOperationsStatus() {
         return this.fabricOperationsStatus;
     }
 
-    /** The PoliciesClient object to access its operations. */
+    /**
+     * The PoliciesClient object to access its operations.
+     */
     private final PoliciesClient policies;
 
     /**
      * Gets the PoliciesClient object to access its operations.
-     *
+     * 
      * @return the PoliciesClient object.
      */
     public PoliciesClient getPolicies() {
         return this.policies;
     }
 
-    /** The PolicyOperationStatusClient object to access its operations. */
+    /**
+     * The PolicyOperationStatusClient object to access its operations.
+     */
     private final PolicyOperationStatusClient policyOperationStatus;
 
     /**
      * Gets the PolicyOperationStatusClient object to access its operations.
-     *
+     * 
      * @return the PolicyOperationStatusClient object.
      */
     public PolicyOperationStatusClient getPolicyOperationStatus() {
         return this.policyOperationStatus;
     }
 
-    /** The ProtectedItemsClient object to access its operations. */
+    /**
+     * The ProtectedItemsClient object to access its operations.
+     */
     private final ProtectedItemsClient protectedItems;
 
     /**
      * Gets the ProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemsClient object.
      */
     public ProtectedItemsClient getProtectedItems() {
         return this.protectedItems;
     }
 
-    /** The ProtectedItemOperationStatusClient object to access its operations. */
+    /**
+     * The ProtectedItemOperationStatusClient object to access its operations.
+     */
     private final ProtectedItemOperationStatusClient protectedItemOperationStatus;
 
     /**
      * Gets the ProtectedItemOperationStatusClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemOperationStatusClient object.
      */
     public ProtectedItemOperationStatusClient getProtectedItemOperationStatus() {
         return this.protectedItemOperationStatus;
     }
 
-    /** The RecoveryPointsClient object to access its operations. */
+    /**
+     * The RecoveryPointsClient object to access its operations.
+     */
     private final RecoveryPointsClient recoveryPoints;
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsClient object.
      */
     public RecoveryPointsClient getRecoveryPoints() {
         return this.recoveryPoints;
     }
 
-    /** The ReplicationExtensionsClient object to access its operations. */
+    /**
+     * The ReplicationExtensionsClient object to access its operations.
+     */
     private final ReplicationExtensionsClient replicationExtensions;
 
     /**
      * Gets the ReplicationExtensionsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationExtensionsClient object.
      */
     public ReplicationExtensionsClient getReplicationExtensions() {
         return this.replicationExtensions;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The VaultsClient object to access its operations. */
+    /**
+     * The VaultsClient object to access its operations.
+     */
     private final VaultsClient vaults;
 
     /**
      * Gets the VaultsClient object to access its operations.
-     *
+     * 
      * @return the VaultsClient object.
      */
     public VaultsClient getVaults() {
         return this.vaults;
     }
 
-    /** The VaultOperationStatusClient object to access its operations. */
+    /**
+     * The VaultOperationStatusClient object to access its operations.
+     */
     private final VaultOperationStatusClient vaultOperationStatus;
 
     /**
      * Gets the VaultOperationStatusClient object to access its operations.
-     *
+     * 
      * @return the VaultOperationStatusClient object.
      */
     public VaultOperationStatusClient getVaultOperationStatus() {
         return this.vaultOperationStatus;
     }
 
-    /** The WorkflowsClient object to access its operations. */
+    /**
+     * The WorkflowsClient object to access its operations.
+     */
     private final WorkflowsClient workflows;
 
     /**
      * Gets the WorkflowsClient object to access its operations.
-     *
+     * 
      * @return the WorkflowsClient object.
      */
     public WorkflowsClient getWorkflows() {
         return this.workflows;
     }
 
-    /** The WorkflowOperationStatusClient object to access its operations. */
+    /**
+     * The WorkflowOperationStatusClient object to access its operations.
+     */
     private final WorkflowOperationStatusClient workflowOperationStatus;
 
     /**
      * Gets the WorkflowOperationStatusClient object to access its operations.
-     *
+     * 
      * @return the WorkflowOperationStatusClient object.
      */
     public WorkflowOperationStatusClient getWorkflowOperationStatus() {
@@ -343,7 +394,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
 
     /**
      * Initializes an instance of DataReplicationMgmtClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -381,7 +432,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -390,7 +441,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -400,7 +451,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -418,7 +469,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -481,7 +532,7 @@ public final class DataReplicationMgmtClientImpl implements DataReplicationMgmtC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

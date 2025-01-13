@@ -32,14 +32,14 @@ public final class AnnotationsImpl implements Annotations {
 
     public PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end) {
         PagedIterable<AnnotationInner> inner = this.serviceClient().list(resourceGroupName, resourceName, start, end);
-        return Utils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end,
         Context context) {
         PagedIterable<AnnotationInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, start, end, context);
-        return Utils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
     }
 
     public Response<List<Annotation>> createWithResponse(String resourceGroupName, String resourceName,

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Appliance ArtifactProfile definition. */
+/**
+ * Appliance ArtifactProfile definition.
+ */
 @Immutable
-public final class ArtifactProfile {
+public final class ArtifactProfile implements JsonSerializable<ArtifactProfile> {
     /*
      * Endpoint is the URL to upload artifacts to.
      */
-    @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
-    /** Creates an instance of ArtifactProfile class. */
+    /**
+     * Creates an instance of ArtifactProfile class.
+     */
     public ArtifactProfile() {
     }
 
     /**
      * Get the endpoint property: Endpoint is the URL to upload artifacts to.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -31,9 +38,44 @@ public final class ArtifactProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactProfile.
+     */
+    public static ArtifactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactProfile deserializedArtifactProfile = new ArtifactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedArtifactProfile.endpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactProfile;
+        });
     }
 }

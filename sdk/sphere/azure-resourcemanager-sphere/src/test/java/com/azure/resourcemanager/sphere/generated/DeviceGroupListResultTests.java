@@ -27,6 +27,7 @@ public final class DeviceGroupListResultTests {
         Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
             model.value().get(0).properties().allowCrashDumpsCollection());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("sllr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -46,7 +47,8 @@ public final class DeviceGroupListResultTests {
                 .withOsFeedType(OSFeedType.RETAIL_EVAL)
                 .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
-                .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
+                .withRegionalDataBoundary(RegionalDataBoundary.NONE))))
+            .withNextLink("sllr");
         model = BinaryData.fromObject(model).toObject(DeviceGroupListResult.class);
         Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).properties().description());
         Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.value().get(0).properties().osFeedType());
@@ -54,5 +56,6 @@ public final class DeviceGroupListResultTests {
         Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
             model.value().get(0).properties().allowCrashDumpsCollection());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("sllr", model.nextLink());
     }
 }

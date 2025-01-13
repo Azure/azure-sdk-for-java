@@ -24,7 +24,7 @@ public final class PartnerDestinationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"1eb1053c-ddb5-4db5-be49-d19e0ad07882\",\"endpointServiceContext\":\"xttpfs\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-03T22:20:24Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"cum\",\"messageForActivation\":\"dau\"},\"location\":\"llfeothx\",\"tags\":{\"uast\":\"igrjdljlkqhvkrbz\",\"pruulhg\":\"xk\",\"izwxvs\":\"t\"},\"id\":\"ksgfyyskyekg\",\"name\":\"fxcz\",\"type\":\"fcck\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"5d3e3f36-36c7-4299-acc4-68d10378d0ac\",\"endpointServiceContext\":\"xttpfs\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-03T22:20:24Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"cum\",\"messageForActivation\":\"dau\"},\"location\":\"llfeothx\",\"tags\":{\"uast\":\"igrjdljlkqhvkrbz\",\"pruulhg\":\"xk\",\"izwxvs\":\"t\"},\"id\":\"ksgfyyskyekg\",\"name\":\"fxcz\",\"type\":\"fcck\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,7 +38,7 @@ public final class PartnerDestinationsListMockTests {
 
         Assertions.assertEquals("llfeothx", response.iterator().next().location());
         Assertions.assertEquals("igrjdljlkqhvkrbz", response.iterator().next().tags().get("uast"));
-        Assertions.assertEquals(UUID.fromString("1eb1053c-ddb5-4db5-be49-d19e0ad07882"),
+        Assertions.assertEquals(UUID.fromString("5d3e3f36-36c7-4299-acc4-68d10378d0ac"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("xttpfs", response.iterator().next().endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T22:20:24Z"),

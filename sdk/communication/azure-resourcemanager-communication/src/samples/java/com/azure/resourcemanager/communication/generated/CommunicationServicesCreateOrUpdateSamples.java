@@ -22,8 +22,12 @@ public final class CommunicationServicesCreateOrUpdateSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void createOrUpdateResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().define("MyCommunicationResource").withRegion("Global")
-            .withExistingResourceGroup("MyResourceGroup").withDataLocation("United States").create();
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .create();
     }
 
     /*
@@ -38,9 +42,12 @@ public final class CommunicationServicesCreateOrUpdateSamples {
      */
     public static void createOrUpdateResourceWithManagedIdentity(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().define("MyCommunicationResource").withRegion("Global")
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
             .withExistingResourceGroup("MyResourceGroup")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
-            .withDataLocation("United States").create();
+            .withDataLocation("United States")
+            .create();
     }
 }

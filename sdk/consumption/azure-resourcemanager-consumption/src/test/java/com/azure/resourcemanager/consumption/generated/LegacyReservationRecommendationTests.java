@@ -12,7 +12,7 @@ public final class LegacyReservationRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LegacyReservationRecommendation model = BinaryData.fromString(
-            "{\"kind\":\"legacy\",\"properties\":{\"scope\":\"LegacyReservationRecommendationProperties\",\"lookBackPeriod\":\"qdqx\",\"instanceFlexibilityRatio\":6.4672947,\"instanceFlexibilityGroup\":\"gny\",\"normalizedSize\":\"sf\",\"recommendedQuantityNormalized\":61.46719,\"meterId\":\"618c387e-4d82-4bfe-9a80-c74137312190\",\"resourceType\":\"ikzhajqglcfhmlrq\",\"term\":\"xynqnz\",\"firstUsageDate\":\"2021-07-07T00:29:31Z\",\"skuProperties\":[{\"name\":\"ptgoeiybbabp\",\"value\":\"vf\"}]},\"etag\":\"kvntjlrigjkskyri\",\"tags\":{\"xwaabzmifrygznmm\":\"zid\",\"lhslnelxieixyn\":\"xrizkzobgop\",\"awjutifd\":\"lxecwcrojphslh\"},\"location\":\"mvi\",\"sku\":\"rqjb\",\"id\":\"tzh\",\"name\":\"aglkafhon\",\"type\":\"juj\"}")
+            "{\"kind\":\"legacy\",\"properties\":{\"scope\":\"LegacyReservationRecommendationProperties\",\"lookBackPeriod\":\"qdqx\",\"instanceFlexibilityRatio\":6.4672947,\"instanceFlexibilityGroup\":\"gny\",\"normalizedSize\":\"sf\",\"recommendedQuantityNormalized\":61.46719,\"meterId\":\"b8bbe38c-8eda-4c53-8949-ce18f1fa2e06\",\"resourceType\":\"ikzhajqglcfhmlrq\",\"term\":\"xynqnz\",\"firstUsageDate\":\"2021-07-07T00:29:31Z\",\"skuProperties\":[{\"name\":\"ptgoeiybbabp\",\"value\":\"vf\"}]},\"etag\":\"kvntjlrigjkskyri\",\"tags\":{\"xwaabzmifrygznmm\":\"zid\",\"lhslnelxieixyn\":\"xrizkzobgop\",\"awjutifd\":\"lxecwcrojphslh\"},\"location\":\"mvi\",\"sku\":\"rqjb\",\"id\":\"tzh\",\"name\":\"aglkafhon\",\"type\":\"juj\"}")
             .toObject(LegacyReservationRecommendation.class);
     }
 

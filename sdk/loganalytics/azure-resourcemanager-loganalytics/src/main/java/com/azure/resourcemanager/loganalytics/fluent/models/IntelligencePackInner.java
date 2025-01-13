@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Intelligence Pack containing a string name and boolean indicating if it's enabled. */
+/**
+ * Intelligence Pack containing a string name and boolean indicating if it's enabled.
+ */
 @Fluent
-public final class IntelligencePackInner {
+public final class IntelligencePackInner implements JsonSerializable<IntelligencePackInner> {
     /*
      * The name of the intelligence pack.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The enabled boolean for the intelligence pack.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The display name of the intelligence pack.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of IntelligencePackInner class. */
+    /**
+     * Creates an instance of IntelligencePackInner class.
+     */
     public IntelligencePackInner() {
     }
 
     /**
      * Get the name property: The name of the intelligence pack.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class IntelligencePackInner {
 
     /**
      * Set the name property: The name of the intelligence pack.
-     *
+     * 
      * @param name the name value to set.
      * @return the IntelligencePackInner object itself.
      */
@@ -54,7 +59,7 @@ public final class IntelligencePackInner {
 
     /**
      * Get the enabled property: The enabled boolean for the intelligence pack.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -63,7 +68,7 @@ public final class IntelligencePackInner {
 
     /**
      * Set the enabled property: The enabled boolean for the intelligence pack.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the IntelligencePackInner object itself.
      */
@@ -74,7 +79,7 @@ public final class IntelligencePackInner {
 
     /**
      * Get the displayName property: The display name of the intelligence pack.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +88,7 @@ public final class IntelligencePackInner {
 
     /**
      * Set the displayName property: The display name of the intelligence pack.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the IntelligencePackInner object itself.
      */
@@ -94,9 +99,51 @@ public final class IntelligencePackInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntelligencePackInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntelligencePackInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntelligencePackInner.
+     */
+    public static IntelligencePackInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntelligencePackInner deserializedIntelligencePackInner = new IntelligencePackInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIntelligencePackInner.name = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedIntelligencePackInner.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedIntelligencePackInner.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntelligencePackInner;
+        });
     }
 }

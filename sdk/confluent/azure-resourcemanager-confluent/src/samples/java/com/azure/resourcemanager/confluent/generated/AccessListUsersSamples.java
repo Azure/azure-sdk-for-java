@@ -22,9 +22,9 @@ public final class AccessListUsersSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void accessUsersList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.access().listUsersWithResponse("myResourceGroup", "myOrganization", new ListAccessRequestModel()
-            .withSearchFilters(mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        manager.access()
+            .listUsersWithResponse("myResourceGroup", "myOrganization", new ListAccessRequestModel().withSearchFilters(
+                mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

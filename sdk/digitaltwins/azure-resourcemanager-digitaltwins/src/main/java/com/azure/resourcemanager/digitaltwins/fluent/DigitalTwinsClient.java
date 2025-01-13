@@ -16,11 +16,13 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsDescript
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsPatchDescription;
 
-/** An instance of this class provides access to all the operations defined in DigitalTwinsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DigitalTwinsClient.
+ */
 public interface DigitalTwinsClient {
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -35,7 +37,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +52,7 @@ public interface DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -67,7 +69,7 @@ public interface DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -86,7 +88,7 @@ public interface DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -103,7 +105,7 @@ public interface DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -119,7 +121,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -134,7 +136,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -151,7 +153,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -166,7 +168,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -182,7 +184,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +198,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -211,7 +213,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +226,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -238,7 +240,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription as paginated response with {@link PagedIterable}.
@@ -248,7 +250,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -260,7 +262,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,7 +274,7 @@ public interface DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,10 +287,10 @@ public interface DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -301,10 +303,10 @@ public interface DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

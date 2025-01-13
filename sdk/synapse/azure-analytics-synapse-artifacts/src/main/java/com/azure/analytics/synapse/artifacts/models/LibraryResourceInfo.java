@@ -17,7 +17,9 @@ import java.io.IOException;
 @Immutable
 public final class LibraryResourceInfo implements JsonSerializable<LibraryResourceInfo> {
     /*
-     * Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
     private String id;
 

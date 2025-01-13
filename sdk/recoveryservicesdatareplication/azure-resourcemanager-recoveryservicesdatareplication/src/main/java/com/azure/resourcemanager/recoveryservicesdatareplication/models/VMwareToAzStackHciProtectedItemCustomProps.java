@@ -5,303 +5,276 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** VMware to AzStackHCI Protected item model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareToAzStackHCI")
+/**
+ * VMware to AzStackHCI Protected item model custom properties.
+ */
 @Fluent
 public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedItemModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "VMwareToAzStackHCI";
+
+    /*
      * Gets or sets the location of the protected item.
      */
-    @JsonProperty(value = "activeLocation", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectedItemActiveLocation activeLocation;
 
     /*
      * Gets or sets the Target HCI Cluster ARM Id.
      */
-    @JsonProperty(value = "targetHciClusterId", required = true)
     private String targetHciClusterId;
 
     /*
      * Gets or sets the Target Arc Cluster Custom Location ARM Id.
      */
-    @JsonProperty(value = "targetArcClusterCustomLocationId", required = true)
     private String targetArcClusterCustomLocationId;
 
     /*
      * Gets or sets the Target AzStackHCI cluster name.
      */
-    @JsonProperty(value = "targetAzStackHciClusterName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetAzStackHciClusterName;
 
     /*
      * Gets or sets the target storage container ARM Id.
      */
-    @JsonProperty(value = "storageContainerId", required = true)
     private String storageContainerId;
 
     /*
      * Gets or sets the target resource group ARM Id.
      */
-    @JsonProperty(value = "targetResourceGroupId", required = true)
     private String targetResourceGroupId;
 
     /*
      * Gets or sets the target location.
      */
-    @JsonProperty(value = "targetLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String targetLocation;
 
     /*
      * Gets or sets the location of Azure Arc HCI custom location resource.
      */
-    @JsonProperty(value = "customLocationRegion", required = true)
     private String customLocationRegion;
 
     /*
      * Gets or sets the list of disks to replicate.
      */
-    @JsonProperty(value = "disksToInclude", required = true)
     private List<VMwareToAzStackHciDiskInput> disksToInclude;
 
     /*
      * Gets or sets the list of VM NIC to replicate.
      */
-    @JsonProperty(value = "nicsToInclude", required = true)
     private List<VMwareToAzStackHciNicInput> nicsToInclude;
 
     /*
      * Gets or sets the list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks", access = JsonProperty.Access.WRITE_ONLY)
     private List<VMwareToAzStackHciProtectedDiskProperties> protectedDisks;
 
     /*
      * Gets or sets the VM NIC details.
      */
-    @JsonProperty(value = "protectedNics", access = JsonProperty.Access.WRITE_ONLY)
     private List<VMwareToAzStackHciProtectedNicProperties> protectedNics;
 
     /*
      * Gets or sets the BIOS Id of the target AzStackHCI VM.
      */
-    @JsonProperty(value = "targetVmBiosId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetVmBiosId;
 
     /*
      * Gets or sets the target VM display name.
      */
-    @JsonProperty(value = "targetVmName")
     private String targetVmName;
 
     /*
      * Gets or sets the hypervisor generation of the virtual machine possible values are 1,2.
      */
-    @JsonProperty(value = "hyperVGeneration", required = true)
     private String hyperVGeneration;
 
     /*
      * Gets or sets the target network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "targetNetworkId")
     private String targetNetworkId;
 
     /*
      * Gets or sets the target test network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * Gets or sets the target CPU cores.
      */
-    @JsonProperty(value = "targetCpuCores")
     private Integer targetCpuCores;
 
     /*
      * Gets or sets a value indicating whether memory is dynamical.
      */
-    @JsonProperty(value = "isDynamicRam")
     private Boolean isDynamicRam;
 
     /*
      * Protected item dynamic memory config.
      */
-    @JsonProperty(value = "dynamicMemoryConfig")
     private ProtectedItemDynamicMemoryConfig dynamicMemoryConfig;
 
     /*
      * Gets or sets the target memory in mega-bytes.
      */
-    @JsonProperty(value = "targetMemoryInMegaBytes")
     private Integer targetMemoryInMegaBytes;
 
     /*
      * Gets or sets the type of the OS.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * Gets or sets the name of the OS.
      */
-    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
     /*
      * Gets or sets the firmware type.
      */
-    @JsonProperty(value = "firmwareType", access = JsonProperty.Access.WRITE_ONLY)
     private String firmwareType;
 
     /*
      * Gets or sets the ARM Id of the discovered machine.
      */
-    @JsonProperty(value = "fabricDiscoveryMachineId", required = true)
     private String fabricDiscoveryMachineId;
 
     /*
      * Gets or sets the source VM display name.
      */
-    @JsonProperty(value = "sourceVmName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceVmName;
 
     /*
      * Gets or sets the source VM CPU cores.
      */
-    @JsonProperty(value = "sourceCpuCores", access = JsonProperty.Access.WRITE_ONLY)
     private Integer sourceCpuCores;
 
     /*
      * Gets or sets the source VM ram memory size in megabytes.
      */
-    @JsonProperty(value = "sourceMemoryInMegaBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Double sourceMemoryInMegaBytes;
 
     /*
      * Gets or sets the run as account Id.
      */
-    @JsonProperty(value = "runAsAccountId", required = true)
     private String runAsAccountId;
 
     /*
      * Gets or sets the source DRA name.
      */
-    @JsonProperty(value = "sourceDraName", required = true)
     private String sourceDraName;
 
     /*
      * Gets or sets the target DRA name.
      */
-    @JsonProperty(value = "targetDraName", required = true)
     private String targetDraName;
 
     /*
      * Gets or sets the source appliance name.
      */
-    @JsonProperty(value = "sourceApplianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceApplianceName;
 
     /*
      * Gets or sets the target appliance name.
      */
-    @JsonProperty(value = "targetApplianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetApplianceName;
 
     /*
      * Gets or sets the recovery point Id to which the VM was failed over.
      */
-    @JsonProperty(value = "failoverRecoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverRecoveryPointId;
 
     /*
      * Gets or sets the last recovery point received time.
      */
-    @JsonProperty(value = "lastRecoveryPointReceived", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRecoveryPointReceived;
 
     /*
      * Gets or sets the last recovery point Id.
      */
-    @JsonProperty(value = "lastRecoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastRecoveryPointId;
 
     /*
      * Gets or sets the initial replication progress percentage. This is calculated based on
      * total bytes processed for all disks in the source VM.
      */
-    @JsonProperty(value = "initialReplicationProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer initialReplicationProgressPercentage;
 
     /*
      * Gets or sets the migration progress percentage.
      */
-    @JsonProperty(value = "migrationProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer migrationProgressPercentage;
 
     /*
      * Gets or sets the resume progress percentage.
      */
-    @JsonProperty(value = "resumeProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resumeProgressPercentage;
 
     /*
      * Gets or sets the resync progress percentage. This is calculated based on total bytes
      * processed for all disks in the source VM.
      */
-    @JsonProperty(value = "resyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resyncProgressPercentage;
 
     /*
      * Gets or sets the resync retry count.
      */
-    @JsonProperty(value = "resyncRetryCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long resyncRetryCount;
 
     /*
      * Gets or sets a value indicating whether resync is required.
      */
-    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean resyncRequired;
 
     /*
      * Gets or sets the resync state.
      */
-    @JsonProperty(value = "resyncState", access = JsonProperty.Access.WRITE_ONLY)
     private VMwareToAzureMigrateResyncState resyncState;
 
     /*
      * Gets or sets a value indicating whether auto resync is to be done.
      */
-    @JsonProperty(value = "performAutoResync")
     private Boolean performAutoResync;
 
     /*
      * Gets or sets the resume retry count.
      */
-    @JsonProperty(value = "resumeRetryCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long resumeRetryCount;
 
     /*
      * Gets or sets the latest timestamp that replication status is updated.
      */
-    @JsonProperty(value = "lastReplicationUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastReplicationUpdateTime;
 
-    /** Creates an instance of VMwareToAzStackHciProtectedItemCustomProps class. */
+    /**
+     * Creates an instance of VMwareToAzStackHciProtectedItemCustomProps class.
+     */
     public VMwareToAzStackHciProtectedItemCustomProps() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the activeLocation property: Gets or sets the location of the protected item.
-     *
+     * 
      * @return the activeLocation value.
      */
     public ProtectedItemActiveLocation activeLocation() {
@@ -310,7 +283,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetHciClusterId property: Gets or sets the Target HCI Cluster ARM Id.
-     *
+     * 
      * @return the targetHciClusterId value.
      */
     public String targetHciClusterId() {
@@ -319,7 +292,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetHciClusterId property: Gets or sets the Target HCI Cluster ARM Id.
-     *
+     * 
      * @param targetHciClusterId the targetHciClusterId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -330,7 +303,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetArcClusterCustomLocationId property: Gets or sets the Target Arc Cluster Custom Location ARM Id.
-     *
+     * 
      * @return the targetArcClusterCustomLocationId value.
      */
     public String targetArcClusterCustomLocationId() {
@@ -339,7 +312,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetArcClusterCustomLocationId property: Gets or sets the Target Arc Cluster Custom Location ARM Id.
-     *
+     * 
      * @param targetArcClusterCustomLocationId the targetArcClusterCustomLocationId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -351,7 +324,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetAzStackHciClusterName property: Gets or sets the Target AzStackHCI cluster name.
-     *
+     * 
      * @return the targetAzStackHciClusterName value.
      */
     public String targetAzStackHciClusterName() {
@@ -360,7 +333,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the storageContainerId property: Gets or sets the target storage container ARM Id.
-     *
+     * 
      * @return the storageContainerId value.
      */
     public String storageContainerId() {
@@ -369,7 +342,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the storageContainerId property: Gets or sets the target storage container ARM Id.
-     *
+     * 
      * @param storageContainerId the storageContainerId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -380,7 +353,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetResourceGroupId property: Gets or sets the target resource group ARM Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -389,7 +362,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetResourceGroupId property: Gets or sets the target resource group ARM Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -400,7 +373,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetLocation property: Gets or sets the target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -409,7 +382,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the customLocationRegion property: Gets or sets the location of Azure Arc HCI custom location resource.
-     *
+     * 
      * @return the customLocationRegion value.
      */
     public String customLocationRegion() {
@@ -418,7 +391,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the customLocationRegion property: Gets or sets the location of Azure Arc HCI custom location resource.
-     *
+     * 
      * @param customLocationRegion the customLocationRegion value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -429,7 +402,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the disksToInclude property: Gets or sets the list of disks to replicate.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<VMwareToAzStackHciDiskInput> disksToInclude() {
@@ -438,7 +411,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the disksToInclude property: Gets or sets the list of disks to replicate.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -450,7 +423,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the nicsToInclude property: Gets or sets the list of VM NIC to replicate.
-     *
+     * 
      * @return the nicsToInclude value.
      */
     public List<VMwareToAzStackHciNicInput> nicsToInclude() {
@@ -459,7 +432,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the nicsToInclude property: Gets or sets the list of VM NIC to replicate.
-     *
+     * 
      * @param nicsToInclude the nicsToInclude value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -471,7 +444,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the protectedDisks property: Gets or sets the list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<VMwareToAzStackHciProtectedDiskProperties> protectedDisks() {
@@ -480,7 +453,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the protectedNics property: Gets or sets the VM NIC details.
-     *
+     * 
      * @return the protectedNics value.
      */
     public List<VMwareToAzStackHciProtectedNicProperties> protectedNics() {
@@ -489,7 +462,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetVmBiosId property: Gets or sets the BIOS Id of the target AzStackHCI VM.
-     *
+     * 
      * @return the targetVmBiosId value.
      */
     public String targetVmBiosId() {
@@ -498,7 +471,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetVmName property: Gets or sets the target VM display name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -507,7 +480,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetVmName property: Gets or sets the target VM display name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -519,7 +492,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
     /**
      * Get the hyperVGeneration property: Gets or sets the hypervisor generation of the virtual machine possible values
      * are 1,2.
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public String hyperVGeneration() {
@@ -529,7 +502,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
     /**
      * Set the hyperVGeneration property: Gets or sets the hypervisor generation of the virtual machine possible values
      * are 1,2.
-     *
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -540,7 +513,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -549,7 +522,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -560,7 +533,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -569,7 +542,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -580,7 +553,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetCpuCores property: Gets or sets the target CPU cores.
-     *
+     * 
      * @return the targetCpuCores value.
      */
     public Integer targetCpuCores() {
@@ -589,7 +562,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetCpuCores property: Gets or sets the target CPU cores.
-     *
+     * 
      * @param targetCpuCores the targetCpuCores value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -600,7 +573,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the isDynamicRam property: Gets or sets a value indicating whether memory is dynamical.
-     *
+     * 
      * @return the isDynamicRam value.
      */
     public Boolean isDynamicRam() {
@@ -609,7 +582,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the isDynamicRam property: Gets or sets a value indicating whether memory is dynamical.
-     *
+     * 
      * @param isDynamicRam the isDynamicRam value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -620,7 +593,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the dynamicMemoryConfig property: Protected item dynamic memory config.
-     *
+     * 
      * @return the dynamicMemoryConfig value.
      */
     public ProtectedItemDynamicMemoryConfig dynamicMemoryConfig() {
@@ -629,7 +602,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the dynamicMemoryConfig property: Protected item dynamic memory config.
-     *
+     * 
      * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -641,7 +614,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetMemoryInMegaBytes property: Gets or sets the target memory in mega-bytes.
-     *
+     * 
      * @return the targetMemoryInMegaBytes value.
      */
     public Integer targetMemoryInMegaBytes() {
@@ -650,7 +623,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetMemoryInMegaBytes property: Gets or sets the target memory in mega-bytes.
-     *
+     * 
      * @param targetMemoryInMegaBytes the targetMemoryInMegaBytes value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -661,7 +634,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the osType property: Gets or sets the type of the OS.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -670,7 +643,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the osName property: Gets or sets the name of the OS.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -679,7 +652,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the firmwareType property: Gets or sets the firmware type.
-     *
+     * 
      * @return the firmwareType value.
      */
     public String firmwareType() {
@@ -688,7 +661,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the fabricDiscoveryMachineId property: Gets or sets the ARM Id of the discovered machine.
-     *
+     * 
      * @return the fabricDiscoveryMachineId value.
      */
     public String fabricDiscoveryMachineId() {
@@ -697,7 +670,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the fabricDiscoveryMachineId property: Gets or sets the ARM Id of the discovered machine.
-     *
+     * 
      * @param fabricDiscoveryMachineId the fabricDiscoveryMachineId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -708,7 +681,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the sourceVmName property: Gets or sets the source VM display name.
-     *
+     * 
      * @return the sourceVmName value.
      */
     public String sourceVmName() {
@@ -717,7 +690,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the sourceCpuCores property: Gets or sets the source VM CPU cores.
-     *
+     * 
      * @return the sourceCpuCores value.
      */
     public Integer sourceCpuCores() {
@@ -726,7 +699,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the sourceMemoryInMegaBytes property: Gets or sets the source VM ram memory size in megabytes.
-     *
+     * 
      * @return the sourceMemoryInMegaBytes value.
      */
     public Double sourceMemoryInMegaBytes() {
@@ -735,7 +708,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the runAsAccountId property: Gets or sets the run as account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -744,7 +717,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the runAsAccountId property: Gets or sets the run as account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -755,7 +728,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the sourceDraName property: Gets or sets the source DRA name.
-     *
+     * 
      * @return the sourceDraName value.
      */
     public String sourceDraName() {
@@ -764,7 +737,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the sourceDraName property: Gets or sets the source DRA name.
-     *
+     * 
      * @param sourceDraName the sourceDraName value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -775,7 +748,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetDraName property: Gets or sets the target DRA name.
-     *
+     * 
      * @return the targetDraName value.
      */
     public String targetDraName() {
@@ -784,7 +757,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the targetDraName property: Gets or sets the target DRA name.
-     *
+     * 
      * @param targetDraName the targetDraName value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -795,7 +768,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the sourceApplianceName property: Gets or sets the source appliance name.
-     *
+     * 
      * @return the sourceApplianceName value.
      */
     public String sourceApplianceName() {
@@ -804,7 +777,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the targetApplianceName property: Gets or sets the target appliance name.
-     *
+     * 
      * @return the targetApplianceName value.
      */
     public String targetApplianceName() {
@@ -813,7 +786,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the failoverRecoveryPointId property: Gets or sets the recovery point Id to which the VM was failed over.
-     *
+     * 
      * @return the failoverRecoveryPointId value.
      */
     public String failoverRecoveryPointId() {
@@ -822,7 +795,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the lastRecoveryPointReceived property: Gets or sets the last recovery point received time.
-     *
+     * 
      * @return the lastRecoveryPointReceived value.
      */
     public OffsetDateTime lastRecoveryPointReceived() {
@@ -831,7 +804,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the lastRecoveryPointId property: Gets or sets the last recovery point Id.
-     *
+     * 
      * @return the lastRecoveryPointId value.
      */
     public String lastRecoveryPointId() {
@@ -840,8 +813,9 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the initialReplicationProgressPercentage property: Gets or sets the initial replication progress percentage.
-     * This is calculated based on total bytes processed for all disks in the source VM.
-     *
+     * This is calculated based on
+     * total bytes processed for all disks in the source VM.
+     * 
      * @return the initialReplicationProgressPercentage value.
      */
     public Integer initialReplicationProgressPercentage() {
@@ -850,7 +824,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the migrationProgressPercentage property: Gets or sets the migration progress percentage.
-     *
+     * 
      * @return the migrationProgressPercentage value.
      */
     public Integer migrationProgressPercentage() {
@@ -859,7 +833,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resumeProgressPercentage property: Gets or sets the resume progress percentage.
-     *
+     * 
      * @return the resumeProgressPercentage value.
      */
     public Integer resumeProgressPercentage() {
@@ -868,8 +842,9 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resyncProgressPercentage property: Gets or sets the resync progress percentage. This is calculated based
-     * on total bytes processed for all disks in the source VM.
-     *
+     * on total bytes
+     * processed for all disks in the source VM.
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -878,7 +853,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resyncRetryCount property: Gets or sets the resync retry count.
-     *
+     * 
      * @return the resyncRetryCount value.
      */
     public Long resyncRetryCount() {
@@ -887,7 +862,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resyncRequired property: Gets or sets a value indicating whether resync is required.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public Boolean resyncRequired() {
@@ -896,7 +871,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resyncState property: Gets or sets the resync state.
-     *
+     * 
      * @return the resyncState value.
      */
     public VMwareToAzureMigrateResyncState resyncState() {
@@ -905,7 +880,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the performAutoResync property: Gets or sets a value indicating whether auto resync is to be done.
-     *
+     * 
      * @return the performAutoResync value.
      */
     public Boolean performAutoResync() {
@@ -914,7 +889,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Set the performAutoResync property: Gets or sets a value indicating whether auto resync is to be done.
-     *
+     * 
      * @param performAutoResync the performAutoResync value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
@@ -925,7 +900,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the resumeRetryCount property: Gets or sets the resume retry count.
-     *
+     * 
      * @return the resumeRetryCount value.
      */
     public Long resumeRetryCount() {
@@ -934,7 +909,7 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Get the lastReplicationUpdateTime property: Gets or sets the latest timestamp that replication status is updated.
-     *
+     * 
      * @return the lastReplicationUpdateTime value.
      */
     public OffsetDateTime lastReplicationUpdateTime() {
@@ -943,46 +918,47 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (targetHciClusterId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetHciClusterId in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetHciClusterId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetArcClusterCustomLocationId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetArcClusterCustomLocationId in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetArcClusterCustomLocationId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (storageContainerId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property storageContainerId in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageContainerId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetResourceGroupId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetResourceGroupId in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceGroupId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (customLocationRegion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property customLocationRegion in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customLocationRegion in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (disksToInclude() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property disksToInclude in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property disksToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
         if (nicsToInclude() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             nicsToInclude().forEach(e -> e.validate());
         }
@@ -993,30 +969,214 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
             protectedNics().forEach(e -> e.validate());
         }
         if (hyperVGeneration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hyperVGeneration in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hyperVGeneration in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (dynamicMemoryConfig() != null) {
             dynamicMemoryConfig().validate();
         }
         if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property fabricDiscoveryMachineId in model"
-                    + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fabricDiscoveryMachineId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (runAsAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property runAsAccountId in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runAsAccountId in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (sourceDraName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetDraName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciProtectedItemCustomProps.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetHciClusterId", this.targetHciClusterId);
+        jsonWriter.writeStringField("targetArcClusterCustomLocationId", this.targetArcClusterCustomLocationId);
+        jsonWriter.writeStringField("storageContainerId", this.storageContainerId);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("customLocationRegion", this.customLocationRegion);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nicsToInclude", this.nicsToInclude, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("hyperVGeneration", this.hyperVGeneration);
+        jsonWriter.writeStringField("fabricDiscoveryMachineId", this.fabricDiscoveryMachineId);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("sourceDraName", this.sourceDraName);
+        jsonWriter.writeStringField("targetDraName", this.targetDraName);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("targetVmName", this.targetVmName);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeNumberField("targetCpuCores", this.targetCpuCores);
+        jsonWriter.writeBooleanField("isDynamicRam", this.isDynamicRam);
+        jsonWriter.writeJsonField("dynamicMemoryConfig", this.dynamicMemoryConfig);
+        jsonWriter.writeNumberField("targetMemoryInMegaBytes", this.targetMemoryInMegaBytes);
+        jsonWriter.writeBooleanField("performAutoResync", this.performAutoResync);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareToAzStackHciProtectedItemCustomProps from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareToAzStackHciProtectedItemCustomProps if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareToAzStackHciProtectedItemCustomProps.
+     */
+    public static VMwareToAzStackHciProtectedItemCustomProps fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareToAzStackHciProtectedItemCustomProps deserializedVMwareToAzStackHciProtectedItemCustomProps
+                = new VMwareToAzStackHciProtectedItemCustomProps();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetHciClusterId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetHciClusterId = reader.getString();
+                } else if ("targetArcClusterCustomLocationId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetArcClusterCustomLocationId
+                        = reader.getString();
+                } else if ("storageContainerId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.storageContainerId = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetResourceGroupId = reader.getString();
+                } else if ("customLocationRegion".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.customLocationRegion = reader.getString();
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<VMwareToAzStackHciDiskInput> disksToInclude
+                        = reader.readArray(reader1 -> VMwareToAzStackHciDiskInput.fromJson(reader1));
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.disksToInclude = disksToInclude;
+                } else if ("nicsToInclude".equals(fieldName)) {
+                    List<VMwareToAzStackHciNicInput> nicsToInclude
+                        = reader.readArray(reader1 -> VMwareToAzStackHciNicInput.fromJson(reader1));
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.nicsToInclude = nicsToInclude;
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.hyperVGeneration = reader.getString();
+                } else if ("fabricDiscoveryMachineId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.fabricDiscoveryMachineId
+                        = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.runAsAccountId = reader.getString();
+                } else if ("sourceDraName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.sourceDraName = reader.getString();
+                } else if ("targetDraName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetDraName = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.instanceType = reader.getString();
+                } else if ("activeLocation".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.activeLocation
+                        = ProtectedItemActiveLocation.fromString(reader.getString());
+                } else if ("targetAzStackHciClusterName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetAzStackHciClusterName
+                        = reader.getString();
+                } else if ("targetLocation".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetLocation = reader.getString();
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<VMwareToAzStackHciProtectedDiskProperties> protectedDisks
+                        = reader.readArray(reader1 -> VMwareToAzStackHciProtectedDiskProperties.fromJson(reader1));
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.protectedDisks = protectedDisks;
+                } else if ("protectedNics".equals(fieldName)) {
+                    List<VMwareToAzStackHciProtectedNicProperties> protectedNics
+                        = reader.readArray(reader1 -> VMwareToAzStackHciProtectedNicProperties.fromJson(reader1));
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.protectedNics = protectedNics;
+                } else if ("targetVmBiosId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetVmBiosId = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetVmName = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.testNetworkId = reader.getString();
+                } else if ("targetCpuCores".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetCpuCores
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("isDynamicRam".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.isDynamicRam
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dynamicMemoryConfig".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.dynamicMemoryConfig
+                        = ProtectedItemDynamicMemoryConfig.fromJson(reader);
+                } else if ("targetMemoryInMegaBytes".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetMemoryInMegaBytes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.osType = reader.getString();
+                } else if ("osName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.osName = reader.getString();
+                } else if ("firmwareType".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.firmwareType = reader.getString();
+                } else if ("sourceVmName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.sourceVmName = reader.getString();
+                } else if ("sourceCpuCores".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.sourceCpuCores
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceMemoryInMegaBytes".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.sourceMemoryInMegaBytes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("sourceApplianceName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.sourceApplianceName = reader.getString();
+                } else if ("targetApplianceName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.targetApplianceName = reader.getString();
+                } else if ("failoverRecoveryPointId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.failoverRecoveryPointId = reader.getString();
+                } else if ("lastRecoveryPointReceived".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.lastRecoveryPointReceived = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastRecoveryPointId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.lastRecoveryPointId = reader.getString();
+                } else if ("initialReplicationProgressPercentage".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.initialReplicationProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("migrationProgressPercentage".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.migrationProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resumeProgressPercentage".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resumeProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncRetryCount".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resyncRetryCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resyncRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resyncState".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resyncState
+                        = VMwareToAzureMigrateResyncState.fromString(reader.getString());
+                } else if ("performAutoResync".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.performAutoResync
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resumeRetryCount".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.resumeRetryCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastReplicationUpdateTime".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedItemCustomProps.lastReplicationUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareToAzStackHciProtectedItemCustomProps;
+        });
+    }
 }

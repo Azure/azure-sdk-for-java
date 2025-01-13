@@ -11,7 +11,6 @@ import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
@@ -36,7 +35,6 @@ class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConf
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(
-            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureKeyVaultSecretAutoConfiguration.class));
 

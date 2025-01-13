@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ExecutionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Response for the LTR backup API call.
  */
 @Fluent
-public final class LtrBackupResponseInner {
+public final class LtrBackupResponseInner implements JsonSerializable<LtrBackupResponseInner> {
     /*
      * Long Term Retention Backup Operation Resource Properties
      */
-    @JsonProperty(value = "properties")
     private LtrBackupOperationResponseProperties innerProperties;
 
     /**
@@ -248,5 +251,42 @@ public final class LtrBackupResponseInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrBackupResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrBackupResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LtrBackupResponseInner.
+     */
+    public static LtrBackupResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrBackupResponseInner deserializedLtrBackupResponseInner = new LtrBackupResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLtrBackupResponseInner.innerProperties
+                        = LtrBackupOperationResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrBackupResponseInner;
+        });
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,23 +14,8 @@ import java.io.IOException;
 /**
  * The failed to remove participant event.
  */
-@Immutable
+@Fluent
 public final class RemoveParticipantFailed implements JsonSerializable<RemoveParticipantFailed> {
-    /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
-     */
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
-    /*
-     * Participant
-     */
-    private CommunicationIdentifierModel participant;
-
     /*
      * Call connection ID.
      */
@@ -46,38 +31,25 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      */
     private String correlationId;
 
+    /*
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     */
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    private ResultInformation resultInformation;
+
+    /*
+     * Participant
+     */
+    private CommunicationIdentifierModel participant;
+
     /**
      * Creates an instance of RemoveParticipantFailed class.
      */
     public RemoveParticipantFailed() {
-    }
-
-    /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     * 
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
-     * Get the participant property: Participant.
-     * 
-     * @return the participant value.
-     */
-    public CommunicationIdentifierModel getParticipant() {
-        return this.participant;
     }
 
     /**
@@ -90,12 +62,34 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
+     * Set the callConnectionId property: Call connection ID.
+     * 
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
      * Get the serverCallId property: Server call ID.
      * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
         return this.serverCallId;
+    }
+
+    /**
+     * Set the serverCallId property: Server call ID.
+     * 
+     * @param serverCallId the serverCallId value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
     }
 
     /**
@@ -109,11 +103,91 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     * 
+     * @param correlationId the correlationId value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @param resultInformation the resultInformation value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
+    }
+
+    /**
+     * Get the participant property: Participant.
+     * 
+     * @return the participant value.
+     */
+    public CommunicationIdentifierModel getParticipant() {
+        return this.participant;
+    }
+
+    /**
+     * Set the participant property: Participant.
+     * 
+     * @param participant the participant value to set.
+     * @return the RemoveParticipantFailed object itself.
+     */
+    public RemoveParticipantFailed setParticipant(CommunicationIdentifierModel participant) {
+        this.participant = participant;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
+        jsonWriter.writeStringField("serverCallId", this.serverCallId);
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
+        jsonWriter.writeJsonField("participant", this.participant);
         return jsonWriter.writeEndObject();
     }
 
@@ -132,18 +206,18 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operationContext".equals(fieldName)) {
-                    deserializedRemoveParticipantFailed.operationContext = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    deserializedRemoveParticipantFailed.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("participant".equals(fieldName)) {
-                    deserializedRemoveParticipantFailed.participant = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("callConnectionId".equals(fieldName)) {
+                if ("callConnectionId".equals(fieldName)) {
                     deserializedRemoveParticipantFailed.callConnectionId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {
                     deserializedRemoveParticipantFailed.serverCallId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedRemoveParticipantFailed.correlationId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedRemoveParticipantFailed.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedRemoveParticipantFailed.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("participant".equals(fieldName)) {
+                    deserializedRemoveParticipantFailed.participant = CommunicationIdentifierModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

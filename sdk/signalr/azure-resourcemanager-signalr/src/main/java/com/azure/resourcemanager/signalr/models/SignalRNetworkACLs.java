@@ -32,11 +32,6 @@ public final class SignalRNetworkACLs implements JsonSerializable<SignalRNetwork
      */
     private List<PrivateEndpointAcl> privateEndpoints;
 
-    /*
-     * IP rules for filtering public traffic
-     */
-    private List<IpRule> ipRules;
-
     /**
      * Creates an instance of SignalRNetworkACLs class.
      */
@@ -104,26 +99,6 @@ public final class SignalRNetworkACLs implements JsonSerializable<SignalRNetwork
     }
 
     /**
-     * Get the ipRules property: IP rules for filtering public traffic.
-     * 
-     * @return the ipRules value.
-     */
-    public List<IpRule> ipRules() {
-        return this.ipRules;
-    }
-
-    /**
-     * Set the ipRules property: IP rules for filtering public traffic.
-     * 
-     * @param ipRules the ipRules value to set.
-     * @return the SignalRNetworkACLs object itself.
-     */
-    public SignalRNetworkACLs withIpRules(List<IpRule> ipRules) {
-        this.ipRules = ipRules;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -134,9 +109,6 @@ public final class SignalRNetworkACLs implements JsonSerializable<SignalRNetwork
         }
         if (privateEndpoints() != null) {
             privateEndpoints().forEach(e -> e.validate());
-        }
-        if (ipRules() != null) {
-            ipRules().forEach(e -> e.validate());
         }
     }
 
@@ -150,7 +122,6 @@ public final class SignalRNetworkACLs implements JsonSerializable<SignalRNetwork
         jsonWriter.writeJsonField("publicNetwork", this.publicNetwork);
         jsonWriter.writeArrayField("privateEndpoints", this.privateEndpoints,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -177,9 +148,6 @@ public final class SignalRNetworkACLs implements JsonSerializable<SignalRNetwork
                     List<PrivateEndpointAcl> privateEndpoints
                         = reader.readArray(reader1 -> PrivateEndpointAcl.fromJson(reader1));
                     deserializedSignalRNetworkACLs.privateEndpoints = privateEndpoints;
-                } else if ("ipRules".equals(fieldName)) {
-                    List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
-                    deserializedSignalRNetworkACLs.ipRules = ipRules;
                 } else {
                     reader.skipChildren();
                 }

@@ -132,17 +132,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public CertificateDescription getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -151,17 +151,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Response<CertificateDescription> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -170,17 +170,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -190,17 +190,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

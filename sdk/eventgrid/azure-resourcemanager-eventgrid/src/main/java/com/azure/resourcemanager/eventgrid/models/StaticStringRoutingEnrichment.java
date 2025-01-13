@@ -5,33 +5,24 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The StaticStringRoutingEnrichment model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "valueType",
-    defaultImpl = StaticStringRoutingEnrichment.class,
-    visible = true)
-@JsonTypeName("String")
 @Fluent
 public final class StaticStringRoutingEnrichment extends StaticRoutingEnrichment {
     /*
      * Static routing enrichment value type. For e.g. this property value can be 'String'.
      */
-    @JsonTypeId
-    @JsonProperty(value = "valueType", required = true)
     private StaticRoutingEnrichmentType valueType = StaticRoutingEnrichmentType.STRING;
 
     /*
      * String type routing enrichment value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -86,6 +77,49 @@ public final class StaticStringRoutingEnrichment extends StaticRoutingEnrichment
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key());
+        jsonWriter.writeStringField("valueType", this.valueType == null ? null : this.valueType.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticStringRoutingEnrichment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticStringRoutingEnrichment if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticStringRoutingEnrichment.
+     */
+    public static StaticStringRoutingEnrichment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticStringRoutingEnrichment deserializedStaticStringRoutingEnrichment
+                = new StaticStringRoutingEnrichment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedStaticStringRoutingEnrichment.withKey(reader.getString());
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedStaticStringRoutingEnrichment.valueType
+                        = StaticRoutingEnrichmentType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedStaticStringRoutingEnrichment.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticStringRoutingEnrichment;
+        });
     }
 }

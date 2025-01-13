@@ -8,10 +8,14 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterInner;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AadEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Cluster;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterForUpdate;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PasswordEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.PromoteRequest;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
@@ -50,8 +54,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public IdentityProperties identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public AadEnabledEnum aadAuthEnabled() {
+        return this.innerModel().aadAuthEnabled();
     }
 
     public String administratorLogin() {
@@ -60,6 +72,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String administratorLoginPassword() {
         return this.innerModel().administratorLoginPassword();
+    }
+
+    public DataEncryption dataEncryption() {
+        return this.innerModel().dataEncryption();
     }
 
     public String provisioningState() {
@@ -145,6 +161,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String sourceLocation() {
         return this.innerModel().sourceLocation();
+    }
+
+    public PasswordEnabledEnum passwordEnabled() {
+        return this.innerModel().passwordEnabled();
     }
 
     public OffsetDateTime pointInTimeUtc() {
@@ -332,6 +352,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withIdentity(IdentityProperties identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ClusterImpl withAdministratorLoginPassword(String administratorLoginPassword) {
         if (isInCreateMode()) {
             this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
@@ -340,6 +370,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateParameters.withAdministratorLoginPassword(administratorLoginPassword);
             return this;
         }
+    }
+
+    public ClusterImpl withDataEncryption(DataEncryption dataEncryption) {
+        this.innerModel().withDataEncryption(dataEncryption);
+        return this;
     }
 
     public ClusterImpl withPostgresqlVersion(String postgresqlVersion) {

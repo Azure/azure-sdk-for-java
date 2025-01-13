@@ -9,11 +9,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class ApiPoliciesGetResponse extends ResponseBase<ApiPoliciesGetHeaders, PolicyContractInner> {
     /**
      * Creates an instance of ApiPoliciesGetResponse.
-     *
+     * 
      * @param request the request which resulted in this ApiPoliciesGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -27,7 +29,7 @@ public final class ApiPoliciesGetResponse extends ResponseBase<ApiPoliciesGetHea
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

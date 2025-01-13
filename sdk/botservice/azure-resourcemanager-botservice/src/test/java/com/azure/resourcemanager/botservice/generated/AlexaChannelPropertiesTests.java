@@ -12,17 +12,18 @@ public final class AlexaChannelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlexaChannelProperties model = BinaryData.fromString(
-            "{\"alexaSkillId\":\"uutkncw\",\"urlFragment\":\"wsvlxotogtwrupqs\",\"serviceEndpointUri\":\"nmic\",\"isEnabled\":true}")
+            "{\"alexaSkillId\":\"azqugxywpmueefj\",\"urlFragment\":\"fqkquj\",\"serviceEndpointUri\":\"suyonobglaocq\",\"isEnabled\":false}")
             .toObject(AlexaChannelProperties.class);
-        Assertions.assertEquals("uutkncw", model.alexaSkillId());
-        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("azqugxywpmueefj", model.alexaSkillId());
+        Assertions.assertEquals(false, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlexaChannelProperties model = new AlexaChannelProperties().withAlexaSkillId("uutkncw").withIsEnabled(true);
+        AlexaChannelProperties model
+            = new AlexaChannelProperties().withAlexaSkillId("azqugxywpmueefj").withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(AlexaChannelProperties.class);
-        Assertions.assertEquals("uutkncw", model.alexaSkillId());
-        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("azqugxywpmueefj", model.alexaSkillId());
+        Assertions.assertEquals(false, model.isEnabled());
     }
 }

@@ -5,57 +5,65 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a binary hardening analysis summary.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "summaryType")
-@JsonTypeName("BinaryHardening")
 @Fluent
 public final class BinaryHardeningSummaryResource extends SummaryResourceProperties {
     /*
+     * Describes the type of summary.
+     */
+    private SummaryType summaryType = SummaryType.BINARY_HARDENING;
+
+    /*
      * Total number of binaries that were analyzed
      */
-    @JsonProperty(value = "totalFiles")
     private Long totalFiles;
 
     /*
      * NX summary percentage
      */
-    @JsonProperty(value = "nx")
     private Integer nx;
 
     /*
      * PIE summary percentage
      */
-    @JsonProperty(value = "pie")
     private Integer pie;
 
     /*
      * RELRO summary percentage
      */
-    @JsonProperty(value = "relro")
     private Integer relro;
 
     /*
      * Canary summary percentage
      */
-    @JsonProperty(value = "canary")
     private Integer canary;
 
     /*
      * Stripped summary percentage
      */
-    @JsonProperty(value = "stripped")
     private Integer stripped;
 
     /**
      * Creates an instance of BinaryHardeningSummaryResource class.
      */
     public BinaryHardeningSummaryResource() {
+    }
+
+    /**
+     * Get the summaryType property: Describes the type of summary.
+     * 
+     * @return the summaryType value.
+     */
+    @Override
+    public SummaryType summaryType() {
+        return this.summaryType;
     }
 
     /**
@@ -185,6 +193,60 @@ public final class BinaryHardeningSummaryResource extends SummaryResourcePropert
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summaryType", this.summaryType == null ? null : this.summaryType.toString());
+        jsonWriter.writeNumberField("totalFiles", this.totalFiles);
+        jsonWriter.writeNumberField("nx", this.nx);
+        jsonWriter.writeNumberField("pie", this.pie);
+        jsonWriter.writeNumberField("relro", this.relro);
+        jsonWriter.writeNumberField("canary", this.canary);
+        jsonWriter.writeNumberField("stripped", this.stripped);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BinaryHardeningSummaryResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BinaryHardeningSummaryResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BinaryHardeningSummaryResource.
+     */
+    public static BinaryHardeningSummaryResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BinaryHardeningSummaryResource deserializedBinaryHardeningSummaryResource
+                = new BinaryHardeningSummaryResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summaryType".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.summaryType = SummaryType.fromString(reader.getString());
+                } else if ("totalFiles".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.totalFiles = reader.getNullable(JsonReader::getLong);
+                } else if ("nx".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.nx = reader.getNullable(JsonReader::getInt);
+                } else if ("pie".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.pie = reader.getNullable(JsonReader::getInt);
+                } else if ("relro".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.relro = reader.getNullable(JsonReader::getInt);
+                } else if ("canary".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.canary = reader.getNullable(JsonReader::getInt);
+                } else if ("stripped".equals(fieldName)) {
+                    deserializedBinaryHardeningSummaryResource.stripped = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBinaryHardeningSummaryResource;
+        });
     }
 }

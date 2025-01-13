@@ -5,79 +5,79 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Class representing the Kusto CosmosDb data connection properties. */
+/**
+ * Class representing the Kusto CosmosDb data connection properties.
+ */
 @Fluent
-public final class CosmosDbDataConnectionProperties {
+public final class CosmosDbDataConnectionProperties implements JsonSerializable<CosmosDbDataConnectionProperties> {
     /*
-     * The case-sensitive name of the existing target table in your cluster. Retrieved data is ingested into this
-     * table.
+     * The case-sensitive name of the existing target table in your cluster. Retrieved data is ingested into this table.
      */
-    @JsonProperty(value = "tableName", required = true)
     private String tableName;
 
     /*
      * The name of an existing mapping rule to use when ingesting the retrieved data.
      */
-    @JsonProperty(value = "mappingRuleName")
     private String mappingRuleName;
 
     /*
      * The resource ID of a managed system or user-assigned identity. The identity is used to authenticate with Cosmos
      * DB.
      */
-    @JsonProperty(value = "managedIdentityResourceId", required = true)
     private String managedIdentityResourceId;
 
     /*
      * The object ID of the managed identity resource.
      */
-    @JsonProperty(value = "managedIdentityObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String managedIdentityObjectId;
 
     /*
      * The resource ID of the Cosmos DB account used to create the data connection.
      */
-    @JsonProperty(value = "cosmosDbAccountResourceId", required = true)
     private String cosmosDbAccountResourceId;
 
     /*
      * The name of an existing database in the Cosmos DB account.
      */
-    @JsonProperty(value = "cosmosDbDatabase", required = true)
     private String cosmosDbDatabase;
 
     /*
      * The name of an existing container in the Cosmos DB database.
      */
-    @JsonProperty(value = "cosmosDbContainer", required = true)
     private String cosmosDbContainer;
 
     /*
      * Optional. If defined, the data connection retrieves Cosmos DB documents created or updated after the specified
      * retrieval start date.
      */
-    @JsonProperty(value = "retrievalStartDate")
     private OffsetDateTime retrievalStartDate;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of CosmosDbDataConnectionProperties class. */
+    /**
+     * Creates an instance of CosmosDbDataConnectionProperties class.
+     */
     public CosmosDbDataConnectionProperties() {
     }
 
     /**
      * Get the tableName property: The case-sensitive name of the existing target table in your cluster. Retrieved data
      * is ingested into this table.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -87,7 +87,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Set the tableName property: The case-sensitive name of the existing target table in your cluster. Retrieved data
      * is ingested into this table.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -98,7 +98,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Get the mappingRuleName property: The name of an existing mapping rule to use when ingesting the retrieved data.
-     *
+     * 
      * @return the mappingRuleName value.
      */
     public String mappingRuleName() {
@@ -107,7 +107,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Set the mappingRuleName property: The name of an existing mapping rule to use when ingesting the retrieved data.
-     *
+     * 
      * @param mappingRuleName the mappingRuleName value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -119,7 +119,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Get the managedIdentityResourceId property: The resource ID of a managed system or user-assigned identity. The
      * identity is used to authenticate with Cosmos DB.
-     *
+     * 
      * @return the managedIdentityResourceId value.
      */
     public String managedIdentityResourceId() {
@@ -129,7 +129,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Set the managedIdentityResourceId property: The resource ID of a managed system or user-assigned identity. The
      * identity is used to authenticate with Cosmos DB.
-     *
+     * 
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -140,7 +140,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Get the managedIdentityObjectId property: The object ID of the managed identity resource.
-     *
+     * 
      * @return the managedIdentityObjectId value.
      */
     public String managedIdentityObjectId() {
@@ -150,7 +150,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Get the cosmosDbAccountResourceId property: The resource ID of the Cosmos DB account used to create the data
      * connection.
-     *
+     * 
      * @return the cosmosDbAccountResourceId value.
      */
     public String cosmosDbAccountResourceId() {
@@ -160,7 +160,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Set the cosmosDbAccountResourceId property: The resource ID of the Cosmos DB account used to create the data
      * connection.
-     *
+     * 
      * @param cosmosDbAccountResourceId the cosmosDbAccountResourceId value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -171,7 +171,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Get the cosmosDbDatabase property: The name of an existing database in the Cosmos DB account.
-     *
+     * 
      * @return the cosmosDbDatabase value.
      */
     public String cosmosDbDatabase() {
@@ -180,7 +180,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Set the cosmosDbDatabase property: The name of an existing database in the Cosmos DB account.
-     *
+     * 
      * @param cosmosDbDatabase the cosmosDbDatabase value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -191,7 +191,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Get the cosmosDbContainer property: The name of an existing container in the Cosmos DB database.
-     *
+     * 
      * @return the cosmosDbContainer value.
      */
     public String cosmosDbContainer() {
@@ -200,7 +200,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Set the cosmosDbContainer property: The name of an existing container in the Cosmos DB database.
-     *
+     * 
      * @param cosmosDbContainer the cosmosDbContainer value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -212,7 +212,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Get the retrievalStartDate property: Optional. If defined, the data connection retrieves Cosmos DB documents
      * created or updated after the specified retrieval start date.
-     *
+     * 
      * @return the retrievalStartDate value.
      */
     public OffsetDateTime retrievalStartDate() {
@@ -222,7 +222,7 @@ public final class CosmosDbDataConnectionProperties {
     /**
      * Set the retrievalStartDate property: Optional. If defined, the data connection retrieves Cosmos DB documents
      * created or updated after the specified retrieval start date.
-     *
+     * 
      * @param retrievalStartDate the retrievalStartDate value to set.
      * @return the CosmosDbDataConnectionProperties object itself.
      */
@@ -233,7 +233,7 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -242,31 +242,101 @@ public final class CosmosDbDataConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tableName in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tableName in model CosmosDbDataConnectionProperties"));
         }
         if (managedIdentityResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property managedIdentityResourceId in model" + " CosmosDbDataConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managedIdentityResourceId in model CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbAccountResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cosmosDbAccountResourceId in model" + " CosmosDbDataConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cosmosDbAccountResourceId in model CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbDatabase() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cosmosDbDatabase in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cosmosDbDatabase in model CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbContainer() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cosmosDbContainer in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cosmosDbContainer in model CosmosDbDataConnectionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CosmosDbDataConnectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tableName", this.tableName);
+        jsonWriter.writeStringField("managedIdentityResourceId", this.managedIdentityResourceId);
+        jsonWriter.writeStringField("cosmosDbAccountResourceId", this.cosmosDbAccountResourceId);
+        jsonWriter.writeStringField("cosmosDbDatabase", this.cosmosDbDatabase);
+        jsonWriter.writeStringField("cosmosDbContainer", this.cosmosDbContainer);
+        jsonWriter.writeStringField("mappingRuleName", this.mappingRuleName);
+        jsonWriter.writeStringField("retrievalStartDate",
+            this.retrievalStartDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retrievalStartDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbDataConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbDataConnectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CosmosDbDataConnectionProperties.
+     */
+    public static CosmosDbDataConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbDataConnectionProperties deserializedCosmosDbDataConnectionProperties
+                = new CosmosDbDataConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.tableName = reader.getString();
+                } else if ("managedIdentityResourceId".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.managedIdentityResourceId = reader.getString();
+                } else if ("cosmosDbAccountResourceId".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.cosmosDbAccountResourceId = reader.getString();
+                } else if ("cosmosDbDatabase".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.cosmosDbDatabase = reader.getString();
+                } else if ("cosmosDbContainer".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.cosmosDbContainer = reader.getString();
+                } else if ("mappingRuleName".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.mappingRuleName = reader.getString();
+                } else if ("managedIdentityObjectId".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.managedIdentityObjectId = reader.getString();
+                } else if ("retrievalStartDate".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.retrievalStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCosmosDbDataConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCosmosDbDataConnectionProperties;
+        });
+    }
 }

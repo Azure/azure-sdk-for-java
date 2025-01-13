@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class NetworkConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/NetworkConnections_ListByResourceGroup.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * NetworkConnections_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkConnections_ListByResourceGroup.

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a secret. */
+/**
+ * Properties of a secret.
+ */
 @Fluent
-public final class SecretProperties {
+public final class SecretProperties implements JsonSerializable<SecretProperties> {
     /*
      * The value of the secret for secret creation.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of SecretProperties class. */
+    /**
+     * Creates an instance of SecretProperties class.
+     */
     public SecretProperties() {
     }
 
     /**
      * Get the value property: The value of the secret for secret creation.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -43,7 +48,7 @@ public final class SecretProperties {
 
     /**
      * Set the value property: The value of the secret for secret creation.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecretProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class SecretProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -63,7 +68,7 @@ public final class SecretProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -72,9 +77,49 @@ public final class SecretProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretProperties.
+     */
+    public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretProperties deserializedSecretProperties = new SecretProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSecretProperties.value = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSecretProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedSecretProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretProperties;
+        });
     }
 }

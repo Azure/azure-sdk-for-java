@@ -34,24 +34,28 @@ public final class ComponentsImpl implements Components {
 
     public PagedIterable<ApplicationInsightsComponent> list() {
         PagedIterable<ApplicationInsightsComponentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationInsightsComponent> list(Context context) {
         PagedIterable<ApplicationInsightsComponentInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationInsightsComponent> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplicationInsightsComponentInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationInsightsComponent> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplicationInsightsComponentInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceName,
@@ -129,12 +133,12 @@ public final class ComponentsImpl implements Components {
     }
 
     public ApplicationInsightsComponent getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -143,12 +147,12 @@ public final class ComponentsImpl implements Components {
     }
 
     public Response<ApplicationInsightsComponent> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -157,12 +161,12 @@ public final class ComponentsImpl implements Components {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -171,12 +175,12 @@ public final class ComponentsImpl implements Components {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "components");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));

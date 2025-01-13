@@ -12,12 +12,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 
-/** An instance of this class provides access to all the operations defined in LinkedStorageAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkedStorageAccountsClient.
+ */
 public interface LinkedStorageAccountsClient {
     /**
      * Create or Update a link relation between current workspace and a group of storage accounts of a specific data
      * source type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -36,7 +38,7 @@ public interface LinkedStorageAccountsClient {
     /**
      * Create or Update a link relation between current workspace and a group of storage accounts of a specific data
      * source type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -52,7 +54,7 @@ public interface LinkedStorageAccountsClient {
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -68,7 +70,7 @@ public interface LinkedStorageAccountsClient {
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -81,7 +83,7 @@ public interface LinkedStorageAccountsClient {
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -90,7 +92,7 @@ public interface LinkedStorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all linked storage account of a specific data source type associated with the specified workspace along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedStorageAccountsResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
@@ -98,7 +100,7 @@ public interface LinkedStorageAccountsClient {
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
@@ -114,14 +116,14 @@ public interface LinkedStorageAccountsClient {
     /**
      * Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
      * their data source type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
-     *     their data source type as paginated response with {@link PagedIterable}.
+     * their data source type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -129,7 +131,7 @@ public interface LinkedStorageAccountsClient {
     /**
      * Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
      * their data source type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -137,7 +139,7 @@ public interface LinkedStorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
-     *     their data source type as paginated response with {@link PagedIterable}.
+     * their data source type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,

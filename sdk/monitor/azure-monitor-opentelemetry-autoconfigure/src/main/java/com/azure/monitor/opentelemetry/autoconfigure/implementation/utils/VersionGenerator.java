@@ -25,8 +25,35 @@ public final class VersionGenerator {
         artifactName = properties.get("name");
         artifactVersion = properties.get("version");
 
-        sdkVersionString = "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel" + getOpenTelemetryApiVersion()
-            + ":" + "ext" + artifactVersion;
+        sdkVersionString = getPrefix() + "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel"
+            + getOpenTelemetryApiVersion() + ":" + "ext" + artifactVersion;
+    }
+
+    private static String getPrefix() {
+        return getResourceProvider() + getOs() + "_";
+    }
+
+    private static String getResourceProvider() {
+        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
+            return "f";
+        } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
+            return "a";
+        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
+            // Spring Cloud needs to be checked before AKS since it runs on AKS
+            return "s";
+        } else if (!Strings.isNullOrEmpty(System.getenv("AKS_ARM_NAMESPACE_ID"))) {
+            return "k";
+        }
+        return "u";
+    }
+
+    private static String getOs() {
+        if (SystemInformation.isWindows()) {
+            return "w";
+        } else if (SystemInformation.isLinux()) {
+            return "l";
+        }
+        return "u";
     }
 
     /**

@@ -22,7 +22,7 @@ public final class SqlPoolConnectionPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"p\",\"location\":\"ixqbolxvhhyqqeg\",\"properties\":{\"securityEnabledAccess\":\"grznmginmtsd\",\"proxyDnsName\":\"chwkib\",\"proxyPort\":\"jymncjcagai\",\"visibility\":\"cqzoofjnqjsve\",\"useServerDefault\":\"bhtleberpy\",\"redirectionState\":\"eknfqnwjjqx\",\"state\":\"kdnjrxgkrhwie\"},\"id\":\"ycpnowaw\",\"name\":\"noehrguqlhfwa\",\"type\":\"bjzm\"}";
+            = "{\"kind\":\"ibuk\",\"location\":\"vzrlrmlcc\",\"properties\":{\"securityEnabledAccess\":\"jsczivfqbqnasdsy\",\"proxyDnsName\":\"zsieuscplhyvd\",\"proxyPort\":\"lyzkxitds\",\"visibility\":\"zsvko\",\"useServerDefault\":\"upjo\",\"redirectionState\":\"ozsaye\",\"state\":\"azwzlpzbtzuykyki\"},\"id\":\"fsdyepfnocmbeza\",\"name\":\"fp\",\"type\":\"tga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,16 @@ public final class SqlPoolConnectionPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SqlPoolConnectionPolicy response = manager.sqlPoolConnectionPolicies()
-            .getWithResponse("zmlghny", "v", "pye", ConnectionPolicyName.DEFAULT, com.azure.core.util.Context.NONE)
+            .getWithResponse("foxqwecrsn", "pcs", "lqxov", ConnectionPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("grznmginmtsd", response.securityEnabledAccess());
-        Assertions.assertEquals("chwkib", response.proxyDnsName());
-        Assertions.assertEquals("jymncjcagai", response.proxyPort());
-        Assertions.assertEquals("cqzoofjnqjsve", response.visibility());
-        Assertions.assertEquals("bhtleberpy", response.useServerDefault());
-        Assertions.assertEquals("eknfqnwjjqx", response.redirectionState());
-        Assertions.assertEquals("kdnjrxgkrhwie", response.state());
+        Assertions.assertEquals("jsczivfqbqnasdsy", response.securityEnabledAccess());
+        Assertions.assertEquals("zsieuscplhyvd", response.proxyDnsName());
+        Assertions.assertEquals("lyzkxitds", response.proxyPort());
+        Assertions.assertEquals("zsvko", response.visibility());
+        Assertions.assertEquals("upjo", response.useServerDefault());
+        Assertions.assertEquals("ozsaye", response.redirectionState());
+        Assertions.assertEquals("azwzlpzbtzuykyki", response.state());
     }
 }

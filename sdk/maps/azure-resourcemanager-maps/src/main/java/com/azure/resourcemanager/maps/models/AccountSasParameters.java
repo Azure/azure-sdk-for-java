@@ -6,7 +6,11 @@ package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,12 +18,11 @@ import java.util.List;
  * Azure Maps Role Based Access (RBAC) identity and access.
  */
 @Fluent
-public final class AccountSasParameters {
+public final class AccountSasParameters implements JsonSerializable<AccountSasParameters> {
     /*
      * The Map account key to use for signing. Picking `primaryKey` or `secondaryKey` will use the Map account Shared
      * Keys, and using `managedIdentity` will use the auto-renewed private key to sign the SAS.
      */
-    @JsonProperty(value = "signingKey", required = true)
     private SigningKey signingKey;
 
     /*
@@ -27,14 +30,12 @@ public final class AccountSasParameters {
      * Account. To assign a Managed Identity of the account, use operation Create or Update an assign a User Assigned
      * Identity resource Id.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS
      * token. Example: "eastus", "westus2". Omitting this parameter will allow all region locations to be accessible.
      */
-    @JsonProperty(value = "regions")
     private List<String> regions;
 
     /*
@@ -42,24 +43,23 @@ public final class AccountSasParameters {
      * This does not guarantee perfect accuracy in measurements but provides application safe guards of abuse with
      * eventual enforcement.
      */
-    @JsonProperty(value = "maxRatePerSecond", required = true)
     private int maxRatePerSecond;
 
     /*
      * The date time offset of when the token validity begins. For example "2017-05-24T10:42:03.1567373Z". Maximum
      * duration allowed is 24 hours between `start` and `expiry`.
      */
-    @JsonProperty(value = "start", required = true)
     private String start;
 
     /*
      * The date time offset of when the token validity expires. For example "2017-05-24T10:42:03.1567373Z". Maximum
      * duration allowed is 24 hours between `start` and `expiry`.
      */
-    @JsonProperty(value = "expiry", required = true)
     private String expiry;
 
-    /** Creates an instance of AccountSasParameters class. */
+    /**
+     * Creates an instance of AccountSasParameters class.
+     */
     public AccountSasParameters() {
     }
 
@@ -67,7 +67,7 @@ public final class AccountSasParameters {
      * Get the signingKey property: The Map account key to use for signing. Picking `primaryKey` or `secondaryKey` will
      * use the Map account Shared Keys, and using `managedIdentity` will use the auto-renewed private key to sign the
      * SAS.
-     *
+     * 
      * @return the signingKey value.
      */
     public SigningKey signingKey() {
@@ -78,7 +78,7 @@ public final class AccountSasParameters {
      * Set the signingKey property: The Map account key to use for signing. Picking `primaryKey` or `secondaryKey` will
      * use the Map account Shared Keys, and using `managedIdentity` will use the auto-renewed private key to sign the
      * SAS.
-     *
+     * 
      * @param signingKey the signingKey value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -91,7 +91,7 @@ public final class AccountSasParameters {
      * Get the principalId property: The principal Id also known as the object Id of a User Assigned Managed Identity
      * currently assigned to the Map Account. To assign a Managed Identity of the account, use operation Create or
      * Update an assign a User Assigned Identity resource Id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -102,7 +102,7 @@ public final class AccountSasParameters {
      * Set the principalId property: The principal Id also known as the object Id of a User Assigned Managed Identity
      * currently assigned to the Map Account. To assign a Managed Identity of the account, use operation Create or
      * Update an assign a User Assigned Identity resource Id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -115,7 +115,7 @@ public final class AccountSasParameters {
      * Get the regions property: Optional, allows control of which region locations are permitted access to Azure Maps
      * REST APIs with the SAS token. Example: "eastus", "westus2". Omitting this parameter will allow all region
      * locations to be accessible.
-     *
+     * 
      * @return the regions value.
      */
     public List<String> regions() {
@@ -126,7 +126,7 @@ public final class AccountSasParameters {
      * Set the regions property: Optional, allows control of which region locations are permitted access to Azure Maps
      * REST APIs with the SAS token. Example: "eastus", "westus2". Omitting this parameter will allow all region
      * locations to be accessible.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -139,7 +139,7 @@ public final class AccountSasParameters {
      * Get the maxRatePerSecond property: Required parameter which represents the desired maximum request per second to
      * allowed for the given SAS token. This does not guarantee perfect accuracy in measurements but provides
      * application safe guards of abuse with eventual enforcement.
-     *
+     * 
      * @return the maxRatePerSecond value.
      */
     public int maxRatePerSecond() {
@@ -150,7 +150,7 @@ public final class AccountSasParameters {
      * Set the maxRatePerSecond property: Required parameter which represents the desired maximum request per second to
      * allowed for the given SAS token. This does not guarantee perfect accuracy in measurements but provides
      * application safe guards of abuse with eventual enforcement.
-     *
+     * 
      * @param maxRatePerSecond the maxRatePerSecond value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -162,7 +162,7 @@ public final class AccountSasParameters {
     /**
      * Get the start property: The date time offset of when the token validity begins. For example
      * "2017-05-24T10:42:03.1567373Z". Maximum duration allowed is 24 hours between `start` and `expiry`.
-     *
+     * 
      * @return the start value.
      */
     public String start() {
@@ -172,7 +172,7 @@ public final class AccountSasParameters {
     /**
      * Set the start property: The date time offset of when the token validity begins. For example
      * "2017-05-24T10:42:03.1567373Z". Maximum duration allowed is 24 hours between `start` and `expiry`.
-     *
+     * 
      * @param start the start value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -184,7 +184,7 @@ public final class AccountSasParameters {
     /**
      * Get the expiry property: The date time offset of when the token validity expires. For example
      * "2017-05-24T10:42:03.1567373Z". Maximum duration allowed is 24 hours between `start` and `expiry`.
-     *
+     * 
      * @return the expiry value.
      */
     public String expiry() {
@@ -194,7 +194,7 @@ public final class AccountSasParameters {
     /**
      * Set the expiry property: The date time offset of when the token validity expires. For example
      * "2017-05-24T10:42:03.1567373Z". Maximum duration allowed is 24 hours between `start` and `expiry`.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -205,27 +205,82 @@ public final class AccountSasParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (signingKey() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property signingKey in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property signingKey in model AccountSasParameters"));
         }
         if (principalId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property principalId in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model AccountSasParameters"));
         }
         if (start() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property start in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model AccountSasParameters"));
         }
         if (expiry() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property expiry in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expiry in model AccountSasParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccountSasParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("signingKey", this.signingKey == null ? null : this.signingKey.toString());
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeIntField("maxRatePerSecond", this.maxRatePerSecond);
+        jsonWriter.writeStringField("start", this.start);
+        jsonWriter.writeStringField("expiry", this.expiry);
+        jsonWriter.writeArrayField("regions", this.regions, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountSasParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountSasParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountSasParameters.
+     */
+    public static AccountSasParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountSasParameters deserializedAccountSasParameters = new AccountSasParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("signingKey".equals(fieldName)) {
+                    deserializedAccountSasParameters.signingKey = SigningKey.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedAccountSasParameters.principalId = reader.getString();
+                } else if ("maxRatePerSecond".equals(fieldName)) {
+                    deserializedAccountSasParameters.maxRatePerSecond = reader.getInt();
+                } else if ("start".equals(fieldName)) {
+                    deserializedAccountSasParameters.start = reader.getString();
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedAccountSasParameters.expiry = reader.getString();
+                } else if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccountSasParameters.regions = regions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountSasParameters;
+        });
+    }
 }

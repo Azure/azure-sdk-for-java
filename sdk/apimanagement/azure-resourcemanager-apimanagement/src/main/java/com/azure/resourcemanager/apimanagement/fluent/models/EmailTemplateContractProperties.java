@@ -6,56 +6,58 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateParametersContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Email Template Contract properties. */
+/**
+ * Email Template Contract properties.
+ */
 @Fluent
-public final class EmailTemplateContractProperties {
+public final class EmailTemplateContractProperties implements JsonSerializable<EmailTemplateContractProperties> {
     /*
      * Subject of the Template.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
     /*
      * Email Template Body. This should be a valid XDocument
      */
-    @JsonProperty(value = "body", required = true)
     private String body;
 
     /*
      * Title of the Template.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Description of the Email Template.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Whether the template is the default template provided by API Management or has been edited.
      */
-    @JsonProperty(value = "isDefault", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefault;
 
     /*
      * Email Template Parameter values.
      */
-    @JsonProperty(value = "parameters")
     private List<EmailTemplateParametersContractProperties> parameters;
 
-    /** Creates an instance of EmailTemplateContractProperties class. */
+    /**
+     * Creates an instance of EmailTemplateContractProperties class.
+     */
     public EmailTemplateContractProperties() {
     }
 
     /**
      * Get the subject property: Subject of the Template.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -64,7 +66,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Set the subject property: Subject of the Template.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the EmailTemplateContractProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Get the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -84,7 +86,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Set the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @param body the body value to set.
      * @return the EmailTemplateContractProperties object itself.
      */
@@ -95,7 +97,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Get the title property: Title of the Template.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -104,7 +106,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Set the title property: Title of the Template.
-     *
+     * 
      * @param title the title value to set.
      * @return the EmailTemplateContractProperties object itself.
      */
@@ -115,7 +117,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Get the description property: Description of the Email Template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -124,7 +126,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Set the description property: Description of the Email Template.
-     *
+     * 
      * @param description the description value to set.
      * @return the EmailTemplateContractProperties object itself.
      */
@@ -136,7 +138,7 @@ public final class EmailTemplateContractProperties {
     /**
      * Get the isDefault property: Whether the template is the default template provided by API Management or has been
      * edited.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -145,7 +147,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Get the parameters property: Email Template Parameter values.
-     *
+     * 
      * @return the parameters value.
      */
     public List<EmailTemplateParametersContractProperties> parameters() {
@@ -154,7 +156,7 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Set the parameters property: Email Template Parameter values.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the EmailTemplateContractProperties object itself.
      */
@@ -165,17 +167,19 @@ public final class EmailTemplateContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subject() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subject in model EmailTemplateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subject in model EmailTemplateContractProperties"));
         }
         if (body() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property body in model EmailTemplateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property body in model EmailTemplateContractProperties"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
@@ -183,4 +187,58 @@ public final class EmailTemplateContractProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EmailTemplateContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailTemplateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailTemplateContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailTemplateContractProperties.
+     */
+    public static EmailTemplateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailTemplateContractProperties deserializedEmailTemplateContractProperties
+                = new EmailTemplateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subject".equals(fieldName)) {
+                    deserializedEmailTemplateContractProperties.subject = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedEmailTemplateContractProperties.body = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedEmailTemplateContractProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEmailTemplateContractProperties.description = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedEmailTemplateContractProperties.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("parameters".equals(fieldName)) {
+                    List<EmailTemplateParametersContractProperties> parameters
+                        = reader.readArray(reader1 -> EmailTemplateParametersContractProperties.fromJson(reader1));
+                    deserializedEmailTemplateContractProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailTemplateContractProperties;
+        });
+    }
 }

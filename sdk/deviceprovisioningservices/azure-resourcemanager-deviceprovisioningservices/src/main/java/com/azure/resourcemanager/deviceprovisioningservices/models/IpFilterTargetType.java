@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IpFilterTargetType. */
+/**
+ * Target for requests captured by this rule.
+ */
 public enum IpFilterTargetType {
-    /** Enum value all. */
+    /**
+     * Enum value all.
+     */
     ALL("all"),
 
-    /** Enum value serviceApi. */
+    /**
+     * Enum value serviceApi.
+     */
     SERVICE_API("serviceApi"),
 
-    /** Enum value deviceApi. */
+    /**
+     * Enum value deviceApi.
+     */
     DEVICE_API("deviceApi");
 
-    /** The actual serialized value for a IpFilterTargetType instance. */
+    /**
+     * The actual serialized value for a IpFilterTargetType instance.
+     */
     private final String value;
 
     IpFilterTargetType(String value) {
@@ -27,12 +34,14 @@ public enum IpFilterTargetType {
 
     /**
      * Parses a serialized value to a IpFilterTargetType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IpFilterTargetType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IpFilterTargetType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IpFilterTargetType[] items = IpFilterTargetType.values();
         for (IpFilterTargetType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum IpFilterTargetType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

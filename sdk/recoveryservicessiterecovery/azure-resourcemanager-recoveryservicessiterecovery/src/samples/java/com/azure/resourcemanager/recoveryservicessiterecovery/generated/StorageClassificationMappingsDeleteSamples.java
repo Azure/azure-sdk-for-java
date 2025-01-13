@@ -20,8 +20,8 @@ public final class StorageClassificationMappingsDeleteSamples {
      */
     public static void deleteAStorageClassificationMapping(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.storageClassificationMappings().delete("vault1", "resourceGroupPS1",
-            "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0", "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
-            "testStorageMapping", com.azure.core.util.Context.NONE);
+        manager.storageClassificationMappings()
+            .delete("vault1", "resourceGroupPS1", "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
+                "8891569e-aaef-4a46-a4a0-78c14f2d7b09", "testStorageMapping", com.azure.core.util.Context.NONE);
     }
 }

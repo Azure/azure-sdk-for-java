@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DataReplicationMgmtClientImpl type. */
+/**
+ * A builder for creating a new instance of the DataReplicationMgmtClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { DataReplicationMgmtClientImpl.class })
 public final class DataReplicationMgmtClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the DataReplicationMgmtClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class DataReplicationMgmtClientBuilder {
 
     /**
      * Builds an instance of DataReplicationMgmtClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of DataReplicationMgmtClientImpl.
      */
     public DataReplicationMgmtClientImpl buildClient() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointT
      * @param name a name to look for.
      * @return the corresponding RecoveryPointType.
      */
-    @JsonCreator
     public static RecoveryPointType fromString(String name) {
         return fromString(name, RecoveryPointType.class);
     }

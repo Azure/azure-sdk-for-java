@@ -21,7 +21,7 @@ public final class OutboundEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"kwyfzqwhxxbuyqax\",\"properties\":{\"subnet\":{\"id\":\"eqz\"},\"provisioningState\":\"Updating\",\"resourceGuid\":\"iolxor\"},\"location\":\"lt\",\"tags\":{\"wcsdbnwdcfhucq\":\"ncwsob\",\"vxb\":\"pfuvglsbjjca\",\"udutnco\":\"t\",\"xqtvcofu\":\"mr\"},\"id\":\"f\",\"name\":\"vkg\",\"type\":\"u\"}";
+            = "{\"etag\":\"vdrhvoo\",\"properties\":{\"subnet\":{\"id\":\"otbobzdopcj\"},\"provisioningState\":\"Updating\",\"resourceGuid\":\"dldwmgxc\"},\"location\":\"slpmutwuo\",\"tags\":{\"qsluicp\":\"pkhjwni\",\"modfvuefywsbpfvm\":\"ggkzzlvmbmpa\"},\"id\":\"yhrfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class OutboundEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OutboundEndpoint response = manager.outboundEndpoints()
-            .getWithResponse("dxrbuukzcle", "yhmlwpaztzp", "fn", com.azure.core.util.Context.NONE)
+            .getWithResponse("wdmhdlxyjrxs", "gafcnihgwqapnedg", "bcvkcvqvpkeq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lt", response.location());
-        Assertions.assertEquals("ncwsob", response.tags().get("wcsdbnwdcfhucq"));
-        Assertions.assertEquals("eqz", response.subnet().id());
+        Assertions.assertEquals("slpmutwuo", response.location());
+        Assertions.assertEquals("pkhjwni", response.tags().get("qsluicp"));
+        Assertions.assertEquals("otbobzdopcj", response.subnet().id());
     }
 }

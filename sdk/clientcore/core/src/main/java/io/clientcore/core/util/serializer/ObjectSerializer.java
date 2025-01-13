@@ -51,4 +51,16 @@ public interface ObjectSerializer {
      * @throws IOException If the serialization fails.
      */
     void serializeToStream(OutputStream stream, Object value) throws IOException;
+
+    /**
+     * Indicates whether the given implementation of {@link ObjectSerializer} supports the provided format.
+     * <p>
+     * An implementation of {@link ObjectSerializer} may support multiple formats, such as JSON and XML.
+     * <p>
+     * A check for support should be made before attempting to serialize or deserialize an object.
+     *
+     * @param format The format to check support for.
+     * @return Whether the format is supported.
+     */
+    boolean supportsFormat(SerializationFormat format);
 }

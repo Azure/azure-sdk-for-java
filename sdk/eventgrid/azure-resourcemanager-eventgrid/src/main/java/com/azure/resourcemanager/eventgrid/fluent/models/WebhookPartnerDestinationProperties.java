@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.PartnerClientAuthentication;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of a partner destination webhook.
  */
 @Fluent
-public final class WebhookPartnerDestinationProperties {
+public final class WebhookPartnerDestinationProperties
+    implements JsonSerializable<WebhookPartnerDestinationProperties> {
     /*
      * The URL that represents the endpoint of the partner destination.
      */
-    @JsonProperty(value = "endpointUrl")
     private String endpointUrl;
 
     /*
      * The base URL that represents the endpoint of the partner destination.
      */
-    @JsonProperty(value = "endpointBaseUrl")
     private String endpointBaseUrl;
 
     /*
      * Partner client authentication
      */
-    @JsonProperty(value = "clientAuthentication")
     private PartnerClientAuthentication clientAuthentication;
 
     /**
@@ -107,5 +109,49 @@ public final class WebhookPartnerDestinationProperties {
         if (clientAuthentication() != null) {
             clientAuthentication().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointUrl", this.endpointUrl);
+        jsonWriter.writeStringField("endpointBaseUrl", this.endpointBaseUrl);
+        jsonWriter.writeJsonField("clientAuthentication", this.clientAuthentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookPartnerDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookPartnerDestinationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookPartnerDestinationProperties.
+     */
+    public static WebhookPartnerDestinationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookPartnerDestinationProperties deserializedWebhookPartnerDestinationProperties
+                = new WebhookPartnerDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointUrl".equals(fieldName)) {
+                    deserializedWebhookPartnerDestinationProperties.endpointUrl = reader.getString();
+                } else if ("endpointBaseUrl".equals(fieldName)) {
+                    deserializedWebhookPartnerDestinationProperties.endpointBaseUrl = reader.getString();
+                } else if ("clientAuthentication".equals(fieldName)) {
+                    deserializedWebhookPartnerDestinationProperties.clientAuthentication
+                        = PartnerClientAuthentication.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookPartnerDestinationProperties;
+        });
     }
 }

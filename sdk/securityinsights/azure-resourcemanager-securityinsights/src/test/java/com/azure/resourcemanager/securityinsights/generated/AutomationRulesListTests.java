@@ -20,82 +20,54 @@ public final class AutomationRulesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRulesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"gjzzdatqxhocdg\",\"order\":1426022661,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-04-04T10:55:51Z\",\"triggersOn\":\"Incidents\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1962929741},{\"actionType\":\"AutomationRuleAction\",\"order\":732372528},{\"actionType\":\"AutomationRuleAction\",\"order\":1686468499},{\"actionType\":\"AutomationRuleAction\",\"order\":1906017395}],\"lastModifiedTimeUtc\":\"2020-12-26T15:55:24Z\",\"createdTimeUtc\":\"2021-06-16T21:22:40Z\",\"lastModifiedBy\":{\"email\":\"i\",\"name\":\"yhxhu\",\"objectId\":\"653c046c-aea6-4e1a-becb-a2e412d53b06\",\"userPrincipalName\":\"ftyxolniw\"},\"createdBy\":{\"email\":\"ukjfkgiawxklr\",\"name\":\"lwckbasyypnddhs\",\"objectId\":\"92039501-df19-4b8e-af01-7eba245bf319\",\"userPrincipalName\":\"acphejkoty\"}},\"etag\":\"gou\",\"id\":\"ndlik\",\"name\":\"yqkgfg\",\"type\":\"bmadgak\"},{\"properties\":{\"displayName\":\"qsrxybzqqed\",\"order\":792536973,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-12-05T11:13:31Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1444889460},{\"actionType\":\"AutomationRuleAction\",\"order\":1485441711}],\"lastModifiedTimeUtc\":\"2021-07-18T10:11:42Z\",\"createdTimeUtc\":\"2021-09-02T23:31:13Z\",\"lastModifiedBy\":{\"email\":\"modmglougpb\",\"name\":\"tmut\",\"objectId\":\"7322527f-846d-4652-9f37-95c159ed54f1\",\"userPrincipalName\":\"ktapspwgcuertu\"},\"createdBy\":{\"email\":\"o\",\"name\":\"qw\",\"objectId\":\"ef468b86-9f7a-468a-a08a-9b75592456fe\",\"userPrincipalName\":\"dgbb\"}},\"etag\":\"ddgmb\",\"id\":\"ex\",\"name\":\"pbhtqqrolfpfpsa\",\"type\":\"gbquxigj\"},{\"properties\":{\"displayName\":\"jgzjaoyfhrtx\",\"order\":1470359169,\"triggeringLogic\":{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-12-06T02:09:40Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":250590456}],\"lastModifiedTimeUtc\":\"2021-06-28T16:26:05Z\",\"createdTimeUtc\":\"2020-12-23T01:20:43Z\",\"lastModifiedBy\":{\"email\":\"qawrlyxwj\",\"name\":\"prbnwbxgjvtbv\",\"objectId\":\"e34f6148-ee08-4749-b1d3-2e9d5d33c229\",\"userPrincipalName\":\"szdnr\"},\"createdBy\":{\"email\":\"guhmuouqfpr\",\"name\":\"wbnguitnwui\",\"objectId\":\"a14ddd40-a88b-4c44-8c87-e0bb5eef6d88\",\"userPrincipalName\":\"zxufiz\"}},\"etag\":\"kyfi\",\"id\":\"fidfvzw\",\"name\":\"zuhtymwisdkfthwx\",\"type\":\"nteiwaopv\"},{\"properties\":{\"displayName\":\"mijcmmxdcufufs\",\"order\":2065467415,\"triggeringLogic\":{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-06-29T04:41:21Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1650570270},{\"actionType\":\"AutomationRuleAction\",\"order\":1219718844},{\"actionType\":\"AutomationRuleAction\",\"order\":380753695},{\"actionType\":\"AutomationRuleAction\",\"order\":564973983}],\"lastModifiedTimeUtc\":\"2021-03-29T14:50:19Z\",\"createdTimeUtc\":\"2021-04-17T07:41:34Z\",\"lastModifiedBy\":{\"email\":\"cs\",\"name\":\"wmdwzjeiachboo\",\"objectId\":\"1d64c1c6-5aca-407c-aaca-b5894a628c83\",\"userPrincipalName\":\"nrosfqpte\"},\"createdBy\":{\"email\":\"zvypyqrimzinp\",\"name\":\"wjdk\",\"objectId\":\"1dec9a67-409a-46da-9782-141e2eec1c08\",\"userPrincipalName\":\"oodqxhcrm\"}},\"etag\":\"hjtckwhd\",\"id\":\"ifiyipjxsqwpgrj\",\"name\":\"znorcj\",\"type\":\"vsnb\"}],\"nextLink\":\"qabnmoc\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"qkgfgibma\",\"order\":1793250583,\"triggeringLogic\":{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-10-30T15:28:22Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1109303076}],\"lastModifiedTimeUtc\":\"2021-07-21T07:36:15Z\",\"createdTimeUtc\":\"2021-07-27T23:28:20Z\",\"lastModifiedBy\":{\"email\":\"ytb\",\"name\":\"qfou\",\"objectId\":\"d0287df1-f755-4ddd-89a2-445dd4afc6bd\",\"userPrincipalName\":\"mnkzsmod\"},\"createdBy\":{\"email\":\"ougpbkwt\",\"name\":\"tduqktapspwgcuer\",\"objectId\":\"8ae8b4bb-a8b9-40e8-964c-15568742b6ca\",\"userPrincipalName\":\"kdosvqw\"}},\"etag\":\"mdgbbjfdd\",\"id\":\"bmbexppbhtqqro\",\"name\":\"fpfpsalgbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"displayName\":\"lnerkujysvleju\",\"order\":140485038,\"triggeringLogic\":{\"isEnabled\":true,\"expirationTimeUtc\":\"2021-11-11T16:20:30Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":1106115756},{\"actionType\":\"AutomationRuleAction\",\"order\":1769432566}],\"lastModifiedTimeUtc\":\"2021-05-18T18:45:02Z\",\"createdTimeUtc\":\"2021-08-01T09:30:41Z\",\"lastModifiedBy\":{\"email\":\"xgjvtbv\",\"name\":\"sszdnru\",\"objectId\":\"5b0bfc4f-dd45-4b62-a007-8bd0a965e9a3\",\"userPrincipalName\":\"uhmuouqfprwzwbn\"},\"createdBy\":{\"email\":\"tnwu\",\"name\":\"gazxuf\",\"objectId\":\"bf38305f-e118-4128-8534-7536e0a5076b\",\"userPrincipalName\":\"ckyfih\"}},\"etag\":\"idf\",\"id\":\"wdzuhtymwisd\",\"name\":\"fthwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"}],\"nextLink\":\"srp\"}")
             .toObject(AutomationRulesList.class);
-        Assertions.assertEquals("gou", model.value().get(0).etag());
-        Assertions.assertEquals("gjzzdatqxhocdg", model.value().get(0).displayName());
-        Assertions.assertEquals(1426022661, model.value().get(0).order());
-        Assertions.assertEquals(true, model.value().get(0).triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T10:55:51Z"),
+        Assertions.assertEquals("mdgbbjfdd", model.value().get(0).etag());
+        Assertions.assertEquals("qkgfgibma", model.value().get(0).displayName());
+        Assertions.assertEquals(1793250583, model.value().get(0).order());
+        Assertions.assertEquals(false, model.value().get(0).triggeringLogic().isEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T15:28:22Z"),
             model.value().get(0).triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.INCIDENTS, model.value().get(0).triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.value().get(0).triggeringLogic().triggersWhen());
-        Assertions.assertEquals(1962929741, model.value().get(0).actions().get(0).order());
-        Assertions.assertEquals("qabnmoc", model.nextLink());
+        Assertions.assertEquals(TriggersOn.ALERTS, model.value().get(0).triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.value().get(0).triggeringLogic().triggersWhen());
+        Assertions.assertEquals(1109303076, model.value().get(0).actions().get(0).order());
+        Assertions.assertEquals("srp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRulesList model = new AutomationRulesList().withValue(Arrays
-            .asList(
-                new AutomationRuleInner().withEtag("gou")
-                    .withDisplayName("gjzzdatqxhocdg")
-                    .withOrder(1426022661)
-                    .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(true)
-                        .withExpirationTimeUtc(OffsetDateTime.parse("2021-04-04T10:55:51Z"))
-                        .withTriggersOn(TriggersOn.INCIDENTS)
-                        .withTriggersWhen(TriggersWhen.UPDATED)
-                        .withConditions(Arrays.asList(new AutomationRuleCondition())))
-                    .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1962929741),
-                        new AutomationRuleAction().withOrder(732372528),
-                        new AutomationRuleAction().withOrder(1686468499),
-                        new AutomationRuleAction().withOrder(1906017395))),
-                new AutomationRuleInner()
-                    .withEtag("ddgmb")
-                    .withDisplayName("qsrxybzqqed")
-                    .withOrder(792536973)
-                    .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(true)
-                        .withExpirationTimeUtc(OffsetDateTime.parse("2021-12-05T11:13:31Z"))
-                        .withTriggersOn(TriggersOn.ALERTS)
-                        .withTriggersWhen(TriggersWhen.CREATED)
-                        .withConditions(Arrays.asList(new AutomationRuleCondition())))
-                    .withActions(
-                        Arrays.asList(new AutomationRuleAction().withOrder(1444889460),
-                            new AutomationRuleAction().withOrder(1485441711))),
-                new AutomationRuleInner().withEtag("kyfi")
-                    .withDisplayName("jgzjaoyfhrtx")
-                    .withOrder(1470359169)
-                    .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(false)
-                        .withExpirationTimeUtc(OffsetDateTime.parse("2021-12-06T02:09:40Z"))
-                        .withTriggersOn(TriggersOn.ALERTS)
-                        .withTriggersWhen(TriggersWhen.CREATED)
-                        .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition(),
-                            new AutomationRuleCondition())))
-                    .withActions(Arrays.asList(new AutomationRuleAction().withOrder(250590456))),
-                new AutomationRuleInner().withEtag("hjtckwhd")
-                    .withDisplayName("mijcmmxdcufufs")
-                    .withOrder(2065467415)
-                    .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(false)
-                        .withExpirationTimeUtc(OffsetDateTime.parse("2021-06-29T04:41:21Z"))
-                        .withTriggersOn(TriggersOn.ALERTS)
-                        .withTriggersWhen(TriggersWhen.CREATED)
-                        .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition(),
-                            new AutomationRuleCondition(), new AutomationRuleCondition())))
-                    .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1650570270),
-                        new AutomationRuleAction().withOrder(1219718844),
-                        new AutomationRuleAction().withOrder(380753695),
-                        new AutomationRuleAction().withOrder(564973983)))))
-            .withNextLink("qabnmoc");
+        AutomationRulesList model = new AutomationRulesList().withValue(Arrays.asList(
+            new AutomationRuleInner().withEtag("mdgbbjfdd")
+                .withDisplayName("qkgfgibma")
+                .withOrder(1793250583)
+                .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(false)
+                    .withExpirationTimeUtc(OffsetDateTime.parse("2021-10-30T15:28:22Z"))
+                    .withTriggersOn(TriggersOn.ALERTS)
+                    .withTriggersWhen(TriggersWhen.CREATED)
+                    .withConditions(Arrays.asList(new AutomationRuleCondition())))
+                .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1109303076))),
+            new AutomationRuleInner().withEtag("idf")
+                .withDisplayName("lnerkujysvleju")
+                .withOrder(140485038)
+                .withTriggeringLogic(new AutomationRuleTriggeringLogic().withIsEnabled(true)
+                    .withExpirationTimeUtc(OffsetDateTime.parse("2021-11-11T16:20:30Z"))
+                    .withTriggersOn(TriggersOn.ALERTS)
+                    .withTriggersWhen(TriggersWhen.UPDATED)
+                    .withConditions(Arrays.asList(new AutomationRuleCondition(), new AutomationRuleCondition(),
+                        new AutomationRuleCondition(), new AutomationRuleCondition())))
+                .withActions(Arrays.asList(new AutomationRuleAction().withOrder(1106115756),
+                    new AutomationRuleAction().withOrder(1769432566)))))
+            .withNextLink("srp");
         model = BinaryData.fromObject(model).toObject(AutomationRulesList.class);
-        Assertions.assertEquals("gou", model.value().get(0).etag());
-        Assertions.assertEquals("gjzzdatqxhocdg", model.value().get(0).displayName());
-        Assertions.assertEquals(1426022661, model.value().get(0).order());
-        Assertions.assertEquals(true, model.value().get(0).triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T10:55:51Z"),
+        Assertions.assertEquals("mdgbbjfdd", model.value().get(0).etag());
+        Assertions.assertEquals("qkgfgibma", model.value().get(0).displayName());
+        Assertions.assertEquals(1793250583, model.value().get(0).order());
+        Assertions.assertEquals(false, model.value().get(0).triggeringLogic().isEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T15:28:22Z"),
             model.value().get(0).triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.INCIDENTS, model.value().get(0).triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, model.value().get(0).triggeringLogic().triggersWhen());
-        Assertions.assertEquals(1962929741, model.value().get(0).actions().get(0).order());
-        Assertions.assertEquals("qabnmoc", model.nextLink());
+        Assertions.assertEquals(TriggersOn.ALERTS, model.value().get(0).triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.CREATED, model.value().get(0).triggeringLogic().triggersWhen());
+        Assertions.assertEquals(1109303076, model.value().get(0).actions().get(0).order());
+        Assertions.assertEquals("srp", model.nextLink());
     }
 }

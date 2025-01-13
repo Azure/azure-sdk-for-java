@@ -66,6 +66,8 @@ public class ResourceManagerThrottlingInfo {
     }
 
     /**
+     * Gets the rate limit.
+     *
      * @return the smallest rate limit or empty if none of the headers are valid
      */
     public Optional<Integer> getRateLimit() {
@@ -83,6 +85,8 @@ public class ResourceManagerThrottlingInfo {
     }
 
     /**
+     * Gets all headers associated with rate limit.
+     *
      * refer https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
      * @return all headers associated with rate limit
      */
@@ -91,6 +95,8 @@ public class ResourceManagerThrottlingInfo {
     }
 
     /**
+     * Gets a specific rate limit header value from compute.
+     *
      * refer https://docs.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
      * @return a specific rate limit header value from compute
      */

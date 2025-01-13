@@ -29,7 +29,7 @@ public final class WebTestLocationsImpl implements WebTestLocations {
         String resourceName) {
         PagedIterable<ApplicationInsightsComponentWebTestLocationInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner,
+        return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ApplicationInsightsComponentWebTestLocationImpl(inner1, this.manager()));
     }
 
@@ -37,7 +37,7 @@ public final class WebTestLocationsImpl implements WebTestLocations {
         String resourceName, Context context) {
         PagedIterable<ApplicationInsightsComponentWebTestLocationInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner,
+        return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ApplicationInsightsComponentWebTestLocationImpl(inner1, this.manager()));
     }
 

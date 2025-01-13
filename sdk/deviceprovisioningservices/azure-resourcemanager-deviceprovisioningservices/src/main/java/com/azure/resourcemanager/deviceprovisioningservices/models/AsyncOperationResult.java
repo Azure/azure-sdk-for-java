@@ -6,18 +6,20 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.AsyncOperationResultInner;
 
-/** An immutable client-side representation of AsyncOperationResult. */
+/**
+ * An immutable client-side representation of AsyncOperationResult.
+ */
 public interface AsyncOperationResult {
     /**
      * Gets the status property: current status of a long running operation.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the error property: Error message containing code, description and details.
-     *
+     * 
      * @return the error value.
      */
     ErrorMessage error();
@@ -25,7 +27,7 @@ public interface AsyncOperationResult {
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.AsyncOperationResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     AsyncOperationResultInner innerModel();

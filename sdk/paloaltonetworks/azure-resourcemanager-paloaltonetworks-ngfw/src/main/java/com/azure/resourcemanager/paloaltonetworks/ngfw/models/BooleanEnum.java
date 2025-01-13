@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BooleanEnum extends ExpandableStringEnum<BooleanEnum> {
      * @param name a name to look for.
      * @return the corresponding BooleanEnum.
      */
-    @JsonCreator
     public static BooleanEnum fromString(String name) {
         return fromString(name, BooleanEnum.class);
     }

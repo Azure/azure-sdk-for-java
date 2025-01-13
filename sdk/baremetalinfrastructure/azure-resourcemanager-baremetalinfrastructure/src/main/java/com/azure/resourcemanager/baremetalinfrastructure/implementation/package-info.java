@@ -4,6 +4,6 @@
 
 /**
  * Package containing the implementations for BareMetalInfrastructureClient.
- * The Bare Metal Infrastructure Management client.
+ * The BareMetalInfrastructure Management client.
  */
 package com.azure.resourcemanager.baremetalinfrastructure.implementation;

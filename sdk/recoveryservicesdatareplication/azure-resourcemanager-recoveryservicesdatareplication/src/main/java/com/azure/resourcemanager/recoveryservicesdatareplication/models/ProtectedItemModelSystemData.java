@@ -5,51 +5,73 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The ProtectedItemModelSystemData model. */
+/**
+ * The ProtectedItemModelSystemData model.
+ */
 @Fluent
 public final class ProtectedItemModelSystemData extends SystemDataModel {
-    /** Creates an instance of ProtectedItemModelSystemData class. */
+    /**
+     * Creates an instance of ProtectedItemModelSystemData class.
+     */
     public ProtectedItemModelSystemData() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withCreatedBy(String createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withCreatedByType(String createdByType) {
         super.withCreatedByType(createdByType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withCreatedAt(OffsetDateTime createdAt) {
         super.withCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withLastModifiedBy(String lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withLastModifiedByType(String lastModifiedByType) {
         super.withLastModifiedByType(lastModifiedByType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectedItemModelSystemData withLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.withLastModifiedAt(lastModifiedAt);
@@ -58,11 +80,65 @@ public final class ProtectedItemModelSystemData extends SystemDataModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdBy", createdBy());
+        jsonWriter.writeStringField("createdByType", createdByType());
+        jsonWriter.writeStringField("createdAt",
+            createdAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdAt()));
+        jsonWriter.writeStringField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedByType", lastModifiedByType());
+        jsonWriter.writeStringField("lastModifiedAt",
+            lastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedAt()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectedItemModelSystemData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectedItemModelSystemData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectedItemModelSystemData.
+     */
+    public static ProtectedItemModelSystemData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectedItemModelSystemData deserializedProtectedItemModelSystemData = new ProtectedItemModelSystemData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withCreatedBy(reader.getString());
+                } else if ("createdByType".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withCreatedByType(reader.getString());
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withCreatedAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withLastModifiedBy(reader.getString());
+                } else if ("lastModifiedByType".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withLastModifiedByType(reader.getString());
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedProtectedItemModelSystemData.withLastModifiedAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectedItemModelSystemData;
+        });
     }
 }

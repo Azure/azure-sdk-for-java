@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PublisherScope extends ExpandableStringEnum<PublisherScope> {
      * @param name a name to look for.
      * @return the corresponding PublisherScope.
      */
-    @JsonCreator
     public static PublisherScope fromString(String name) {
         return fromString(name, PublisherScope.class);
     }

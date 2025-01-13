@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource usages value.
  */
 @Fluent
-public final class UsagesObject {
+public final class UsagesObject implements JsonSerializable<UsagesObject> {
     /*
      * The usages value.
      */
-    @JsonProperty(value = "value", required = true)
     private int value;
 
     /*
      * The quota or usages limit types.
      */
-    @JsonProperty(value = "usagesType")
     private UsagesTypes usagesType;
 
     /**
@@ -76,5 +78,45 @@ public final class UsagesObject {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("value", this.value);
+        jsonWriter.writeStringField("usagesType", this.usagesType == null ? null : this.usagesType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsagesObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsagesObject if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UsagesObject.
+     */
+    public static UsagesObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsagesObject deserializedUsagesObject = new UsagesObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedUsagesObject.value = reader.getInt();
+                } else if ("usagesType".equals(fieldName)) {
+                    deserializedUsagesObject.usagesType = UsagesTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsagesObject;
+        });
     }
 }
