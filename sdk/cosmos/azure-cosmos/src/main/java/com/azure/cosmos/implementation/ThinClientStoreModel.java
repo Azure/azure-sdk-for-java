@@ -52,11 +52,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        // direct/gateway mode validations? session token, bad consistency level header
-
-        // TODO @nehrao/@fabianm FIX BEFORE CHECK-IN
-        // conditionally set RntbdTransportSerializer and physicalAddress here
-        // RntbdHttpTransportSerializer would need to create rntbdRequestArgs, then RntbdRequest from it and call encode
         return super.processMessage(request);
     }
 
@@ -111,12 +106,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             headers,
             Flux.just(byteBuf.array()));
     }
-
-    // todo: neharao1 - validate if RxGatewayStoreModel#unwrapToStoreResponse can be reused
-//    @Override
-//    public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
-//        return null;
-//    }
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

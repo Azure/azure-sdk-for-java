@@ -274,12 +274,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
 
         try {
-
-            // todo: neharao1 - see if the below three statements can be removed since these are part of wrapInHttpRequest
-            HttpMethod method = getHttpMethod(request);
-            HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
-            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
-
             HttpRequest httpRequest = request
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);

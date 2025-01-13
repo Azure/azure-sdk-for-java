@@ -57,7 +57,7 @@ public final class RntbdRequestArgs {
     }
 
     public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest) {
-        this(serviceRequest, null);
+        this(serviceRequest, Uri.create(""));
     }
 
     // region Accessors
