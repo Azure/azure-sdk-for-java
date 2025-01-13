@@ -45,6 +45,10 @@
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -56,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.8</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.3.9</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

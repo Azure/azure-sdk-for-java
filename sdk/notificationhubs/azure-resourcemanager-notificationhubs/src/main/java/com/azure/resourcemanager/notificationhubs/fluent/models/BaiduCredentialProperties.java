@@ -5,30 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub BaiduCredential.
  */
 @Fluent
-public final class BaiduCredentialProperties {
+public final class BaiduCredentialProperties implements JsonSerializable<BaiduCredentialProperties> {
     /*
-     * Gets or sets baidu Api Key.
+     * Baidu Api Key.
      */
-    @JsonProperty(value = "baiduApiKey")
     private String baiduApiKey;
 
     /*
-     * Gets or sets baidu Endpoint.
+     * Baidu Endpoint.
      */
-    @JsonProperty(value = "baiduEndPoint")
     private String baiduEndPoint;
 
     /*
-     * Gets or sets baidu Secret Key
+     * Baidu Secret Key
      */
-    @JsonProperty(value = "baiduSecretKey")
     private String baiduSecretKey;
 
     /**
@@ -38,7 +38,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Get the baiduApiKey property: Gets or sets baidu Api Key.
+     * Get the baiduApiKey property: Baidu Api Key.
      * 
      * @return the baiduApiKey value.
      */
@@ -47,7 +47,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduApiKey property: Gets or sets baidu Api Key.
+     * Set the baiduApiKey property: Baidu Api Key.
      * 
      * @param baiduApiKey the baiduApiKey value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -58,7 +58,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Get the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * Get the baiduEndPoint property: Baidu Endpoint.
      * 
      * @return the baiduEndPoint value.
      */
@@ -67,7 +67,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * Set the baiduEndPoint property: Baidu Endpoint.
      * 
      * @param baiduEndPoint the baiduEndPoint value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -78,7 +78,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Get the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * Get the baiduSecretKey property: Baidu Secret Key.
      * 
      * @return the baiduSecretKey value.
      */
@@ -87,7 +87,7 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * Set the baiduSecretKey property: Baidu Secret Key.
      * 
      * @param baiduSecretKey the baiduSecretKey value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -103,19 +103,47 @@ public final class BaiduCredentialProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (baiduApiKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property baiduApiKey in model BaiduCredentialProperties"));
-        }
-        if (baiduEndPoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property baiduEndPoint in model BaiduCredentialProperties"));
-        }
-        if (baiduSecretKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property baiduSecretKey in model BaiduCredentialProperties"));
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BaiduCredentialProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("baiduApiKey", this.baiduApiKey);
+        jsonWriter.writeStringField("baiduEndPoint", this.baiduEndPoint);
+        jsonWriter.writeStringField("baiduSecretKey", this.baiduSecretKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaiduCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaiduCredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BaiduCredentialProperties.
+     */
+    public static BaiduCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaiduCredentialProperties deserializedBaiduCredentialProperties = new BaiduCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baiduApiKey".equals(fieldName)) {
+                    deserializedBaiduCredentialProperties.baiduApiKey = reader.getString();
+                } else if ("baiduEndPoint".equals(fieldName)) {
+                    deserializedBaiduCredentialProperties.baiduEndPoint = reader.getString();
+                } else if ("baiduSecretKey".equals(fieldName)) {
+                    deserializedBaiduCredentialProperties.baiduSecretKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaiduCredentialProperties;
+        });
+    }
 }

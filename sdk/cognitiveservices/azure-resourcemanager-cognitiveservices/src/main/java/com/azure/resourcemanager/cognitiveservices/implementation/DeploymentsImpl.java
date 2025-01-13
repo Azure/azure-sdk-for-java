@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.Deployment;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
+import com.azure.resourcemanager.cognitiveservices.models.SkuResource;
 
 public final class DeploymentsImpl implements Deployments {
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentsImpl.class);
@@ -64,6 +66,19 @@ public final class DeploymentsImpl implements Deployments {
 
     public void delete(String resourceGroupName, String accountName, String deploymentName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, deploymentName, context);
+    }
+
+    public PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName) {
+        PagedIterable<SkuResourceInner> inner
+            = this.serviceClient().listSkus(resourceGroupName, accountName, deploymentName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName,
+        Context context) {
+        PagedIterable<SkuResourceInner> inner
+            = this.serviceClient().listSkus(resourceGroupName, accountName, deploymentName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuResourceImpl(inner1, this.manager()));
     }
 
     public Deployment getById(String id) {

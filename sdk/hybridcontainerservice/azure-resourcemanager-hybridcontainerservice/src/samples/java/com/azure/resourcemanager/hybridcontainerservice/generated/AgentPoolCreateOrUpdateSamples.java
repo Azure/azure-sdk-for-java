@@ -26,12 +26,15 @@ public final class AgentPoolCreateOrUpdateSamples {
      */
     public static void
         putAgentPool(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.agentPools().define("testnodepool").withExistingConnectedClusterResourceUri(
-            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster")
-            .withProperties(
-                new AgentPoolProperties().withOsType(OsType.LINUX).withNodeLabels(mapOf("env", "dev", "goal", "test"))
-                    .withNodeTaints(Arrays.asList("env=prod:NoSchedule", "sku=gpu:NoSchedule")).withCount(1)
-                    .withVmSize("Standard_A4_v2"))
+        manager.agentPools()
+            .define("testnodepool")
+            .withExistingConnectedClusterResourceUri(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster")
+            .withProperties(new AgentPoolProperties().withOsType(OsType.LINUX)
+                .withNodeLabels(mapOf("env", "dev", "goal", "test"))
+                .withNodeTaints(Arrays.asList("env=prod:NoSchedule", "sku=gpu:NoSchedule"))
+                .withCount(1)
+                .withVmSize("Standard_A4_v2"))
             .create();
     }
 

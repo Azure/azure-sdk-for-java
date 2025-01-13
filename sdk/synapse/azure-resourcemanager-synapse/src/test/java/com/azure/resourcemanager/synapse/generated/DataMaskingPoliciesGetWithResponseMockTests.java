@@ -22,7 +22,7 @@ public final class DataMaskingPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"flzqjimejtgzjxx\",\"applicationPrincipals\":\"e\",\"maskingLevel\":\"zuqloiwyayyzivr\"},\"location\":\"tcdqlh\",\"kind\":\"whrktjleifibfipl\",\"managedBy\":\"fnsmycjowly\",\"id\":\"yzmudsqcmhnx\",\"name\":\"zbuw\",\"type\":\"dmac\"}";
+            = "{\"properties\":{\"dataMaskingState\":\"Enabled\",\"exemptPrincipals\":\"gnqfqqdlcvmyol\",\"applicationPrincipals\":\"ymjc\",\"maskingLevel\":\"vsnvlaq\"},\"location\":\"z\",\"kind\":\"awatuwqkokbczo\",\"managedBy\":\"ymgobll\",\"id\":\"snwgwimaa\",\"name\":\"eakhtmhobcya\",\"type\":\"rfvqtvkhgvo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DataMaskingPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataMaskingPolicy response = manager.dataMaskingPolicies()
-            .getWithResponse("kbputmgvmuyak", "lwk", "fowzkroyr", com.azure.core.util.Context.NONE)
+            .getWithResponse("isjm", "kkhmwdmdlgyqixok", "tja", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DataMaskingState.DISABLED, response.dataMaskingState());
-        Assertions.assertEquals("flzqjimejtgzjxx", response.exemptPrincipals());
+        Assertions.assertEquals(DataMaskingState.ENABLED, response.dataMaskingState());
+        Assertions.assertEquals("gnqfqqdlcvmyol", response.exemptPrincipals());
     }
 }

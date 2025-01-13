@@ -14,7 +14,7 @@ public final class MyWorkbookManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MyWorkbookManagedIdentity model = BinaryData.fromString(
-            "{\"userAssignedIdentities\":{\"principalId\":\"smond\",\"tenantId\":\"quxvypomgkop\"},\"type\":\"None\"}")
+            "{\"userAssignedIdentities\":{\"principalId\":\"tawfsdjpvkvp\",\"tenantId\":\"xbkzbzkdvncj\"},\"type\":\"None\"}")
             .toObject(MyWorkbookManagedIdentity.class);
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.type());
     }

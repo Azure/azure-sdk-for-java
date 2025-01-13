@@ -21,28 +21,60 @@ public interface LoadBalancer extends GroupableResource<NetworkManager, LoadBala
 
     // Getters
 
-    /** @return resource IDs of the public IP addresses assigned to the frontends of this load balancer */
+    /**
+     * Gets resource IDs of the public IP addresses assigned to the frontends of this load balancer.
+     *
+     * @return resource IDs of the public IP addresses assigned to the frontends of this load balancer
+     */
     List<String> publicIpAddressIds();
 
-    /** @return TCP probes of this load balancer, indexed by the name */
+    /**
+     * Gets TCP probes of this load balancer.
+     *
+     * @return TCP probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerTcpProbe> tcpProbes();
 
-    /** @return HTTP probes of this load balancer, indexed by the name */
+    /**
+     * Gets HTTP probes of this load balancer.
+     *
+     * @return HTTP probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerHttpProbe> httpProbes();
 
-    /** @return HTTPS probes of this load balancer, indexed by the name */
+    /**
+     * Gets HTTPS probes of this load balancer.
+     *
+     * @return HTTPS probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerHttpProbe> httpsProbes();
 
-    /** @return backends for this load balancer to load balance the incoming traffic among, indexed by name */
+    /**
+     * Gets backends for this load balancer to load balance the incoming traffic among.
+     *
+     * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
+     */
     Map<String, LoadBalancerBackend> backends();
 
-    /** @return inbound NAT rules for this balancer */
+    /**
+     * Gets inbound NAT rules for this balancer.
+     *
+     * @return inbound NAT rules for this balancer
+     */
     Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 
-    /** @return frontends for this load balancer, for the incoming traffic to come from. */
+    /**
+     * Gets frontends for this load balancer, for the incoming traffic to come from.
+     *
+     * @return frontends for this load balancer, for the incoming traffic to come from.
+     */
     Map<String, LoadBalancerFrontend> frontends();
 
-    /** @return private (internal) frontends */
+    /**
+     * Gets private (internal) frontends.
+     *
+     * @return private (internal) frontends
+     */
     Map<String, LoadBalancerPrivateFrontend> privateFrontends();
 
     /**
@@ -61,16 +93,32 @@ public interface LoadBalancer extends GroupableResource<NetworkManager, LoadBala
      */
     LoadBalancerPublicFrontend findFrontendByPublicIpAddress(String publicIPAddressId);
 
-    /** @return public (Internet-facing) frontends */
+    /**
+     * Gets public (Internet-facing) frontends.
+     *
+     * @return public (Internet-facing) frontends
+     */
     Map<String, LoadBalancerPublicFrontend> publicFrontends();
 
-    /** @return inbound NAT pools, indexed by name */
+    /**
+     * Gets inbound NAT pools.
+     *
+     * @return inbound NAT pools, indexed by name
+     */
     Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
-    /** @return load balancer sku. */
+    /**
+     * Gets load balancer sku.
+     *
+     * @return load balancer sku.
+     */
     LoadBalancerSkuType sku();
 
-    /** @return outbound rules for this balancer */
+    /**
+     * Gets outbound rules for this balancer.
+     *
+     * @return outbound rules for this balancer
+     */
     Map<String, LoadBalancerOutboundRule> outboundRules();
 
     /** The entirety of the load balancer definition. */

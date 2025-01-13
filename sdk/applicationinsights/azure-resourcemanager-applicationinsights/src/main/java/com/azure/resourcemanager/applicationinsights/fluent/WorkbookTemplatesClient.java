@@ -12,38 +12,40 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookTemplateInner;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in WorkbookTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkbookTemplatesClient.
+ */
 public interface WorkbookTemplatesClient {
     /**
      * Get all Workbook templates defined within a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Workbook templates defined within a specified resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get all Workbook templates defined within a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Workbook templates defined within a specified resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get a single workbook template by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Get a single workbook template by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Delete a workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -85,7 +87,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Delete a workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +99,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Create a new workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
@@ -113,7 +115,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Create a new workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
@@ -128,7 +130,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Updates a workbook template that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookTemplateUpdateParameters Properties that need to be specified to patch a workbook template.
@@ -144,7 +146,7 @@ public interface WorkbookTemplatesClient {
 
     /**
      * Updates a workbook template that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

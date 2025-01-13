@@ -11,7 +11,7 @@ public final class MailboxEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MailboxEntityProperties model = BinaryData.fromString(
-            "{\"mailboxPrimaryAddress\":\"tsmsfbev\",\"displayName\":\"lznfhkqytkztado\",\"upn\":\"fzdgjfcycrsvloy\",\"externalDirectoryObjectId\":\"c846d4c2-b868-49e0-aec7-615e0e8ad6bd\",\"additionalData\":{\"uzxp\":\"dataqkzjuqwqaj\",\"f\":\"dataxhyoip\"},\"friendlyName\":\"gsoscienezfvb\"}")
+            "{\"mailboxPrimaryAddress\":\"inqcymczngnbdxxe\",\"displayName\":\"ninvudbchaqdt\",\"upn\":\"ec\",\"externalDirectoryObjectId\":\"dfbd8756-87da-44b5-a09a-a48aac91cf6f\",\"additionalData\":{\"ytxzvtznapxbanno\":\"datamxxdtddmflh\",\"nwvroevytlyokrr\":\"datavoxczytpr\",\"uxvnsasbcrymodi\":\"datao\",\"lmv\":\"datarxklobdxnazpmk\"},\"friendlyName\":\"f\"}")
             .toObject(MailboxEntityProperties.class);
     }
 

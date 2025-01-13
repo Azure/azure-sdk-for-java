@@ -190,26 +190,6 @@ public interface ServerBlobAuditingPolicy {
     Integer queueDelayMs();
 
     /**
-     * Gets the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs
-     * will be sent to Azure Monitor.
-     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled' as true
-     * and 'IsDevopsAuditEnabled' as true
-     * 
-     * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
-     * category on the master database should also be created.
-     * 
-     * Diagnostic Settings URI format:
-     * PUT
-     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     * 
-     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
-     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     * 
-     * @return the isDevopsAuditEnabled value.
-     */
-    Boolean isDevopsAuditEnabled();
-
-    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -262,7 +242,7 @@ public interface ServerBlobAuditingPolicy {
             DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithRetentionDays,
             DefinitionStages.WithAuditActionsAndGroups, DefinitionStages.WithStorageAccountSubscriptionId,
             DefinitionStages.WithIsStorageSecondaryKeyInUse, DefinitionStages.WithIsAzureMonitorTargetEnabled,
-            DefinitionStages.WithQueueDelayMs, DefinitionStages.WithIsDevopsAuditEnabled {
+            DefinitionStages.WithQueueDelayMs {
             /**
              * Executes the create request.
              * 
@@ -583,46 +563,6 @@ public interface ServerBlobAuditingPolicy {
              */
             WithCreate withQueueDelayMs(Integer queueDelayMs);
         }
-
-        /**
-         * The stage of the ServerBlobAuditingPolicy definition allowing to specify isDevopsAuditEnabled.
-         */
-        interface WithIsDevopsAuditEnabled {
-            /**
-             * Specifies the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled,
-             * devops logs will be sent to Azure Monitor.
-             * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled'
-             * as true and 'IsDevopsAuditEnabled' as true
-             * 
-             * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-             * logs category on the master database should also be created.
-             * 
-             * Diagnostic Settings URI format:
-             * PUT
-             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-             * 
-             * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
-             * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
-             * .
-             * 
-             * @param isDevopsAuditEnabled Specifies the state of devops audit. If state is Enabled, devops logs will be
-             * sent to Azure Monitor.
-             * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled'
-             * as true and 'IsDevopsAuditEnabled' as true
-             * 
-             * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-             * logs category on the master database should also be created.
-             * 
-             * Diagnostic Settings URI format:
-             * PUT
-             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-             * 
-             * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
-             * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-             * @return the next definition stage.
-             */
-            WithCreate withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled);
-        }
     }
 
     /**
@@ -637,8 +577,9 @@ public interface ServerBlobAuditingPolicy {
      */
     interface Update
         extends UpdateStages.WithState, UpdateStages.WithStorageEndpoint, UpdateStages.WithStorageAccountAccessKey,
-        UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithIsAzureMonitorTargetEnabled,
-        UpdateStages.WithQueueDelayMs, UpdateStages.WithIsDevopsAuditEnabled {
+        UpdateStages.WithRetentionDays, UpdateStages.WithAuditActionsAndGroups,
+        UpdateStages.WithStorageAccountSubscriptionId, UpdateStages.WithIsStorageSecondaryKeyInUse,
+        UpdateStages.WithIsAzureMonitorTargetEnabled, UpdateStages.WithQueueDelayMs {
         /**
          * Executes the update request.
          * 
@@ -722,6 +663,176 @@ public interface ServerBlobAuditingPolicy {
         }
 
         /**
+         * The stage of the ServerBlobAuditingPolicy update allowing to specify retentionDays.
+         */
+        interface WithRetentionDays {
+            /**
+             * Specifies the retentionDays property: Specifies the number of days to keep in the audit logs in the
+             * storage account..
+             * 
+             * @param retentionDays Specifies the number of days to keep in the audit logs in the storage account.
+             * @return the next definition stage.
+             */
+            Update withRetentionDays(Integer retentionDays);
+        }
+
+        /**
+         * The stage of the ServerBlobAuditingPolicy update allowing to specify auditActionsAndGroups.
+         */
+        interface WithAuditActionsAndGroups {
+            /**
+             * Specifies the auditActionsAndGroups property: Specifies the Actions-Groups and Actions to audit.
+             * 
+             * The recommended set of action groups to use is the following combination - this will audit all the
+             * queries and stored procedures executed against the database, as well as successful and failed logins:
+             * 
+             * BATCH_COMPLETED_GROUP,
+             * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
+             * FAILED_DATABASE_AUTHENTICATION_GROUP.
+             * 
+             * This above combination is also the set that is configured by default when enabling auditing from the
+             * Azure portal.
+             * 
+             * The supported action groups to audit are (note: choose only specific groups that cover your auditing
+             * needs. Using unnecessary groups could lead to very large quantities of audit records):
+             * 
+             * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+             * BACKUP_RESTORE_GROUP
+             * DATABASE_LOGOUT_GROUP
+             * DATABASE_OBJECT_CHANGE_GROUP
+             * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+             * DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+             * DATABASE_OPERATION_GROUP
+             * DATABASE_PERMISSION_CHANGE_GROUP
+             * DATABASE_PRINCIPAL_CHANGE_GROUP
+             * DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+             * DATABASE_ROLE_MEMBER_CHANGE_GROUP
+             * FAILED_DATABASE_AUTHENTICATION_GROUP
+             * SCHEMA_OBJECT_ACCESS_GROUP
+             * SCHEMA_OBJECT_CHANGE_GROUP
+             * SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+             * SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+             * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+             * USER_CHANGE_PASSWORD_GROUP
+             * BATCH_STARTED_GROUP
+             * BATCH_COMPLETED_GROUP
+             * 
+             * These are groups that cover all sql statements and stored procedures executed against the database, and
+             * should not be used in combination with other groups as this will result in duplicate audit logs.
+             * 
+             * For more information, see [Database-Level Audit Action
+             * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
+             * 
+             * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be
+             * specified for Server auditing policy). The supported actions to audit are:
+             * SELECT
+             * UPDATE
+             * INSERT
+             * DELETE
+             * EXECUTE
+             * RECEIVE
+             * REFERENCES
+             * 
+             * The general form for defining an action to be audited is:
+             * {action} ON {object} BY {principal}
+             * 
+             * Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored
+             * procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and
+             * SCHEMA::{schema_name} are used, respectively.
+             * 
+             * For example:
+             * SELECT on dbo.myTable by public
+             * SELECT on DATABASE::myDatabase by public
+             * SELECT on SCHEMA::mySchema by public
+             * 
+             * For more information, see [Database-Level Audit
+             * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions).
+             * 
+             * @param auditActionsAndGroups Specifies the Actions-Groups and Actions to audit.
+             * 
+             * The recommended set of action groups to use is the following combination - this will audit all the
+             * queries and stored procedures executed against the database, as well as successful and failed logins:
+             * 
+             * BATCH_COMPLETED_GROUP,
+             * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
+             * FAILED_DATABASE_AUTHENTICATION_GROUP.
+             * 
+             * This above combination is also the set that is configured by default when enabling auditing from the
+             * Azure portal.
+             * 
+             * The supported action groups to audit are (note: choose only specific groups that cover your auditing
+             * needs. Using unnecessary groups could lead to very large quantities of audit records):
+             * 
+             * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+             * BACKUP_RESTORE_GROUP
+             * DATABASE_LOGOUT_GROUP
+             * DATABASE_OBJECT_CHANGE_GROUP
+             * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+             * DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+             * DATABASE_OPERATION_GROUP
+             * DATABASE_PERMISSION_CHANGE_GROUP
+             * DATABASE_PRINCIPAL_CHANGE_GROUP
+             * DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+             * DATABASE_ROLE_MEMBER_CHANGE_GROUP
+             * FAILED_DATABASE_AUTHENTICATION_GROUP
+             * SCHEMA_OBJECT_ACCESS_GROUP
+             * SCHEMA_OBJECT_CHANGE_GROUP
+             * SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+             * SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+             * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+             * USER_CHANGE_PASSWORD_GROUP
+             * BATCH_STARTED_GROUP
+             * BATCH_COMPLETED_GROUP
+             * 
+             * These are groups that cover all sql statements and stored procedures executed against the database, and
+             * should not be used in combination with other groups as this will result in duplicate audit logs.
+             * 
+             * For more information, see [Database-Level Audit Action
+             * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
+             * 
+             * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be
+             * specified for Server auditing policy). The supported actions to audit are:
+             * SELECT
+             * UPDATE
+             * INSERT
+             * DELETE
+             * EXECUTE
+             * RECEIVE
+             * REFERENCES
+             * 
+             * The general form for defining an action to be audited is:
+             * {action} ON {object} BY {principal}
+             * 
+             * Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored
+             * procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and
+             * SCHEMA::{schema_name} are used, respectively.
+             * 
+             * For example:
+             * SELECT on dbo.myTable by public
+             * SELECT on DATABASE::myDatabase by public
+             * SELECT on SCHEMA::mySchema by public
+             * 
+             * For more information, see [Database-Level Audit
+             * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions).
+             * @return the next definition stage.
+             */
+            Update withAuditActionsAndGroups(List<String> auditActionsAndGroups);
+        }
+
+        /**
+         * The stage of the ServerBlobAuditingPolicy update allowing to specify storageAccountSubscriptionId.
+         */
+        interface WithStorageAccountSubscriptionId {
+            /**
+             * Specifies the storageAccountSubscriptionId property: Specifies the blob storage subscription Id..
+             * 
+             * @param storageAccountSubscriptionId Specifies the blob storage subscription Id.
+             * @return the next definition stage.
+             */
+            Update withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId);
+        }
+
+        /**
          * The stage of the ServerBlobAuditingPolicy update allowing to specify isStorageSecondaryKeyInUse.
          */
         interface WithIsStorageSecondaryKeyInUse {
@@ -792,46 +903,6 @@ public interface ServerBlobAuditingPolicy {
              * @return the next definition stage.
              */
             Update withQueueDelayMs(Integer queueDelayMs);
-        }
-
-        /**
-         * The stage of the ServerBlobAuditingPolicy update allowing to specify isDevopsAuditEnabled.
-         */
-        interface WithIsDevopsAuditEnabled {
-            /**
-             * Specifies the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled,
-             * devops logs will be sent to Azure Monitor.
-             * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled'
-             * as true and 'IsDevopsAuditEnabled' as true
-             * 
-             * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-             * logs category on the master database should also be created.
-             * 
-             * Diagnostic Settings URI format:
-             * PUT
-             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-             * 
-             * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
-             * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
-             * .
-             * 
-             * @param isDevopsAuditEnabled Specifies the state of devops audit. If state is Enabled, devops logs will be
-             * sent to Azure Monitor.
-             * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled'
-             * as true and 'IsDevopsAuditEnabled' as true
-             * 
-             * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-             * logs category on the master database should also be created.
-             * 
-             * Diagnostic Settings URI format:
-             * PUT
-             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-             * 
-             * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
-             * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-             * @return the next definition stage.
-             */
-            Update withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled);
         }
     }
 

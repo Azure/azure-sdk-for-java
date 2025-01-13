@@ -10,6 +10,6 @@ module com.azure.resourcemanager.apicenter {
     exports com.azure.resourcemanager.apicenter.fluent.models;
     exports com.azure.resourcemanager.apicenter.models;
 
-    opens com.azure.resourcemanager.apicenter.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.apicenter.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.apicenter.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.apicenter.models to com.azure.core;
 }

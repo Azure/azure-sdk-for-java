@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,29 +19,25 @@ import java.util.List;
  * The properties of deployment.
  */
 @Fluent
-public final class DeploymentProperties {
+public final class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
      * Deployment ID
      */
-    @JsonProperty(value = "deploymentId")
     private String deploymentId;
 
     /*
      * Images deployed
      */
-    @JsonProperty(value = "deployedImages")
     private List<ImageInner> deployedImages;
 
     /*
      * Deployment date UTC
      */
-    @JsonProperty(value = "deploymentDateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deploymentDateUtc;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -112,5 +113,52 @@ public final class DeploymentProperties {
         if (deployedImages() != null) {
             deployedImages().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentId", this.deploymentId);
+        jsonWriter.writeArrayField("deployedImages", this.deployedImages,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentId".equals(fieldName)) {
+                    deserializedDeploymentProperties.deploymentId = reader.getString();
+                } else if ("deployedImages".equals(fieldName)) {
+                    List<ImageInner> deployedImages = reader.readArray(reader1 -> ImageInner.fromJson(reader1));
+                    deserializedDeploymentProperties.deployedImages = deployedImages;
+                } else if ("deploymentDateUtc".equals(fieldName)) {
+                    deserializedDeploymentProperties.deploymentDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDeploymentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
     }
 }

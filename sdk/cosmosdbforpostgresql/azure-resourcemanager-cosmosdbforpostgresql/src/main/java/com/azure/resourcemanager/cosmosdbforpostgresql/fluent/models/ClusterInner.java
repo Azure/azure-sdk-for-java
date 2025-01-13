@@ -7,11 +7,18 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AadEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PasswordEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +31,32 @@ public final class ClusterInner extends Resource {
     /*
      * Properties of the cluster.
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /*
+     * Describes the identity of the cluster.
+     */
+    private IdentityProperties identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ClusterInner class.
@@ -49,12 +74,62 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the identity property: Describes the identity of the cluster.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the cluster.
+     * 
+     * @param identity the identity value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -73,6 +148,15 @@ public final class ClusterInner extends Resource {
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
+    }
+
+    /**
+     * Get the aadAuthEnabled property: Indicates whether the cluster was created using AAD authentication.
+     * 
+     * @return the aadAuthEnabled value.
+     */
+    public AadEnabledEnum aadAuthEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadAuthEnabled();
     }
 
     /**
@@ -104,6 +188,29 @@ public final class ClusterInner extends Resource {
             this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    /**
+     * Get the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEncryption();
+    }
+
+    /**
+     * Set the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withDataEncryption(DataEncryption dataEncryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withDataEncryption(dataEncryption);
         return this;
     }
 
@@ -218,8 +325,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @return the enableShardsOnCoordinator value.
      */
@@ -228,8 +335,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterInner object itself.
@@ -542,6 +649,16 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the passwordEnabled property: Indicates whether the cluster was created with a password or using AAD
+     * authentication.
+     * 
+     * @return the passwordEnabled value.
+     */
+    public PasswordEnabledEnum passwordEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().passwordEnabled();
+    }
+
+    /**
      * Get the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
      * 
      * @return the pointInTimeUtc value.
@@ -671,5 +788,63 @@ public final class ClusterInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

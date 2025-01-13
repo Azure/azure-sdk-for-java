@@ -6,21 +6,26 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ClusterManagerProperties represents the properties of a cluster manager. */
+/**
+ * ClusterManagerProperties represents the properties of a cluster manager.
+ */
 @Fluent
-public final class ClusterManagerProperties {
+public final class ClusterManagerProperties implements JsonSerializable<ClusterManagerProperties> {
     /*
      * The resource ID of the Log Analytics workspace that is used for the logs collection.
      */
-    @JsonProperty(value = "analyticsWorkspaceId")
     private String analyticsWorkspaceId;
 
     /*
@@ -28,72 +33,61 @@ public final class ClusterManagerProperties {
      * in a future version. The Azure availability zones within the region that will be used to support the cluster
      * manager resource.
      */
-    @JsonProperty(value = "availabilityZones")
     private List<String> availabilityZones;
 
     /*
      * The list of the cluster versions the manager supports. It is used as input in clusterVersion property of a
      * cluster resource.
      */
-    @JsonProperty(value = "clusterVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClusterAvailableVersion> clusterVersions;
 
     /*
      * The detailed status that provides additional information about the cluster manager.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterManagerDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The resource ID of the fabric controller that has one to one mapping with the cluster manager.
      */
-    @JsonProperty(value = "fabricControllerId", required = true)
     private String fabricControllerId;
 
     /*
-     * ManagedResourceGroupConfiguration represents the configuration of the resource group managed by Azure.
-     *
      * The configuration of the managed resource group associated with the resource.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location (custom location) that represents the cluster manager's control plane location. This
      * extended location is used when creating cluster and rack manifest resources.
      */
-    @JsonProperty(value = "managerExtendedLocation", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocation managerExtendedLocation;
 
     /*
      * The provisioning state of the cluster manager.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterManagerProvisioningState provisioningState;
 
     /*
      * Field deprecated, this value will no longer influence the cluster manager allocation process and will be removed
      * in a future version. The size of the Azure virtual machines to use for hosting the cluster manager resource.
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
-    /** Creates an instance of ClusterManagerProperties class. */
+    /**
+     * Creates an instance of ClusterManagerProperties class.
+     */
     public ClusterManagerProperties() {
     }
 
     /**
      * Get the analyticsWorkspaceId property: The resource ID of the Log Analytics workspace that is used for the logs
      * collection.
-     *
+     * 
      * @return the analyticsWorkspaceId value.
      */
     public String analyticsWorkspaceId() {
@@ -103,7 +97,7 @@ public final class ClusterManagerProperties {
     /**
      * Set the analyticsWorkspaceId property: The resource ID of the Log Analytics workspace that is used for the logs
      * collection.
-     *
+     * 
      * @param analyticsWorkspaceId the analyticsWorkspaceId value to set.
      * @return the ClusterManagerProperties object itself.
      */
@@ -116,7 +110,7 @@ public final class ClusterManagerProperties {
      * Get the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
      * allocation process and will be removed in a future version. The Azure availability zones within the region that
      * will be used to support the cluster manager resource.
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -127,7 +121,7 @@ public final class ClusterManagerProperties {
      * Set the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
      * allocation process and will be removed in a future version. The Azure availability zones within the region that
      * will be used to support the cluster manager resource.
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ClusterManagerProperties object itself.
      */
@@ -139,7 +133,7 @@ public final class ClusterManagerProperties {
     /**
      * Get the clusterVersions property: The list of the cluster versions the manager supports. It is used as input in
      * clusterVersion property of a cluster resource.
-     *
+     * 
      * @return the clusterVersions value.
      */
     public List<ClusterAvailableVersion> clusterVersions() {
@@ -149,7 +143,7 @@ public final class ClusterManagerProperties {
     /**
      * Get the detailedStatus property: The detailed status that provides additional information about the cluster
      * manager.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public ClusterManagerDetailedStatus detailedStatus() {
@@ -158,7 +152,7 @@ public final class ClusterManagerProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -168,7 +162,7 @@ public final class ClusterManagerProperties {
     /**
      * Get the fabricControllerId property: The resource ID of the fabric controller that has one to one mapping with
      * the cluster manager.
-     *
+     * 
      * @return the fabricControllerId value.
      */
     public String fabricControllerId() {
@@ -178,7 +172,7 @@ public final class ClusterManagerProperties {
     /**
      * Set the fabricControllerId property: The resource ID of the fabric controller that has one to one mapping with
      * the cluster manager.
-     *
+     * 
      * @param fabricControllerId the fabricControllerId value to set.
      * @return the ClusterManagerProperties object itself.
      */
@@ -188,11 +182,9 @@ public final class ClusterManagerProperties {
     }
 
     /**
-     * Get the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Get the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedResourceGroupConfiguration managedResourceGroupConfiguration() {
@@ -200,11 +192,9 @@ public final class ClusterManagerProperties {
     }
 
     /**
-     * Set the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Set the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the ClusterManagerProperties object itself.
      */
@@ -215,12 +205,10 @@ public final class ClusterManagerProperties {
     }
 
     /**
-     * Get the managerExtendedLocation property: ExtendedLocation represents the Azure custom location where the
-     * resource will be created.
-     *
-     * <p>The extended location (custom location) that represents the cluster manager's control plane location. This
-     * extended location is used when creating cluster and rack manifest resources.
-     *
+     * Get the managerExtendedLocation property: The extended location (custom location) that represents the cluster
+     * manager's control plane location. This extended location is used when creating cluster and rack manifest
+     * resources.
+     * 
      * @return the managerExtendedLocation value.
      */
     public ExtendedLocation managerExtendedLocation() {
@@ -229,7 +217,7 @@ public final class ClusterManagerProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the cluster manager.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterManagerProvisioningState provisioningState() {
@@ -240,7 +228,7 @@ public final class ClusterManagerProperties {
      * Get the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
      * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
      * cluster manager resource.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -251,7 +239,7 @@ public final class ClusterManagerProperties {
      * Set the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
      * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
      * cluster manager resource.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the ClusterManagerProperties object itself.
      */
@@ -262,7 +250,7 @@ public final class ClusterManagerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -270,8 +258,9 @@ public final class ClusterManagerProperties {
             clusterVersions().forEach(e -> e.validate());
         }
         if (fabricControllerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fabricControllerId in model ClusterManagerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fabricControllerId in model ClusterManagerProperties"));
         }
         if (managedResourceGroupConfiguration() != null) {
             managedResourceGroupConfiguration().validate();
@@ -282,4 +271,70 @@ public final class ClusterManagerProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterManagerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricControllerId", this.fabricControllerId);
+        jsonWriter.writeStringField("analyticsWorkspaceId", this.analyticsWorkspaceId);
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterManagerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterManagerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterManagerProperties.
+     */
+    public static ClusterManagerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterManagerProperties deserializedClusterManagerProperties = new ClusterManagerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricControllerId".equals(fieldName)) {
+                    deserializedClusterManagerProperties.fabricControllerId = reader.getString();
+                } else if ("analyticsWorkspaceId".equals(fieldName)) {
+                    deserializedClusterManagerProperties.analyticsWorkspaceId = reader.getString();
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterManagerProperties.availabilityZones = availabilityZones;
+                } else if ("clusterVersions".equals(fieldName)) {
+                    List<ClusterAvailableVersion> clusterVersions
+                        = reader.readArray(reader1 -> ClusterAvailableVersion.fromJson(reader1));
+                    deserializedClusterManagerProperties.clusterVersions = clusterVersions;
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedClusterManagerProperties.detailedStatus
+                        = ClusterManagerDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedClusterManagerProperties.detailedStatusMessage = reader.getString();
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedClusterManagerProperties.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("managerExtendedLocation".equals(fieldName)) {
+                    deserializedClusterManagerProperties.managerExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterManagerProperties.provisioningState
+                        = ClusterManagerProvisioningState.fromString(reader.getString());
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedClusterManagerProperties.vmSize = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterManagerProperties;
+        });
+    }
 }

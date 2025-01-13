@@ -15,9 +15,9 @@
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
-  <name>Java Core Library for building client libraries for accessing web services.</name>
+  <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -37,9 +37,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
-    <jacoco.skip>true</jacoco.skip>
+    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
@@ -64,35 +64,21 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
-
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
-    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java,**/jackson/core/**/*.java</checkstyle.excludes>
+
+    <spotbugs.excludes>**/aalto/**/*.java,**/jackson/core/**/*.java</spotbugs.excludes>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames>
-      io.clientcore.core.json,com.azure.json,com.azure.xml,com.azure.core*
-    </javadoc.excludePackageNames>
+    <javadoc.excludePackageNames/>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
-    </dependency>
-
     <!-- Test dependencies -->
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
@@ -135,31 +121,11 @@
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy-agent</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 and http-jdk-httpclient -->
+      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -195,14 +161,36 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <dependencies>
-          <!-- Inject slf4j-simple into integration testing to verify the shim works as intended. -->
-          <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-          </dependency>
-        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+            <exclude>**/io/clientcore/core/serialization/xml/implementation/aalto/**</exclude>
+            <exclude>**/io/clientcore/core/serialization/json/implementation/jackson/core/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <additionalCodesnippets>
+            <additionalCodesnippet>
+              <root>../optional-dependency-tests/src/samples/java</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+            <additionalCodesnippet>
+              <root>src/test</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+          </additionalCodesnippets>
+        </configuration>
       </plugin>
     </plugins>
   </build>

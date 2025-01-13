@@ -31,6 +31,12 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     private CommunicationIdentifier createdBy;
 
     /**
+     * Creates a new instance of {@link ChatThreadProperties}.
+     */
+    public ChatThreadProperties() {
+    }
+
+    /**
      * Get the id property: Chat thread id.
      *
      * @return the id value.

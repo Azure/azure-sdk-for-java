@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.VirtualMachineTemplateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of VirtualMachineTemplates. */
+/**
+ * List of VirtualMachineTemplates.
+ */
 @Fluent
-public final class VirtualMachineTemplatesList {
+public final class VirtualMachineTemplatesList implements JsonSerializable<VirtualMachineTemplatesList> {
     /*
      * Url to follow for getting next page of VirtualMachineTemplates.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of VirtualMachineTemplates
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualMachineTemplateInner> value;
 
-    /** Creates an instance of VirtualMachineTemplatesList class. */
+    /**
+     * Creates an instance of VirtualMachineTemplatesList class.
+     */
     public VirtualMachineTemplatesList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of VirtualMachineTemplates.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class VirtualMachineTemplatesList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of VirtualMachineTemplates.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineTemplatesList object itself.
      */
@@ -51,7 +57,7 @@ public final class VirtualMachineTemplatesList {
 
     /**
      * Get the value property: Array of VirtualMachineTemplates.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineTemplateInner> value() {
@@ -60,7 +66,7 @@ public final class VirtualMachineTemplatesList {
 
     /**
      * Set the value property: Array of VirtualMachineTemplates.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineTemplatesList object itself.
      */
@@ -71,17 +77,60 @@ public final class VirtualMachineTemplatesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model VirtualMachineTemplatesList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineTemplatesList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineTemplatesList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplatesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplatesList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplatesList.
+     */
+    public static VirtualMachineTemplatesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplatesList deserializedVirtualMachineTemplatesList = new VirtualMachineTemplatesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineTemplateInner> value
+                        = reader.readArray(reader1 -> VirtualMachineTemplateInner.fromJson(reader1));
+                    deserializedVirtualMachineTemplatesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineTemplatesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplatesList;
+        });
+    }
 }

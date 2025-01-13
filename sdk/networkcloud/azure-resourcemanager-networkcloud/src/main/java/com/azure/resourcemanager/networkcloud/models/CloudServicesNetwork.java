@@ -11,56 +11,55 @@ import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetwork
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of CloudServicesNetwork. */
+/**
+ * An immutable client-side representation of CloudServicesNetwork.
+ */
 public interface CloudServicesNetwork {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -68,7 +67,7 @@ public interface CloudServicesNetwork {
     /**
      * Gets the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @return the additionalEgressEndpoints value.
      */
     List<EgressEndpoint> additionalEgressEndpoints();
@@ -76,7 +75,7 @@ public interface CloudServicesNetwork {
     /**
      * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     List<String> associatedResourceIds();
@@ -84,21 +83,21 @@ public interface CloudServicesNetwork {
     /**
      * Gets the clusterId property: The resource ID of the Network Cloud cluster this cloud services network is
      * associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     String clusterId();
 
     /**
      * Gets the detailedStatus property: The more detailed status of the cloud services network.
-     *
+     * 
      * @return the detailedStatus value.
      */
     CloudServicesNetworkDetailedStatus detailedStatus();
 
     /**
      * Gets the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     String detailedStatusMessage();
@@ -106,7 +105,7 @@ public interface CloudServicesNetwork {
     /**
      * Gets the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @return the enableDefaultEgressEndpoints value.
      */
     CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints();
@@ -114,7 +113,7 @@ public interface CloudServicesNetwork {
     /**
      * Gets the enabledEgressEndpoints property: The full list of additional and default egress endpoints that are
      * currently enabled.
-     *
+     * 
      * @return the enabledEgressEndpoints value.
      */
     List<EgressEndpoint> enabledEgressEndpoints();
@@ -122,7 +121,7 @@ public interface CloudServicesNetwork {
     /**
      * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     List<String> hybridAksClustersAssociatedIds();
@@ -130,14 +129,14 @@ public interface CloudServicesNetwork {
     /**
      * Gets the interfaceName property: The name of the interface that will be present in the virtual machine to
      * represent this network.
-     *
+     * 
      * @return the interfaceName value.
      */
     String interfaceName();
 
     /**
      * Gets the provisioningState property: The provisioning state of the cloud services network.
-     *
+     * 
      * @return the provisioningState value.
      */
     CloudServicesNetworkProvisioningState provisioningState();
@@ -146,55 +145,63 @@ public interface CloudServicesNetwork {
      * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
      * services network.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     List<String> virtualMachinesAssociatedIds();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkInner object.
-     *
+     * 
      * @return the inner object.
      */
     CloudServicesNetworkInner innerModel();
 
-    /** The entirety of the CloudServicesNetwork definition. */
+    /**
+     * The entirety of the CloudServicesNetwork definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
     }
 
-    /** The CloudServicesNetwork definition stages. */
+    /**
+     * The CloudServicesNetwork definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CloudServicesNetwork definition. */
+        /**
+         * The first stage of the CloudServicesNetwork definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify location. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -202,35 +209,35 @@ public interface CloudServicesNetwork {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify parent resource. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify extendedLocation. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify extendedLocation.
+         */
         interface WithExtendedLocation {
             /**
-             * Specifies the extendedLocation property: ExtendedLocation represents the Azure custom location where the
-             * resource will be created.
-             *
-             * <p>The extended location of the cluster associated with the resource..
-             *
-             * @param extendedLocation ExtendedLocation represents the Azure custom location where the resource will be
-             *     created.
-             *     <p>The extended location of the cluster associated with the resource.
+             * Specifies the extendedLocation property: The extended location of the cluster associated with the
+             * resource..
+             * 
+             * @param extendedLocation The extended location of the cluster associated with the resource.
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
@@ -244,52 +251,58 @@ public interface CloudServicesNetwork {
             DefinitionStages.WithEnableDefaultEgressEndpoints {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CloudServicesNetwork create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CloudServicesNetwork create(Context context);
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify tags. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify additionalEgressEndpoints. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify additionalEgressEndpoints.
+         */
         interface WithAdditionalEgressEndpoints {
             /**
              * Specifies the additionalEgressEndpoints property: The list of egress endpoints. This allows for
              * connection from a Hybrid AKS cluster to the specified endpoint..
-             *
+             * 
              * @param additionalEgressEndpoints The list of egress endpoints. This allows for connection from a Hybrid
-             *     AKS cluster to the specified endpoint.
+             * AKS cluster to the specified endpoint.
              * @return the next definition stage.
              */
             WithCreate withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
 
-        /** The stage of the CloudServicesNetwork definition allowing to specify enableDefaultEgressEndpoints. */
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify enableDefaultEgressEndpoints.
+         */
         interface WithEnableDefaultEgressEndpoints {
             /**
              * Specifies the enableDefaultEgressEndpoints property: The indicator of whether the platform default
              * endpoints are allowed for the egress traffic..
-             *
+             * 
              * @param enableDefaultEgressEndpoints The indicator of whether the platform default endpoints are allowed
-             *     for the egress traffic.
+             * for the egress traffic.
              * @return the next definition stage.
              */
             WithCreate withEnableDefaultEgressEndpoints(
@@ -299,64 +312,74 @@ public interface CloudServicesNetwork {
 
     /**
      * Begins update for the CloudServicesNetwork resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     CloudServicesNetwork.Update update();
 
-    /** The template for CloudServicesNetwork update. */
+    /**
+     * The template for CloudServicesNetwork update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithAdditionalEgressEndpoints,
         UpdateStages.WithEnableDefaultEgressEndpoints {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         CloudServicesNetwork apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         CloudServicesNetwork apply(Context context);
     }
 
-    /** The CloudServicesNetwork update stages. */
+    /**
+     * The CloudServicesNetwork update stages.
+     */
     interface UpdateStages {
-        /** The stage of the CloudServicesNetwork update allowing to specify tags. */
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The Azure resource tags that will replace the existing ones..
-             *
+             * 
              * @param tags The Azure resource tags that will replace the existing ones.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the CloudServicesNetwork update allowing to specify additionalEgressEndpoints. */
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify additionalEgressEndpoints.
+         */
         interface WithAdditionalEgressEndpoints {
             /**
              * Specifies the additionalEgressEndpoints property: The list of egress endpoints. This allows for
              * connection from a Hybrid AKS cluster to the specified endpoint..
-             *
+             * 
              * @param additionalEgressEndpoints The list of egress endpoints. This allows for connection from a Hybrid
-             *     AKS cluster to the specified endpoint.
+             * AKS cluster to the specified endpoint.
              * @return the next definition stage.
              */
             Update withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
 
-        /** The stage of the CloudServicesNetwork update allowing to specify enableDefaultEgressEndpoints. */
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify enableDefaultEgressEndpoints.
+         */
         interface WithEnableDefaultEgressEndpoints {
             /**
              * Specifies the enableDefaultEgressEndpoints property: The indicator of whether the platform default
              * endpoints are allowed for the egress traffic..
-             *
+             * 
              * @param enableDefaultEgressEndpoints The indicator of whether the platform default endpoints are allowed
-             *     for the egress traffic.
+             * for the egress traffic.
              * @return the next definition stage.
              */
             Update withEnableDefaultEgressEndpoints(
@@ -366,14 +389,14 @@ public interface CloudServicesNetwork {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CloudServicesNetwork refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

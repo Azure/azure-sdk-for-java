@@ -18,7 +18,8 @@ public final class DeploymentsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().headWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }

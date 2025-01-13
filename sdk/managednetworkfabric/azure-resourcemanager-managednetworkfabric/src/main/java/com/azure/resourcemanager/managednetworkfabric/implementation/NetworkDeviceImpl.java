@@ -178,8 +178,8 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkDeviceName = Utils.getValueFromIdByName(innerObject.id(), "networkDevices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkDevices");
     }
 
     public NetworkDevice refresh() {

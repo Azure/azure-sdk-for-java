@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationLoginResponseContractInner;
 
-/** Contains all response data for the post operation. */
+/**
+ * Contains all response data for the post operation.
+ */
 public final class AuthorizationLoginLinksPostResponse
     extends ResponseBase<AuthorizationLoginLinksPostHeaders, AuthorizationLoginResponseContractInner> {
     /**
      * Creates an instance of AuthorizationLoginLinksPostResponse.
-     *
+     * 
      * @param request the request which resulted in this AuthorizationLoginLinksPostResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class AuthorizationLoginLinksPostResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

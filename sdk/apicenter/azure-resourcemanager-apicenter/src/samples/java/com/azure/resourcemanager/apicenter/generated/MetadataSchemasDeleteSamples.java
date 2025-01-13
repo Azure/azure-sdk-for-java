@@ -19,7 +19,7 @@ public final class MetadataSchemasDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void metadataSchemasDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.metadataSchemas().deleteWithResponse("contoso-resources", "contoso", "author",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .deleteWithResponse("contoso-resources", "contoso", "author", com.azure.core.util.Context.NONE);
     }
 }

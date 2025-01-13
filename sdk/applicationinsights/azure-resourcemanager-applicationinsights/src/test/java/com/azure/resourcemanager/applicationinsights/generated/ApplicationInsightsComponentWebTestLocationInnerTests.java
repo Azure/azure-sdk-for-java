@@ -11,7 +11,7 @@ public final class ApplicationInsightsComponentWebTestLocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentWebTestLocationInner model
-            = BinaryData.fromString("{\"DisplayName\":\"qfbow\",\"Tag\":\"anyktzlcuiywg\"}")
+            = BinaryData.fromString("{\"DisplayName\":\"jrefovgmkqsle\",\"Tag\":\"vxyqjpkcattpngjc\"}")
                 .toObject(ApplicationInsightsComponentWebTestLocationInner.class);
     }
 

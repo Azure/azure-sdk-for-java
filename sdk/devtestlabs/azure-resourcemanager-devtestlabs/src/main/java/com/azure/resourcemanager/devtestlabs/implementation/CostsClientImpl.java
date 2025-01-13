@@ -27,17 +27,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.CostsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabCostInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CostsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CostsClient.
+ */
 public final class CostsClientImpl implements CostsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CostsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of CostsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CostsClientImpl(DevTestLabsClientImpl client) {
@@ -75,7 +81,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -115,7 +121,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -155,7 +161,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -173,7 +179,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -192,7 +198,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -209,7 +215,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -254,7 +260,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -299,7 +305,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -318,7 +324,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -337,7 +343,7 @@ public final class CostsClientImpl implements CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.

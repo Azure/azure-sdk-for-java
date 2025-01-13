@@ -18,7 +18,7 @@ public final class ExperimentsGetByResourceGroupSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().getByResourceGroupWithResponse("exampleRG", "exampleExperiment",
-            com.azure.core.util.Context.NONE);
+        manager.experiments()
+            .getByResourceGroupWithResponse("exampleRG", "exampleExperiment", com.azure.core.util.Context.NONE);
     }
 }

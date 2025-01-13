@@ -13,33 +13,33 @@ public final class SearchSchemaValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SearchSchemaValue model = BinaryData.fromString(
-            "{\"name\":\"rtuzqogs\",\"displayName\":\"nevfdnw\",\"type\":\"mewzsyyc\",\"indexed\":false,\"stored\":true,\"facet\":true,\"ownerType\":[\"bjudpfrxtrthzv\"]}")
+            "{\"name\":\"ulpjr\",\"displayName\":\"ag\",\"type\":\"vimjwos\",\"indexed\":false,\"stored\":false,\"facet\":false,\"ownerType\":[\"skfc\",\"tq\",\"miekkezzikhlyfjh\",\"gqggebdunygae\"]}")
             .toObject(SearchSchemaValue.class);
-        Assertions.assertEquals("rtuzqogs", model.name());
-        Assertions.assertEquals("nevfdnw", model.displayName());
-        Assertions.assertEquals("mewzsyyc", model.type());
+        Assertions.assertEquals("ulpjr", model.name());
+        Assertions.assertEquals("ag", model.displayName());
+        Assertions.assertEquals("vimjwos", model.type());
         Assertions.assertEquals(false, model.indexed());
-        Assertions.assertEquals(true, model.stored());
-        Assertions.assertEquals(true, model.facet());
-        Assertions.assertEquals("bjudpfrxtrthzv", model.ownerType().get(0));
+        Assertions.assertEquals(false, model.stored());
+        Assertions.assertEquals(false, model.facet());
+        Assertions.assertEquals("skfc", model.ownerType().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchSchemaValue model = new SearchSchemaValue().withName("rtuzqogs")
-            .withDisplayName("nevfdnw")
-            .withType("mewzsyyc")
+        SearchSchemaValue model = new SearchSchemaValue().withName("ulpjr")
+            .withDisplayName("ag")
+            .withType("vimjwos")
             .withIndexed(false)
-            .withStored(true)
-            .withFacet(true)
-            .withOwnerType(Arrays.asList("bjudpfrxtrthzv"));
+            .withStored(false)
+            .withFacet(false)
+            .withOwnerType(Arrays.asList("skfc", "tq", "miekkezzikhlyfjh", "gqggebdunygae"));
         model = BinaryData.fromObject(model).toObject(SearchSchemaValue.class);
-        Assertions.assertEquals("rtuzqogs", model.name());
-        Assertions.assertEquals("nevfdnw", model.displayName());
-        Assertions.assertEquals("mewzsyyc", model.type());
+        Assertions.assertEquals("ulpjr", model.name());
+        Assertions.assertEquals("ag", model.displayName());
+        Assertions.assertEquals("vimjwos", model.type());
         Assertions.assertEquals(false, model.indexed());
-        Assertions.assertEquals(true, model.stored());
-        Assertions.assertEquals(true, model.facet());
-        Assertions.assertEquals("bjudpfrxtrthzv", model.ownerType().get(0));
+        Assertions.assertEquals(false, model.stored());
+        Assertions.assertEquals(false, model.facet());
+        Assertions.assertEquals("skfc", model.ownerType().get(0));
     }
 }

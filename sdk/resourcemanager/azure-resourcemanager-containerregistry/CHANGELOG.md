@@ -1,6 +1,6 @@
 # Release History
 
-## 2.45.0-beta.1 (Unreleased)
+## 2.47.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.46.0-beta.1 (2024-12-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-11-01-preview`.
+
+## 2.45.0 (2024-11-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.44.0 (2024-10-25)
 

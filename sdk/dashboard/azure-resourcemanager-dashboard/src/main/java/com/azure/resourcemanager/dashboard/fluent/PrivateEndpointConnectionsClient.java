@@ -69,7 +69,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param privateEndpointConnectionName The private endpoint connection name of Azure Managed Grafana.
-     * @param body The Private Endpoint Connection resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +102,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param privateEndpointConnectionName The private endpoint connection name of Azure Managed Grafana.
-     * @param body The Private Endpoint Connection resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

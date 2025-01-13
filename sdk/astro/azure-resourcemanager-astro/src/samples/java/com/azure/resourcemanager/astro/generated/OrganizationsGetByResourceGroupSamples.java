@@ -18,7 +18,7 @@ public final class OrganizationsGetByResourceGroupSamples {
      * @param manager Entry point to AstroManager.
      */
     public static void organizationsGetGeneratedByMaximumSetRule(com.azure.resourcemanager.astro.AstroManager manager) {
-        manager.organizations().getByResourceGroupWithResponse("rgastronomer", "S PS",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getByResourceGroupWithResponse("rgastronomer", "S PS", com.azure.core.util.Context.NONE);
     }
 }

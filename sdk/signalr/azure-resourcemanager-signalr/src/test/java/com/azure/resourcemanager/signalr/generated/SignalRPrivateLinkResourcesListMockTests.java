@@ -22,7 +22,7 @@ public final class SignalRPrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ceakxc\",\"requiredMembers\":[\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\",\"mnrxxbsojkl\"],\"requiredZoneNames\":[\"mdptys\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"gnzxojpslsvj\",\"properties\":{\"description\":\"iufiqwo\",\"groupId\":\"qvapcohhoucq\",\"type\":\"oj\"}},{\"name\":\"x\",\"properties\":{\"description\":\"dcgdzbenribca\",\"groupId\":\"tzqdd\",\"type\":\"wflj\"}},{\"name\":\"namtuatmzw\",\"properties\":{\"description\":\"nc\",\"groupId\":\"jzmizv\",\"type\":\"gat\"}}]},\"id\":\"uvbxngr\",\"name\":\"bwggahtt\",\"type\":\"lswva\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"khvuhxepmrutz\",\"requiredMembers\":[\"aobn\",\"lujdjltymkmv\"],\"requiredZoneNames\":[\"hywartspph\",\"ixkykxd\",\"sj\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"ucfx\",\"properties\":{\"description\":\"kflrmymy\",\"groupId\":\"cqlh\",\"type\":\"s\"}}]},\"id\":\"sl\",\"name\":\"iiiovgqcgxuugq\",\"type\":\"ctotiowlx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,19 +31,18 @@ public final class SignalRPrivateLinkResourcesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response = manager.signalRPrivateLinkResources()
-            .list("hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response
+            = manager.signalRPrivateLinkResources().list("gfsxzec", "axwk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ceakxc", response.iterator().next().groupId());
-        Assertions.assertEquals("oqfyiaseqch", response.iterator().next().requiredMembers().get(0));
-        Assertions.assertEquals("mdptys", response.iterator().next().requiredZoneNames().get(0));
-        Assertions.assertEquals("gnzxojpslsvj",
-            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
-        Assertions.assertEquals("iufiqwo",
+        Assertions.assertEquals("khvuhxepmrutz", response.iterator().next().groupId());
+        Assertions.assertEquals("aobn", response.iterator().next().requiredMembers().get(0));
+        Assertions.assertEquals("hywartspph", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("ucfx", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions.assertEquals("kflrmymy",
             response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
-        Assertions.assertEquals("qvapcohhoucq",
+        Assertions.assertEquals("cqlh",
             response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
-        Assertions.assertEquals("oj",
+        Assertions.assertEquals("s",
             response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
     }
 }

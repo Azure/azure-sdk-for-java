@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,85 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-12-11)
+
+- Azure Resource Manager ResourceMover client library for Java. This package contains Microsoft Azure SDK for ResourceMover Management SDK. A first party Azure service orchestrating the move of Azure resources from one Azure region to another or between zones within a region. Package tag package-2023-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.AvailabilitySetResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.ResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.LoadBalancerResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.SqlElasticPoolResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.ResourceGroupResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.PublicIpAddressResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.SqlServerResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.VirtualNetworkResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.KeyVaultResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.DiskEncryptionSetResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.NetworkSecurityGroupResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.MoveResourcePropertiesMoveStatus` was modified
+
+* `moveState()` was added
+
+#### `models.SqlDatabaseResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.VirtualMachineResourceSettings` was modified
+
+* `resourceType()` was added
+
+#### `models.NetworkInterfaceResourceSettings` was modified
+
+* `resourceType()` was added
 
 ## 1.1.0 (2023-10-23)
 

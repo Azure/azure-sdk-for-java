@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An error response from the SAP migrate resources.
  */
 @Fluent
-public final class SapMigrateError {
+public final class SapMigrateError implements JsonSerializable<SapMigrateError> {
     /*
      * The SAP Discovery site resource error body.
      */
-    @JsonProperty(value = "properties")
     private ErrorDefinition properties;
 
     /**
@@ -53,5 +56,41 @@ public final class SapMigrateError {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapMigrateError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapMigrateError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapMigrateError.
+     */
+    public static SapMigrateError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapMigrateError deserializedSapMigrateError = new SapMigrateError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSapMigrateError.properties = ErrorDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapMigrateError;
+        });
     }
 }

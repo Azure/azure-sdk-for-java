@@ -6,57 +6,59 @@ package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.models.OperationActionType;
 import com.azure.resourcemanager.providerhub.models.OperationOrigins;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an Operation. */
+/**
+ * Properties of an Operation.
+ */
 @Fluent
-public final class OperationsDefinitionInner {
+public final class OperationsDefinitionInner implements JsonSerializable<OperationsDefinitionInner> {
     /*
      * Name of the operation.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Indicates whether the operation applies to data-plane.
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * The origin property.
      */
-    @JsonProperty(value = "origin")
     private OperationOrigins origin;
 
     /*
      * Display information of the operation.
      */
-    @JsonProperty(value = "display", required = true)
     private OperationsDefinitionDisplay display;
 
     /*
      * The actionType property.
      */
-    @JsonProperty(value = "actionType")
     private OperationActionType actionType;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of OperationsDefinitionInner class. */
+    /**
+     * Creates an instance of OperationsDefinitionInner class.
+     */
     public OperationsDefinitionInner() {
     }
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +67,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -76,7 +78,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -85,7 +87,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -96,7 +98,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Get the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigins origin() {
@@ -105,7 +107,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the origin property: The origin property.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -116,7 +118,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Get the display property: Display information of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationsDefinitionDisplay display() {
@@ -125,7 +127,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the display property: Display information of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -136,7 +138,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Get the actionType property: The actionType property.
-     *
+     * 
      * @return the actionType value.
      */
     public OperationActionType actionType() {
@@ -145,7 +147,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the actionType property: The actionType property.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -156,7 +158,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Get the properties property: Anything.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -165,7 +167,7 @@ public final class OperationsDefinitionInner {
 
     /**
      * Set the properties property: Anything.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationsDefinitionInner object itself.
      */
@@ -176,21 +178,75 @@ public final class OperationsDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model OperationsDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model OperationsDefinitionInner"));
         }
         if (display() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property display in model OperationsDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property display in model OperationsDefinitionInner"));
         } else {
             display().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationsDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeStringField("origin", this.origin == null ? null : this.origin.toString());
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsDefinitionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationsDefinitionInner.
+     */
+    public static OperationsDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsDefinitionInner deserializedOperationsDefinitionInner = new OperationsDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.display = OperationsDefinitionDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.origin = OperationOrigins.fromString(reader.getString());
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.actionType
+                        = OperationActionType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationsDefinitionInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsDefinitionInner;
+        });
+    }
 }

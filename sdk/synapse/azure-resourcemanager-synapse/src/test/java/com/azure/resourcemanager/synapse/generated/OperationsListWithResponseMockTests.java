@@ -22,7 +22,7 @@ public final class OperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "[{\"display\":{\"description\":\"y\",\"resource\":\"mpztraudsvhlc\",\"provider\":\"ul\",\"operation\":\"gpqtmo\"},\"isDataAction\":\"vr\",\"name\":\"nvgyshqrdgrtwme\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}],\"logSpecifications\":[{},{}]}},\"origin\":\"fa\"},{\"display\":{\"description\":\"jcayerzrransyby\",\"resource\":\"ol\",\"provider\":\"rghsrleinkfsc\",\"operation\":\"ncjwvuag\"},\"isDataAction\":\"wtltngvmreuptrk\",\"name\":\"m\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}],\"logSpecifications\":[{}]}},\"origin\":\"fsvagh\"}]";
+            = "[{\"display\":{\"description\":\"yl\",\"resource\":\"igvxvatvcrk\",\"provider\":\"b\",\"operation\":\"qxvhcsyhzlwxa\"},\"isDataAction\":\"ov\",\"name\":\"exdnd\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}],\"logSpecifications\":[{},{},{}]}},\"origin\":\"rzmwn\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class OperationsListWithResponseMockTests {
         List<AvailableRpOperation> response
             = manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("y", response.get(0).display().description());
-        Assertions.assertEquals("mpztraudsvhlc", response.get(0).display().resource());
-        Assertions.assertEquals("ul", response.get(0).display().provider());
-        Assertions.assertEquals("gpqtmo", response.get(0).display().operation());
-        Assertions.assertEquals("vr", response.get(0).isDataAction());
-        Assertions.assertEquals("nvgyshqrdgrtwme", response.get(0).name());
-        Assertions.assertEquals("fa", response.get(0).origin());
+        Assertions.assertEquals("yl", response.get(0).display().description());
+        Assertions.assertEquals("igvxvatvcrk", response.get(0).display().resource());
+        Assertions.assertEquals("b", response.get(0).display().provider());
+        Assertions.assertEquals("qxvhcsyhzlwxa", response.get(0).display().operation());
+        Assertions.assertEquals("ov", response.get(0).isDataAction());
+        Assertions.assertEquals("exdnd", response.get(0).name());
+        Assertions.assertEquals("rzmwn", response.get(0).origin());
     }
 }

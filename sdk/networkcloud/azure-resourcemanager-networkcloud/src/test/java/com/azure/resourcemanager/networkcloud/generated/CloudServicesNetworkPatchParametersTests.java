@@ -18,47 +18,47 @@ public final class CloudServicesNetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudServicesNetworkPatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"thjtwk\",\"endpoints\":[{\"domainName\":\"osrxuzvoa\",\"port\":9197432395507081242},{\"domainName\":\"q\",\"port\":4018804098340453728}]},{\"category\":\"gbzahgxqdlyr\",\"endpoints\":[{\"domainName\":\"tlaprltzkatb\",\"port\":8174172127943547857},{\"domainName\":\"nnbsoqeqa\",\"port\":8492998195204098966},{\"domainName\":\"lagun\",\"port\":9211068840981575117},{\"domainName\":\"ebwlnbmhyreeudzq\",\"port\":1466138960999741534}]},{\"category\":\"dqmjxly\",\"endpoints\":[{\"domainName\":\"glgou\",\"port\":7389766894389519511}]},{\"category\":\"jjyuojqtobax\",\"endpoints\":[{\"domainName\":\"eytu\",\"port\":4612686172840970711}]}],\"enableDefaultEgressEndpoints\":\"True\"},\"tags\":{\"nkqbhsyrq\":\"u\",\"l\":\"njqhdenxa\"}}")
+            "{\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"czytqjtwhauunfpr\",\"endpoints\":[{\"domainName\":\"letlx\",\"port\":2409915169148121323},{\"domainName\":\"ddoui\",\"port\":8874077654693108380},{\"domainName\":\"waziy\",\"port\":3801503264233403815},{\"domainName\":\"qwzdvpiwhxq\",\"port\":4710676640752400099}]},{\"category\":\"maajquhuxylr\",\"endpoints\":[{\"domainName\":\"m\",\"port\":869139068386354509},{\"domainName\":\"bmzyospsps\",\"port\":5969049516566939665}]},{\"category\":\"kyjpmspbps\",\"endpoints\":[{\"domainName\":\"fppyogtieyujtvcz\",\"port\":1126499421836361150}]}],\"enableDefaultEgressEndpoints\":\"False\"},\"tags\":{\"glnkvxlxpagl\":\"unjdx\",\"hpzvuqdflvoniyp\":\"ivbgkcv\",\"idibgqjxgpn\":\"pubcpzgpxtivhjk\",\"kqmhhaowjr\":\"hgovfgp\"}}")
             .toObject(CloudServicesNetworkPatchParameters.class);
-        Assertions.assertEquals("u", model.tags().get("nkqbhsyrq"));
-        Assertions.assertEquals("thjtwk", model.additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("osrxuzvoa", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(9197432395507081242L,
+        Assertions.assertEquals("unjdx", model.tags().get("glnkvxlxpagl"));
+        Assertions.assertEquals("czytqjtwhauunfpr", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("letlx", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(2409915169148121323L,
             model.additionalEgressEndpoints().get(0).endpoints().get(0).port());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
             model.enableDefaultEgressEndpoints());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudServicesNetworkPatchParameters model
-            = new CloudServicesNetworkPatchParameters().withTags(mapOf("nkqbhsyrq", "u", "l", "njqhdenxa"))
-                .withAdditionalEgressEndpoints(Arrays.asList(
-                    new EgressEndpoint().withCategory("thjtwk")
-                        .withEndpoints(Arrays.asList(
-                            new EndpointDependency().withDomainName("osrxuzvoa").withPort(9197432395507081242L),
-                            new EndpointDependency().withDomainName("q").withPort(4018804098340453728L))),
-                    new EgressEndpoint().withCategory("gbzahgxqdlyr")
-                        .withEndpoints(Arrays.asList(
-                            new EndpointDependency().withDomainName("tlaprltzkatb").withPort(8174172127943547857L),
-                            new EndpointDependency().withDomainName("nnbsoqeqa").withPort(8492998195204098966L),
-                            new EndpointDependency().withDomainName("lagun").withPort(9211068840981575117L),
-                            new EndpointDependency().withDomainName("ebwlnbmhyreeudzq")
-                                .withPort(1466138960999741534L))),
-                    new EgressEndpoint().withCategory("dqmjxly")
-                        .withEndpoints(Arrays
-                            .asList(new EndpointDependency().withDomainName("glgou").withPort(7389766894389519511L))),
-                    new EgressEndpoint().withCategory("jjyuojqtobax")
-                        .withEndpoints(Arrays
-                            .asList(new EndpointDependency().withDomainName("eytu").withPort(4612686172840970711L)))))
-                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE);
+            = new CloudServicesNetworkPatchParameters()
+                .withTags(mapOf("glnkvxlxpagl", "unjdx", "hpzvuqdflvoniyp", "ivbgkcv", "idibgqjxgpn", "pubcpzgpxtivhjk",
+                    "kqmhhaowjr", "hgovfgp"))
+                .withAdditionalEgressEndpoints(Arrays
+                    .asList(
+                        new EgressEndpoint().withCategory("czytqjtwhauunfpr")
+                            .withEndpoints(Arrays
+                                .asList(new EndpointDependency().withDomainName("letlx").withPort(2409915169148121323L),
+                                    new EndpointDependency().withDomainName("ddoui").withPort(8874077654693108380L),
+                                    new EndpointDependency().withDomainName("waziy").withPort(3801503264233403815L),
+                                    new EndpointDependency().withDomainName("qwzdvpiwhxq")
+                                        .withPort(4710676640752400099L))),
+                        new EgressEndpoint().withCategory("maajquhuxylr")
+                            .withEndpoints(Arrays.asList(
+                                new EndpointDependency().withDomainName("m").withPort(869139068386354509L),
+                                new EndpointDependency().withDomainName("bmzyospsps").withPort(5969049516566939665L))),
+                        new EgressEndpoint().withCategory("kyjpmspbps")
+                            .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("fppyogtieyujtvcz")
+                                .withPort(1126499421836361150L)))))
+                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE);
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkPatchParameters.class);
-        Assertions.assertEquals("u", model.tags().get("nkqbhsyrq"));
-        Assertions.assertEquals("thjtwk", model.additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("osrxuzvoa", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(9197432395507081242L,
+        Assertions.assertEquals("unjdx", model.tags().get("glnkvxlxpagl"));
+        Assertions.assertEquals("czytqjtwhauunfpr", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("letlx", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(2409915169148121323L,
             model.additionalEgressEndpoints().get(0).endpoints().get(0).port());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
             model.enableDefaultEgressEndpoints());
     }
 

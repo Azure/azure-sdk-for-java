@@ -16,29 +16,29 @@ public final class AutomationRulePropertyValuesChangedConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRulePropertyValuesChangedCondition model = BinaryData.fromString(
-            "{\"propertyName\":\"IncidentSeverity\",\"changeType\":\"ChangedFrom\",\"operator\":\"NotEquals\",\"propertyValues\":[\"buubpyrowt\",\"oxztfwfqch\"]}")
+            "{\"propertyName\":\"IncidentOwner\",\"changeType\":\"ChangedTo\",\"operator\":\"EndsWith\",\"propertyValues\":[\"vjtszcofize\",\"tdhgbjkvrelj\",\"amurvzmlovuan\"]}")
             .toObject(AutomationRulePropertyValuesChangedCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_SEVERITY,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER,
             model.propertyName());
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO,
             model.changeType());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("buubpyrowt", model.propertyValues().get(0));
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.ENDS_WITH, model.operator());
+        Assertions.assertEquals("vjtszcofize", model.propertyValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationRulePropertyValuesChangedCondition model = new AutomationRulePropertyValuesChangedCondition()
-            .withPropertyName(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_SEVERITY)
-            .withChangeType(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM)
-            .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS)
-            .withPropertyValues(Arrays.asList("buubpyrowt", "oxztfwfqch"));
+            .withPropertyName(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER)
+            .withChangeType(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO)
+            .withOperator(AutomationRulePropertyConditionSupportedOperator.ENDS_WITH)
+            .withPropertyValues(Arrays.asList("vjtszcofize", "tdhgbjkvrelj", "amurvzmlovuan"));
         model = BinaryData.fromObject(model).toObject(AutomationRulePropertyValuesChangedCondition.class);
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_SEVERITY,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER,
             model.propertyName());
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO,
             model.changeType());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("buubpyrowt", model.propertyValues().get(0));
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.ENDS_WITH, model.operator());
+        Assertions.assertEquals("vjtszcofize", model.propertyValues().get(0));
     }
 }

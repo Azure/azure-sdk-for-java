@@ -85,7 +85,11 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
                 .buildClient());
     }
 
-    /** @return entry point to DNS zone manager zone management */
+    /**
+     * Gets entry point to DNS zone manager zone management.
+     *
+     * @return entry point to DNS zone manager zone management
+     */
     public DnsZones zones() {
         if (this.zones == null) {
             this.zones = new DnsZonesImpl(this);

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Model class for provider specific details for an event.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = EventProviderSpecificDetails.class)
-@JsonTypeName("EventProviderSpecificDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2AEventDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplica2012", value = HyperVReplica2012EventDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplica2012R2", value = HyperVReplica2012R2EventDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureEventDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaBaseEventDetails", value = HyperVReplicaBaseEventDetails.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2EventDetails.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmEventDetails.class),
-    @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackEventDetails.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtEventDetails.class) })
 @Immutable
-public class EventProviderSpecificDetails {
+public class EventProviderSpecificDetails implements JsonSerializable<EventProviderSpecificDetails> {
+    /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "EventProviderSpecificDetails";
+
     /**
      * Creates an instance of EventProviderSpecificDetails class.
      */
     public EventProviderSpecificDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -42,5 +42,82 @@ public class EventProviderSpecificDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventProviderSpecificDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventProviderSpecificDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventProviderSpecificDetails.
+     */
+    public static EventProviderSpecificDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2AEventDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplica2012".equals(discriminatorValue)) {
+                    return HyperVReplica2012EventDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplica2012R2".equals(discriminatorValue)) {
+                    return HyperVReplica2012R2EventDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureEventDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaBaseEventDetails".equals(discriminatorValue)) {
+                    return HyperVReplicaBaseEventDetails.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2EventDetails.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmEventDetails.fromJson(readerToUse.reset());
+                } else if ("InMageRcmFailback".equals(discriminatorValue)) {
+                    return InMageRcmFailbackEventDetails.fromJson(readerToUse.reset());
+                } else if ("VMwareCbt".equals(discriminatorValue)) {
+                    return VMwareCbtEventDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventProviderSpecificDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventProviderSpecificDetails deserializedEventProviderSpecificDetails = new EventProviderSpecificDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedEventProviderSpecificDetails.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventProviderSpecificDetails;
+        });
     }
 }

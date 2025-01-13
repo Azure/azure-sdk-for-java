@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -28,23 +29,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Approvals. */
+/**
+ * An instance of this class provides access to all the operations defined in Approvals.
+ */
 public final class ApprovalsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApprovalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of ApprovalsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApprovalsImpl(PurviewWorkflowClientImpl client) {
         this.service
             = RestProxy.create(ApprovalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -101,15 +117,16 @@ public final class ApprovalsImpl {
 
     /**
      * Approve an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of approving an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -129,15 +146,16 @@ public final class ApprovalsImpl {
 
     /**
      * Approve an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of approving an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -157,15 +175,16 @@ public final class ApprovalsImpl {
 
     /**
      * Reject an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of rejecting an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -185,15 +204,16 @@ public final class ApprovalsImpl {
 
     /**
      * Reject an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of rejecting an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

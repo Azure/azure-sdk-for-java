@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner;
-import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -116,8 +115,13 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().workspaceUid();
     }
 
-    public Object extraProperties() {
-        return this.innerModel().extraProperties();
+    public Map<String, Object> extraProperties() {
+        Map<String, Object> inner = this.innerModel().extraProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
@@ -138,27 +142,6 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
-    }
-
-    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
-        return this.innerModel().cspWorkspaceAdminProperties();
-    }
-
-    public Map<String, Object> settings() {
-        Map<String, Object> inner = this.innerModel().settings();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public Boolean azureADOnlyAuthentication() {
-        return this.innerModel().azureADOnlyAuthentication();
-    }
-
-    public Boolean trustedServiceBypassEnabled() {
-        return this.innerModel().trustedServiceBypassEnabled();
     }
 
     public Region region() {
@@ -314,6 +297,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
+    public WorkspaceImpl withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
+        this.innerModel().withConnectivityEndpoints(connectivityEndpoints);
+        return this;
+    }
+
     public WorkspaceImpl withManagedVirtualNetwork(String managedVirtualNetwork) {
         this.innerModel().withManagedVirtualNetwork(managedVirtualNetwork);
         return this;
@@ -375,21 +363,6 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateWorkspacePatchInfo.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
-    }
-
-    public WorkspaceImpl withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
-        this.innerModel().withCspWorkspaceAdminProperties(cspWorkspaceAdminProperties);
-        return this;
-    }
-
-    public WorkspaceImpl withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
-        this.innerModel().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
-        return this;
-    }
-
-    public WorkspaceImpl withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
-        this.innerModel().withTrustedServiceBypassEnabled(trustedServiceBypassEnabled);
-        return this;
     }
 
     private boolean isInCreateMode() {

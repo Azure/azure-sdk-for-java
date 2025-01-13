@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PlannedFailoverModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.ProtectedItemModelInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemsClient.
+ */
 public interface ProtectedItemsClient {
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -36,9 +38,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -52,9 +54,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -69,9 +71,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -88,9 +90,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -104,9 +106,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -123,9 +125,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -140,9 +142,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -159,9 +161,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -174,9 +176,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -192,9 +194,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,9 +209,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -223,9 +225,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -240,9 +242,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -260,9 +262,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -276,9 +278,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.

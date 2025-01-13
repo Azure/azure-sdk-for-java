@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -41,12 +41,11 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManag
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionOperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateLinkResourcesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.QuotaUsagesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerCapabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -414,20 +413,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
-     * The QuotaUsagesClient object to access its operations.
-     */
-    private final QuotaUsagesClient quotaUsages;
-
-    /**
-     * Gets the QuotaUsagesClient object to access its operations.
-     * 
-     * @return the QuotaUsagesClient object.
-     */
-    public QuotaUsagesClient getQuotaUsages() {
-        return this.quotaUsages;
-    }
-
-    /**
      * The ReplicasClient object to access its operations.
      */
     private final ReplicasClient replicas;
@@ -514,7 +499,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-12-01-preview";
+        this.apiVersion = "2024-08-01";
         this.administrators = new AdministratorsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
@@ -534,7 +519,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.quotaUsages = new QuotaUsagesClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
         this.logFiles = new LogFilesClientImpl(this);
         this.serverThreatProtectionSettings = new ServerThreatProtectionSettingsClientImpl(this);

@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Appliances patchable resource definition. */
+/**
+ * The Appliances patchable resource definition.
+ */
 @Fluent
-public final class PatchableAppliance {
+public final class PatchableAppliance implements JsonSerializable<PatchableAppliance> {
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PatchableAppliance class. */
+    /**
+     * Creates an instance of PatchableAppliance class.
+     */
     public PatchableAppliance() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +39,7 @@ public final class PatchableAppliance {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchableAppliance object itself.
      */
@@ -45,9 +50,46 @@ public final class PatchableAppliance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchableAppliance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchableAppliance if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchableAppliance.
+     */
+    public static PatchableAppliance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchableAppliance deserializedPatchableAppliance = new PatchableAppliance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPatchableAppliance.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchableAppliance;
+        });
     }
 }

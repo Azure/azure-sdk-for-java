@@ -24,7 +24,8 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     private String type = "DatabricksSparkPython";
 
     /*
-     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType string).
+     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
+     * string).
      */
     private Object pythonFile;
 

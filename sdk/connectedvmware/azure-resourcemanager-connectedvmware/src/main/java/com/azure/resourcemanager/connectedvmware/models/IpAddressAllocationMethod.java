@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** IP address allocation method. */
+/**
+ * IP address allocation method.
+ */
 public final class IpAddressAllocationMethod extends ExpandableStringEnum<IpAddressAllocationMethod> {
-    /** Static value unset for IpAddressAllocationMethod. */
+    /**
+     * Static value unset for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod UNSET = fromString("unset");
 
-    /** Static value dynamic for IpAddressAllocationMethod. */
+    /**
+     * Static value dynamic for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod DYNAMIC = fromString("dynamic");
 
-    /** Static value static for IpAddressAllocationMethod. */
+    /**
+     * Static value static for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod STATIC = fromString("static");
 
-    /** Static value linklayer for IpAddressAllocationMethod. */
+    /**
+     * Static value linklayer for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod LINKLAYER = fromString("linklayer");
 
-    /** Static value random for IpAddressAllocationMethod. */
+    /**
+     * Static value random for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod RANDOM = fromString("random");
 
-    /** Static value other for IpAddressAllocationMethod. */
+    /**
+     * Static value other for IpAddressAllocationMethod.
+     */
     public static final IpAddressAllocationMethod OTHER = fromString("other");
 
     /**
      * Creates a new instance of IpAddressAllocationMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class IpAddressAllocationMethod extends ExpandableStringEnum<IpAddr
 
     /**
      * Creates or finds a IpAddressAllocationMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpAddressAllocationMethod.
      */
-    @JsonCreator
     public static IpAddressAllocationMethod fromString(String name) {
         return fromString(name, IpAddressAllocationMethod.class);
     }
 
     /**
      * Gets known IpAddressAllocationMethod values.
-     *
+     * 
      * @return known IpAddressAllocationMethod values.
      */
     public static Collection<IpAddressAllocationMethod> values() {

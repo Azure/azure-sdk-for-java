@@ -20,16 +20,6 @@ public final class SourceImageTriggerProperties extends TriggerProperties {
      */
     private String kind = "SourceImage";
 
-    /*
-     * Trigger status
-     */
-    private TriggerStatus status;
-
-    /*
-     * Provisioning state of the resource
-     */
-    private ProvisioningState provisioningState;
-
     /**
      * Creates an instance of SourceImageTriggerProperties class.
      */
@@ -47,33 +37,15 @@ public final class SourceImageTriggerProperties extends TriggerProperties {
     }
 
     /**
-     * Get the status property: Trigger status.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public TriggerStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (status() != null) {
+            status().validate();
+        }
     }
 
     /**
@@ -102,10 +74,10 @@ public final class SourceImageTriggerProperties extends TriggerProperties {
                 reader.nextToken();
 
                 if ("status".equals(fieldName)) {
-                    deserializedSourceImageTriggerProperties.status = TriggerStatus.fromJson(reader);
+                    deserializedSourceImageTriggerProperties.withStatus(TriggerStatus.fromJson(reader));
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedSourceImageTriggerProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                    deserializedSourceImageTriggerProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
                 } else if ("kind".equals(fieldName)) {
                     deserializedSourceImageTriggerProperties.kind = reader.getString();
                 } else {

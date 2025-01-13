@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for DatabasePrincipalAssignments Get. */
+/**
+ * Samples for DatabasePrincipalAssignments Get.
+ */
 public final class DatabasePrincipalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoDatabasePrincipalAssignmentsGet.json
      */
     /**
      * Sample code: KustoDatabasePrincipalAssignmentsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasePrincipalAssignmentsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
-            .getWithResponse(
-                "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", com.azure.core.util.Context.NONE);
+        manager.databasePrincipalAssignments()
+            .getWithResponse("kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1",
+                com.azure.core.util.Context.NONE);
     }
 }

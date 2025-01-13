@@ -10,9 +10,8 @@ import com.azure.resourcemanager.storageactions.models.StorageTaskAssignmentsLis
 public final class StorageTaskAssignmentsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageTaskAssignmentsListResult model = BinaryData
-            .fromString(
-                "{\"value\":[{\"id\":\"qzntypm\"},{\"id\":\"p\"},{\"id\":\"c\"}],\"nextLink\":\"qjsdpydnfyhxdeo\"}")
+        StorageTaskAssignmentsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"rabhjybigeho\"},{\"id\":\"bowsk\"},{\"id\":\"yktz\"},{\"id\":\"u\"}],\"nextLink\":\"wgqyw\"}")
             .toObject(StorageTaskAssignmentsListResult.class);
     }
 

@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure VM workload-specific workload item representing SAP HANA System.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "workloadItemType",
-    defaultImpl = AzureVmWorkloadSapHanaSystemWorkloadItem.class,
-    visible = true)
-@JsonTypeName("SAPHanaSystem")
 @Fluent
 public final class AzureVmWorkloadSapHanaSystemWorkloadItem extends AzureVmWorkloadItem {
     /*
      * Type of the backup item.
      */
-    @JsonTypeId
-    @JsonProperty(value = "workloadItemType", required = true)
     private String workloadItemType = "SAPHanaSystem";
 
     /**
@@ -132,6 +124,73 @@ public final class AzureVmWorkloadSapHanaSystemWorkloadItem extends AzureVmWorkl
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeBooleanField("isAutoProtectable", isAutoProtectable());
+        jsonWriter.writeNumberField("subinquireditemcount", subinquireditemcount());
+        jsonWriter.writeNumberField("subWorkloadItemCount", subWorkloadItemCount());
+        jsonWriter.writeStringField("workloadItemType", this.workloadItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSapHanaSystemWorkloadItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSapHanaSystemWorkloadItem if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSapHanaSystemWorkloadItem.
+     */
+    public static AzureVmWorkloadSapHanaSystemWorkloadItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSapHanaSystemWorkloadItem deserializedAzureVmWorkloadSapHanaSystemWorkloadItem
+                = new AzureVmWorkloadSapHanaSystemWorkloadItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.withParentName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.withServerName(reader.getString());
+                } else if ("isAutoProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem
+                        .withIsAutoProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subinquireditemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem
+                        .withSubinquireditemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("subWorkloadItemCount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem
+                        .withSubWorkloadItemCount(reader.getNullable(JsonReader::getInt));
+                } else if ("workloadItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaSystemWorkloadItem.workloadItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSapHanaSystemWorkloadItem;
+        });
     }
 }

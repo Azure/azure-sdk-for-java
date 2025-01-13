@@ -20,7 +20,7 @@ public final class ServerInstancesListBySapInstanceSamples {
      */
     public static void listsTheServerInstanceResourcesForTheGivenSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().listBySapInstance("test-rg", "SampleSite", "MPP_MPP",
-            com.azure.core.util.Context.NONE);
+        manager.serverInstances()
+            .listBySapInstance("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE);
     }
 }

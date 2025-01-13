@@ -35,36 +35,58 @@ public interface Network extends GroupableResource<NetworkManager, VirtualNetwor
      */
     boolean isPrivateIPAddressInNetwork(String ipAddress);
 
-    /** @return list of address spaces associated with this virtual network, in the CIDR notation */
+    /**
+     * Gets list of address spaces associated with this virtual network, in the CIDR notation.
+     *
+     * @return list of address spaces associated with this virtual network, in the CIDR notation
+     */
     List<String> addressSpaces();
 
-    /** @return list of DNS server IP addresses associated with this virtual network */
+    /**
+     * Gets list of DNS server IP addresses associated with this virtual network.
+     *
+     * @return list of DNS server IP addresses associated with this virtual network
+     */
     List<String> dnsServerIPs();
 
     /**
+     * Gets subnets of this virtual network.
+     *
      * @return subnets of this virtual network as a map indexed by subnet name
      *     <p>Note that when a virtual network is created with no subnets explicitly defined, a default subnet is
      *     automatically created with the name "subnet1".
      */
     Map<String, Subnet> subnets();
 
-    /** @return entry point to managing virtual network peerings for this network */
+    /**
+     * Gets entry point to managing virtual network peerings for this network.
+     *
+     * @return entry point to managing virtual network peerings for this network
+     */
     NetworkPeerings peerings();
 
     /**
+     * Checks whether DDoS protection is enabled for all the protected resources in the virtual network.
+     *
      * @return whether DDoS protection is enabled for all the protected resources in the virtual network. It requires a
      *     DDoS protection plan associated with the resource.
      */
     boolean isDdosProtectionEnabled();
 
     /**
+     * Checks whether VM protection is enabled for all the subnets in the virtual network.
+     *
      * @return whether VM protection is enabled for all the subnets in the virtual network
      * @deprecated use {@link Network#isDdosProtectionEnabled()}
      * */
     @Deprecated
     boolean isVmProtectionEnabled();
 
-    /** @return the DDoS protection plan id associated with the virtual network */
+    /**
+     * Gets the DDoS protection plan id associated with the virtual network.
+     *
+     * @return the DDoS protection plan id associated with the virtual network
+     */
     String ddosProtectionPlanId();
 
     /** The entirety of the virtual network definition. */

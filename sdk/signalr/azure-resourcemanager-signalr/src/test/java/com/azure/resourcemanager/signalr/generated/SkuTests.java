@@ -11,7 +11,7 @@ public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Sku model = BinaryData.fromString(
-            "{\"resourceType\":\"ob\",\"sku\":{\"name\":\"ft\",\"tier\":\"Premium\",\"size\":\"cwq\",\"family\":\"imaq\",\"capacity\":1167127831},\"capacity\":{\"minimum\":1484369172,\"maximum\":107725068,\"default\":1611708700,\"allowedValues\":[444207915,1128673192,84498484],\"scaleType\":\"Manual\"}}")
+            "{\"resourceType\":\"qvldspastjbkkd\",\"sku\":{\"name\":\"lves\",\"tier\":\"Free\",\"size\":\"xrrilozapee\",\"family\":\"hpxlktwkuziycs\",\"capacity\":491130908},\"capacity\":{\"minimum\":1092377559,\"maximum\":1863886155,\"default\":1342484784,\"allowedValues\":[68898852,1077847462,717163299],\"scaleType\":\"None\"}}")
             .toObject(Sku.class);
     }
 

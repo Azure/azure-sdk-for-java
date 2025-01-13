@@ -85,11 +85,6 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
      */
     private StorageAccountType storageAccountType;
 
-    /*
-     * Specifies the time that the sql pool was deleted
-     */
-    private OffsetDateTime sourceDatabaseDeletionDate;
-
     /**
      * Creates an instance of SqlPoolResourceProperties class.
      */
@@ -206,6 +201,17 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
     }
 
     /**
+     * Set the status property: Resource status.
+     * 
+     * @param status the status value to set.
+     * @return the SqlPoolResourceProperties object itself.
+     */
+    public SqlPoolResourceProperties withStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      * 
      * @return the restorePointInTime value.
@@ -279,6 +285,17 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
     }
 
     /**
+     * Set the creationDate property: Date the SQL pool was created.
+     * 
+     * @param creationDate the creationDate value to set.
+     * @return the SqlPoolResourceProperties object itself.
+     */
+    public SqlPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    /**
      * Get the storageAccountType property: The storage account type used to store backups for this sql pool.
      * 
      * @return the storageAccountType value.
@@ -295,26 +312,6 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
      */
     public SqlPoolResourceProperties withStorageAccountType(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
-        return this;
-    }
-
-    /**
-     * Get the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     * 
-     * @return the sourceDatabaseDeletionDate value.
-     */
-    public OffsetDateTime sourceDatabaseDeletionDate() {
-        return this.sourceDatabaseDeletionDate;
-    }
-
-    /**
-     * Set the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     * 
-     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
-     * @return the SqlPoolResourceProperties object itself.
-     */
-    public SqlPoolResourceProperties withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
-        this.sourceDatabaseDeletionDate = sourceDatabaseDeletionDate;
         return this;
     }
 
@@ -337,17 +334,16 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
         jsonWriter.writeStringField("sourceDatabaseId", this.sourceDatabaseId);
         jsonWriter.writeStringField("recoverableDatabaseId", this.recoverableDatabaseId);
         jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("restorePointInTime",
             this.restorePointInTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restorePointInTime));
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeStringField("creationDate",
+            this.creationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationDate));
         jsonWriter.writeStringField("storageAccountType",
             this.storageAccountType == null ? null : this.storageAccountType.toString());
-        jsonWriter.writeStringField("sourceDatabaseDeletionDate",
-            this.sourceDatabaseDeletionDate == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sourceDatabaseDeletionDate));
         return jsonWriter.writeEndObject();
     }
 
@@ -389,9 +385,6 @@ public final class SqlPoolResourceProperties implements JsonSerializable<SqlPool
                 } else if ("storageAccountType".equals(fieldName)) {
                     deserializedSqlPoolResourceProperties.storageAccountType
                         = StorageAccountType.fromString(reader.getString());
-                } else if ("sourceDatabaseDeletionDate".equals(fieldName)) {
-                    deserializedSqlPoolResourceProperties.sourceDatabaseDeletionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -6,47 +6,46 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of an add provider request.
  */
 @Fluent
-public final class AddRecoveryServicesProviderInputProperties {
+public final class AddRecoveryServicesProviderInputProperties
+    implements JsonSerializable<AddRecoveryServicesProviderInputProperties> {
     /*
      * The name of the machine where the provider is getting added.
      */
-    @JsonProperty(value = "machineName", required = true)
     private String machineName;
 
     /*
      * The Id of the machine where the provider is getting added.
      */
-    @JsonProperty(value = "machineId")
     private String machineId;
 
     /*
      * The Bios Id of the machine.
      */
-    @JsonProperty(value = "biosId")
     private String biosId;
 
     /*
      * The identity provider input for DRA authentication.
      */
-    @JsonProperty(value = "authenticationIdentityInput", required = true)
     private IdentityProviderInput authenticationIdentityInput;
 
     /*
      * The identity provider input for resource access.
      */
-    @JsonProperty(value = "resourceAccessIdentityInput", required = true)
     private IdentityProviderInput resourceAccessIdentityInput;
 
     /*
      * The identity provider input for data plane authentication.
      */
-    @JsonProperty(value = "dataPlaneAuthenticationIdentityInput")
     private IdentityProviderInput dataPlaneAuthenticationIdentityInput;
 
     /**
@@ -158,8 +157,7 @@ public final class AddRecoveryServicesProviderInputProperties {
     }
 
     /**
-     * Get the dataPlaneAuthenticationIdentityInput property: The identity provider input for data plane
-     * authentication.
+     * Get the dataPlaneAuthenticationIdentityInput property: The identity provider input for data plane authentication.
      * 
      * @return the dataPlaneAuthenticationIdentityInput value.
      */
@@ -168,8 +166,7 @@ public final class AddRecoveryServicesProviderInputProperties {
     }
 
     /**
-     * Set the dataPlaneAuthenticationIdentityInput property: The identity provider input for data plane
-     * authentication.
+     * Set the dataPlaneAuthenticationIdentityInput property: The identity provider input for data plane authentication.
      * 
      * @param dataPlaneAuthenticationIdentityInput the dataPlaneAuthenticationIdentityInput value to set.
      * @return the AddRecoveryServicesProviderInputProperties object itself.
@@ -187,18 +184,21 @@ public final class AddRecoveryServicesProviderInputProperties {
      */
     public void validate() {
         if (machineName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property machineName in model AddRecoveryServicesProviderInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property machineName in model AddRecoveryServicesProviderInputProperties"));
         }
         if (authenticationIdentityInput() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationIdentityInput in model AddRecoveryServicesProviderInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationIdentityInput in model AddRecoveryServicesProviderInputProperties"));
         } else {
             authenticationIdentityInput().validate();
         }
         if (resourceAccessIdentityInput() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceAccessIdentityInput in model AddRecoveryServicesProviderInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceAccessIdentityInput in model AddRecoveryServicesProviderInputProperties"));
         } else {
             resourceAccessIdentityInput().validate();
         }
@@ -208,4 +208,60 @@ public final class AddRecoveryServicesProviderInputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddRecoveryServicesProviderInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeJsonField("authenticationIdentityInput", this.authenticationIdentityInput);
+        jsonWriter.writeJsonField("resourceAccessIdentityInput", this.resourceAccessIdentityInput);
+        jsonWriter.writeStringField("machineId", this.machineId);
+        jsonWriter.writeStringField("biosId", this.biosId);
+        jsonWriter.writeJsonField("dataPlaneAuthenticationIdentityInput", this.dataPlaneAuthenticationIdentityInput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddRecoveryServicesProviderInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddRecoveryServicesProviderInputProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddRecoveryServicesProviderInputProperties.
+     */
+    public static AddRecoveryServicesProviderInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddRecoveryServicesProviderInputProperties deserializedAddRecoveryServicesProviderInputProperties
+                = new AddRecoveryServicesProviderInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("machineName".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.machineName = reader.getString();
+                } else if ("authenticationIdentityInput".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.authenticationIdentityInput
+                        = IdentityProviderInput.fromJson(reader);
+                } else if ("resourceAccessIdentityInput".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.resourceAccessIdentityInput
+                        = IdentityProviderInput.fromJson(reader);
+                } else if ("machineId".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.machineId = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.biosId = reader.getString();
+                } else if ("dataPlaneAuthenticationIdentityInput".equals(fieldName)) {
+                    deserializedAddRecoveryServicesProviderInputProperties.dataPlaneAuthenticationIdentityInput
+                        = IdentityProviderInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddRecoveryServicesProviderInputProperties;
+        });
+    }
 }

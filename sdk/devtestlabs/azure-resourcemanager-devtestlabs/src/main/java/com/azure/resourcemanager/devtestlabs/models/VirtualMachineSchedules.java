@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 
-/** Resource collection API of VirtualMachineSchedules. */
+/**
+ * Resource collection API of VirtualMachineSchedules.
+ */
 public interface VirtualMachineSchedules {
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -26,7 +28,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -45,7 +47,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -62,7 +64,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -76,7 +78,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -93,7 +95,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -109,7 +111,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -125,7 +127,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -138,7 +140,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -155,7 +157,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -171,7 +173,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -184,7 +186,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.

@@ -21,7 +21,7 @@ public final class SqlPoolUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"qcahfsgbjmlree\",\"resourceName\":\"fwsszvlcwlis\",\"displayName\":\"ntfxxcrqmipfjwfo\",\"currentValue\":55.736030908437186,\"limit\":3.2255222256611926,\"unit\":\"xbaizab\",\"nextResetTime\":\"2021-04-04T08:17:35Z\"}]}";
+            = "{\"value\":[{\"name\":\"adydg\",\"resourceName\":\"autw\",\"displayName\":\"exzgpmnmabedd\",\"currentValue\":75.83144024777224,\"limit\":0.5419004717089115,\"unit\":\"fqfp\",\"nextResetTime\":\"2020-12-26T19:35:53Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SqlPoolUsagesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SqlPoolUsage> response
-            = manager.sqlPoolUsages().list("trlxcznnhzkbn", "mxlxmwtygeq", "usi", com.azure.core.util.Context.NONE);
+            = manager.sqlPoolUsages().list("imioyo", "glkmiqwnnr", "clibbfqpsp", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -16,7 +16,7 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -367,7 +367,7 @@ public final class FilesDownloadHeaders {
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();

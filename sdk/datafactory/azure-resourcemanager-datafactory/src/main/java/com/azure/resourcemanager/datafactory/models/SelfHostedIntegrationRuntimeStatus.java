@@ -33,16 +33,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties
         = new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
-    /*
-     * The data factory name which the integration runtime belong to.
-     */
-    private String dataFactoryName;
-
-    /*
-     * The state of integration runtime.
-     */
-    private IntegrationRuntimeState state;
-
     /**
      * Creates an instance of SelfHostedIntegrationRuntimeStatus class.
      */
@@ -66,26 +56,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      */
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the dataFactoryName property: The data factory name which the integration runtime belong to.
-     * 
-     * @return the dataFactoryName value.
-     */
-    @Override
-    public String dataFactoryName() {
-        return this.dataFactoryName;
-    }
-
-    /**
-     * Get the state property: The state of integration runtime.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public IntegrationRuntimeState state() {
-        return this.state;
     }
 
     /**
@@ -284,7 +254,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -331,10 +300,10 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
                 reader.nextToken();
 
                 if ("dataFactoryName".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                    deserializedSelfHostedIntegrationRuntimeStatus.withDataFactoryName(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatus.state
-                        = IntegrationRuntimeState.fromString(reader.getString());
+                    deserializedSelfHostedIntegrationRuntimeStatus
+                        .withState(IntegrationRuntimeState.fromString(reader.getString()));
                 } else if ("typeProperties".equals(fieldName)) {
                     deserializedSelfHostedIntegrationRuntimeStatus.innerTypeProperties
                         = SelfHostedIntegrationRuntimeStatusTypeProperties.fromJson(reader);

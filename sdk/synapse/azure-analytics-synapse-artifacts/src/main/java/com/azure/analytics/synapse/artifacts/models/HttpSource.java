@@ -23,7 +23,9 @@ public final class HttpSource extends CopySource {
     private String type = "HttpSource";
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to
+     * System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object httpRequestTimeout;
 

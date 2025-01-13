@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.SortedProject;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.SortedProjectRepository;
 import org.assertj.core.util.Lists;
@@ -127,7 +128,7 @@ public class ProjectRepositorySortIT {
         Assert.assertEquals(PROJECTS, projects);
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test(expected = CosmosBadRequestException.class)
     public void testFindAllSortMoreThanOneOrderException() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
 

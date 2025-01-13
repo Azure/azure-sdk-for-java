@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner;
 import java.util.Map;
 
@@ -34,40 +33,33 @@ public interface CheckAvailabilityResult {
     String type();
 
     /**
-     * Gets the isAvailiable property: Gets or sets true if the name is available and can be used to
-     * create new Namespace/NotificationHub. Otherwise false.
-     * 
-     * @return the isAvailiable value.
-     */
-    Boolean isAvailiable();
-
-    /**
-     * Gets the location property: Deprecated - only for compatibility.
+     * Gets the location property: The geo-location where the resource lives.
      * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Deprecated - only for compatibility.
+     * Gets the tags property: Resource tags.
      * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The Sku description for a namespace.
+     * Gets the isAvailiable property: True if the name is available and can be used to create new
+     * Namespace/NotificationHub. Otherwise false.
+     * 
+     * @return the isAvailiable value.
+     */
+    Boolean isAvailiable();
+
+    /**
+     * Gets the sku property: The sku of the created namespace.
      * 
      * @return the sku value.
      */
     Sku sku();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner object.

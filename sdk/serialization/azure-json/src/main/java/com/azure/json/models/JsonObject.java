@@ -32,6 +32,16 @@ public final class JsonObject extends JsonElement {
     }
 
     /**
+     * Checks whether a property with the specified key exists in the JSON object.
+     *
+     * @param key The key to check for.
+     * @return Whether a property with the specified key exists in the JSON object.
+     */
+    public boolean hasProperty(String key) {
+        return properties.containsKey(key);
+    }
+
+    /**
      * Gets the JsonElement value corresponding to the specified key. If the key doesn't exist, null will be returned.
      *
      * @param key The key of the property to get.
@@ -52,6 +62,49 @@ public final class JsonObject extends JsonElement {
      */
     public JsonObject setProperty(String key, JsonElement element) {
         properties.put(key, nullCheck(element));
+        return this;
+    }
+
+    /**
+     * Sets the boolean value corresponding to the specified key. If the key already exists, the value will be
+     * overwritten.
+     *
+     * @param key The key of the property to set.
+     * @param element The boolean value to set the property to.
+     * @return The updated JsonObject object.
+     */
+    public JsonObject setProperty(String key, boolean element) {
+        properties.put(key, JsonBoolean.getInstance(element));
+        return this;
+    }
+
+    /**
+     * Sets the number value corresponding to the specified key. If the key already exists, the value will be
+     * overwritten.
+     * <p>
+     * If {@code element} is null this will set the property to {@link JsonNull}.
+     *
+     * @param key The key of the property to set.
+     * @param element The number value to set the property to.
+     * @return The updated JsonObject object.
+     */
+    public JsonObject setProperty(String key, Number element) {
+        properties.put(key, element == null ? JsonNull.getInstance() : new JsonNumber(element));
+        return this;
+    }
+
+    /**
+     * Sets the string value corresponding to the specified key. If the key already exists, the value will be
+     * overwritten.
+     * <p>
+     * If {@code element} is null this will set the property to {@link JsonNull}.
+     *
+     * @param key The key of the property to set.
+     * @param element The string value to set the property to.
+     * @return The updated JsonObject object.
+     */
+    public JsonObject setProperty(String key, String element) {
+        properties.put(key, element == null ? JsonNull.getInstance() : new JsonString(element));
         return this;
     }
 

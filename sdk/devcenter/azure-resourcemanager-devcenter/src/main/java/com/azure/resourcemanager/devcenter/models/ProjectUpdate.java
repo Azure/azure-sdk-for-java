@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -17,13 +20,11 @@ public final class ProjectUpdate extends TrackedResourceUpdate {
     /*
      * Properties of a project to be updated.
      */
-    @JsonProperty(value = "properties")
     private ProjectUpdateProperties innerProperties;
 
     /*
      * Managed identity properties
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /**
@@ -203,12 +204,57 @@ public final class ProjectUpdate extends TrackedResourceUpdate {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectUpdate.
+     */
+    public static ProjectUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectUpdate deserializedProjectUpdate = new ProjectUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProjectUpdate.withTags(tags);
+                } else if ("location".equals(fieldName)) {
+                    deserializedProjectUpdate.withLocation(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProjectUpdate.innerProperties = ProjectUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedProjectUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectUpdate;
+        });
     }
 }

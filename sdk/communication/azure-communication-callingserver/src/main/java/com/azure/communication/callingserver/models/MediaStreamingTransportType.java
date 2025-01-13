@@ -33,7 +33,10 @@ public final class MediaStreamingTransportType extends ExpandableStringEnum<Medi
         return fromString(name, MediaStreamingTransportType.class);
     }
 
-    /** @return known MediaStreamingTransportType values. */
+    /**
+     * Get the collection of MediaStreamingTransportType values.
+     * @return known MediaStreamingTransportType values.
+     */
     public static Collection<MediaStreamingTransportType> values() {
         return values(MediaStreamingTransportType.class);
     }

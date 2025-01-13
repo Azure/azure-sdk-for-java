@@ -12,21 +12,14 @@ public final class DynamicExecutorAllocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicExecutorAllocation model
-            = BinaryData.fromString("{\"enabled\":false,\"minExecutors\":1155806912,\"maxExecutors\":605011869}")
-                .toObject(DynamicExecutorAllocation.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(1155806912, model.minExecutors());
-        Assertions.assertEquals(605011869, model.maxExecutors());
+            = BinaryData.fromString("{\"enabled\":true}").toObject(DynamicExecutorAllocation.class);
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicExecutorAllocation model = new DynamicExecutorAllocation().withEnabled(false)
-            .withMinExecutors(1155806912)
-            .withMaxExecutors(605011869);
+        DynamicExecutorAllocation model = new DynamicExecutorAllocation().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(DynamicExecutorAllocation.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(1155806912, model.minExecutors());
-        Assertions.assertEquals(605011869, model.maxExecutors());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

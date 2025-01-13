@@ -11,7 +11,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -182,7 +182,7 @@ public final class DirectoriesGetPropertiesHeaders {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();

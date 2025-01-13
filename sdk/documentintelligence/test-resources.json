@@ -34,6 +34,10 @@
       "type": "string",
       "defaultValue": "trainingdata-batch"
     },
+    "batchTrainingDataResultContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-batch-result"
+    },
     "selectionMarkTrainingDataContainer": {
       "type": "string",
       "defaultValue": "selectionmark-v3"

@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedResourceGroupConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedResourceGroupConfiguration model = BinaryData.fromString("{\"location\":\"bgyepsbj\",\"name\":\"zq\"}")
-            .toObject(ManagedResourceGroupConfiguration.class);
-        Assertions.assertEquals("bgyepsbj", model.location());
-        Assertions.assertEquals("zq", model.name());
+        ManagedResourceGroupConfiguration model
+            = BinaryData.fromString("{\"location\":\"dldwmgxc\",\"name\":\"slpmutwuo\"}")
+                .toObject(ManagedResourceGroupConfiguration.class);
+        Assertions.assertEquals("dldwmgxc", model.location());
+        Assertions.assertEquals("slpmutwuo", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedResourceGroupConfiguration model
-            = new ManagedResourceGroupConfiguration().withLocation("bgyepsbj").withName("zq");
+            = new ManagedResourceGroupConfiguration().withLocation("dldwmgxc").withName("slpmutwuo");
         model = BinaryData.fromObject(model).toObject(ManagedResourceGroupConfiguration.class);
-        Assertions.assertEquals("bgyepsbj", model.location());
-        Assertions.assertEquals("zq", model.name());
+        Assertions.assertEquals("dldwmgxc", model.location());
+        Assertions.assertEquals("slpmutwuo", model.name());
     }
 }

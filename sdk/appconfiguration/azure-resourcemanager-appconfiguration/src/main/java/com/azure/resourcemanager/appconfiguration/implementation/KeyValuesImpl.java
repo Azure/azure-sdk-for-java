@@ -56,17 +56,17 @@ public final class KeyValuesImpl implements KeyValues {
     }
 
     public KeyValue getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -75,17 +75,17 @@ public final class KeyValuesImpl implements KeyValues {
     }
 
     public Response<KeyValue> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -94,17 +94,17 @@ public final class KeyValuesImpl implements KeyValues {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -113,17 +113,17 @@ public final class KeyValuesImpl implements KeyValues {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));

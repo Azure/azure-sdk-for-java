@@ -192,16 +192,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
 
     /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName REQUEST_ID = fromString("Request-Id");
-
-    /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
-
-    /**
      * {@code traceparent}
      */
     public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");

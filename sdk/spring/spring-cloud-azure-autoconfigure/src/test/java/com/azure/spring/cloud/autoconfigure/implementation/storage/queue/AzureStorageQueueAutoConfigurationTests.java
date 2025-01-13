@@ -7,7 +7,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
@@ -33,8 +32,7 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
 
     private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {

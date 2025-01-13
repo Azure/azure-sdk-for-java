@@ -138,9 +138,10 @@ public final class ConfigurationGroupSchemaImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
-        this.configurationGroupSchemaName = Utils.getValueFromIdByName(innerObject.id(), "configurationGroupSchemas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.configurationGroupSchemaName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationGroupSchemas");
     }
 
     public ConfigurationGroupSchema refresh() {

@@ -18,32 +18,32 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.StorageProfile;
 import java.io.IOException;
 
 /**
- * Describes the properties of an Azure Bare Metal Instance.
+ * Describes the properties of an AzureBareMetal instance.
  */
 @Fluent
 public final class AzureBareMetalInstanceProperties implements JsonSerializable<AzureBareMetalInstanceProperties> {
     /*
-     * Specifies the hardware settings for the Azure Bare Metal Instance.
+     * Specifies the hardware settings for the AzureBareMetal instance.
      */
     private HardwareProfile hardwareProfile;
 
     /*
-     * Specifies the storage settings for the Azure Bare Metal Instance disks.
+     * Specifies the storage settings for the AzureBareMetal instance disks.
      */
     private StorageProfile storageProfile;
 
     /*
-     * Specifies the operating system settings for the Azure Bare Metal Instance.
+     * Specifies the operating system settings for the AzureBareMetal instance.
      */
     private OSProfile osProfile;
 
     /*
-     * Specifies the network settings for the Azure Bare Metal Instance.
+     * Specifies the network settings for the AzureBareMetal instance.
      */
     private NetworkProfile networkProfile;
 
     /*
-     * Specifies the Azure Bare Metal Instance unique ID.
+     * Specifies the AzureBareMetal instance unique ID.
      */
     private String azureBareMetalInstanceId;
 
@@ -58,7 +58,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     private String proximityPlacementGroup;
 
     /*
-     * Hardware revision of an Azure Bare Metal Instance
+     * Hardware revision of an AzureBareMetal instance
      */
     private String hwRevision;
 
@@ -79,7 +79,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
+     * Get the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
      * 
      * @return the hardwareProfile value.
      */
@@ -88,7 +88,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
+     * Set the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
      * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -99,7 +99,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
+     * Get the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
      * 
      * @return the storageProfile value.
      */
@@ -108,7 +108,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Set the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
+     * Set the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
      * 
      * @param storageProfile the storageProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -119,7 +119,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
+     * Get the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
      * 
      * @return the osProfile value.
      */
@@ -128,7 +128,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
+     * Set the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
      * 
      * @param osProfile the osProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -139,7 +139,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
+     * Get the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
      * 
      * @return the networkProfile value.
      */
@@ -148,7 +148,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Set the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
+     * Set the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
      * 
      * @param networkProfile the networkProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -159,7 +159,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the azureBareMetalInstanceId property: Specifies the Azure Bare Metal Instance unique ID.
+     * Get the azureBareMetalInstanceId property: Specifies the AzureBareMetal instance unique ID.
      * 
      * @return the azureBareMetalInstanceId value.
      */
@@ -186,7 +186,7 @@ public final class AzureBareMetalInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the hwRevision property: Hardware revision of an Azure Bare Metal Instance.
+     * Get the hwRevision property: Hardware revision of an AzureBareMetal instance.
      * 
      * @return the hwRevision value.
      */

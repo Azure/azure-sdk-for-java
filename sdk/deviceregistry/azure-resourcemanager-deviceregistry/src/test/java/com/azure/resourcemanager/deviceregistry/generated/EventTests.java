@@ -6,34 +6,38 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.Event;
-import com.azure.resourcemanager.deviceregistry.models.EventsObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.EventObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.Topic;
+import com.azure.resourcemanager.deviceregistry.models.TopicRetainType;
 import org.junit.jupiter.api.Assertions;
 
 public final class EventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Event model = BinaryData.fromString(
-            "{\"name\":\"qpteeh\",\"eventNotifier\":\"zvypyqrimzinp\",\"capabilityId\":\"wjdk\",\"observabilityMode\":\"log\",\"eventConfiguration\":\"od\"}")
+            "{\"observabilityMode\":\"None\",\"name\":\"xsabkyqdu\",\"eventNotifier\":\"jitcjczdzevn\",\"eventConfiguration\":\"krwpdap\",\"topic\":{\"path\":\"sbdkvwr\",\"retain\":\"Keep\"}}")
             .toObject(Event.class);
-        Assertions.assertEquals("qpteeh", model.name());
-        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
-        Assertions.assertEquals("wjdk", model.capabilityId());
-        Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
-        Assertions.assertEquals("od", model.eventConfiguration());
+        Assertions.assertEquals("xsabkyqdu", model.name());
+        Assertions.assertEquals("jitcjczdzevn", model.eventNotifier());
+        Assertions.assertEquals("krwpdap", model.eventConfiguration());
+        Assertions.assertEquals("sbdkvwr", model.topic().path());
+        Assertions.assertEquals(TopicRetainType.KEEP, model.topic().retain());
+        Assertions.assertEquals(EventObservabilityMode.NONE, model.observabilityMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Event model = new Event().withName("qpteeh")
-            .withEventNotifier("zvypyqrimzinp")
-            .withCapabilityId("wjdk")
-            .withObservabilityMode(EventsObservabilityMode.LOG)
-            .withEventConfiguration("od");
+        Event model = new Event().withName("xsabkyqdu")
+            .withEventNotifier("jitcjczdzevn")
+            .withEventConfiguration("krwpdap")
+            .withTopic(new Topic().withPath("sbdkvwr").withRetain(TopicRetainType.KEEP))
+            .withObservabilityMode(EventObservabilityMode.NONE);
         model = BinaryData.fromObject(model).toObject(Event.class);
-        Assertions.assertEquals("qpteeh", model.name());
-        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
-        Assertions.assertEquals("wjdk", model.capabilityId());
-        Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
-        Assertions.assertEquals("od", model.eventConfiguration());
+        Assertions.assertEquals("xsabkyqdu", model.name());
+        Assertions.assertEquals("jitcjczdzevn", model.eventNotifier());
+        Assertions.assertEquals("krwpdap", model.eventConfiguration());
+        Assertions.assertEquals("sbdkvwr", model.topic().path());
+        Assertions.assertEquals(TopicRetainType.KEEP, model.topic().retain());
+        Assertions.assertEquals(EventObservabilityMode.NONE, model.observabilityMode());
     }
 }

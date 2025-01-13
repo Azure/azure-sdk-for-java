@@ -18,7 +18,7 @@ public final class ManagedPrivateEndpointsDeleteSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void managedPrivateEndpointDelete(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.managedPrivateEndpoints().delete("myResourceGroup", "myWorkspace", "myMPEName",
-            com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .delete("myResourceGroup", "myWorkspace", "myMPEName", com.azure.core.util.Context.NONE);
     }
 }

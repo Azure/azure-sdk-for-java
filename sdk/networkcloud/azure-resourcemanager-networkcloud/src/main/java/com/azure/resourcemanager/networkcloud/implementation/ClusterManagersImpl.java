@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.ClusterManagersClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterManagerInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagers;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class ClusterManagersImpl implements ClusterManagers {
     private static final ClientLogger LOGGER = new ClientLogger(ClusterManagersImpl.class);
@@ -29,22 +31,22 @@ public final class ClusterManagersImpl implements ClusterManagers {
 
     public PagedIterable<ClusterManager> list() {
         PagedIterable<ClusterManagerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterManager> list(Context context) {
         PagedIterable<ClusterManagerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ClusterManagerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ClusterManagerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
     public Response<ClusterManager> getByResourceGroupWithResponse(String resourceGroupName, String clusterManagerName,
@@ -68,21 +70,31 @@ public final class ClusterManagersImpl implements ClusterManagers {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String clusterManagerName) {
-        this.serviceClient().delete(resourceGroupName, clusterManagerName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String clusterManagerName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, clusterManagerName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String clusterManagerName, Context context) {
-        this.serviceClient().delete(resourceGroupName, clusterManagerName, context);
+    public OperationStatusResult delete(String resourceGroupName, String clusterManagerName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, clusterManagerName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ClusterManager getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
+        String clusterManagerName = ResourceManagerUtils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
@@ -91,12 +103,12 @@ public final class ClusterManagersImpl implements ClusterManagers {
     }
 
     public Response<ClusterManager> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
+        String clusterManagerName = ResourceManagerUtils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
@@ -104,32 +116,32 @@ public final class ClusterManagersImpl implements ClusterManagers {
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
+        String clusterManagerName = ResourceManagerUtils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
-        this.delete(resourceGroupName, clusterManagerName, Context.NONE);
+        return this.delete(resourceGroupName, clusterManagerName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
+        String clusterManagerName = ResourceManagerUtils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
-        this.delete(resourceGroupName, clusterManagerName, context);
+        return this.delete(resourceGroupName, clusterManagerName, context);
     }
 
     private ClusterManagersClient serviceClient() {

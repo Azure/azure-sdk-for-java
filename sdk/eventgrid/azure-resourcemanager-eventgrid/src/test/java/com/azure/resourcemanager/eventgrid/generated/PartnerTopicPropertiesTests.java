@@ -20,9 +20,9 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"650859c8-edbd-4b12-a208-cdedada680bb\",\"source\":\"edm\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uqn\":{\"description\":\"xbcuiiznkt\",\"displayName\":\"ansnvp\",\"documentationUrl\":\"bmikost\",\"dataSchemaUrl\":\"bkiw\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-11-18T18:14:42Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sgcrpfbcunezzce\",\"messageForActivation\":\"lfwyfwlwxjwetn\"}")
+            "{\"partnerRegistrationImmutableId\":\"5fb42706-96e5-4f73-81f8-92fa2760bc6e\",\"source\":\"edm\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uqn\":{\"description\":\"xbcuiiznkt\",\"displayName\":\"ansnvp\",\"documentationUrl\":\"bmikost\",\"dataSchemaUrl\":\"bkiw\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-11-18T18:14:42Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sgcrpfbcunezzce\",\"messageForActivation\":\"lfwyfwlwxjwetn\"}")
             .toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("650859c8-edbd-4b12-a208-cdedada680bb"),
+        Assertions.assertEquals(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("edm", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
@@ -39,7 +39,7 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerTopicProperties model = new PartnerTopicProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("650859c8-edbd-4b12-a208-cdedada680bb"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"))
             .withSource("edm")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                 .withInlineEventTypes(mapOf("uqn",
@@ -52,7 +52,7 @@ public final class PartnerTopicPropertiesTests {
             .withPartnerTopicFriendlyDescription("sgcrpfbcunezzce")
             .withMessageForActivation("lfwyfwlwxjwetn");
         model = BinaryData.fromObject(model).toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("650859c8-edbd-4b12-a208-cdedada680bb"),
+        Assertions.assertEquals(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("edm", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());

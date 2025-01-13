@@ -202,8 +202,8 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trunkedNetworkName = Utils.getValueFromIdByName(innerObject.id(), "trunkedNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.trunkedNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trunkedNetworks");
     }
 
     public TrunkedNetwork refresh() {

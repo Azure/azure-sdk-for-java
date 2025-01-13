@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class TemplateType extends ExpandableStringEnum<TemplateType> {
      * @param name a name to look for.
      * @return the corresponding TemplateType.
      */
-    @JsonCreator
     public static TemplateType fromString(String name) {
         return fromString(name, TemplateType.class);
     }

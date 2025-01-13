@@ -43,17 +43,23 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationServersListSe
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServersUpdateResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationServersClient.
+ */
 public final class AuthorizationServersClientImpl implements AuthorizationServersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AuthorizationServersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of AuthorizationServersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationServersClientImpl(ApiManagementClientImpl client) {
@@ -149,20 +155,20 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -193,13 +199,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -207,7 +213,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -238,13 +244,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +267,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,13 +287,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -306,7 +312,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,13 +330,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Lists a collection of authorization servers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -347,7 +353,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -355,7 +361,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -387,7 +393,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -396,7 +402,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -427,7 +433,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -435,7 +441,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String authsid) {
@@ -444,7 +450,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -462,7 +468,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -477,15 +483,15 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization server specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
@@ -517,7 +523,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -525,8 +531,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization server specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
@@ -557,15 +563,15 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization server specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerContractInner> getAsync(String resourceGroupName, String serviceName,
@@ -576,7 +582,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -594,7 +600,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -610,7 +616,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Creates new authorization server or updates an existing authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -657,7 +663,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Creates new authorization server or updates an existing authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -704,7 +710,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Creates new authorization server or updates an existing authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -724,7 +730,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Creates new authorization server or updates an existing authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -746,7 +752,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Creates new authorization server or updates an existing authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -766,12 +772,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Updates the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters OAuth2 Server settings Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -816,12 +822,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Updates the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters OAuth2 Server settings Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,12 +873,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Updates the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters OAuth2 Server settings Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,12 +894,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Updates the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters OAuth2 Server settings Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -909,12 +915,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Updates the details of the authorization server specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters OAuth2 Server settings Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,12 +936,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Deletes specific authorization server instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -974,12 +980,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Deletes specific authorization server instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1018,12 +1024,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Deletes specific authorization server instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1037,12 +1043,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Deletes specific authorization server instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,12 +1063,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Deletes specific authorization server instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1074,7 +1080,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -1113,7 +1119,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -1152,7 +1158,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -1170,7 +1176,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -1188,7 +1194,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
@@ -1205,14 +1211,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1233,15 +1238,14 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(String nextLink,

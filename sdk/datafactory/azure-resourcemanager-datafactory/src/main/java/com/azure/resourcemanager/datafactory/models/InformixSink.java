@@ -126,7 +126,6 @@ public final class InformixSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

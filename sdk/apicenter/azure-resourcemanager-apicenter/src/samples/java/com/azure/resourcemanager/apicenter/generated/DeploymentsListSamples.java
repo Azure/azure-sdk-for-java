@@ -18,7 +18,7 @@ public final class DeploymentsListSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsListByApi(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().list("contoso-resources", "contoso", "default", "echo-api", null,
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .list("contoso-resources", "contoso", "default", "echo-api", null, com.azure.core.util.Context.NONE);
     }
 }

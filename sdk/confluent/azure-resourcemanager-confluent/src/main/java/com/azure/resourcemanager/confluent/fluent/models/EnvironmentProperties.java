@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Environment resource property.
  */
 @Fluent
-public final class EnvironmentProperties {
+public final class EnvironmentProperties implements JsonSerializable<EnvironmentProperties> {
     /*
      * Metadata of the record
      */
-    @JsonProperty(value = "metadata")
     private SCMetadataEntity metadata;
 
     /**
@@ -54,5 +57,41 @@ public final class EnvironmentProperties {
         if (metadata() != null) {
             metadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentProperties.
+     */
+    public static EnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentProperties deserializedEnvironmentProperties = new EnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedEnvironmentProperties.metadata = SCMetadataEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentProperties;
+        });
     }
 }

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.DtlEnvironmentInner;
 import com.azure.resourcemanager.devtestlabs.models.DtlEnvironmentFragment;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentsClient.
+ */
 public interface EnvironmentsClient {
     /**
      * List environments in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -32,7 +34,7 @@ public interface EnvironmentsClient {
 
     /**
      * List environments in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -52,7 +54,7 @@ public interface EnvironmentsClient {
 
     /**
      * Get environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -70,7 +72,7 @@ public interface EnvironmentsClient {
 
     /**
      * Get environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -85,7 +87,7 @@ public interface EnvironmentsClient {
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -102,7 +104,7 @@ public interface EnvironmentsClient {
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -120,7 +122,7 @@ public interface EnvironmentsClient {
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -137,7 +139,7 @@ public interface EnvironmentsClient {
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -155,7 +157,7 @@ public interface EnvironmentsClient {
 
     /**
      * Delete environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -171,7 +173,7 @@ public interface EnvironmentsClient {
 
     /**
      * Delete environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -188,7 +190,7 @@ public interface EnvironmentsClient {
 
     /**
      * Delete environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -202,7 +204,7 @@ public interface EnvironmentsClient {
 
     /**
      * Delete environment. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -217,7 +219,7 @@ public interface EnvironmentsClient {
 
     /**
      * Allows modifying tags of environments. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -235,7 +237,7 @@ public interface EnvironmentsClient {
 
     /**
      * Allows modifying tags of environments. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.

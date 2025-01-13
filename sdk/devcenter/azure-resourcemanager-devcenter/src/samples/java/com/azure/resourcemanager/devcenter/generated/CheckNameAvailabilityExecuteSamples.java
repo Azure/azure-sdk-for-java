@@ -11,7 +11,9 @@ import com.azure.resourcemanager.devcenter.models.CheckNameAvailabilityRequest;
  */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/CheckNameAvailability.
+     * json
      */
     /**
      * Sample code: NameAvailability.

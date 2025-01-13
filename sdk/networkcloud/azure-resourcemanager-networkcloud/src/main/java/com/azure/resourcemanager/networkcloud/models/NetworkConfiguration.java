@@ -6,73 +6,74 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** NetworkConfiguration specifies the Kubernetes cluster network related configuration. */
+/**
+ * NetworkConfiguration specifies the Kubernetes cluster network related configuration.
+ */
 @Fluent
-public final class NetworkConfiguration {
+public final class NetworkConfiguration implements JsonSerializable<NetworkConfiguration> {
     /*
-     * AttachedNetworkConfiguration represents the set of workload networks to attach to a resource.
-     *
      * The configuration of networks being attached to the cluster for use by the workloads that run on this Kubernetes
      * cluster.
      */
-    @JsonProperty(value = "attachedNetworkConfiguration")
     private AttachedNetworkConfiguration attachedNetworkConfiguration;
 
     /*
-     * BgpServiceLoadBalancerConfiguration represents the configuration of a BGP service load balancer.
-     *
-     * The configuration of the BGP service load balancer for this Kubernetes cluster.
+     * The configuration of the BGP service load balancer for this Kubernetes cluster. A maximum of one service load
+     * balancer may be specified, either Layer 2 or BGP.
      */
-    @JsonProperty(value = "bgpServiceLoadBalancerConfiguration")
     private BgpServiceLoadBalancerConfiguration bgpServiceLoadBalancerConfiguration;
 
     /*
      * The resource ID of the associated Cloud Services network.
      */
-    @JsonProperty(value = "cloudServicesNetworkId", required = true)
     private String cloudServicesNetworkId;
 
     /*
      * The resource ID of the Layer 3 network that is used for creation of the Container Networking Interface network.
      */
-    @JsonProperty(value = "cniNetworkId", required = true)
     private String cniNetworkId;
 
     /*
      * The IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range
      * specified in service CIDR.
      */
-    @JsonProperty(value = "dnsServiceIp")
     private String dnsServiceIp;
+
+    /*
+     * The configuration of the Layer 2 service load balancer for this Kubernetes cluster. A maximum of one service load
+     * balancer may be specified, either Layer 2 or BGP.
+     */
+    private L2ServiceLoadBalancerConfiguration l2ServiceLoadBalancerConfiguration;
 
     /*
      * The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking.
      * Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
      */
-    @JsonProperty(value = "podCidrs")
     private List<String> podCidrs;
 
     /*
      * The CIDR notation IP ranges from which to assign service IPs. One IPv4 CIDR is expected for single-stack
      * networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
      */
-    @JsonProperty(value = "serviceCidrs")
     private List<String> serviceCidrs;
 
-    /** Creates an instance of NetworkConfiguration class. */
+    /**
+     * Creates an instance of NetworkConfiguration class.
+     */
     public NetworkConfiguration() {
     }
 
     /**
-     * Get the attachedNetworkConfiguration property: AttachedNetworkConfiguration represents the set of workload
-     * networks to attach to a resource.
-     *
-     * <p>The configuration of networks being attached to the cluster for use by the workloads that run on this
-     * Kubernetes cluster.
-     *
+     * Get the attachedNetworkConfiguration property: The configuration of networks being attached to the cluster for
+     * use by the workloads that run on this Kubernetes cluster.
+     * 
      * @return the attachedNetworkConfiguration value.
      */
     public AttachedNetworkConfiguration attachedNetworkConfiguration() {
@@ -80,12 +81,9 @@ public final class NetworkConfiguration {
     }
 
     /**
-     * Set the attachedNetworkConfiguration property: AttachedNetworkConfiguration represents the set of workload
-     * networks to attach to a resource.
-     *
-     * <p>The configuration of networks being attached to the cluster for use by the workloads that run on this
-     * Kubernetes cluster.
-     *
+     * Set the attachedNetworkConfiguration property: The configuration of networks being attached to the cluster for
+     * use by the workloads that run on this Kubernetes cluster.
+     * 
      * @param attachedNetworkConfiguration the attachedNetworkConfiguration value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -96,11 +94,9 @@ public final class NetworkConfiguration {
     }
 
     /**
-     * Get the bgpServiceLoadBalancerConfiguration property: BgpServiceLoadBalancerConfiguration represents the
-     * configuration of a BGP service load balancer.
-     *
-     * <p>The configuration of the BGP service load balancer for this Kubernetes cluster.
-     *
+     * Get the bgpServiceLoadBalancerConfiguration property: The configuration of the BGP service load balancer for this
+     * Kubernetes cluster. A maximum of one service load balancer may be specified, either Layer 2 or BGP.
+     * 
      * @return the bgpServiceLoadBalancerConfiguration value.
      */
     public BgpServiceLoadBalancerConfiguration bgpServiceLoadBalancerConfiguration() {
@@ -108,11 +104,9 @@ public final class NetworkConfiguration {
     }
 
     /**
-     * Set the bgpServiceLoadBalancerConfiguration property: BgpServiceLoadBalancerConfiguration represents the
-     * configuration of a BGP service load balancer.
-     *
-     * <p>The configuration of the BGP service load balancer for this Kubernetes cluster.
-     *
+     * Set the bgpServiceLoadBalancerConfiguration property: The configuration of the BGP service load balancer for this
+     * Kubernetes cluster. A maximum of one service load balancer may be specified, either Layer 2 or BGP.
+     * 
      * @param bgpServiceLoadBalancerConfiguration the bgpServiceLoadBalancerConfiguration value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -124,7 +118,7 @@ public final class NetworkConfiguration {
 
     /**
      * Get the cloudServicesNetworkId property: The resource ID of the associated Cloud Services network.
-     *
+     * 
      * @return the cloudServicesNetworkId value.
      */
     public String cloudServicesNetworkId() {
@@ -133,7 +127,7 @@ public final class NetworkConfiguration {
 
     /**
      * Set the cloudServicesNetworkId property: The resource ID of the associated Cloud Services network.
-     *
+     * 
      * @param cloudServicesNetworkId the cloudServicesNetworkId value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -145,7 +139,7 @@ public final class NetworkConfiguration {
     /**
      * Get the cniNetworkId property: The resource ID of the Layer 3 network that is used for creation of the Container
      * Networking Interface network.
-     *
+     * 
      * @return the cniNetworkId value.
      */
     public String cniNetworkId() {
@@ -155,7 +149,7 @@ public final class NetworkConfiguration {
     /**
      * Set the cniNetworkId property: The resource ID of the Layer 3 network that is used for creation of the Container
      * Networking Interface network.
-     *
+     * 
      * @param cniNetworkId the cniNetworkId value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -167,7 +161,7 @@ public final class NetworkConfiguration {
     /**
      * Get the dnsServiceIp property: The IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in service CIDR.
-     *
+     * 
      * @return the dnsServiceIp value.
      */
     public String dnsServiceIp() {
@@ -177,7 +171,7 @@ public final class NetworkConfiguration {
     /**
      * Set the dnsServiceIp property: The IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in service CIDR.
-     *
+     * 
      * @param dnsServiceIp the dnsServiceIp value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -187,10 +181,33 @@ public final class NetworkConfiguration {
     }
 
     /**
+     * Get the l2ServiceLoadBalancerConfiguration property: The configuration of the Layer 2 service load balancer for
+     * this Kubernetes cluster. A maximum of one service load balancer may be specified, either Layer 2 or BGP.
+     * 
+     * @return the l2ServiceLoadBalancerConfiguration value.
+     */
+    public L2ServiceLoadBalancerConfiguration l2ServiceLoadBalancerConfiguration() {
+        return this.l2ServiceLoadBalancerConfiguration;
+    }
+
+    /**
+     * Set the l2ServiceLoadBalancerConfiguration property: The configuration of the Layer 2 service load balancer for
+     * this Kubernetes cluster. A maximum of one service load balancer may be specified, either Layer 2 or BGP.
+     * 
+     * @param l2ServiceLoadBalancerConfiguration the l2ServiceLoadBalancerConfiguration value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    public NetworkConfiguration
+        withL2ServiceLoadBalancerConfiguration(L2ServiceLoadBalancerConfiguration l2ServiceLoadBalancerConfiguration) {
+        this.l2ServiceLoadBalancerConfiguration = l2ServiceLoadBalancerConfiguration;
+        return this;
+    }
+
+    /**
      * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
      * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
      * networking.
-     *
+     * 
      * @return the podCidrs value.
      */
     public List<String> podCidrs() {
@@ -201,7 +218,7 @@ public final class NetworkConfiguration {
      * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
      * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
      * networking.
-     *
+     * 
      * @param podCidrs the podCidrs value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -214,7 +231,7 @@ public final class NetworkConfiguration {
      * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service IPs. One IPv4 CIDR is
      * expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
      * networking.
-     *
+     * 
      * @return the serviceCidrs value.
      */
     public List<String> serviceCidrs() {
@@ -225,7 +242,7 @@ public final class NetworkConfiguration {
      * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service IPs. One IPv4 CIDR is
      * expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
      * networking.
-     *
+     * 
      * @param serviceCidrs the serviceCidrs value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -236,7 +253,7 @@ public final class NetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -247,14 +264,82 @@ public final class NetworkConfiguration {
             bgpServiceLoadBalancerConfiguration().validate();
         }
         if (cloudServicesNetworkId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cloudServicesNetworkId in model NetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cloudServicesNetworkId in model NetworkConfiguration"));
         }
         if (cniNetworkId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property cniNetworkId in model NetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cniNetworkId in model NetworkConfiguration"));
+        }
+        if (l2ServiceLoadBalancerConfiguration() != null) {
+            l2ServiceLoadBalancerConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cloudServicesNetworkId", this.cloudServicesNetworkId);
+        jsonWriter.writeStringField("cniNetworkId", this.cniNetworkId);
+        jsonWriter.writeJsonField("attachedNetworkConfiguration", this.attachedNetworkConfiguration);
+        jsonWriter.writeJsonField("bgpServiceLoadBalancerConfiguration", this.bgpServiceLoadBalancerConfiguration);
+        jsonWriter.writeStringField("dnsServiceIp", this.dnsServiceIp);
+        jsonWriter.writeJsonField("l2ServiceLoadBalancerConfiguration", this.l2ServiceLoadBalancerConfiguration);
+        jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkConfiguration.
+     */
+    public static NetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfiguration deserializedNetworkConfiguration = new NetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cloudServicesNetworkId".equals(fieldName)) {
+                    deserializedNetworkConfiguration.cloudServicesNetworkId = reader.getString();
+                } else if ("cniNetworkId".equals(fieldName)) {
+                    deserializedNetworkConfiguration.cniNetworkId = reader.getString();
+                } else if ("attachedNetworkConfiguration".equals(fieldName)) {
+                    deserializedNetworkConfiguration.attachedNetworkConfiguration
+                        = AttachedNetworkConfiguration.fromJson(reader);
+                } else if ("bgpServiceLoadBalancerConfiguration".equals(fieldName)) {
+                    deserializedNetworkConfiguration.bgpServiceLoadBalancerConfiguration
+                        = BgpServiceLoadBalancerConfiguration.fromJson(reader);
+                } else if ("dnsServiceIp".equals(fieldName)) {
+                    deserializedNetworkConfiguration.dnsServiceIp = reader.getString();
+                } else if ("l2ServiceLoadBalancerConfiguration".equals(fieldName)) {
+                    deserializedNetworkConfiguration.l2ServiceLoadBalancerConfiguration
+                        = L2ServiceLoadBalancerConfiguration.fromJson(reader);
+                } else if ("podCidrs".equals(fieldName)) {
+                    List<String> podCidrs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkConfiguration.podCidrs = podCidrs;
+                } else if ("serviceCidrs".equals(fieldName)) {
+                    List<String> serviceCidrs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkConfiguration.serviceCidrs = serviceCidrs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfiguration;
+        });
+    }
 }

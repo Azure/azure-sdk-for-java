@@ -40,6 +40,12 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
     private DtmfConfigurations dtmfConfigurations;
 
     /**
+     * Creates a new instance of {@link RecognizeConfigurations}.
+     */
+    public RecognizeConfigurations() {
+    }
+
+    /**
      * Get the interruptPromptAndStartRecognition property: Determines if we interrupt the prompt and start recognizing.
      *
      * @return the interruptPromptAndStartRecognition value.

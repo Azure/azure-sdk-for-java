@@ -73,8 +73,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         shareClient.create();
         primaryDirectoryAsyncClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
-        smbProperties
-            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -413,8 +412,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(IllegalArgumentException.class, it));
 
         StepVerifier
-            .create(primaryDirectoryAsyncClient.setProperties(null,
-                new String(FileShareTestHelper.getRandomBuffer(9 * Constants.KB))))
+            .create(
+                primaryDirectoryAsyncClient.setProperties(null, FileShareTestHelper.getRandomString(9 * Constants.KB)))
             .verifyErrorSatisfies(it -> assertInstanceOf(IllegalArgumentException.class, it));
     }
 
@@ -554,8 +553,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         StepVerifier
             .create(primaryDirectoryAsyncClient.create().then(primaryDirectoryAsyncClient.forceCloseHandle("1")))
             .assertNext(it -> {
-                assertEquals(it.getClosedHandles(), 0);
-                assertEquals(it.getFailedHandles(), 0);
+                assertEquals(0, it.getClosedHandles());
+                assertEquals(0, it.getFailedHandles());
             })
             .verifyComplete();
     }
@@ -574,8 +573,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         StepVerifier
             .create(primaryDirectoryAsyncClient.create().then(primaryDirectoryAsyncClient.forceCloseAllHandles(false)))
             .assertNext(it -> {
-                assertEquals(it.getClosedHandles(), 0);
-                assertEquals(it.getFailedHandles(), 0);
+                assertEquals(0, it.getClosedHandles());
+                assertEquals(0, it.getFailedHandles());
             })
             .verifyComplete();
     }
@@ -977,9 +976,9 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
                 return r.getValue().getProperties();
             });
 
-        StepVerifier.create(response).assertNext(r -> {
-            assertNotNull(r.getSmbProperties().getFilePermissionKey());
-        }).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(r -> assertNotNull(r.getSmbProperties().getFilePermissionKey()))
+            .verifyComplete();
     }
 
     @Test

@@ -15,39 +15,39 @@ public final class PropertyChangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertyChange model = BinaryData.fromString(
-            "{\"changeType\":\"Update\",\"changeCategory\":\"System\",\"jsonPath\":\"vmgxsab\",\"displayName\":\"qduujitcjczdz\",\"level\":\"Noisy\",\"description\":\"hkr\",\"oldValue\":\"d\",\"newValue\":\"p\",\"isDataMasked\":true}")
+            "{\"changeType\":\"Update\",\"changeCategory\":\"User\",\"jsonPath\":\"ehzzvypyqrim\",\"displayName\":\"npvswjdkirso\",\"level\":\"Important\",\"description\":\"hc\",\"oldValue\":\"nohjt\",\"newValue\":\"whdsoifiyip\",\"isDataMasked\":false}")
             .toObject(PropertyChange.class);
         Assertions.assertEquals(ChangeType.UPDATE, model.changeType());
-        Assertions.assertEquals(ChangeCategory.SYSTEM, model.changeCategory());
-        Assertions.assertEquals("vmgxsab", model.jsonPath());
-        Assertions.assertEquals("qduujitcjczdz", model.displayName());
-        Assertions.assertEquals(Level.NOISY, model.level());
-        Assertions.assertEquals("hkr", model.description());
-        Assertions.assertEquals("d", model.oldValue());
-        Assertions.assertEquals("p", model.newValue());
-        Assertions.assertEquals(true, model.isDataMasked());
+        Assertions.assertEquals(ChangeCategory.USER, model.changeCategory());
+        Assertions.assertEquals("ehzzvypyqrim", model.jsonPath());
+        Assertions.assertEquals("npvswjdkirso", model.displayName());
+        Assertions.assertEquals(Level.IMPORTANT, model.level());
+        Assertions.assertEquals("hc", model.description());
+        Assertions.assertEquals("nohjt", model.oldValue());
+        Assertions.assertEquals("whdsoifiyip", model.newValue());
+        Assertions.assertEquals(false, model.isDataMasked());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PropertyChange model = new PropertyChange().withChangeType(ChangeType.UPDATE)
-            .withChangeCategory(ChangeCategory.SYSTEM)
-            .withJsonPath("vmgxsab")
-            .withDisplayName("qduujitcjczdz")
-            .withLevel(Level.NOISY)
-            .withDescription("hkr")
-            .withOldValue("d")
-            .withNewValue("p")
-            .withIsDataMasked(true);
+            .withChangeCategory(ChangeCategory.USER)
+            .withJsonPath("ehzzvypyqrim")
+            .withDisplayName("npvswjdkirso")
+            .withLevel(Level.IMPORTANT)
+            .withDescription("hc")
+            .withOldValue("nohjt")
+            .withNewValue("whdsoifiyip")
+            .withIsDataMasked(false);
         model = BinaryData.fromObject(model).toObject(PropertyChange.class);
         Assertions.assertEquals(ChangeType.UPDATE, model.changeType());
-        Assertions.assertEquals(ChangeCategory.SYSTEM, model.changeCategory());
-        Assertions.assertEquals("vmgxsab", model.jsonPath());
-        Assertions.assertEquals("qduujitcjczdz", model.displayName());
-        Assertions.assertEquals(Level.NOISY, model.level());
-        Assertions.assertEquals("hkr", model.description());
-        Assertions.assertEquals("d", model.oldValue());
-        Assertions.assertEquals("p", model.newValue());
-        Assertions.assertEquals(true, model.isDataMasked());
+        Assertions.assertEquals(ChangeCategory.USER, model.changeCategory());
+        Assertions.assertEquals("ehzzvypyqrim", model.jsonPath());
+        Assertions.assertEquals("npvswjdkirso", model.displayName());
+        Assertions.assertEquals(Level.IMPORTANT, model.level());
+        Assertions.assertEquals("hc", model.description());
+        Assertions.assertEquals("nohjt", model.oldValue());
+        Assertions.assertEquals("whdsoifiyip", model.newValue());
+        Assertions.assertEquals(false, model.isDataMasked());
     }
 }

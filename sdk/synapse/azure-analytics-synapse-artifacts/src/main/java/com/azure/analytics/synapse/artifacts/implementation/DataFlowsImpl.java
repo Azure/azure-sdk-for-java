@@ -124,10 +124,8 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(String dataFlowName,
         DataFlowResource dataFlow, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateDataFlow(this.client.getEndpoint(), dataFlowName,
-            apiVersion, ifMatch, dataFlow, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch, context));
     }
 
     /**
@@ -273,10 +271,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(String dataFlowName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch, context));
     }
 
     /**
@@ -408,10 +403,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteDataFlowWithResponseAsync(dataFlowName, context));
     }
 
     /**
@@ -500,10 +492,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDataFlowWithResponseAsync(String dataFlowName, ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameDataFlow(this.client.getEndpoint(), dataFlowName,
-            apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> renameDataFlowWithResponseAsync(dataFlowName, request, context));
     }
 
     /**
@@ -706,9 +695,7 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -727,9 +714,7 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -748,9 +733,7 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -764,9 +747,7 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

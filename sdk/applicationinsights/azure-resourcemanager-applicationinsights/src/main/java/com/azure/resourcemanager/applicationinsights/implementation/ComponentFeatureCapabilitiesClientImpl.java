@@ -25,17 +25,23 @@ import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapa
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFeatureCapabilitiesInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ComponentFeatureCapabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ComponentFeatureCapabilitiesClient.
+ */
 public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFeatureCapabilitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ComponentFeatureCapabilitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ComponentFeatureCapabilitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ComponentFeatureCapabilitiesClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -63,14 +69,14 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component feature capabilities along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFeatureCapabilitiesInner>>
@@ -100,7 +106,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -108,7 +114,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component feature capabilities along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFeatureCapabilitiesInner>>
@@ -137,7 +143,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +159,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -170,7 +176,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

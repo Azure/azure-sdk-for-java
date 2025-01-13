@@ -5,38 +5,65 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.AdministratorConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.ControlPlaneNodePatchConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** KubernetesClusterPatchProperties represents the properties of the Kubernetes cluster that can be patched. */
+/**
+ * KubernetesClusterPatchProperties represents the properties of the Kubernetes cluster that can be patched.
+ */
 @Fluent
-public final class KubernetesClusterPatchProperties {
+public final class KubernetesClusterPatchProperties implements JsonSerializable<KubernetesClusterPatchProperties> {
     /*
-     * ControlPlaneNodePatchConfiguration represents the properties of the control plane that can be patched for this
-     * Kubernetes cluster.
-     *
+     * The configuration of the default administrator credentials.
+     */
+    private AdministratorConfigurationPatch administratorConfiguration;
+
+    /*
      * The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
      */
-    @JsonProperty(value = "controlPlaneNodeConfiguration")
     private ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration;
 
     /*
-     * The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used
-     * will be resolved into this field after creation or update.
+     * The Kubernetes version for this cluster.
      */
-    @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
-    /** Creates an instance of KubernetesClusterPatchProperties class. */
+    /**
+     * Creates an instance of KubernetesClusterPatchProperties class.
+     */
     public KubernetesClusterPatchProperties() {
     }
 
     /**
-     * Get the controlPlaneNodeConfiguration property: ControlPlaneNodePatchConfiguration represents the properties of
-     * the control plane that can be patched for this Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
-     *
+     * Get the administratorConfiguration property: The configuration of the default administrator credentials.
+     * 
+     * @return the administratorConfiguration value.
+     */
+    public AdministratorConfigurationPatch administratorConfiguration() {
+        return this.administratorConfiguration;
+    }
+
+    /**
+     * Set the administratorConfiguration property: The configuration of the default administrator credentials.
+     * 
+     * @param administratorConfiguration the administratorConfiguration value to set.
+     * @return the KubernetesClusterPatchProperties object itself.
+     */
+    public KubernetesClusterPatchProperties
+        withAdministratorConfiguration(AdministratorConfigurationPatch administratorConfiguration) {
+        this.administratorConfiguration = administratorConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneNodeConfiguration property: The defining characteristics of the control plane that can be
+     * patched for this Kubernetes cluster.
+     * 
      * @return the controlPlaneNodeConfiguration value.
      */
     public ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration() {
@@ -44,11 +71,9 @@ public final class KubernetesClusterPatchProperties {
     }
 
     /**
-     * Set the controlPlaneNodeConfiguration property: ControlPlaneNodePatchConfiguration represents the properties of
-     * the control plane that can be patched for this Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
-     *
+     * Set the controlPlaneNodeConfiguration property: The defining characteristics of the control plane that can be
+     * patched for this Kubernetes cluster.
+     * 
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterPatchProperties object itself.
      */
@@ -59,9 +84,8 @@ public final class KubernetesClusterPatchProperties {
     }
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Get the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -69,9 +93,8 @@ public final class KubernetesClusterPatchProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Set the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the KubernetesClusterPatchProperties object itself.
      */
@@ -82,12 +105,60 @@ public final class KubernetesClusterPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (administratorConfiguration() != null) {
+            administratorConfiguration().validate();
+        }
         if (controlPlaneNodeConfiguration() != null) {
             controlPlaneNodeConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("administratorConfiguration", this.administratorConfiguration);
+        jsonWriter.writeJsonField("controlPlaneNodeConfiguration", this.controlPlaneNodeConfiguration);
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterPatchProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesClusterPatchProperties.
+     */
+    public static KubernetesClusterPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterPatchProperties deserializedKubernetesClusterPatchProperties
+                = new KubernetesClusterPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterPatchProperties.administratorConfiguration
+                        = AdministratorConfigurationPatch.fromJson(reader);
+                } else if ("controlPlaneNodeConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterPatchProperties.controlPlaneNodeConfiguration
+                        = ControlPlaneNodePatchConfiguration.fromJson(reader);
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedKubernetesClusterPatchProperties.kubernetesVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterPatchProperties;
+        });
     }
 }

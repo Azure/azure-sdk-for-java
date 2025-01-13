@@ -5,33 +5,36 @@
 package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maps.models.CorsRules;
 import com.azure.resourcemanager.maps.models.Encryption;
 import com.azure.resourcemanager.maps.models.LinkedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Additional Map account properties. */
+/**
+ * Additional Map account properties.
+ */
 @Fluent
-public final class MapsAccountProperties {
+public final class MapsAccountProperties implements JsonSerializable<MapsAccountProperties> {
     /*
      * A unique identifier for the maps account
      */
-    @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
     /*
-     * Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will
-     * disable Shared Keys and Shared Access Signature Token authentication from any usage.
+     * Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will disable
+     * Shared Keys and Shared Access Signature Token authentication from any usage.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * The provisioning state of the Map account resource, Account updates can only be performed on terminal states.
      * Terminal states: `Succeeded` and `Failed`
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
@@ -40,31 +43,30 @@ public final class MapsAccountProperties {
      * Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s) permissions to those
      * resource(s).
      */
-    @JsonProperty(value = "linkedResources")
     private List<LinkedResource> linkedResources;
 
     /*
      * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no
-     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
-     * for the Blob service.
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for
+     * the Blob service.
      */
-    @JsonProperty(value = "cors")
     private CorsRules cors;
 
     /*
      * (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform
      * (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
-    /** Creates an instance of MapsAccountProperties class. */
+    /**
+     * Creates an instance of MapsAccountProperties class.
+     */
     public MapsAccountProperties() {
     }
 
     /**
      * Get the uniqueId property: A unique identifier for the maps account.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -75,7 +77,7 @@ public final class MapsAccountProperties {
      * Get the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
      * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
      * usage.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -86,7 +88,7 @@ public final class MapsAccountProperties {
      * Set the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
      * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
      * usage.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the MapsAccountProperties object itself.
      */
@@ -98,7 +100,7 @@ public final class MapsAccountProperties {
     /**
      * Get the provisioningState property: The provisioning state of the Map account resource, Account updates can only
      * be performed on terminal states. Terminal states: `Succeeded` and `Failed`.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -110,7 +112,7 @@ public final class MapsAccountProperties {
      * array cannot individually update, you must update all linked resources in the array together. These resources may
      * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
      * permissions to those resource(s).
-     *
+     * 
      * @return the linkedResources value.
      */
     public List<LinkedResource> linkedResources() {
@@ -122,7 +124,7 @@ public final class MapsAccountProperties {
      * array cannot individually update, you must update all linked resources in the array together. These resources may
      * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
      * permissions to those resource(s).
-     *
+     * 
      * @param linkedResources the linkedResources value to set.
      * @return the MapsAccountProperties object itself.
      */
@@ -135,7 +137,7 @@ public final class MapsAccountProperties {
      * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the Blob service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -146,7 +148,7 @@ public final class MapsAccountProperties {
      * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the Blob service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the MapsAccountProperties object itself.
      */
@@ -159,7 +161,7 @@ public final class MapsAccountProperties {
      * Get the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
      * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
      * enabled and disabled.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -170,7 +172,7 @@ public final class MapsAccountProperties {
      * Set the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
      * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
      * enabled and disabled.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the MapsAccountProperties object itself.
      */
@@ -181,7 +183,7 @@ public final class MapsAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -194,5 +196,57 @@ public final class MapsAccountProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeArrayField("linkedResources", this.linkedResources,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsAccountProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsAccountProperties.
+     */
+    public static MapsAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsAccountProperties deserializedMapsAccountProperties = new MapsAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uniqueId".equals(fieldName)) {
+                    deserializedMapsAccountProperties.uniqueId = reader.getString();
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedMapsAccountProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMapsAccountProperties.provisioningState = reader.getString();
+                } else if ("linkedResources".equals(fieldName)) {
+                    List<LinkedResource> linkedResources
+                        = reader.readArray(reader1 -> LinkedResource.fromJson(reader1));
+                    deserializedMapsAccountProperties.linkedResources = linkedResources;
+                } else if ("cors".equals(fieldName)) {
+                    deserializedMapsAccountProperties.cors = CorsRules.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMapsAccountProperties.encryption = Encryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsAccountProperties;
+        });
     }
 }

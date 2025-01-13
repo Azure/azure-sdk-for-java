@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 
 /**
  * An instance of this class provides access to all the operations defined in UsagesClient.
@@ -24,7 +24,7 @@ public interface UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> list(String location);
+    PagedIterable<Usage> list(String location);
 
     /**
      * Get usages for the requested subscription.
@@ -39,5 +39,5 @@ public interface UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> list(String location, String filter, Context context);
+    PagedIterable<Usage> list(String location, String filter, Context context);
 }

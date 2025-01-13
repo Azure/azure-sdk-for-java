@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PreferredContactMethod extends ExpandableStringEnum<Preferred
      * @param name a name to look for.
      * @return the corresponding PreferredContactMethod.
      */
-    @JsonCreator
     public static PreferredContactMethod fromString(String name) {
         return fromString(name, PreferredContactMethod.class);
     }

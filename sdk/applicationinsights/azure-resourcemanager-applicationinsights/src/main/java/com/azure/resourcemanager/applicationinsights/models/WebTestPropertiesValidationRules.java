@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The collection of validation rule properties. */
+/**
+ * The collection of validation rule properties.
+ */
 @Fluent
-public final class WebTestPropertiesValidationRules {
+public final class WebTestPropertiesValidationRules implements JsonSerializable<WebTestPropertiesValidationRules> {
     /*
      * The collection of content validation properties
      */
-    @JsonProperty(value = "ContentValidation")
     private WebTestPropertiesValidationRulesContentValidation contentValidation;
 
     /*
      * Checks to see if the SSL cert is still valid.
      */
-    @JsonProperty(value = "SSLCheck")
     private Boolean sslCheck;
 
     /*
-     * A number of days to check still remain before the the existing SSL cert expires.  Value must be positive and the
+     * A number of days to check still remain before the the existing SSL cert expires. Value must be positive and the
      * SSLCheck must be set to true.
      */
-    @JsonProperty(value = "SSLCertRemainingLifetimeCheck")
     private Integer sslCertRemainingLifetimeCheck;
 
     /*
      * Validate that the WebTest returns the http status code provided.
      */
-    @JsonProperty(value = "ExpectedHttpStatusCode")
     private Integer expectedHttpStatusCode;
 
     /*
      * When set, validation will ignore the status code.
      */
-    @JsonProperty(value = "IgnoreHttpStatusCode")
     private Boolean ignoreHttpStatusCode;
 
-    /** Creates an instance of WebTestPropertiesValidationRules class. */
+    /**
+     * Creates an instance of WebTestPropertiesValidationRules class.
+     */
     public WebTestPropertiesValidationRules() {
     }
 
     /**
      * Get the contentValidation property: The collection of content validation properties.
-     *
+     * 
      * @return the contentValidation value.
      */
     public WebTestPropertiesValidationRulesContentValidation contentValidation() {
@@ -56,7 +59,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Set the contentValidation property: The collection of content validation properties.
-     *
+     * 
      * @param contentValidation the contentValidation value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
@@ -68,7 +71,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Get the sslCheck property: Checks to see if the SSL cert is still valid.
-     *
+     * 
      * @return the sslCheck value.
      */
     public Boolean sslCheck() {
@@ -77,7 +80,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Set the sslCheck property: Checks to see if the SSL cert is still valid.
-     *
+     * 
      * @param sslCheck the sslCheck value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
@@ -89,7 +92,7 @@ public final class WebTestPropertiesValidationRules {
     /**
      * Get the sslCertRemainingLifetimeCheck property: A number of days to check still remain before the the existing
      * SSL cert expires. Value must be positive and the SSLCheck must be set to true.
-     *
+     * 
      * @return the sslCertRemainingLifetimeCheck value.
      */
     public Integer sslCertRemainingLifetimeCheck() {
@@ -99,7 +102,7 @@ public final class WebTestPropertiesValidationRules {
     /**
      * Set the sslCertRemainingLifetimeCheck property: A number of days to check still remain before the the existing
      * SSL cert expires. Value must be positive and the SSLCheck must be set to true.
-     *
+     * 
      * @param sslCertRemainingLifetimeCheck the sslCertRemainingLifetimeCheck value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
@@ -110,7 +113,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Get the expectedHttpStatusCode property: Validate that the WebTest returns the http status code provided.
-     *
+     * 
      * @return the expectedHttpStatusCode value.
      */
     public Integer expectedHttpStatusCode() {
@@ -119,7 +122,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Set the expectedHttpStatusCode property: Validate that the WebTest returns the http status code provided.
-     *
+     * 
      * @param expectedHttpStatusCode the expectedHttpStatusCode value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
@@ -130,7 +133,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Get the ignoreHttpStatusCode property: When set, validation will ignore the status code.
-     *
+     * 
      * @return the ignoreHttpStatusCode value.
      */
     public Boolean ignoreHttpStatusCode() {
@@ -139,7 +142,7 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Set the ignoreHttpStatusCode property: When set, validation will ignore the status code.
-     *
+     * 
      * @param ignoreHttpStatusCode the ignoreHttpStatusCode value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
@@ -150,12 +153,65 @@ public final class WebTestPropertiesValidationRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentValidation() != null) {
             contentValidation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ContentValidation", this.contentValidation);
+        jsonWriter.writeBooleanField("SSLCheck", this.sslCheck);
+        jsonWriter.writeNumberField("SSLCertRemainingLifetimeCheck", this.sslCertRemainingLifetimeCheck);
+        jsonWriter.writeNumberField("ExpectedHttpStatusCode", this.expectedHttpStatusCode);
+        jsonWriter.writeBooleanField("IgnoreHttpStatusCode", this.ignoreHttpStatusCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTestPropertiesValidationRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTestPropertiesValidationRules if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebTestPropertiesValidationRules.
+     */
+    public static WebTestPropertiesValidationRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTestPropertiesValidationRules deserializedWebTestPropertiesValidationRules
+                = new WebTestPropertiesValidationRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ContentValidation".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRules.contentValidation
+                        = WebTestPropertiesValidationRulesContentValidation.fromJson(reader);
+                } else if ("SSLCheck".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRules.sslCheck = reader.getNullable(JsonReader::getBoolean);
+                } else if ("SSLCertRemainingLifetimeCheck".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRules.sslCertRemainingLifetimeCheck
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("ExpectedHttpStatusCode".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRules.expectedHttpStatusCode
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("IgnoreHttpStatusCode".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRules.ignoreHttpStatusCode
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTestPropertiesValidationRules;
+        });
     }
 }

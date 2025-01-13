@@ -13,18 +13,17 @@ public final class TestLinePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestLineProperties model = BinaryData
-            .fromString("{\"provisioningState\":\"Failed\",\"phoneNumber\":\"gcue\",\"purpose\":\"Automated\"}")
+            .fromString("{\"provisioningState\":\"Canceled\",\"phoneNumber\":\"xhcr\",\"purpose\":\"Manual\"}")
             .toObject(TestLineProperties.class);
-        Assertions.assertEquals("gcue", model.phoneNumber());
-        Assertions.assertEquals(TestLinePurpose.AUTOMATED, model.purpose());
+        Assertions.assertEquals("xhcr", model.phoneNumber());
+        Assertions.assertEquals(TestLinePurpose.MANUAL, model.purpose());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestLineProperties model
-            = new TestLineProperties().withPhoneNumber("gcue").withPurpose(TestLinePurpose.AUTOMATED);
+        TestLineProperties model = new TestLineProperties().withPhoneNumber("xhcr").withPurpose(TestLinePurpose.MANUAL);
         model = BinaryData.fromObject(model).toObject(TestLineProperties.class);
-        Assertions.assertEquals("gcue", model.phoneNumber());
-        Assertions.assertEquals(TestLinePurpose.AUTOMATED, model.purpose());
+        Assertions.assertEquals("xhcr", model.phoneNumber());
+        Assertions.assertEquals(TestLinePurpose.MANUAL, model.purpose());
     }
 }

@@ -50,7 +50,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.9.0</version>
+    <version>2.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -282,6 +282,7 @@ For Spring Boot applications see our [Spring Boot starter][spring_boot_starter].
 
 ### References
 1. [Java Cryptography Architecture (JCA) Reference Guide][jca_reference_guide]
+2. [Creating a Shaded Jar Wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Creating-a-Shaded-Jar)
 
 ### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation].

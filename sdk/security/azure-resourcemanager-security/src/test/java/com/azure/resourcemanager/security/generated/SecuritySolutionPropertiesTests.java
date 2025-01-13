@@ -14,24 +14,24 @@ public final class SecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionProperties model = BinaryData.fromString(
-            "{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Updating\",\"template\":\"zladltxkpbq\",\"protectionStatus\":\"v\"}")
+            "{\"securityFamily\":\"SaasWaf\",\"provisioningState\":\"Succeeded\",\"template\":\"tutnwlduycvuzhyr\",\"protectionStatus\":\"ewipm\"}")
             .toObject(SecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.provisioningState());
-        Assertions.assertEquals("zladltxkpbq", model.template());
-        Assertions.assertEquals("v", model.protectionStatus());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("tutnwlduycvuzhyr", model.template());
+        Assertions.assertEquals("ewipm", model.protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionProperties model = new SecuritySolutionProperties().withSecurityFamily(SecurityFamily.NGFW)
-            .withProvisioningState(ProvisioningState.UPDATING)
-            .withTemplate("zladltxkpbq")
-            .withProtectionStatus("v");
+        SecuritySolutionProperties model = new SecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
+            .withProvisioningState(ProvisioningState.SUCCEEDED)
+            .withTemplate("tutnwlduycvuzhyr")
+            .withProtectionStatus("ewipm");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.provisioningState());
-        Assertions.assertEquals("zladltxkpbq", model.template());
-        Assertions.assertEquals("v", model.protectionStatus());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("tutnwlduycvuzhyr", model.template());
+        Assertions.assertEquals("ewipm", model.protectionStatus());
     }
 }

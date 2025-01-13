@@ -25,7 +25,9 @@ public final class ArtifactStoresCreateOrUpdateSamples {
      */
     public static void createOrUpdateAnArtifactStoreOfPublisherResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactStores().define("TestArtifactStore").withRegion("eastus")
+        manager.artifactStores()
+            .define("TestArtifactStore")
+            .withRegion("eastus")
             .withExistingPublisher("rg", "TestPublisher")
             .withProperties(
                 new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)

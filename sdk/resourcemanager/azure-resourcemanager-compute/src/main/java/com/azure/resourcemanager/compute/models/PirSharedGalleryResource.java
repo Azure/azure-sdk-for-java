@@ -22,14 +22,14 @@ public class PirSharedGalleryResource extends PirResource {
     private SharedGalleryIdentifier innerIdentifier;
 
     /*
-     * Resource name
-     */
-    private String name;
-
-    /*
      * Resource location
      */
     private String location;
+
+    /*
+     * Resource name
+     */
+    private String name;
 
     /**
      * Creates an instance of PirSharedGalleryResource class.
@@ -58,16 +58,6 @@ public class PirSharedGalleryResource extends PirResource {
     }
 
     /**
-     * Get the name property: Resource name.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the location property: Resource location.
      * 
      * @return the location value.
@@ -75,6 +65,16 @@ public class PirSharedGalleryResource extends PirResource {
     @Override
     public String location() {
         return this.location;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -107,7 +107,6 @@ public class PirSharedGalleryResource extends PirResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerIdentifier() != null) {
             innerIdentifier().validate();
         }

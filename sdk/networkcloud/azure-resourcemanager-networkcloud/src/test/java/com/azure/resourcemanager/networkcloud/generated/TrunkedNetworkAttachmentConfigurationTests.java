@@ -13,19 +13,19 @@ public final class TrunkedNetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrunkedNetworkAttachmentConfiguration model
-            = BinaryData.fromString("{\"networkId\":\"nalaulppg\",\"pluginType\":\"IPVLAN\"}")
+            = BinaryData.fromString("{\"networkId\":\"dgqggebdu\",\"pluginType\":\"IPVLAN\"}")
                 .toObject(TrunkedNetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("nalaulppg", model.networkId());
+        Assertions.assertEquals("dgqggebdu", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrunkedNetworkAttachmentConfiguration model
-            = new TrunkedNetworkAttachmentConfiguration().withNetworkId("nalaulppg")
+            = new TrunkedNetworkAttachmentConfiguration().withNetworkId("dgqggebdu")
                 .withPluginType(KubernetesPluginType.IPVLAN);
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("nalaulppg", model.networkId());
+        Assertions.assertEquals("dgqggebdu", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 }

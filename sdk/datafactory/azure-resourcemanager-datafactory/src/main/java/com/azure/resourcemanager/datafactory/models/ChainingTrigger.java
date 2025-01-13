@@ -38,11 +38,6 @@ public final class ChainingTrigger extends Trigger {
      */
     private ChainingTriggerTypeProperties innerTypeProperties = new ChainingTriggerTypeProperties();
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of ChainingTrigger class.
      */
@@ -86,17 +81,6 @@ public final class ChainingTrigger extends Trigger {
      */
     private ChainingTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState runtimeState() {
-        return this.runtimeState;
     }
 
     /**
@@ -170,7 +154,6 @@ public final class ChainingTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
@@ -227,7 +210,7 @@ public final class ChainingTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedChainingTrigger.withDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedChainingTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedChainingTrigger.withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedChainingTrigger.withAnnotations(annotations);

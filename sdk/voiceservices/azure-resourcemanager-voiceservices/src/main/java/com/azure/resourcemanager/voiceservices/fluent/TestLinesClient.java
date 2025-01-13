@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.voiceservices.fluent.models.TestLineInner;
 import com.azure.resourcemanager.voiceservices.models.TestLineUpdate;
 
-/** An instance of this class provides access to all the operations defined in TestLinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TestLinesClient.
+ */
 public interface TestLinesClient {
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -47,7 +49,7 @@ public interface TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -63,7 +65,7 @@ public interface TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -77,7 +79,7 @@ public interface TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -93,7 +95,7 @@ public interface TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -110,7 +112,7 @@ public interface TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -126,7 +128,7 @@ public interface TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -143,7 +145,7 @@ public interface TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -158,7 +160,7 @@ public interface TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -174,7 +176,7 @@ public interface TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -187,7 +189,7 @@ public interface TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -201,7 +203,7 @@ public interface TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -218,7 +220,7 @@ public interface TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.

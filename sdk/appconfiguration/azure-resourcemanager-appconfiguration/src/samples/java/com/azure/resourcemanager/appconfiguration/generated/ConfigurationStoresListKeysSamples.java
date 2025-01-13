@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-/** Samples for ConfigurationStores ListKeys. */
+/**
+ * Samples for ConfigurationStores ListKeys.
+ */
 public final class ConfigurationStoresListKeysSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresListKeys.json
+     * x-ms-original-file:
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * ConfigurationStoresListKeys.json
      */
     /**
      * Sample code: ConfigurationStores_ListKeys.
-     *
+     * 
      * @param manager Entry point to AppConfigurationManager.
      */
-    public static void configurationStoresListKeys(
-        com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
+    public static void
+        configurationStoresListKeys(com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
         manager.configurationStores().listKeys("myResourceGroup", "contoso", null, com.azure.core.util.Context.NONE);
     }
 }

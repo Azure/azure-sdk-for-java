@@ -15,7 +15,6 @@ import java.util.EnumSet;
  * A class used to represent the SMB properties of a file.
  */
 public class FileSmbProperties {
-
     private String filePermissionKey;
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
     private OffsetDateTime fileCreationTime;
@@ -34,6 +33,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's permission key.
+     *
      * @return The file's permission key.
      */
     public String getFilePermissionKey() {
@@ -41,6 +42,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's {@link NtfsFileAttributes}.
+     *
      * @return The file's {@link NtfsFileAttributes}.
      */
     public EnumSet<NtfsFileAttributes> getNtfsFileAttributes() {
@@ -48,6 +51,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's creation time.
+     *
      * @return The file's creation time.
      */
     public OffsetDateTime getFileCreationTime() {
@@ -55,6 +60,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's last write time.
+     *
      * @return The file's last write time.
      */
     public OffsetDateTime getFileLastWriteTime() {
@@ -62,6 +69,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's change time.
+     *
      * @return The file's change time.
      */
     public OffsetDateTime getFileChangeTime() {
@@ -69,6 +78,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's ID.
+     *
      * @return The file's ID.
      */
     public String getFileId() {
@@ -76,6 +87,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's parent ID.
+     *
      * @return The file's parent ID.
      */
     public String getParentId() {

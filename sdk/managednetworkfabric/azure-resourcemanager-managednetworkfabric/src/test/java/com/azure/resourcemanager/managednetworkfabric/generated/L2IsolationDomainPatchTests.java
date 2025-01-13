@@ -14,25 +14,27 @@ public final class L2IsolationDomainPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2IsolationDomainPatch model = BinaryData.fromString(
-            "{\"properties\":{\"mtu\":1649679831,\"annotation\":\"jzacvumepjpbibn\"},\"tags\":{\"fexleqirccjcly\":\"hep\",\"vczuodacpune\":\"cgxvrpj\",\"oy\":\"tepdjxqes\",\"aewse\":\"uiylpc\"}}")
+            "{\"properties\":{\"mtu\":542364624,\"annotation\":\"ykwphvxzcwxhmpe\"},\"tags\":{\"aonwivkcqhrxh\":\"ke\",\"jubyqjfkakfq\":\"knlccrmmkyup\",\"yildudxjascow\":\"rke\",\"jkpdxphlkksnm\":\"f\"}}")
             .toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
-        Assertions.assertEquals(1649679831, model.mtu());
-        Assertions.assertEquals("jzacvumepjpbibn", model.annotation());
+        Assertions.assertEquals("ke", model.tags().get("aonwivkcqhrxh"));
+        Assertions.assertEquals(542364624, model.mtu());
+        Assertions.assertEquals("ykwphvxzcwxhmpe", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2IsolationDomainPatch model = new L2IsolationDomainPatch()
-            .withTags(mapOf("fexleqirccjcly", "hep", "vczuodacpune", "cgxvrpj", "oy", "tepdjxqes", "aewse", "uiylpc"))
-            .withMtu(1649679831)
-            .withAnnotation("jzacvumepjpbibn");
+            .withTags(mapOf("aonwivkcqhrxh", "ke", "jubyqjfkakfq", "knlccrmmkyup", "yildudxjascow", "rke",
+                "jkpdxphlkksnm", "f"))
+            .withMtu(542364624)
+            .withAnnotation("ykwphvxzcwxhmpe");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
-        Assertions.assertEquals(1649679831, model.mtu());
-        Assertions.assertEquals("jzacvumepjpbibn", model.annotation());
+        Assertions.assertEquals("ke", model.tags().get("aonwivkcqhrxh"));
+        Assertions.assertEquals(542364624, model.mtu());
+        Assertions.assertEquals("ykwphvxzcwxhmpe", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

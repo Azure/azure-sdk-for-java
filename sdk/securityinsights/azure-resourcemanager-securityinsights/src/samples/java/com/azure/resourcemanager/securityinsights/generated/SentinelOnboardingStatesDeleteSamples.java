@@ -10,7 +10,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class SentinelOnboardingStatesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/
      * onboardingStates/DeleteSentinelOnboardingState.json
      */
     /**

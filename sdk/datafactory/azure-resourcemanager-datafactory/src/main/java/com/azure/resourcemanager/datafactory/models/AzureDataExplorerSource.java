@@ -194,7 +194,6 @@ public final class AzureDataExplorerSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (query() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property query in model AzureDataExplorerSource"));

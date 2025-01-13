@@ -17,30 +17,48 @@ public final class VolumeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeList model = BinaryData.fromString(
-            "{\"nextLink\":\"hcmavmqfo\",\"value\":[{\"extendedLocation\":{\"name\":\"rhc\",\"type\":\"yyprotwyp\"},\"properties\":{\"attachedTo\":[\"mbxhugcmjkav\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bmftpmdt\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"tfvnz\",\"sizeMiB\":1221267442521821688},\"location\":\"otp\",\"tags\":{\"ihed\":\"vpbdbzqgq\",\"mkyi\":\"vqwt\",\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}]}")
+            "{\"nextLink\":\"zid\",\"value\":[{\"extendedLocation\":{\"name\":\"aabzmif\",\"type\":\"ygznmmaxrizk\"},\"properties\":{\"attachedTo\":[\"gopxlhslnelxie\",\"xynl\",\"xecwcro\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"lhc\",\"provisioningState\":\"Failed\",\"serialNumber\":\"tifdwfmvi\",\"sizeMiB\":2572871112622021825},\"location\":\"jbt\",\"tags\":{\"fhonqjujeickpzvc\":\"raglk\"},\"id\":\"opmx\",\"name\":\"lnwcltyjed\",\"type\":\"xxmlfmkqscazua\"},{\"extendedLocation\":{\"name\":\"xtzx\",\"type\":\"uamwabzxrvxc\"},\"properties\":{\"attachedTo\":[\"sphaivmxyasflvg\",\"gzwywak\",\"ihknsmjbl\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lnymzotqy\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"cbm\",\"sizeMiB\":2876121281979781425},\"location\":\"mv\",\"tags\":{\"nsup\":\"tayx\",\"oibgsxg\":\"ujlzqnhcvsqltn\",\"dbxiqx\":\"xfyqonmpqoxwdo\",\"htmwwinh\":\"iiqbi\"},\"id\":\"hfqpofv\",\"name\":\"bcblemb\",\"type\":\"kbwvqvxkdiv\"},{\"extendedLocation\":{\"name\":\"ihebwtsw\",\"type\":\"zuwfmdur\"},\"properties\":{\"attachedTo\":[\"gi\",\"vcjfelisdjubggb\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"xkbsazgakgac\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"jdmspofapvuhryln\",\"sizeMiB\":5973350387675876264},\"location\":\"zgb\",\"tags\":{\"nlvxbcuii\":\"dmstk\"},\"id\":\"nktwfansnvpdibmi\",\"name\":\"ostbzbkiwb\",\"type\":\"qnyophzfyls\"},{\"extendedLocation\":{\"name\":\"crpfbcunez\",\"type\":\"cez\"},\"properties\":{\"attachedTo\":[\"w\",\"fwlwxjwetnps\",\"hclafzvaylptrs\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"tcmwqkchc\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"fewz\",\"sizeMiB\":2734356009177202328},\"location\":\"xfdeqvhpsyl\",\"tags\":{\"zjrgyww\":\"hkbffmbm\"},\"id\":\"gjxsnptfu\",\"name\":\"gicgaaoepttaq\",\"type\":\"tdewemxswvruu\"}]}")
             .toObject(VolumeList.class);
-        Assertions.assertEquals("hcmavmqfo", model.nextLink());
-        Assertions.assertEquals("otp", model.value().get(0).location());
-        Assertions.assertEquals("vpbdbzqgq", model.value().get(0).tags().get("ihed"));
-        Assertions.assertEquals("rhc", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("yyprotwyp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(1221267442521821688L, model.value().get(0).sizeMiB());
+        Assertions.assertEquals("zid", model.nextLink());
+        Assertions.assertEquals("jbt", model.value().get(0).location());
+        Assertions.assertEquals("raglk", model.value().get(0).tags().get("fhonqjujeickpzvc"));
+        Assertions.assertEquals("aabzmif", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("ygznmmaxrizk", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(2572871112622021825L, model.value().get(0).sizeMiB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeList model = new VolumeList().withNextLink("hcmavmqfo")
-            .withValue(Arrays.asList(new VolumeInner().withLocation("otp")
-                .withTags(mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
-                .withExtendedLocation(new ExtendedLocation().withName("rhc").withType("yyprotwyp"))
-                .withSizeMiB(1221267442521821688L)));
+        VolumeList model
+            = new VolumeList().withNextLink("zid")
+                .withValue(
+                    Arrays
+                        .asList(
+                            new VolumeInner().withLocation("jbt")
+                                .withTags(mapOf("fhonqjujeickpzvc", "raglk"))
+                                .withExtendedLocation(
+                                    new ExtendedLocation().withName("aabzmif").withType("ygznmmaxrizk"))
+                                .withSizeMiB(2572871112622021825L),
+                            new VolumeInner().withLocation("mv")
+                                .withTags(mapOf("nsup", "tayx", "oibgsxg", "ujlzqnhcvsqltn", "dbxiqx", "xfyqonmpqoxwdo",
+                                    "htmwwinh", "iiqbi"))
+                                .withExtendedLocation(new ExtendedLocation().withName("xtzx").withType("uamwabzxrvxc"))
+                                .withSizeMiB(2876121281979781425L),
+                            new VolumeInner().withLocation("zgb")
+                                .withTags(mapOf("nlvxbcuii", "dmstk"))
+                                .withExtendedLocation(new ExtendedLocation().withName("ihebwtsw").withType("zuwfmdur"))
+                                .withSizeMiB(5973350387675876264L),
+                            new VolumeInner().withLocation("xfdeqvhpsyl")
+                                .withTags(mapOf("zjrgyww", "hkbffmbm"))
+                                .withExtendedLocation(new ExtendedLocation().withName("crpfbcunez").withType("cez"))
+                                .withSizeMiB(2734356009177202328L)));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
-        Assertions.assertEquals("hcmavmqfo", model.nextLink());
-        Assertions.assertEquals("otp", model.value().get(0).location());
-        Assertions.assertEquals("vpbdbzqgq", model.value().get(0).tags().get("ihed"));
-        Assertions.assertEquals("rhc", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("yyprotwyp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(1221267442521821688L, model.value().get(0).sizeMiB());
+        Assertions.assertEquals("zid", model.nextLink());
+        Assertions.assertEquals("jbt", model.value().get(0).location());
+        Assertions.assertEquals("raglk", model.value().get(0).tags().get("fhonqjujeickpzvc"));
+        Assertions.assertEquals("aabzmif", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("ygznmmaxrizk", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(2572871112622021825L, model.value().get(0).sizeMiB());
     }
 
     // Use "Map.of" if available

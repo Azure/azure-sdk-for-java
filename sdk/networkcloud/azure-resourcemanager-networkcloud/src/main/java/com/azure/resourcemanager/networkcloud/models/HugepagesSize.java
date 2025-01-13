@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The size of the hugepages to allocate. */
+/**
+ * The size of the hugepages to allocate.
+ */
 public final class HugepagesSize extends ExpandableStringEnum<HugepagesSize> {
-    /** Static value 2M for HugepagesSize. */
+    /**
+     * Static value 2M for HugepagesSize.
+     */
     public static final HugepagesSize TWOM = fromString("2M");
 
-    /** Static value 1G for HugepagesSize. */
+    /**
+     * Static value 1G for HugepagesSize.
+     */
     public static final HugepagesSize ONEG = fromString("1G");
 
     /**
      * Creates a new instance of HugepagesSize value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class HugepagesSize extends ExpandableStringEnum<HugepagesSize> {
 
     /**
      * Creates or finds a HugepagesSize from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HugepagesSize.
      */
-    @JsonCreator
     public static HugepagesSize fromString(String name) {
         return fromString(name, HugepagesSize.class);
     }
 
     /**
      * Gets known HugepagesSize values.
-     *
+     * 
      * @return known HugepagesSize values.
      */
     public static Collection<HugepagesSize> values() {

@@ -126,7 +126,6 @@ public final class AzureMySqlSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

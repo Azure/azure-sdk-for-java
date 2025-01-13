@@ -12,14 +12,14 @@ public final class RegenerateKeyParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegenerateKeyParameters model
-            = BinaryData.fromString("{\"id\":\"dsoifiyipj\"}").toObject(RegenerateKeyParameters.class);
-        Assertions.assertEquals("dsoifiyipj", model.id());
+            = BinaryData.fromString("{\"id\":\"hxbnjbiksqrg\"}").toObject(RegenerateKeyParameters.class);
+        Assertions.assertEquals("hxbnjbiksqrg", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegenerateKeyParameters model = new RegenerateKeyParameters().withId("dsoifiyipj");
+        RegenerateKeyParameters model = new RegenerateKeyParameters().withId("hxbnjbiksqrg");
         model = BinaryData.fromObject(model).toObject(RegenerateKeyParameters.class);
-        Assertions.assertEquals("dsoifiyipj", model.id());
+        Assertions.assertEquals("hxbnjbiksqrg", model.id());
     }
 }

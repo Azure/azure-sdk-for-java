@@ -30,17 +30,23 @@ import com.azure.resourcemanager.networkcloud.fluent.models.RackSkuInner;
 import com.azure.resourcemanager.networkcloud.models.RackSkuList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RackSkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RackSkusClient.
+ */
 public final class RackSkusClientImpl implements RackSkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RackSkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of RackSkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RackSkusClientImpl(NetworkCloudImpl client) {
@@ -82,13 +88,13 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of rack SKUs in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackSkuInner>> listSinglePageAsync() {
@@ -111,15 +117,15 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of rack SKUs in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackSkuInner>> listSinglePageAsync(Context context) {
@@ -142,9 +148,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of rack SKUs in the provided subscription as paginated response with {@link PagedFlux}.
@@ -157,9 +163,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -174,9 +180,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of rack SKUs in the provided subscription as paginated response with {@link PagedIterable}.
@@ -188,9 +194,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * List rack SKUs in the subscription.
-     *
-     * <p>Get a list of rack SKUs in the provided subscription.
-     *
+     * 
+     * Get a list of rack SKUs in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,15 +210,15 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Retrieve the rack SKU.
-     *
-     * <p>Get the properties of the provided rack SKU.
-     *
+     * 
+     * Get the properties of the provided rack SKU.
+     * 
      * @param rackSkuName The name of the rack SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided rack SKU along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the provided rack SKU along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RackSkuInner>> getWithResponseAsync(String rackSkuName) {
@@ -236,16 +242,16 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Retrieve the rack SKU.
-     *
-     * <p>Get the properties of the provided rack SKU.
-     *
+     * 
+     * Get the properties of the provided rack SKU.
+     * 
      * @param rackSkuName The name of the rack SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the provided rack SKU along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the provided rack SKU along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RackSkuInner>> getWithResponseAsync(String rackSkuName, Context context) {
@@ -268,9 +274,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Retrieve the rack SKU.
-     *
-     * <p>Get the properties of the provided rack SKU.
-     *
+     * 
+     * Get the properties of the provided rack SKU.
+     * 
      * @param rackSkuName The name of the rack SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -284,9 +290,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Retrieve the rack SKU.
-     *
-     * <p>Get the properties of the provided rack SKU.
-     *
+     * 
+     * Get the properties of the provided rack SKU.
+     * 
      * @param rackSkuName The name of the rack SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,9 +307,9 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Retrieve the rack SKU.
-     *
-     * <p>Get the properties of the provided rack SKU.
-     *
+     * 
+     * Get the properties of the provided rack SKU.
+     * 
      * @param rackSkuName The name of the rack SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -317,14 +323,13 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rackSkuList represents a list of rack SKUs along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -346,15 +351,14 @@ public final class RackSkusClientImpl implements RackSkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rackSkuList represents a list of rack SKUs along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

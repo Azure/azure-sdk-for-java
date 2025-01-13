@@ -84,8 +84,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         shareClient.create();
         primaryDirectoryClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
-        smbProperties
-            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -284,7 +283,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     private static Stream<Arguments> permissionAndKeySupplier() {
         return Stream.of(Arguments.of("filePermissionKey", FILE_PERMISSION),
-            Arguments.of(null, new String(FileShareTestHelper.getRandomBuffer(9 * Constants.KB))));
+            Arguments.of(null, FileShareTestHelper.getRandomString(9 * Constants.KB)));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
@@ -1647,7 +1646,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .buildDirectoryClient();
         Response<ShareDirectoryProperties> response = directoryClient.getPropertiesWithResponse(null, null);
 
-        assertDoesNotThrow(() -> response.getHeaders().getValue("x-ms-version").equals("2017-11-09"));
+        assertDoesNotThrow(() -> response.getHeaders().getValue(X_MS_VERSION).equals("2017-11-09"));
     }
 
     @ParameterizedTest

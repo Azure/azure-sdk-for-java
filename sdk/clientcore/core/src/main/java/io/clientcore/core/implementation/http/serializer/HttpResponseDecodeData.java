@@ -97,7 +97,7 @@ public interface HttpResponseDecodeData {
      * Whether the return type contains strongly-typed headers.
      * <p>
      * If the response contains strongly-typed headers this is an indication to the HttpClient that the headers should
-     * be eagerly converted from the header format used by the HttpClient implementation to Azure Core HttpHeaders.
+     * be eagerly converted from the header format used by the HttpClient implementation to Client Core HttpHeaders.
      *
      * @return Whether the return type contains strongly-typed headers.
      */
