@@ -201,7 +201,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                     ],
                     "readmeMd": [readme],
                     "artifacts": ["{0}/pom.xml".format(output_folder)]
-                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))],
+                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))] if succeeded else [],
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
@@ -298,7 +298,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             ],
             "typespecProject": [tsp_project],
             "packageFolder": sdk_folder,
-            "artifacts": artifacts,
+            "artifacts": artifacts if succeeded else [],
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
