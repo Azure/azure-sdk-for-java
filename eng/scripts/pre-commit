@@ -1,7 +1,9 @@
 #!/bin/sh
 
+# Fail on first error
 set -e
 
+# Get the list of changed files
 changed_files=$(git diff --cached --name-only)
 
 # Cred Scanner
@@ -19,7 +21,7 @@ fi
 
 # Spell Check
 echo "########### Running spell check ###########"
-npx cspell --no-summary --no-progress --no-must-find-files --file-list $changed_files
+exec echo $changed_files | npx cspell --no-summary --no-progress --no-must-find-files --file-list stdin
 echo "Spell check completed successfully"
 
 # Validate library versions
