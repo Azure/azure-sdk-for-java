@@ -99,6 +99,7 @@ public final class Union {
      * @param value The value of the union.
      * @throws IllegalArgumentException If the value is not of one of the types in the union.
      */
+    @SuppressWarnings("unchecked")
     public void setValue(Object value) {
         for (Type type : types) {
             if (isInstanceOfType(value, type) || isPrimitiveTypeMatch(value, type)) {
