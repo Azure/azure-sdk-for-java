@@ -231,9 +231,6 @@ org.revapi:revapi-maven-plugin;0.14.6
 # going to be some investigation necessary to find, at the very least, a newer version
 # which is, hopefully, not a SNAPSHOT.
 # sdk\batch\microsoft-azure-batch\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # Special test dependencies for clientcore integrations
@@ -296,11 +293,6 @@ cosmos_org.apache.avro:avro;1.11.3
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
 jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
-
-# sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
-keyvault_org.mockito:mockito-core;1.10.19
-# sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
-keyvault_com.microsoft.azure:azure-storage;4.4.0
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
