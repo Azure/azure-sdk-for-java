@@ -6,18 +6,20 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -40,6 +42,7 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -72,14 +75,14 @@ class ServiceBusSessionReceiverAsyncClientTest {
         = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private ConnectionCacheWrapper connectionCacheWrapper;
-    private ServiceBusSessionManager sessionManager;
     private AutoCloseable autoCloseable;
 
     @Mock
     private ServiceBusReceiveLink amqpReceiveLink;
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -110,27 +113,21 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor.flux());
         endpointProcessor.next(AmqpEndpointState.ACTIVE);
-
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+        connectionCache = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
+            new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(TIMEOUT)), new HashMap<>());
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
     }
 
     @AfterEach
     void afterEach(TestInfo testInfo) throws Exception {
         LOGGER.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
-        if (sessionManager != null) {
-            sessionManager.close();
-        }
-
-        if (connectionProcessor != null) {
-            connectionProcessor.dispose();
+        if (connectionCache != null) {
+            connectionCache.dispose();
         }
 
         if (autoCloseable != null) {
@@ -162,6 +159,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenAnswer(invocation -> Mono.just(sessionLockedUntil));
+        when(amqpReceiveLink.getSessionProperties())
+            .thenReturn(Mono.just(new ServiceBusReceiveLink.SessionProperties(sessionId, sessionLockedUntil)));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
@@ -196,8 +195,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
             false, null, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, instrumentation.getTracer());
 
         final int numberOfMessages = 5;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
@@ -215,8 +212,12 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
+        when(amqpReceiveLink.getSessionProperties())
+            .thenReturn(Mono.fromSupplier(() -> new ServiceBusReceiveLink.SessionProperties(sessionId,
+                OffsetDateTime.now().plus(Duration.ofSeconds(5)))));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         // Session 2's messages
         final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
@@ -226,7 +227,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         final String lockToken2 = "a-lock-token-2";
         final String linkName2 = "my-link-name-2";
         final TestPublisher<Message> messagePublisher2 = TestPublisher.create();
-        final Flux<Message> messageFlux2 = messagePublisher2.flux();
+        final Flux<Message> messageFlux2 = messagePublisher2.flux().publishOn(Schedulers.single());
 
         when(receivedMessage2.getSessionId()).thenReturn(sessionId2);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
@@ -238,8 +239,12 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
+        when(amqpReceiveLink2.getSessionProperties())
+            .thenReturn(Mono.fromSupplier(() -> new ServiceBusReceiveLink.SessionProperties(sessionId2,
+                OffsetDateTime.now().plus(Duration.ofSeconds(5)))));
         when(amqpReceiveLink2.updateDisposition(lockToken2, Accepted.getInstance())).thenReturn(Mono.empty());
         when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
@@ -270,8 +275,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
                 }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
-        StepVerifier
-            .create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
+        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageProcessor.next(message);
@@ -286,8 +290,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .thenCancel()
             .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier
-            .create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
+        StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
             .then(() -> {
                 for (int i = 0; i < 3; i++) {
                     messagePublisher2.next(message2);
@@ -326,7 +329,10 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenAnswer(invocation -> Mono.just(sessionLockedUntil));
+        when(amqpReceiveLink.getSessionProperties())
+            .thenReturn(Mono.just(new ServiceBusReceiveLink.SessionProperties(sessionId, sessionLockedUntil)));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), eq(sessionId)))
@@ -339,7 +345,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         try {
             final Flux<ServiceBusReceivedMessage> sessionMessages
-                = client.acceptSession(sessionId).flatMapMany(s -> s.receiveMessages());
+                = client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages);
 
             // Act & Assert
             StepVerifier.create(sessionMessages).then(() -> {
@@ -350,9 +356,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
                 .assertNext(m -> assertEquals(receivedMessage, m))
                 .assertNext(m -> assertEquals(receivedMessage, m))
                 .then(() -> {
-                    // Simulates a close operation on the underlying ReceiveLinkHandler, which completes the deliveries
-                    // sink.
-                    messageProcessor.complete();
+                    // Simulates link detach on the underlying ReceiveLinkHandler.
+                    endpointProcessor.complete();
                 })
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
@@ -368,5 +373,11 @@ class ServiceBusSessionReceiverAsyncClientTest {
         assertNull(actual.getThrowable());
 
         assertEquals(expected, actual.getMessage());
+    }
+
+    private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,
+        ServiceBusReceivedMessage actual) {
+        assertEquals(sessionId, actual.getSessionId());
+        assertEquals(expected, actual);
     }
 }

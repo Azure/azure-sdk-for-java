@@ -941,33 +941,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        if (isOnV2) {
-            if (isSessionEnabled) {
-                return sessionReactiveReceiveV2();
-            } else {
-                return nonSessionReactiveReceiveV2();
-            }
+        if (isSessionEnabled) {
+            return sessionReactiveReceiveV2();
+        } else {
+            return nonSessionReactiveReceiveV2();
         }
-        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
-        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
-        // We turn this one-time non-backpressure request to continuous requests with backpressure.
-        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
-        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
-        // If receiverOptions.prefetchCount is 0 (default value),
-        // the request will add a link credit so one message is retrieved from the service.
-        return receiveMessagesNoBackPressure().limitRate(1, 0);
-    }
-
-    // API used only in v1 stack
-    @SuppressWarnings("try")
-    Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
-        return receiveMessagesWithContext(0).handle((serviceBusMessageContext, sink) -> {
-            if (serviceBusMessageContext.hasError()) {
-                sink.error(serviceBusMessageContext.getThrowable());
-                return;
-            }
-            sink.next(serviceBusMessageContext.getMessage());
-        });
     }
 
     /**
@@ -1915,12 +1893,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveV2() {
-        assert isOnV2 && !isSessionEnabled;
+        assert !isSessionEnabled;
         return getOrCreateConsumer().receive();
     }
 
     private Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
-        assert isOnV2 && !isSessionEnabled;
+        assert !isSessionEnabled;
 
         final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
         final boolean enableAutoLockRenew = receiverOptions.isAutoLockRenewEnabled();
@@ -1944,7 +1922,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {
-        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        assert sessionManager instanceof ServiceBusSingleSessionManager;
         final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
         // Note: Once side-by-side support for V1 is no longer needed, we'll update the ServiceBusSingleSessionManager::receive()
         // to return Flux<ServiceBusReceivedMessage> and delete ServiceBusSingleSessionManager.receiveMessages(), which removes
@@ -1961,7 +1939,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> sessionSyncReceiveV2() {
-        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        assert isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
         final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
         // Note: See the note in sessionReactiveReceiveV2().
         return singleSessionManager.receiveMessages();
