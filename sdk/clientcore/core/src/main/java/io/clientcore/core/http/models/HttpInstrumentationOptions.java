@@ -68,8 +68,8 @@ import java.util.Set;
  * <pre>
  *
  * OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
- * HttpInstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
- *     .setProvider&#40;openTelemetry&#41;;
+ * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;
+ *     .setTelemetryProvider&#40;openTelemetry&#41;;
  *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
  *
@@ -78,11 +78,8 @@ import java.util.Set;
  *
  * </pre>
  * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
- *
- * @param <T> The type of the instrumentation provider. When using OpenTelemetry, this is {@code io.opentelemetry.api.OpenTelemetry}. If not provided
- *           the {@code io.opentelemetry.api.GlobalOpenTelemetry} instance is used.
  */
-public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<T> {
+public final class HttpInstrumentationOptions extends InstrumentationOptions {
     private boolean isHttpLoggingEnabled;
     private boolean isContentLoggingEnabled;
     private boolean isRedactedHeaderNamesLoggingEnabled;
@@ -155,8 +152,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      *                                          Default is true.
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
-    public HttpInstrumentationOptions<T>
-        setRedactedHeaderNamesLoggingEnabled(boolean redactedHeaderNamesLoggingEnabled) {
+    public HttpInstrumentationOptions setRedactedHeaderNamesLoggingEnabled(boolean redactedHeaderNamesLoggingEnabled) {
         isRedactedHeaderNamesLoggingEnabled = redactedHeaderNamesLoggingEnabled;
         return this;
     }
@@ -184,7 +180,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      * @param isHttpLoggingEnabled True to enable detailed HTTP logging, false otherwise.
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
-    public HttpInstrumentationOptions<T> setHttpLoggingEnabled(boolean isHttpLoggingEnabled) {
+    public HttpInstrumentationOptions setHttpLoggingEnabled(boolean isHttpLoggingEnabled) {
         this.isHttpLoggingEnabled = isHttpLoggingEnabled;
         return this;
     }
@@ -199,7 +195,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      * @param isContentLoggingEnabled True to enable content logging, false otherwise.
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
-    public HttpInstrumentationOptions<T> setContentLoggingEnabled(boolean isContentLoggingEnabled) {
+    public HttpInstrumentationOptions setContentLoggingEnabled(boolean isContentLoggingEnabled) {
         this.isHttpLoggingEnabled |= isContentLoggingEnabled;
         this.isContentLoggingEnabled = isContentLoggingEnabled;
         return this;
@@ -229,7 +225,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      *
      * @return The updated HttpLogOptions object.
      */
-    public HttpInstrumentationOptions<T> setAllowedHeaderNames(final Set<HttpHeaderName> allowedHeaderNames) {
+    public HttpInstrumentationOptions setAllowedHeaderNames(final Set<HttpHeaderName> allowedHeaderNames) {
         this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
 
         return this;
@@ -246,7 +242,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      *
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
-    public HttpInstrumentationOptions<T> addAllowedHeaderName(final HttpHeaderName allowedHeaderName) {
+    public HttpInstrumentationOptions addAllowedHeaderName(final HttpHeaderName allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
         this.allowedHeaderNames.add(allowedHeaderName);
 
@@ -269,7 +265,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      *
      * @return The updated {@code allowedQueryParamName} object.
      */
-    public HttpInstrumentationOptions<T> setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
+    public HttpInstrumentationOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
         this.allowedQueryParamNames = allowedQueryParamNames == null ? new HashSet<>() : allowedQueryParamNames;
 
         return this;
@@ -284,20 +280,20 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      *
      * @throws NullPointerException If {@code allowedQueryParamName} is {@code null}.
      */
-    public HttpInstrumentationOptions<T> addAllowedQueryParamName(final String allowedQueryParamName) {
+    public HttpInstrumentationOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
         return this;
     }
 
     @Override
-    public HttpInstrumentationOptions<T> setTracingEnabled(boolean isTracingEnabled) {
+    public HttpInstrumentationOptions setTracingEnabled(boolean isTracingEnabled) {
         super.setTracingEnabled(isTracingEnabled);
         return this;
     }
 
     @Override
-    public HttpInstrumentationOptions<T> setProvider(T provider) {
-        super.setProvider(provider);
+    public HttpInstrumentationOptions setTelemetryProvider(Object telemetryProvider) {
+        super.setTelemetryProvider(telemetryProvider);
         return this;
     }
 }

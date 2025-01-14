@@ -13,12 +13,10 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
  * Library should use them on all instance of {@link io.clientcore.core.instrumentation.tracing.Tracer}
  * it creates and, if it sets up {@link HttpInstrumentationPolicy}, it should pass
  * {@link InstrumentationOptions} to the policy.
- *
- * @param <T> The type of the provider. Only {@code io.opentelemetry.api.OpenTelemetry} is supported.
  */
-public class InstrumentationOptions<T> {
+public class InstrumentationOptions {
     private boolean isTracingEnabled = true;
-    private T provider = null;
+    private Object telemetryProvider = null;
 
     /**
      * Enables or disables distributed tracing. Distributed tracing is enabled by default when
@@ -29,7 +27,7 @@ public class InstrumentationOptions<T> {
      * <!-- src_embed io.clientcore.core.telemetry.disabledistributedtracing -->
      * <pre>
      *
-     * HttpInstrumentationOptions&lt;?&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;&gt;&#40;&#41;
+     * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;
      *     .setTracingEnabled&#40;false&#41;;
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
@@ -41,14 +39,14 @@ public class InstrumentationOptions<T> {
      * @param isTracingEnabled true to enable distributed tracing, false to disable.
      * @return The updated {@link InstrumentationOptions} object.
      */
-    public InstrumentationOptions<T> setTracingEnabled(boolean isTracingEnabled) {
+    public InstrumentationOptions setTracingEnabled(boolean isTracingEnabled) {
         this.isTracingEnabled = isTracingEnabled;
         return this;
     }
 
     /**
-     * Sets the provider to use for telemetry. Only {@code io.opentelemetry.api.OpenTelemetry} and
-     * derived classes are supported.
+     * Sets the telemetry provider. Only {@code io.opentelemetry.api.OpenTelemetry} and
+     * derived classes are currently supported.
      * <p>
      *
      * When provider is not passed explicitly, clients will attempt to use global OpenTelemetry instance.
@@ -59,8 +57,8 @@ public class InstrumentationOptions<T> {
      * <pre>
      *
      * OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
-     * HttpInstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
-     *     .setProvider&#40;openTelemetry&#41;;
+     * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;
+     *     .setTelemetryProvider&#40;openTelemetry&#41;;
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
      *
@@ -70,11 +68,11 @@ public class InstrumentationOptions<T> {
      * </pre>
      * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
      *
-     * @param provider The provider to use for telemetry.
+     * @param telemetryProvider The provider to use for telemetry.
      * @return The updated {@link InstrumentationOptions} object.
      */
-    public InstrumentationOptions<T> setProvider(T provider) {
-        this.provider = provider;
+    public InstrumentationOptions setTelemetryProvider(Object telemetryProvider) {
+        this.telemetryProvider = telemetryProvider;
         return this;
     }
 
@@ -92,8 +90,8 @@ public class InstrumentationOptions<T> {
      *
      * @return The telemetry provider instance.
      */
-    public T getProvider() {
-        return provider;
+    public Object getTelemetryProvider() {
+        return telemetryProvider;
     }
 
     /**

@@ -75,7 +75,7 @@ public class HttpInstrumentationPolicyTests {
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
-    private HttpInstrumentationOptions<OpenTelemetry> otelOptions;
+    private HttpInstrumentationOptions otelOptions;
 
     @BeforeEach
     public void setUp() {
@@ -83,7 +83,7 @@ public class HttpInstrumentationPolicyTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new HttpInstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
     }
 
     @AfterEach
@@ -193,8 +193,7 @@ public class HttpInstrumentationPolicyTests {
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(sampleNone).build();
-        HttpInstrumentationOptions<OpenTelemetry> otelOptions
-            = new HttpInstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        HttpInstrumentationOptions otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
@@ -255,8 +254,7 @@ public class HttpInstrumentationPolicyTests {
             .setPropagators(ContextPropagators.create(testPropagator))
             .build();
 
-        HttpInstrumentationOptions<OpenTelemetry> otelOptions
-            = new HttpInstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        HttpInstrumentationOptions otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
@@ -289,8 +287,8 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void tracingIsDisabledOnInstance() throws IOException {
-        HttpInstrumentationOptions<OpenTelemetry> options
-            = new HttpInstrumentationOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(openTelemetry);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setTracingEnabled(false).setTelemetryProvider(openTelemetry);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(options)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());

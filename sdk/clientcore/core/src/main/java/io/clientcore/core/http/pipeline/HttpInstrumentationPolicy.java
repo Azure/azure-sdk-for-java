@@ -94,7 +94,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *
  * &#47;&#47; You can configure URL sanitization to include additional query parameters to preserve
  * &#47;&#47; in `url.full` attribute.
- * HttpInstrumentationOptions&lt;?&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;&gt;&#40;&#41;;
+ * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;;
  * instrumentationOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -135,7 +135,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
-    private static final HttpInstrumentationOptions<?> DEFAULT_OPTIONS = new HttpInstrumentationOptions<>();
+    private static final HttpInstrumentationOptions DEFAULT_OPTIONS = new HttpInstrumentationOptions();
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -178,12 +178,12 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * Creates a new instrumentation policy.
      * @param instrumentationOptions Application telemetry options.
      */
-    public HttpInstrumentationPolicy(HttpInstrumentationOptions<?> instrumentationOptions) {
+    public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentation.getTracer();
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
-        HttpInstrumentationOptions<?> optionsToUse
+        HttpInstrumentationOptions optionsToUse
             = instrumentationOptions == null ? DEFAULT_OPTIONS : instrumentationOptions;
         this.isLoggingEnabled = optionsToUse.isHttpLoggingEnabled();
         this.isContentLoggingEnabled = optionsToUse.isContentLoggingEnabled();

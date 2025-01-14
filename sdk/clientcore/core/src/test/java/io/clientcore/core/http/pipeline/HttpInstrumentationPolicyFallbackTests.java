@@ -25,8 +25,8 @@ public class HttpInstrumentationPolicyFallbackTests {
 
     @Test
     public void simpleRequestTracingDisabled() throws IOException {
-        HttpInstrumentationOptions<?> tracingOffLoggingOnOptions
-            = new HttpInstrumentationOptions<>().setTracingEnabled(false).setHttpLoggingEnabled(true);
+        HttpInstrumentationOptions tracingOffLoggingOnOptions
+            = new HttpInstrumentationOptions().setTracingEnabled(false).setHttpLoggingEnabled(true);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
@@ -44,8 +44,8 @@ public class HttpInstrumentationPolicyFallbackTests {
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
     public void simpleRequestTracingEnabled(int statusCode) throws IOException {
-        HttpInstrumentationOptions<?> tracingOnLoggingOnOptions
-            = new HttpInstrumentationOptions<>().setHttpLoggingEnabled(true);
+        HttpInstrumentationOptions tracingOnLoggingOnOptions
+            = new HttpInstrumentationOptions().setHttpLoggingEnabled(true);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))

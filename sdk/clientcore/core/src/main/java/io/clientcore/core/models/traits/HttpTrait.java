@@ -135,7 +135,7 @@ public interface HttpTrait<T extends HttpTrait<T>> {
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      * operations.
      */
-    T httpInstrumentationOptions(HttpInstrumentationOptions<T> instrumentationOptions);
+    T httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions);
 
     /**
      * Sets the {@link HttpRedirectOptions} for all the requests made through the client.

@@ -37,7 +37,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
+        InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
 
         Tracer tracer = Instrumentation.create(instrumentationOptions, libraryOptions).getTracer();
 
@@ -117,7 +117,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void configureInstrumentationPolicy() {
-        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.instrumentationpolicy
 
@@ -135,7 +135,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // You can configure URL sanitization to include additional query parameters to preserve
         // in `url.full` attribute.
-        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
         instrumentationOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -148,7 +148,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void enrichInstrumentationPolicySpans() {
-        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
 
