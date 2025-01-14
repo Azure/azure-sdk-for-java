@@ -5,7 +5,6 @@ package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.annotation.ServiceInterface;
 import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HeaderParam;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
@@ -16,7 +15,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
@@ -28,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link RestProxy}.
+ * Test for Service interface implementation
  */
 public class RestProxyImplTests {
     private static final String SAMPLE = "sample";
@@ -49,6 +48,19 @@ public class RestProxyImplTests {
 
     @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
+        static TestInterface getInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.core.implementation.http.rest.TestInterfaceImpl");
+                return (TestInterface) clazz.getMethod("getInstance", HttpPipeline.class).invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
@@ -62,7 +74,7 @@ public class RestProxyImplTests {
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
 
         testInterface.testVoidMethod(Context.none());
 
@@ -73,7 +85,7 @@ public class RestProxyImplTests {
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
@@ -221,13 +233,6 @@ public class RestProxyImplTests {
 
             assertArraysEqual(EXPECTED, validateAndCollectRequest(httpRequest));
         }
-    }
-
-    @Test
-    public void testFlagIndicatorToChoseRestProxyCreateOrNot() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        assertThrows(UnsupportedOperationException.class, () -> RestProxy.create(TestInterface.class, pipeline, false, new JsonSerializer()));
     }
 
     private static byte[] validateAndCollectRequest(HttpRequest request) {

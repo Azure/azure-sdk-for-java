@@ -5,7 +5,6 @@ package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.annotation.ServiceInterface;
 import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +31,21 @@ public class RestProxyXmlSerializableTests {
 
     @ServiceInterface(name = "XmlSerializable", host = "http://localhost")
     public interface SimpleXmlSerializableProxy {
+        static SimpleXmlSerializableProxy getInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz
+                    = Class.forName("io.clientcore.core.implementation.http.rest.SimpleXmlSerializableProxyImpl");
+                return (SimpleXmlSerializableProxy) clazz.getMethod("getInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.PUT, path = "sendApplicationXml", expectedStatusCodes = { 200 })
         void sendApplicationXml(@BodyParam("application/xml") SimpleXmlSerializable simpleXmlSerializable);
 
@@ -71,7 +86,7 @@ public class RestProxyXmlSerializableTests {
             return new MockHttpResponse(request, 200);
         }).build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
+        SimpleXmlSerializableProxy proxy = SimpleXmlSerializableProxy.getInstance(pipeline);
         restCall.accept(proxy, xmlSerializable);
     }
 
@@ -86,7 +101,7 @@ public class RestProxyXmlSerializableTests {
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
+        SimpleXmlSerializableProxy proxy = SimpleXmlSerializableProxy.getInstance(pipeline);
 
         SimpleXmlSerializable xmlSerializable = proxy.getXml();
 
@@ -107,7 +122,7 @@ public class RestProxyXmlSerializableTests {
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
+        SimpleXmlSerializableProxy proxy = SimpleXmlSerializableProxy.getInstance(pipeline);
         assertThrows(RuntimeException.class, proxy::getInvalidXml);
     }
 }

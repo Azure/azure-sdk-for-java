@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.FormParam;
 import io.clientcore.core.http.annotation.HeaderParam;
@@ -61,7 +60,6 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in
- * {@link RestProxy}.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
     // TODO (alzimmer): There are many optimizations available to SwaggerMethodParser with regards to runtime.

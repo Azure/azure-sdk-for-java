@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,11 +38,24 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link RestProxy}.
+ * Tests for Service Interface Implementation.
  */
 public class RestProxyTests {
     @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
+        static TestInterface getInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.core.implementation.http.rest.TestInterfaceImpl");
+                return (TestInterface) clazz.getMethod("getInstance", HttpPipeline.class).invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
@@ -71,7 +85,7 @@ public class RestProxyTests {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -86,7 +100,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
 
         streamResponse.close();
@@ -101,7 +115,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -130,7 +144,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -145,7 +159,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
 
         testInterface.testMethodReturnsVoid();
 
@@ -211,7 +225,7 @@ public class RestProxyTests {
             return new MockHttpResponse(null, 200);
         }).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
+        TestInterface testInterface = TestInterface.getInstance(pipeline);
 
         testInterface.testListNext(nextLinkUri).close();
     }

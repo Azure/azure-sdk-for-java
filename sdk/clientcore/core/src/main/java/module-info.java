@@ -12,7 +12,6 @@ module io.clientcore.core {
     // public API surface area
     exports io.clientcore.core.annotation;
     exports io.clientcore.core.credential;
-    exports io.clientcore.core.http;
     exports io.clientcore.core.http.annotation;
     exports io.clientcore.core.http.client;
     exports io.clientcore.core.http.exception;
