@@ -3,8 +3,8 @@
 
 package io.clientcore.core.util.union.codesnippets;
 
-import io.clientcore.core.util.union.ParameterizedTypeImpl;
-import io.clientcore.core.util.union.Union;
+import io.clientcore.core.util.ParameterizedTypeImpl;
+import io.clientcore.core.util.Union;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class UnionJavaDocCodeSnippets {
             case String s -> System.out.println("String value: " + s);
             case Integer i -> System.out.println("Integer value: " + i);
             default -> throw new IllegalArgumentException(
-                "Unknown type: " + union.getType().getTypeName());
+                "Unknown type: " + union.getCurrentType().getTypeName());
         }
         // END: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch
     }

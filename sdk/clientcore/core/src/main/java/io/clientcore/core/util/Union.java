@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util.union;
-
-import io.clientcore.core.util.ClientLogger;
+package io.clientcore.core.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +52,7 @@ import java.util.function.Consumer;
  *     case String s -&gt; System.out.println&#40;&quot;String value: &quot; + s&#41;;
  *     case Integer i -&gt; System.out.println&#40;&quot;Integer value: &quot; + i&#41;;
  *     default -&gt; throw new IllegalArgumentException&#40;
- *         &quot;Unknown type: &quot; + union.getType&#40;&#41;.getTypeName&#40;&#41;&#41;;
+ *         &quot;Unknown type: &quot; + union.getCurrentType&#40;&#41;.getTypeName&#40;&#41;&#41;;
  * &#125;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch -->
@@ -80,7 +79,9 @@ public final class Union {
     private Type currentType;
 
     private Union(Type... types) {
-        this.types = Arrays.asList(types);
+        ArrayList<Type> typeCopy = new ArrayList<>(types.length);
+        Collections.addAll(typeCopy, types);
+        this.types = typeCopy;
     }
 
     /**
@@ -116,7 +117,7 @@ public final class Union {
      *
      * @return The type of the value.
      */
-    public Type getType() {
+    public Type getCurrentType() {
         return currentType;
     }
 
@@ -125,7 +126,7 @@ public final class Union {
      *
      * @return The types of the union.
      */
-    public List<Type> getTypes() {
+    public List<Type> getSupportedTypes() {
         return Collections.unmodifiableList(types);
     }
 
@@ -180,7 +181,7 @@ public final class Union {
      * @param <T> The expected type of the value.
      */
     @SuppressWarnings("unchecked")
-    public <T> T getValue(ParameterizedTypeImpl type) {
+    public <T> T getValue(ParameterizedType type) {
         if (isInstanceOfType(value, type)) {
             return (T) value;
         }
@@ -250,7 +251,7 @@ public final class Union {
     private boolean isInstanceOfType(Object value, Type type) {
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
-            if (pType.getRawType()instanceof Class<?> rawType && rawType.isInstance(value)) {
+            if (pType.getRawType() instanceof Class<?> rawType && rawType.isInstance(value)) {
                 Type[] actualTypeArguments = pType.getActualTypeArguments();
                 if (value instanceof Collection<?> collection) {
                     return collection.stream()

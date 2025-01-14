@@ -3,6 +3,8 @@
 
 package io.clientcore.core.util.union;
 
+import io.clientcore.core.util.Union;
+
 // This is a simple example of how to use the Union type. It allows for multiple types to be stored in a single
 // property, and provides methods to consume the value based on its type.
 public class BasicUnion {
@@ -45,7 +47,7 @@ public class BasicUnion {
             case String s -> System.out.println("String value from switch: " + s);
             case Integer i -> System.out.println("Integer value from switch: " + i);
             case Double d -> System.out.println("Double value from switch: " + d);
-            default -> throw new IllegalArgumentException("Unknown type: " + union.getType().getTypeName());
+            default -> throw new IllegalArgumentException("Unknown type: " + union.getCurrentType().getTypeName());
         }
     }
 }

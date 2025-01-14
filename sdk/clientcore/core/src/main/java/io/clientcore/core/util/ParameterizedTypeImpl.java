@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util.union;
+package io.clientcore.core.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public final class ParameterizedTypeImpl implements ParameterizedType {
     private final Class<?> raw;
     private final Type[] args;
+    private String cachedToString;
 
     /**
      * Creates a new instance of {@link ParameterizedTypeImpl}.
@@ -24,7 +25,12 @@ public final class ParameterizedTypeImpl implements ParameterizedType {
      */
     public ParameterizedTypeImpl(Class<?> raw, Type... args) {
         this.raw = raw;
-        this.args = args;
+
+        Type[] argsCopy = new Type[args.length];
+        for (int i = 0; i < args.length; i++) {
+            argsCopy[i] = args[i];
+        }
+        this.args = argsCopy;
     }
 
     @Override
@@ -44,8 +50,12 @@ public final class ParameterizedTypeImpl implements ParameterizedType {
 
     @Override
     public String toString() {
-        String argsString = Arrays.stream(args).map(Type::getTypeName).collect(Collectors.joining(", "));
-        return raw.getTypeName() + "<" + argsString + ">";
+        if (cachedToString == null) {
+            cachedToString = Arrays.stream(args)
+                .map(type -> ((ParameterizedTypeImpl) type).getTypeName())
+                .collect(Collectors.joining(", "));
+        }
+        return raw.getTypeName() + "<" + cachedToString + ">";
     }
 
     @Override

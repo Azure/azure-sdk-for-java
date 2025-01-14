@@ -3,6 +3,9 @@
 
 package io.clientcore.core.util.union;
 
+import io.clientcore.core.util.ParameterizedTypeImpl;
+import io.clientcore.core.util.Union;
+
 import java.util.List;
 
 // This is an example of a Model class that uses the Union type to allow for multiple types to be stored in a single

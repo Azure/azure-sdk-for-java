@@ -3,13 +3,14 @@
 
 package io.clientcore.core.util.union;
 
+import io.clientcore.core.util.Union;
+
 // This is an example of a Model class that uses the Union type to allow for multiple types to be stored in a single
 // property. This is useful when you have a property that can be one of a few types, but you want to ensure that the
 // types are known at compile time, and that you can easily switch on the type of the value.
 public class ModelType {
     private Union prop1 = Union.ofTypes(String.class, Integer.class, Double.class);
 
-    @UnionTypes({String.class, Integer.class, Double.class})
     public Union getProp1() {
         return prop1;
     }
@@ -44,7 +45,7 @@ public class ModelType {
             case String s -> System.out.println("String value from switch: " + s);
             case Integer i -> System.out.println("Integer value from switch: " + i);
             case Double d -> System.out.println("Double value from switch: " + d);
-            default -> throw new IllegalArgumentException("Unknown type: " + modelType.getProp1().getType().getTypeName());
+            default -> throw new IllegalArgumentException("Unknown type: " + modelType.getProp1().getCurrentType().getTypeName());
         }
     }
 }
