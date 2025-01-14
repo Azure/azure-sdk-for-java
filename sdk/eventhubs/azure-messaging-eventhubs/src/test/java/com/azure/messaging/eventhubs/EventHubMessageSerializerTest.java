@@ -75,6 +75,7 @@ public class EventHubMessageSerializerTest {
     /**
      * Verify that we can deserialize a proton-j message with all the correct contents to {@link EventData}.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void deserializeEventData() {
         // Arrange
@@ -94,7 +95,8 @@ public class EventHubMessageSerializerTest {
         // Assert
         // Verifying all our system properties were properly deserialized.
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
-        Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(OFFSET, eventData.getOffsetString());
+        Assertions.assertNull(eventData.getOffset());
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
         Assertions.assertEquals(REPLICATION_SEGMENT, eventData.getReplicationSegment());
@@ -146,8 +148,8 @@ public class EventHubMessageSerializerTest {
         final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
-        final Long beginningReplicationSegment = 8L;
-        final Long lastEnqueuedReplicationSegment = 10L;
+        final Integer beginningReplicationSegment = 8;
+        final Integer lastEnqueuedReplicationSegment = 10;
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -179,7 +181,8 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(lastEnqueuedTime, partitionProperties.getLastEnqueuedTime());
         Assertions.assertEquals(isEmpty, partitionProperties.isEmpty());
         Assertions.assertEquals(beginningReplicationSegment, partitionProperties.getBeginningReplicationSegment());
-        Assertions.assertEquals(lastEnqueuedReplicationSegment, partitionProperties.getLastEnqueuedReplicationSegment());
+        Assertions.assertEquals(lastEnqueuedReplicationSegment,
+            partitionProperties.getLastEnqueuedReplicationSegment());
     }
 
     /**

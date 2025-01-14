@@ -187,19 +187,19 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
-        final Long lastSequenceNumber = getValue(deliveryAnnotations,
-            MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
-        final String lastEnqueuedOffset = getValue(deliveryAnnotations,
-            MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class);
-        final Instant lastEnqueuedTime = getValue(deliveryAnnotations,
-            MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
-        final Instant retrievalTime = getValue(deliveryAnnotations,
-            MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC, Date.class).toInstant();
+        final Long lastSequenceNumber
+            = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
+        final String lastEnqueuedOffset
+            = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class);
+        final Instant lastEnqueuedTime
+            = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
+        final Instant retrievalTime
+            = getValue(deliveryAnnotations, MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC, Date.class).toInstant();
         final Integer lastEnqueuedReplicationSegment = getValue(deliveryAnnotations,
             MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Integer.class, false);
 
-        return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
-            retrievalTime, lastEnqueuedReplicationSegment);
+        return new LastEnqueuedEventProperties(lastSequenceNumber, lastEnqueuedOffset, lastEnqueuedTime, retrievalTime,
+            lastEnqueuedReplicationSegment);
     }
 
     private EventData deserializeEventData(Message message) {
@@ -219,15 +219,16 @@ class EventHubMessageSerializer implements MessageSerializer {
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
-        final Instant enqueuedTime = MessageUtils.getEnqueuedTime(messageAnnotations,
-            ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+        final Instant enqueuedTime
+            = MessageUtils.getEnqueuedTime(messageAnnotations, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
         final String partitionKey = (String) messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
         final String offsetString = (String) messageAnnotations.get(OFFSET_ANNOTATION_NAME.getValue());
         final long sequenceNumber = getAsLong(messageAnnotations, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
         // It is an optional value. Possible that there is no replication segment.
-        final Integer replicationSegment = (Integer) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
+        final Integer replicationSegment
+            = (Integer) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
 
         // Put the properly converted time back into the dictionary.
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offsetString);
@@ -236,8 +237,8 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
 
-        final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offsetString,
-            enqueuedTime, sequenceNumber, partitionKey, replicationSegment);
+        final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offsetString, enqueuedTime,
+            sequenceNumber, partitionKey, replicationSegment);
         final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
 
         message.clear();
@@ -258,7 +259,8 @@ class EventHubMessageSerializer implements MessageSerializer {
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Integer.class, false),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Integer.class,
+                false),
             getValue(amqpBody, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Integer.class, false));
     }
 
@@ -303,8 +305,8 @@ class EventHubMessageSerializer implements MessageSerializer {
         boolean containsSymbol = amqpBody.containsKey(Symbol.valueOf(key));
 
         if (isRequired && !containsString && !containsSymbol) {
-            throw LOGGER.logExceptionAsError(new AzureException(
-                String.format("AMQP body did not contain expected field '%s'.", key)));
+            throw LOGGER.logExceptionAsError(
+                new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
         if (containsString) {
@@ -319,8 +321,8 @@ class EventHubMessageSerializer implements MessageSerializer {
     private static <T> T getValue(Object value, Object key, Class<T> clazz, boolean isRequired) {
         if (value == null) {
             if (isRequired) {
-                throw LOGGER.logExceptionAsError(new AzureException(
-                    String.format("AMQP body did not contain a value for key '%s'.", key)));
+                throw LOGGER.logExceptionAsError(
+                    new AzureException(String.format("AMQP body did not contain a value for key '%s'.", key)));
             } else {
                 return null;
             }
