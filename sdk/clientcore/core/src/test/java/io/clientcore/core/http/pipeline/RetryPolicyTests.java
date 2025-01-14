@@ -12,7 +12,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.util.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
