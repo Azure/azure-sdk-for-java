@@ -16,9 +16,71 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Configuration options for HTTP logging and tracing.
+ * Configuration options for HTTP instrumentation.
+ * <p>
+ * The instrumentation emits distributed traces following <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md">OpenTelemetry HTTP semantic conventions</a>
+ * and, when enabled, detailed HTTP logs.
+ * <p>
+ * The following information is recorded on distributed traces:
+ * <ul>
+ *     <li>Request method, URI. The URI is sanitized based on allowed query parameters configurable with {@link #setAllowedQueryParamNames(Set)} and {@link #addAllowedQueryParamName(String)}</li>
+ *     <li>Response status code</li>
+ *     <li>Error details if the request fails</li>
+ *     <li>Time it takes to receive response</li>
+ *     <li>Correlation identifiers</li>
+ * </ul>
  *
- * @param <T> The type of the instrumentation provider.
+ The following information is recorded on detailed HTTP logs:
+ * <ul>
+ *     <li>Request method, URI, and body size. URI is sanitized based on allowed query parameters configurable with {@link #setAllowedQueryParamNames(Set)} and {@link #addAllowedQueryParamName(String)}</li>
+ *     <li>Response status code and body size</li>
+ *     <li>Request and response headers from allow-list configured via {@link #setAllowedHeaderNames(Set)} and {@link #addAllowedHeaderName(HttpHeaderName)}.</li>
+ *     <li>Error details if the request fails</li>
+ *     <li>Time it takes to receive response</li>
+ *     <li>Correlation identifiers</li>
+ *     <li>When content logging is enabled via {@link #setContentLoggingEnabled(boolean)}: request and response body, and time-to-last-byte</li>
+ * </ul>
+ *
+ * Client libraries auto-discover global OpenTelemetry SDK instance configured by the java agent or
+ * in the application code. Just create a client instance as usual as shown in the following code snippet:
+ *
+ * <p><strong>Clients auto-discover global OpenTelemetry</strong></p>
+ *
+ * <!-- src_embed io.clientcore.core.telemetry.useglobalopentelemetry -->
+ * <pre>
+ *
+ * AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
+ *
+ * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; this call will be traced using OpenTelemetry SDK initialized globally
+ * client.clientCall&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end io.clientcore.core.telemetry.useglobalopentelemetry -->
+ * <p>
+ *
+ * Alternatively, application developers can pass OpenTelemetry SDK instance explicitly to the client libraries.
+ *
+ * <p><strong>Pass configured OpenTelemetry instance explicitly</strong></p>
+ *
+ * <!-- src_embed io.clientcore.core.telemetry.useexplicitopentelemetry -->
+ * <pre>
+ *
+ * OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
+ * HttpInstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
+ *     .setProvider&#40;openTelemetry&#41;;
+ *
+ * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; this call will be traced using OpenTelemetry SDK provided explicitly
+ * client.clientCall&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
+ *
+ * @param <T> The type of the instrumentation provider. When using OpenTelemetry, this is {@code io.opentelemetry.api.OpenTelemetry}. If not provided
+ *           the {@code io.opentelemetry.api.GlobalOpenTelemetry} instance is used.
  */
 public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<T> {
     private boolean isHttpLoggingEnabled;
@@ -47,7 +109,11 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
         = Configuration.getGlobalConfiguration().get(HTTP_LOGGING_ENABLED);
 
     /**
-     * Creates a new instance that does not log any information about HTTP requests or responses.
+     * Creates a new instance using default options:
+     * <ul>
+     *     <li>Detailed HTTP logging is disabled.</li>
+     *     <li>Distributed tracing is enabled.</li>
+     * </ul>
      */
     public HttpInstrumentationOptions() {
         super();
@@ -59,11 +125,11 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
     }
 
     /**
-     * Flag indicating whether HTTP request and response logging is enabled.
+     * Flag indicating whether detailed HTTP request and response logging is enabled.
      * False by default.
      * <p>
      * When HTTP logging is disabled, basic information about the request and response is still recorded
-     * via distributed tracing.
+     * on distributed tracing spans.
      *
      * @return True if logging is enabled, false otherwise.
      */
@@ -99,12 +165,8 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      * Flag indicating whether HTTP request and response body is logged.
      * False by default.
      * <p>
-     * Note: even when content logging is explicitly enabled, it's not logged in the
-     * following cases:
-     * <ul>
-     *     <li>When the content length is not known.</li>
-     *     <li>When the content length is greater than 16KB.</li>
-     * </ul>
+     * Note: even when content logging is explicitly enabled, content is not logged
+     * for requests and responses where the content length is not known or greater than 16KB.
      *
      * @return True if content logging is enabled, false otherwise.
      */
@@ -119,7 +181,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
      * When HTTP logging is disabled, basic information about the request and response is still recorded
      * via distributed tracing.
      *
-     * @param isHttpLoggingEnabled True to enable HTTP logging, false otherwise.
+     * @param isHttpLoggingEnabled True to enable detailed HTTP logging, false otherwise.
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
     public HttpInstrumentationOptions<T> setHttpLoggingEnabled(boolean isHttpLoggingEnabled) {
@@ -128,15 +190,11 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
     }
 
     /**
-     * Enables or disables logging of HTTP request and response body.
-     * False by default.
+     * Enables or disables logging of HTTP request and response body. False by default.
+     * Enabling content logging also enables HTTP logging in general.
      * <p>
-     * Note: even when content logging is explicitly enabled, it's not logged in the
-     * following cases:
-     * <ul>
-     *     <li>When the content length is not known.</li>
-     *     <li>When the content length is greater than 16KB.</li>
-     * </ul>
+     * Note: even when content logging is explicitly enabled, content is not logged for requests and responses where the
+     * content length is not known or greater than 16KB.
      *
      * @param isContentLoggingEnabled True to enable content logging, false otherwise.
      * @return The updated {@link HttpInstrumentationOptions} object.
@@ -148,7 +206,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
     }
 
     /**
-     * Gets the allowed headers that should be logged.
+     * Gets the allowed headers that should be logged when they appear on the request or response.
      *
      * @return The list of allowed headers.
      */
@@ -178,7 +236,7 @@ public final class HttpInstrumentationOptions<T> extends InstrumentationOptions<
     }
 
     /**
-     * Sets the given allowed header to the default header set that should be logged.
+     * Sets the given allowed header to the default header set that should be logged when they appear on the request or response.
      * <p>
      * Note: headers are not recorded on traces.
      *

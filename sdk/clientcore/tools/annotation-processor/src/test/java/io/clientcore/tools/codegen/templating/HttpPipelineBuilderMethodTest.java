@@ -119,6 +119,6 @@ public class HttpPipelineBuilderMethodTest {
             loggerField.modifiers);
         assertEquals(processor.CLIENTLOGGER_NAME, loggerField.type);
         assertEquals("LOGGER", loggerField.name);
-        assertTrue(loggerField.initializer.toString().contains("new io.clientcore.core.util.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
+        assertTrue(loggerField.initializer.toString().contains("new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
     }
 }

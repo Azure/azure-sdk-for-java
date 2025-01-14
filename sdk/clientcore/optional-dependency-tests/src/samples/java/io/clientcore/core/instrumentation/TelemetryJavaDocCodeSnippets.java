@@ -59,6 +59,8 @@ public class TelemetryJavaDocCodeSnippets {
         AutoConfiguredOpenTelemetrySdk.initialize();
 
         SampleClient client = new SampleClientBuilder().build();
+
+        // this call will be traced using OpenTelemetry SDK initialized globally
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useglobalopentelemetry
@@ -71,11 +73,13 @@ public class TelemetryJavaDocCodeSnippets {
     public void useExplicitOpenTelemetry() {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
-        OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
         HttpInstrumentationOptions<OpenTelemetry> instrumentationOptions = new HttpInstrumentationOptions<OpenTelemetry>()
             .setProvider(openTelemetry);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+
+        // this call will be traced using OpenTelemetry SDK provided explicitly
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useexplicitopentelemetry

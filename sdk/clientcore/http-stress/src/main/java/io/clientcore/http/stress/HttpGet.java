@@ -149,8 +149,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(new HttpInstrumentationOptions<>().setHttpLoggingEnabled(true)));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().policies(new HttpRetryPolicy(),
+            new HttpInstrumentationPolicy(new HttpInstrumentationOptions<>().setHttpLoggingEnabled(true)));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
