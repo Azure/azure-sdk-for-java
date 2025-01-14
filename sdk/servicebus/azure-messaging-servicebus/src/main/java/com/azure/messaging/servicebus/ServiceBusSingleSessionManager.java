@@ -34,14 +34,13 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * A type that wraps a {@link ServiceBusSessionReactorReceiver} associated with a specific session, such a receiver
  * is obtained when application accepts a specific session via {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)}.
  */
-final class ServiceBusSingleSessionManager implements IServiceBusSessionManager {
+final class ServiceBusSingleSessionManager {
     private final ClientLogger logger;
     private final String identifier;
     private final MessageSerializer serializer;
     private final Duration operationTimeout;
     private final ServiceBusSessionReactorReceiver sessionReceiver;
     private final Flux<Message> messageFlux;
-    private final ServiceBusReceiverInstrumentation instrumentation;
 
     ServiceBusSingleSessionManager(ClientLogger logger, String identifier,
         ServiceBusSessionReactorReceiver sessionReceiver, int prefetch, MessageSerializer serializer,
@@ -54,44 +53,32 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         this.operationTimeout = retryOptions.getTryTimeout();
         final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream
             = new SessionReceiverStream(sessionReceiver).flux();
-        this.instrumentation = Objects.requireNonNull(instrumentation, "instrumentation cannot be null");
+        Objects.requireNonNull(instrumentation, "instrumentation cannot be null");
         MessageFlux messageFluxLocal
             = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, NULL_RETRY_POLICY);
         this.messageFlux = TracingFluxOperator.create(messageFluxLocal, instrumentation);
     }
 
-    @Override
     public String getIdentifier() {
         return this.identifier;
     }
 
-    @Override
     public String getLinkName(String sessionId) {
         return sessionReceiver.getSessionId().equals(sessionId) ? sessionReceiver.getLinkName() : null;
     }
 
-    @Override
-    public Flux<ServiceBusMessageContext> receive() {
-        return receiveMessages().map(m -> new ServiceBusMessageContext(m))
-            .onErrorResume(e -> Mono.just(new ServiceBusMessageContext(sessionReceiver.getSessionId(), e)));
-    }
-
-    @Override
-    public Mono<Boolean> updateDisposition(String lockToken, String sessionId, DispositionStatus dispositionStatus,
+    public Mono<Void> updateDisposition(String lockToken, String sessionId, DispositionStatus dispositionStatus,
         Map<String, Object> propertiesToModify, String deadLetterReason, String deadLetterDescription,
         ServiceBusTransactionContext transactionContext) {
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
             deadLetterDescription, propertiesToModify, transactionContext);
         if (sessionReceiver.getSessionId().equals(sessionId)) {
-            return sessionReceiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
-            // Once the side-by-side support for V1 is no longer needed, as part of deleting V1 ServiceBusSessionManager,
-            // Update this method to return Mono<Void> and remove the thenReturn(true).
+            return sessionReceiver.updateDisposition(lockToken, deliveryState);
         } else {
             return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(lockToken, deliveryState));
         }
     }
 
-    @Override
     public void close() {
         sessionReceiver.closeAsync().block(operationTimeout);
     }
@@ -99,7 +86,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     // Once the side-by-side support for V1 is no longer needed, as part of deleting V1 ServiceBusSessionManager and
     // temporary contract IServiceBusSessionManager, this method will be renamed to 'receive()'
     // replacing the above receive::Flux<ServiceBusMessageContext>.
-    Flux<ServiceBusReceivedMessage> receiveMessages() {
+    public Flux<ServiceBusReceivedMessage> receiveMessages() {
         return messageFlux.map(qpidMessage -> {
             final ServiceBusReceivedMessage m = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
             logger.atVerbose()
