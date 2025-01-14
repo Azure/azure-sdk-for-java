@@ -12,9 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The backup secret result, containing the backup blob.
- */
+/** The backup secret result, containing the backup blob. */
 @Immutable
 public final class BackupSecretResult implements JsonSerializable<BackupSecretResult> {
     /*
@@ -22,15 +20,13 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
      */
     private Base64Url value;
 
-    /**
-     * Creates an instance of BackupSecretResult class.
-     */
+    /** Creates an instance of BackupSecretResult class. */
     public BackupSecretResult() {
     }
 
     /**
      * Get the value property: The backup blob containing the backed up secret.
-     * 
+     *
      * @return the value value.
      */
     public byte[] getValue() {
@@ -40,9 +36,6 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
         return this.value.decodedBytes();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,10 +44,10 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
 
     /**
      * Reads an instance of BackupSecretResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BackupSecretResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the BackupSecretResult.
      */
     public static BackupSecretResult fromJson(JsonReader jsonReader) throws IOException {

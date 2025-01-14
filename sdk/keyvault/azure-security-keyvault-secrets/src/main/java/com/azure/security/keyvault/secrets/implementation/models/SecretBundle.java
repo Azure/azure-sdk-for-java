@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * A secret consisting of a value, id and its attributes.
- */
+/** A secret consisting of a value, id and its attributes. */
 @Fluent
 public class SecretBundle implements JsonSerializable<SecretBundle> {
     /*
@@ -54,15 +52,13 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
      */
     private Boolean managed;
 
-    /**
-     * Creates an instance of SecretBundle class.
-     */
+    /** Creates an instance of SecretBundle class. */
     public SecretBundle() {
     }
 
     /**
      * Get the value property: The secret value.
-     * 
+     *
      * @return the value value.
      */
     public String getValue() {
@@ -71,7 +67,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Set the value property: The secret value.
-     * 
+     *
      * @param value the value value to set.
      * @return the SecretBundle object itself.
      */
@@ -82,7 +78,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Get the id property: The secret id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -91,7 +87,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Set the id property: The secret id.
-     * 
+     *
      * @param id the id value to set.
      * @return the SecretBundle object itself.
      */
@@ -102,7 +98,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Get the contentType property: The content type of the secret.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -111,7 +107,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Set the contentType property: The content type of the secret.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the SecretBundle object itself.
      */
@@ -122,7 +118,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Get the attributes property: The secret management attributes.
-     * 
+     *
      * @return the attributes value.
      */
     public SecretAttributes getAttributes() {
@@ -131,7 +127,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Set the attributes property: The secret management attributes.
-     * 
+     *
      * @param attributes the attributes value to set.
      * @return the SecretBundle object itself.
      */
@@ -142,7 +138,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -151,7 +147,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the SecretBundle object itself.
      */
@@ -163,7 +159,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     /**
      * Get the kid property: If this is a secret backing a KV certificate, then this field specifies the corresponding
      * key backing the KV certificate.
-     * 
+     *
      * @return the kid value.
      */
     public String getKid() {
@@ -173,7 +169,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     /**
      * Set the kid property: If this is a secret backing a KV certificate, then this field specifies the corresponding
      * key backing the KV certificate.
-     * 
+     *
      * @param kid the kid value to set.
      * @return the SecretBundle object itself.
      */
@@ -185,7 +181,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     /**
      * Get the managed property: True if the secret's lifetime is managed by key vault. If this is a secret backing a
      * certificate, then managed will be true.
-     * 
+     *
      * @return the managed value.
      */
     public Boolean isManaged() {
@@ -195,7 +191,7 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     /**
      * Set the managed property: True if the secret's lifetime is managed by key vault. If this is a secret backing a
      * certificate, then managed will be true.
-     * 
+     *
      * @param managed the managed value to set.
      * @return the SecretBundle object itself.
      */
@@ -204,9 +200,6 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -220,10 +213,10 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
 
     /**
      * Reads an instance of SecretBundle from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretBundle if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the SecretBundle.
      */
     public static SecretBundle fromJson(JsonReader jsonReader) throws IOException {

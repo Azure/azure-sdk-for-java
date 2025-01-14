@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * The secret restore parameters.
- */
+/** The secret restore parameters. */
 @Fluent
 public final class SecretRestoreParameters implements JsonSerializable<SecretRestoreParameters> {
     /*
@@ -24,15 +22,13 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
      */
     private Base64Url secretBundleBackup;
 
-    /**
-     * Creates an instance of SecretRestoreParameters class.
-     */
+    /** Creates an instance of SecretRestoreParameters class. */
     public SecretRestoreParameters() {
     }
 
     /**
      * Get the secretBundleBackup property: The backup blob associated with a secret bundle.
-     * 
+     *
      * @return the secretBundleBackup value.
      */
     public byte[] getSecretBundleBackup() {
@@ -44,7 +40,7 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
 
     /**
      * Set the secretBundleBackup property: The backup blob associated with a secret bundle.
-     * 
+     *
      * @param secretBundleBackup the secretBundleBackup value to set.
      * @return the SecretRestoreParameters object itself.
      */
@@ -57,9 +53,6 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,10 +62,10 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
 
     /**
      * Reads an instance of SecretRestoreParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretRestoreParameters if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecretRestoreParameters.
      */
