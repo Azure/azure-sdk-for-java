@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,11 +25,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class EventBatchContextTest {
-    private final PartitionContext partitionContext = new PartitionContext("TEST_NAMESPACE",
-        "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
+    private final PartitionContext partitionContext
+        = new PartitionContext("TEST_NAMESPACE", "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties = new LastEnqueuedEventProperties(1035L,
-        100L, Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L), null);
+        "100L", Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L), null);
     private final List<EventData> events = new ArrayList<>();
+    private AutoCloseable closeable;
 
     @Mock
     private CheckpointStore checkpointStore;
@@ -38,8 +40,15 @@ class EventBatchContextTest {
     private EventData eventData2;
 
     @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+    public void beforeEach() {
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
     }
 
     /**
@@ -73,6 +82,7 @@ class EventBatchContextTest {
         assertEquals(lastEnqueuedEventProperties, context.getLastEnqueuedEventProperties());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void updateCheckpointAsync() {
         // Arrange
@@ -82,9 +92,12 @@ class EventBatchContextTest {
         events.add(eventData2);
 
         final Long sequenceNumber = 10L;
-        final Long offset = 15L;
+        final String offsetString = "15";
+        final Long offset = Long.parseLong(offsetString);
+
         when(eventData2.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventData2.getOffset()).thenReturn(offset);
+        when(eventData2.getOffsetString()).thenReturn(offsetString);
 
         final EventBatchContext context
             = new EventBatchContext(partitionContext, events, checkpointStore, lastEnqueuedEventProperties);
@@ -96,6 +109,6 @@ class EventBatchContextTest {
         verify(checkpointStore)
             .updateCheckpoint(argThat(arg -> partitionContext.getEventHubName().equals(arg.getEventHubName())
                 && sequenceNumber.equals(arg.getSequenceNumber())
-                && offset.equals(arg.getOffset())));
+                && offsetString.equals(arg.getOffsetString())));
     }
 }
