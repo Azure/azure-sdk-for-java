@@ -1,12 +1,6 @@
 ## Release History
 
-### 4.66.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.66.0 (2025-01-14)
 
 #### Other Changes
 * Added client vmId info to Rntbd health check logs - See [43079](https://github.com/Azure/azure-sdk-for-java/pull/43079)
