@@ -98,7 +98,7 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * Checks to see if the feature is enabled. If enabled it checks each filter, once a single filter returns true it
      * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
      * isn't found it returns false.
      *
@@ -139,7 +139,6 @@ public class FeatureManager {
             String filterName = featureFilter.getName();
 
             try {
-
                 Object filter = context.getBean(filterName);
                 featureFilter.setFeatureName(featureFlag.getId());
                 if (filter instanceof FeatureFilter) {
