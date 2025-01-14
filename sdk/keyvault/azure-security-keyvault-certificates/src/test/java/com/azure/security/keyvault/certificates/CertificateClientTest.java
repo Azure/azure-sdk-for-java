@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -15,7 +16,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -169,7 +169,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -651,7 +651,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -660,7 +660,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -964,7 +964,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         assertResponseException(
             () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

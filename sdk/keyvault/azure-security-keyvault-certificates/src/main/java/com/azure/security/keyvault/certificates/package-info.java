@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 /**
+ * <!-- @formatter:off -->
  * <p><a href="https://learn.microsoft.com/azure/certificate-vault/general/">Azure Key Vault</a> is a cloud-based service
  * provided by Microsoft Azure that allows users to securely store and manage cryptographic certificates used for encrypting
  * and decrypting data. It is a part of Azure Key Vault, which is a cloud-based service for managing cryptographic certificates,
