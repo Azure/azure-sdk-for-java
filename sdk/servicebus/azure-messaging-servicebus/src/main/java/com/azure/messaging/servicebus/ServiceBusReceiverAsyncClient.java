@@ -24,7 +24,6 @@ import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
@@ -340,7 +339,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ConnectionCacheWrapper connectionCacheWrapper;
-    private final boolean isOnV2;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
@@ -391,7 +389,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 "Session-specific options are not expected to be present on a client for session unaware entity.");
         }
         this.isSessionEnabled = false;
-        this.isOnV2 = this.connectionCacheWrapper.isV2();
 
         this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
         final Consumer<LockRenewalOperation> onExpired = renewal -> {
@@ -426,7 +423,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
         this.isSessionEnabled = true;
-        this.isOnV2 = this.connectionCacheWrapper.isV2();
         this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
         final Consumer<LockRenewalOperation> onExpired = renewal -> {
             LOGGER.atInfo()
@@ -1109,10 +1105,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(
-                serviceBusManagementNode -> serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
-            .map(offsetDateTime -> isOnV2
-                ? offsetDateTime
-                : managementNodeLocks.addOrUpdate(lockToken, offsetDateTime, offsetDateTime));
+                serviceBusManagementNode -> serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)));
     }
 
     /**
@@ -1515,42 +1508,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 updateDispositionOperation = dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
                     deadLetterErrorDescription, propertiesToModify, transactionContext);
             } else {
-                if (isOnV2) {
-                    updateDispositionOperation
-                        = existingConsumer
-                            .updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                                deadLetterErrorDescription, propertiesToModify, transactionContext)
-                            .<Void>then(Mono.fromRunnable(() -> {
-                                LOGGER.atVerbose()
-                                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                                    .log("Disposition completed.");
+                updateDispositionOperation = existingConsumer
+                    .updateDisposition(lockToken, dispositionStatus, deadLetterReason, deadLetterErrorDescription,
+                        propertiesToModify, transactionContext)
+                    .<Void>then(Mono.fromRunnable(() -> {
+                        LOGGER.atVerbose()
+                            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                            .log("Disposition completed.");
 
-                                message.setIsSettled();
-                                renewalContainer.remove(lockToken);
-                            }))
-                            .onErrorResume(DeliveryNotOnLinkException.class, __ -> {
-                                // V2: fallback to Disposition via Management Channel on DeliveryNotOnLinkException.
-                                return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
-                                    deadLetterErrorDescription, propertiesToModify, transactionContext);
-                            });
-                } else {
-                    updateDispositionOperation
-                        = existingConsumer
-                            .updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                                deadLetterErrorDescription, propertiesToModify, transactionContext)
-                            .then(Mono.fromRunnable(() -> {
-                                LOGGER.atVerbose()
-                                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                                    .log("Disposition completed.");
-
-                                message.setIsSettled();
-                                renewalContainer.remove(lockToken);
-                            }));
-                }
+                        message.setIsSettled();
+                        renewalContainer.remove(lockToken);
+                    }))
+                    .onErrorResume(DeliveryNotOnLinkException.class, __ -> {
+                        // fallback to Disposition via Management Channel on DeliveryNotOnLinkException.
+                        return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                            deadLetterErrorDescription, propertiesToModify, transactionContext);
+                    });
             }
         }
 
@@ -1661,19 +1636,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .filter(link -> !link.isDisposed());
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
-        final ServiceBusAsyncConsumer newConsumer;
-        if (isOnV2) {
-            final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
-                CreditFlowMode.RequestDriven, retryPolicy);
-
-            newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions,
-                instrumentation);
-        } else {
-            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux
-                .subscribeWith(new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
-            newConsumer
-                = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, receiverOptions);
-        }
+        final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
+            CreditFlowMode.RequestDriven, retryPolicy);
+        final ServiceBusAsyncConsumer newConsumer
+            = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, instrumentation);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
@@ -1805,10 +1771,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiverOptions.isAutoLockRenewEnabled();
     }
 
-    boolean isV2() {
-        return isOnV2;
-    }
-
     Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveV2() {
         assert !isSessionEnabled;
         return getOrCreateConsumer().receive();
@@ -1834,7 +1796,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
-        assert isOnV2 && !isSessionEnabled;
+        assert !isSessionEnabled;
         final Flux<ServiceBusReceivedMessage> messages = getOrCreateConsumer().receive();
         return receiverOptions.isAutoLockRenewEnabled() ? messages.doOnNext(this::beginLockRenewal) : messages;
     }

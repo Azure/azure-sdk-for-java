@@ -62,7 +62,6 @@ public final class SynchronousReceiverTest {
             = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
 
         final SynchronousReceiver receiver = new SynchronousReceiver(LOGGER, asyncClient);
@@ -85,7 +84,6 @@ public final class SynchronousReceiverTest {
         final TestPublisher<ServiceBusReceivedMessage> upstream = TestPublisher.create();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
         when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(upstream.flux());
 
@@ -113,7 +111,6 @@ public final class SynchronousReceiverTest {
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
         when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(upstream.asFlux());
         when(asyncClient.release(any())).thenReturn(Mono.empty());
@@ -158,7 +155,6 @@ public final class SynchronousReceiverTest {
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
         when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(upstream.asFlux());
         when(asyncClient.release(any())).thenReturn(Mono.empty());
@@ -201,7 +197,6 @@ public final class SynchronousReceiverTest {
         final AtomicBoolean upstreamCanceled = new AtomicBoolean(false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
         when(asyncClient.nonSessionSyncReceiveV2())
             .thenReturn(upstream.asFlux().doOnCancel(() -> upstreamCanceled.set(true)));
