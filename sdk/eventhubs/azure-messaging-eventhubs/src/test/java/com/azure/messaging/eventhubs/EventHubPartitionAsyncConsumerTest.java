@@ -128,9 +128,9 @@ class EventHubPartitionAsyncConsumerTest {
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
-        final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, 15L,
+        final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, "15L",
             Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004), 3);
-        final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, 154L,
+        final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, "154L",
             Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200), 10);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
@@ -170,6 +170,7 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
+        final String firstOffset = "25L";
         final String secondOffset = "54L";
         final String lastOffset = "65L";
         final AmqpAnnotatedMessage annotatedMessage1
@@ -179,8 +180,8 @@ class EventHubPartitionAsyncConsumerTest {
         final AmqpAnnotatedMessage annotatedMessage3
             = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
-        final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, "25L", 14L, null), Context.NONE);
+        final EventData event1
+            = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, firstOffset, 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(annotatedMessage2, secondOffset, 21L, 10L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
@@ -207,7 +208,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
-        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
+        Assertions.assertEquals(secondOffset, firstPosition.getOffsetString());
         Assertions.assertFalse(firstPosition.isInclusive());
 
         StepVerifier.create(consumer.receive()).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -238,8 +239,8 @@ class EventHubPartitionAsyncConsumerTest {
         final AmqpAnnotatedMessage annotatedMessage3
             = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
-        final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, "25L", 14L, null), Context.NONE);
+        final EventData event1
+            = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, "25L", 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(annotatedMessage2, secondOffset, 21L, 2L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
@@ -276,7 +277,8 @@ class EventHubPartitionAsyncConsumerTest {
         }
     }
 
-    private void verifyLastEnqueuedInformation(boolean trackLastEnqueued, LastEnqueuedEventProperties expected,
+    @SuppressWarnings("deprecation")
+    private static void verifyLastEnqueuedInformation(boolean trackLastEnqueued, LastEnqueuedEventProperties expected,
         LastEnqueuedEventProperties actual) {
 
         if (!trackLastEnqueued) {
@@ -287,6 +289,8 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(expected.getEnqueuedTime(), actual.getEnqueuedTime());
         Assertions.assertEquals(expected.getOffset(), actual.getOffset());
+        Assertions.assertEquals(expected.getOffsetString(), actual.getOffsetString());
+        Assertions.assertEquals(expected.getOffsetString(), actual.getOffsetString());
         Assertions.assertEquals(expected.getRetrievalTime(), actual.getRetrievalTime());
         Assertions.assertEquals(expected.getSequenceNumber(), actual.getSequenceNumber());
     }
@@ -330,8 +334,7 @@ class EventHubPartitionAsyncConsumerTest {
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
 
-        return new SystemProperties(amqpAnnotatedMessage, offsetString, TEST_DATE, sequenceNumber,
-            null, null);
+        return new SystemProperties(amqpAnnotatedMessage, offsetString, TEST_DATE, sequenceNumber, null, null);
     }
 
     private MessageFluxWrapper createLinkProcessor(boolean isV2) {

@@ -39,7 +39,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final Flux<PartitionEvent> partitionEvents;
     private final EventPosition initialPosition;
 
-    private volatile Long currentOffset;
+    private volatile String currentOffset;
 
     EventHubPartitionAsyncConsumer(MessageFluxWrapper messageFlux, MessageSerializer messageSerializer,
         String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
@@ -59,13 +59,13 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         }
 
         currentEventPosition.set(() -> {
-            final Long offset = currentOffset;
-            return offset == null ? initialPosition : EventPosition.fromOffset(offset);
+            final String offset = currentOffset;
+            return offset == null ? initialPosition : EventPosition.fromOffsetString(offset);
         });
 
         this.partitionEvents = messageFlux.flux().map(this::onMessageReceived).doOnNext(event -> {
             // Keep track of the last position so if the link goes down, we don't start from the original location.
-            final Long offset = event.getData().getOffset();
+            final String offset = event.getData().getOffsetString();
             if (offset != null) {
                 currentOffset = offset;
             } else {
@@ -121,10 +121,10 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 = messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
 
             if (enqueuedEventProperties != null) {
-                final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
-                    enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffset(),
-                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime(),
-                    enqueuedEventProperties.getReplicationSegment());
+                final LastEnqueuedEventProperties updated
+                    = new LastEnqueuedEventProperties(enqueuedEventProperties.getSequenceNumber(),
+                        enqueuedEventProperties.getOffsetString(), enqueuedEventProperties.getEnqueuedTime(),
+                        enqueuedEventProperties.getRetrievalTime(), enqueuedEventProperties.getReplicationSegment());
 
                 lastEnqueuedEventProperties.set(updated);
             }
