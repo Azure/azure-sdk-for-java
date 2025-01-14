@@ -12,8 +12,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.MonthlyRetentionS
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDuration;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionScheduleFormat;
-import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
+import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;

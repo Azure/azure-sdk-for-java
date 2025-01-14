@@ -23,29 +23,55 @@ import reactor.core.publisher.Mono;
 public interface Webhook extends ExternalChildResource<Webhook, Registry>, Resource, HasInnerModel<WebhookInner>,
     Refreshable<Webhook>, Updatable<Webhook.Update> {
 
-    /** @return the status of the webhook */
+    /**
+     * Gets the status of the webhook.
+     *
+     * @return the status of the webhook
+     */
     boolean isEnabled();
 
     /**
+     * Gets the scope of repositories where the event can be triggered.
+     *
      * @return the scope of repositories where the event can be triggered
      *     <p>For example: - 'foo:*' means events for all tags under repository 'foo' - 'foo:bar' means events for
      *     'foo:bar' only - 'foo' is equivalent to 'foo:latest' - empty means all events
      */
     String scope();
 
-    /** @return the service URI for the webhook to post notifications */
+    /**
+     * Gets the service URI for the webhook to post notifications.
+     *
+     * @return the service URI for the webhook to post notifications
+     */
     String serviceUri();
 
-    /** @return the Custom headers that will be added to the webhook notifications */
+    /**
+     * Gets the Custom headers that will be added to the webhook notifications.
+     *
+     * @return the Custom headers that will be added to the webhook notifications
+     */
     Map<String, String> customHeaders();
 
-    /** @return the list of actions that trigger the webhook to post notifications */
+    /**
+     * Gets the list of actions that trigger the webhook to post notifications.
+     *
+     * @return the list of actions that trigger the webhook to post notifications
+     */
     Collection<WebhookAction> triggers();
 
-    /** @return the provisioning state of the webhook */
+    /**
+     * Gets the provisioning state of the webhook.
+     *
+     * @return the provisioning state of the webhook
+     */
     ProvisioningState provisioningState();
 
-    /** @return the webhook parent ID */
+    /**
+     * Gets the webhook parent ID.
+     *
+     * @return the webhook parent ID
+     */
     String parentId();
 
     /** Changes the status of the webhook to "enabled". */
@@ -68,16 +94,32 @@ public interface Webhook extends ExternalChildResource<Webhook, Registry>, Resou
      */
     Mono<Void> disableAsync();
 
-    /** @return the id on an event info resource */
+    /**
+     * Gets the id on an event info resource.
+     *
+     * @return the id on an event info resource
+     */
     String ping();
 
-    /** @return a representation of the future computation of this call, returning the id on an event info resource */
+    /**
+     * Gets the id on an event info resource.
+     *
+     * @return a representation of the future computation of this call, returning the id on an event info resource
+     */
     Mono<String> pingAsync();
 
-    /** @return the list of event info object */
+    /**
+     * Gets the list of event info object.
+     *
+     * @return the list of event info object
+     */
     PagedIterable<WebhookEventInfo> listEvents();
 
-    /** @return a representation of the future computation of this call, returning the list of event info object */
+    /**
+     * Gets the list of event info object.
+     *
+     * @return a representation of the future computation of this call, returning the list of event info object
+     */
     PagedFlux<WebhookEventInfo> listEventsAsync();
 
     /** Grouping of webhook definition stages. */

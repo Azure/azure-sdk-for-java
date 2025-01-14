@@ -93,6 +93,7 @@ class QuickPulseDataFetcher {
         point.setVersion(sdkVersion);
         point.setTimestamp(OffsetDateTime.now());
         point.setMetrics(addMetricsToMonitoringDataPoint(counters));
+        point.setCollectionConfigurationErrors(counters.configErrors);
         return point;
     }
 
@@ -119,6 +120,8 @@ class QuickPulseDataFetcher {
         metrics.put("\\Process\\Physical Bytes", (double) counters.processPhysicalMemory);
         metrics.put("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage); // TODO: remove old cpu counter name when service side makes the UI change
         metrics.put("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage);
+
+        metrics.putAll(counters.projections);
 
         for (Map.Entry<String, Double> entry : metrics.entrySet()) {
             MetricPoint point = new MetricPoint();

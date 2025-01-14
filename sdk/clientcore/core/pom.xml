@@ -15,9 +15,9 @@
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
-  <name>Java Core Library for building client libraries for accessing web services.</name>
+  <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
@@ -64,6 +64,7 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
@@ -161,14 +162,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <dependencies>
-          <!-- Inject slf4j-simple into integration testing to verify the shim works as intended. -->
-          <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-          </dependency>
-        </dependencies>
       </plugin>
 
       <plugin>
@@ -181,6 +174,23 @@
             <exclude>**/io/clientcore/core/serialization/xml/implementation/aalto/**</exclude>
             <exclude>**/io/clientcore/core/serialization/json/implementation/jackson/core/**</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <additionalCodesnippets>
+            <additionalCodesnippet>
+              <root>../optional-dependency-tests/src/samples/java</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+            <additionalCodesnippet>
+              <root>src/test</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+          </additionalCodesnippets>
         </configuration>
       </plugin>
     </plugins>

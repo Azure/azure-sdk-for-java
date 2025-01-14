@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface AzureHsmResourceProvider {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -47,46 +47,11 @@ public interface AzureHsmResourceProvider {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the CloudHsmClustersClient object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      * 
-     * @return the CloudHsmClustersClient object.
+     * @return the OperationsClient object.
      */
-    CloudHsmClustersClient getCloudHsmClusters();
-
-    /**
-     * Gets the CloudHsmClusterPrivateLinkResourcesClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterPrivateLinkResourcesClient object.
-     */
-    CloudHsmClusterPrivateLinkResourcesClient getCloudHsmClusterPrivateLinkResources();
-
-    /**
-     * Gets the CloudHsmClusterPrivateEndpointConnectionsClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterPrivateEndpointConnectionsClient object.
-     */
-    CloudHsmClusterPrivateEndpointConnectionsClient getCloudHsmClusterPrivateEndpointConnections();
-
-    /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     * 
-     * @return the PrivateEndpointConnectionsClient object.
-     */
-    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
-
-    /**
-     * Gets the CloudHsmClusterBackupStatusClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterBackupStatusClient object.
-     */
-    CloudHsmClusterBackupStatusClient getCloudHsmClusterBackupStatus();
-
-    /**
-     * Gets the CloudHsmClusterRestoreStatusClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterRestoreStatusClient object.
-     */
-    CloudHsmClusterRestoreStatusClient getCloudHsmClusterRestoreStatus();
+    OperationsClient getOperations();
 
     /**
      * Gets the DedicatedHsmsClient object to access its operations.
@@ -94,11 +59,4 @@ public interface AzureHsmResourceProvider {
      * @return the DedicatedHsmsClient object.
      */
     DedicatedHsmsClient getDedicatedHsms();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     * 
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
 }

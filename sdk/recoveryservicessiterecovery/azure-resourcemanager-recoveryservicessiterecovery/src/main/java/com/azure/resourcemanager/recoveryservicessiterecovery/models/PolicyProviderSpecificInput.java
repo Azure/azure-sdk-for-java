@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class for provider specific input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = PolicyProviderSpecificInput.class)
-@JsonTypeName("PolicyProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2ACrossClusterMigration", value = A2ACrossClusterMigrationPolicyCreationInput.class),
-    @JsonSubTypes.Type(name = "A2A", value = A2APolicyCreationInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzurePolicyInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplica2012", value = HyperVReplicaPolicyInput.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2PolicyInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMagePolicyInput.class),
-    @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackPolicyCreationInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmPolicyCreationInput.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtPolicyCreationInput.class) })
 @Immutable
-public class PolicyProviderSpecificInput {
+public class PolicyProviderSpecificInput implements JsonSerializable<PolicyProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "PolicyProviderSpecificInput";
+
     /**
      * Creates an instance of PolicyProviderSpecificInput class.
      */
     public PolicyProviderSpecificInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -42,5 +42,84 @@ public class PolicyProviderSpecificInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyProviderSpecificInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyProviderSpecificInput.
+     */
+    public static PolicyProviderSpecificInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2ACrossClusterMigration".equals(discriminatorValue)) {
+                    return A2ACrossClusterMigrationPolicyCreationInput.fromJson(readerToUse.reset());
+                } else if ("A2A".equals(discriminatorValue)) {
+                    return A2APolicyCreationInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzurePolicyInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplica2012".equals(discriminatorValue)) {
+                    return HyperVReplicaPolicyInput.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("HyperVReplica2012R2".equals(discriminatorValue)) {
+                    return HyperVReplicaBluePolicyInput.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2PolicyInput.fromJson(readerToUse.reset());
+                } else if ("InMage".equals(discriminatorValue)) {
+                    return InMagePolicyInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcmFailback".equals(discriminatorValue)) {
+                    return InMageRcmFailbackPolicyCreationInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmPolicyCreationInput.fromJson(readerToUse.reset());
+                } else if ("VMwareCbt".equals(discriminatorValue)) {
+                    return VMwareCbtPolicyCreationInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static PolicyProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyProviderSpecificInput deserializedPolicyProviderSpecificInput = new PolicyProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedPolicyProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyProviderSpecificInput;
+        });
     }
 }

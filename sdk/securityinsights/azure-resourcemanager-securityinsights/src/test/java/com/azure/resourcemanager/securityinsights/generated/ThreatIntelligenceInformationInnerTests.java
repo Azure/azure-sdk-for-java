@@ -12,15 +12,15 @@ public final class ThreatIntelligenceInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceInformationInner model = BinaryData.fromString(
-            "{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"hillce\",\"id\":\"ehuwaoa\",\"name\":\"uhicqllizstacsjv\",\"type\":\"rweft\"}")
+            "{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"h\",\"id\":\"fwpracstwi\",\"name\":\"ykhevxccedcpnmdy\",\"type\":\"dnwzxltjcvnhltiu\"}")
             .toObject(ThreatIntelligenceInformationInner.class);
-        Assertions.assertEquals("hillce", model.etag());
+        Assertions.assertEquals("h", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreatIntelligenceInformationInner model = new ThreatIntelligenceInformationInner().withEtag("hillce");
+        ThreatIntelligenceInformationInner model = new ThreatIntelligenceInformationInner().withEtag("h");
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceInformationInner.class);
-        Assertions.assertEquals("hillce", model.etag());
+        Assertions.assertEquals("h", model.etag());
     }
 }

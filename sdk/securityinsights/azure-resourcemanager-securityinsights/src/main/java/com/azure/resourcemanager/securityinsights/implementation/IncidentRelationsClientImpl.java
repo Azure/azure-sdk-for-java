@@ -116,7 +116,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -130,7 +130,8 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all relations for a given incident along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RelationInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
@@ -164,7 +165,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -179,7 +180,8 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all relations for a given incident along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RelationInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
@@ -212,7 +214,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -226,7 +228,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations as paginated response with {@link PagedFlux}.
+     * @return all relations for a given incident as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(String resourceGroupName, String workspaceName, String incidentId,
@@ -237,7 +239,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -245,7 +247,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations as paginated response with {@link PagedFlux}.
+     * @return all relations for a given incident as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(String resourceGroupName, String workspaceName, String incidentId) {
@@ -259,7 +261,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -274,7 +276,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations as paginated response with {@link PagedFlux}.
+     * @return all relations for a given incident as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(String resourceGroupName, String workspaceName, String incidentId,
@@ -284,7 +286,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -292,7 +294,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations as paginated response with {@link PagedIterable}.
+     * @return all relations for a given incident as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String incidentId) {
@@ -305,7 +307,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets all incident relations.
+     * Gets all relations for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -320,7 +322,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations as paginated response with {@link PagedIterable}.
+     * @return all relations for a given incident as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String incidentId,
@@ -330,7 +332,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets an incident relation.
+     * Gets a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -339,7 +341,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation along with {@link Response} on successful completion of {@link Mono}.
+     * @return a relation for a given incident along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RelationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -374,7 +376,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets an incident relation.
+     * Gets a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -384,7 +386,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation along with {@link Response} on successful completion of {@link Mono}.
+     * @return a relation for a given incident along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RelationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -417,7 +419,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets an incident relation.
+     * Gets a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -426,7 +428,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation on successful completion of {@link Mono}.
+     * @return a relation for a given incident on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RelationInner> getAsync(String resourceGroupName, String workspaceName, String incidentId,
@@ -436,7 +438,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets an incident relation.
+     * Gets a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -446,7 +448,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation along with {@link Response}.
+     * @return a relation for a given incident along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelationInner> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
@@ -455,7 +457,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Gets an incident relation.
+     * Gets a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -464,7 +466,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation.
+     * @return a relation for a given incident.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationInner get(String resourceGroupName, String workspaceName, String incidentId, String relationName) {
@@ -472,7 +474,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Creates or updates the incident relation.
+     * Creates or updates a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -523,7 +525,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Creates or updates the incident relation.
+     * Creates or updates a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -574,7 +576,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Creates or updates the incident relation.
+     * Creates or updates a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -594,7 +596,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Creates or updates the incident relation.
+     * Creates or updates a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -615,7 +617,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Creates or updates the incident relation.
+     * Creates or updates a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -635,7 +637,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Delete the incident relation.
+     * Deletes a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -679,7 +681,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Delete the incident relation.
+     * Deletes a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -722,7 +724,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Delete the incident relation.
+     * Deletes a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -741,7 +743,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Delete the incident relation.
+     * Deletes a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -760,7 +762,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     }
 
     /**
-     * Delete the incident relation.
+     * Deletes a relation for a given incident.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

@@ -8,11 +8,12 @@ import io.clientcore.core.http.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,13 +40,13 @@ public final class HttpResponseBodyDecoder {
      *
      * @param body The response body retrieved from the {@link Response} to decode.
      * @param response The {@link Response}.
-     * @param serializer The {@link ObjectSerializer} that performs the decoding.
+     * @param serializer The {@link CompositeSerializer} that performs the decoding.
      * @param decodeData The API method metadata used during decoding of the {@link Response response}.
      * @return The decoded {@link Response response} body, or {@code null} if the body could not be decoded.
      * @throws HttpResponseException If the body cannot be decoded.
      * @throws RuntimeException If the body cannot be decoded.
      */
-    public static Object decodeByteArray(BinaryData body, Response<?> response, ObjectSerializer serializer,
+    public static Object decodeByteArray(BinaryData body, Response<?> response, CompositeSerializer serializer,
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(response);
 
@@ -58,7 +59,7 @@ public final class HttpResponseBodyDecoder {
             try {
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(response.getStatusCode()).getExceptionBodyClass(), null,
-                    serializer);
+                    RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (IOException e) {
                 return LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
             } catch (RuntimeException e) {
@@ -90,7 +91,8 @@ public final class HttpResponseBodyDecoder {
 
             try {
                 return deserializeBody(body == null ? response.getBody() : body,
-                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(), serializer);
+                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
+                    RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
             } catch (IOException e) {
@@ -143,20 +145,21 @@ public final class HttpResponseBodyDecoder {
      * @return Deserialized object.
      * @throws IOException If the deserialization fails.
      */
-    private static Object deserializeBody(BinaryData value, Type resultType, Type wireType, ObjectSerializer serializer)
-        throws IOException {
+    private static Object deserializeBody(BinaryData value, Type resultType, Type wireType, SerializationFormat format,
+        CompositeSerializer serializer) throws IOException {
         if (wireType == null) {
-            return deserialize(value, resultType, serializer);
+            return deserialize(value, resultType, format, serializer);
         } else {
             Type wireResponseType = constructWireResponseType(resultType, wireType);
-            Object wireResponse = deserialize(value, wireResponseType, serializer);
+            Object wireResponse = deserialize(value, wireResponseType, format, serializer);
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
     }
 
-    private static Object deserialize(BinaryData value, Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(value == null ? EMPTY_BYTE_ARRAY : value.toBytes(), type);
+    private static Object deserialize(BinaryData value, Type type, SerializationFormat format,
+        CompositeSerializer serializer) throws IOException {
+        return serializer.deserializeFromBytes(value == null ? EMPTY_BYTE_ARRAY : value.toBytes(), type, format);
     }
 
     /**

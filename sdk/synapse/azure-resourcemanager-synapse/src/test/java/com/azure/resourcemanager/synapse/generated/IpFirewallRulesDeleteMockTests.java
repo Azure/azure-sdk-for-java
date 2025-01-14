@@ -10,18 +10,15 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
-import com.azure.resourcemanager.synapse.models.IpFirewallRuleInfo;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class IpFirewallRulesDeleteMockTests {
     @Test
     public void testDelete() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"endIpAddress\":\"xwgiks\",\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"ooxr\"},\"id\":\"ogwp\",\"name\":\"chgjtnhtukfacih\",\"type\":\"bfntumeezbxvq\"}";
+        String responseStr = "\"datazagxnvhycvdi\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +27,8 @@ public final class IpFirewallRulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IpFirewallRuleInfo response = manager.ipFirewallRules()
-            .delete("zfbmjxuv", "ipfdvhaxdvwzaehp", "hthdklmvetatlakf", com.azure.core.util.Context.NONE);
+        Object response = manager.ipFirewallRules()
+            .delete("yqwixvcpwnkwywzw", "falickduoiqtamty", "sknxrwzawnvsbcf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwgiks", response.endIpAddress());
-        Assertions.assertEquals("ooxr", response.startIpAddress());
     }
 }

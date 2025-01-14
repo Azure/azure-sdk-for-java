@@ -16,31 +16,31 @@ public final class RulesEngineMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RulesEngineMatchCondition model = BinaryData.fromString(
-            "{\"rulesEngineMatchVariable\":\"RequestScheme\",\"selector\":\"vfxzsjab\",\"rulesEngineOperator\":\"Contains\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"transforms\":[\"RemoveNulls\",\"UrlDecode\"]}")
+            "{\"rulesEngineMatchVariable\":\"PostArgs\",\"selector\":\"jpqqmted\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"ihyeozphvw\"],\"transforms\":[\"Trim\"]}")
             .toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_SCHEME, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("vfxzsjab", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.CONTAINS, model.rulesEngineOperator());
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("jpqqmted", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
         Assertions.assertEquals(true, model.negateCondition());
-        Assertions.assertEquals("tawfsdjpvkvp", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.REMOVE_NULLS, model.transforms().get(0));
+        Assertions.assertEquals("ihyeozphvw", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RulesEngineMatchCondition model
-            = new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_SCHEME)
-                .withSelector("vfxzsjab")
-                .withRulesEngineOperator(RulesEngineOperator.CONTAINS)
+            = new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.POST_ARGS)
+                .withSelector("jpqqmted")
+                .withRulesEngineOperator(RulesEngineOperator.GREATER_THAN_OR_EQUAL)
                 .withNegateCondition(true)
-                .withRulesEngineMatchValue(Arrays.asList("tawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo"))
-                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.URL_DECODE));
+                .withRulesEngineMatchValue(Arrays.asList("ihyeozphvw"))
+                .withTransforms(Arrays.asList(Transform.TRIM));
         model = BinaryData.fromObject(model).toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_SCHEME, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("vfxzsjab", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.CONTAINS, model.rulesEngineOperator());
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("jpqqmted", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
         Assertions.assertEquals(true, model.negateCondition());
-        Assertions.assertEquals("tawfsdjpvkvp", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.REMOVE_NULLS, model.transforms().get(0));
+        Assertions.assertEquals("ihyeozphvw", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
     }
 }

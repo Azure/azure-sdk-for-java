@@ -35,14 +35,14 @@ public final class LocalRulesImpl implements LocalRules {
         String localRulestackName) {
         PagedIterable<LocalRulesResourceInner> inner
             = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
-        return Utils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
         Context context) {
         PagedIterable<LocalRulesResourceInner> inner
             = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocalRulesResourceImpl(inner1, this.manager()));
     }
 
     public Response<LocalRulesResource> getWithResponse(String resourceGroupName, String localRulestackName,
@@ -128,17 +128,17 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public LocalRulesResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String priority = Utils.getValueFromIdByName(id, "localRules");
+        String priority = ResourceManagerUtils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
@@ -147,17 +147,17 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public Response<LocalRulesResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String priority = Utils.getValueFromIdByName(id, "localRules");
+        String priority = ResourceManagerUtils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
@@ -166,17 +166,17 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String priority = Utils.getValueFromIdByName(id, "localRules");
+        String priority = ResourceManagerUtils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));
@@ -185,17 +185,17 @@ public final class LocalRulesImpl implements LocalRules {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
-        String priority = Utils.getValueFromIdByName(id, "localRules");
+        String priority = ResourceManagerUtils.getValueFromIdByName(id, "localRules");
         if (priority == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRules'.", id)));

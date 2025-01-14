@@ -5,83 +5,75 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Spec of the cluster record.
  */
 @Fluent
-public final class ClusterSpecEntity {
+public final class ClusterSpecEntity implements JsonSerializable<ClusterSpecEntity> {
     /*
      * The name of the cluster
      */
-    @JsonProperty(value = "display_name")
     private String displayName;
 
     /*
      * The availability zone configuration of the cluster
      */
-    @JsonProperty(value = "availability")
     private String availability;
 
     /*
      * The cloud service provider
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /*
      * type of zone availability
      */
-    @JsonProperty(value = "zone")
     private String zone;
 
     /*
      * The cloud service provider region
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The bootstrap endpoint used by Kafka clients to connect to the cluster
      */
-    @JsonProperty(value = "kafka_bootstrap_endpoint")
     private String kafkaBootstrapEndpoint;
 
     /*
      * The cluster HTTP request URL.
      */
-    @JsonProperty(value = "http_endpoint")
     private String httpEndpoint;
 
     /*
      * The Kafka API cluster endpoint
      */
-    @JsonProperty(value = "api_endpoint")
     private String apiEndpoint;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "config")
     private ClusterConfigEntity config;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "environment")
     private ClusterEnvironmentEntity environment;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "network")
     private ClusterNetworkEntity network;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "byok")
     private ClusterByokEntity byok;
 
     /**
@@ -348,5 +340,74 @@ public final class ClusterSpecEntity {
         if (byok() != null) {
             byok().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("display_name", this.displayName);
+        jsonWriter.writeStringField("availability", this.availability);
+        jsonWriter.writeStringField("cloud", this.cloud);
+        jsonWriter.writeStringField("zone", this.zone);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("kafka_bootstrap_endpoint", this.kafkaBootstrapEndpoint);
+        jsonWriter.writeStringField("http_endpoint", this.httpEndpoint);
+        jsonWriter.writeStringField("api_endpoint", this.apiEndpoint);
+        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeJsonField("network", this.network);
+        jsonWriter.writeJsonField("byok", this.byok);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterSpecEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterSpecEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterSpecEntity.
+     */
+    public static ClusterSpecEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterSpecEntity deserializedClusterSpecEntity = new ClusterSpecEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display_name".equals(fieldName)) {
+                    deserializedClusterSpecEntity.displayName = reader.getString();
+                } else if ("availability".equals(fieldName)) {
+                    deserializedClusterSpecEntity.availability = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedClusterSpecEntity.cloud = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedClusterSpecEntity.zone = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedClusterSpecEntity.region = reader.getString();
+                } else if ("kafka_bootstrap_endpoint".equals(fieldName)) {
+                    deserializedClusterSpecEntity.kafkaBootstrapEndpoint = reader.getString();
+                } else if ("http_endpoint".equals(fieldName)) {
+                    deserializedClusterSpecEntity.httpEndpoint = reader.getString();
+                } else if ("api_endpoint".equals(fieldName)) {
+                    deserializedClusterSpecEntity.apiEndpoint = reader.getString();
+                } else if ("config".equals(fieldName)) {
+                    deserializedClusterSpecEntity.config = ClusterConfigEntity.fromJson(reader);
+                } else if ("environment".equals(fieldName)) {
+                    deserializedClusterSpecEntity.environment = ClusterEnvironmentEntity.fromJson(reader);
+                } else if ("network".equals(fieldName)) {
+                    deserializedClusterSpecEntity.network = ClusterNetworkEntity.fromJson(reader);
+                } else if ("byok".equals(fieldName)) {
+                    deserializedClusterSpecEntity.byok = ClusterByokEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterSpecEntity;
+        });
     }
 }

@@ -13,9 +13,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
 
@@ -28,11 +26,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
      * The password of the administrator login.
      */
     private String administratorLoginPassword;
-
-    /*
-     * Server version.
-     */
-    private ServerVersion version;
 
     /*
      * Storage related properties of a server.
@@ -64,11 +57,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
      */
     private DataEncryption dataEncryption;
 
-    /*
-     * Network related properties of a server
-     */
-    private Network network;
-
     /**
      * Creates an instance of ServerPropertiesForUpdate class.
      */
@@ -92,26 +80,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
      */
     public ServerPropertiesForUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
         this.administratorLoginPassword = administratorLoginPassword;
-        return this;
-    }
-
-    /**
-     * Get the version property: Server version.
-     * 
-     * @return the version value.
-     */
-    public ServerVersion version() {
-        return this.version;
-    }
-
-    /**
-     * Set the version property: Server version.
-     * 
-     * @param version the version value to set.
-     * @return the ServerPropertiesForUpdate object itself.
-     */
-    public ServerPropertiesForUpdate withVersion(ServerVersion version) {
-        this.version = version;
         return this;
     }
 
@@ -236,26 +204,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
     }
 
     /**
-     * Get the network property: Network related properties of a server.
-     * 
-     * @return the network value.
-     */
-    public Network network() {
-        return this.network;
-    }
-
-    /**
-     * Set the network property: Network related properties of a server.
-     * 
-     * @param network the network value to set.
-     * @return the ServerPropertiesForUpdate object itself.
-     */
-    public ServerPropertiesForUpdate withNetwork(Network network) {
-        this.network = network;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -276,9 +224,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
         if (dataEncryption() != null) {
             dataEncryption().validate();
         }
-        if (network() != null) {
-            network().validate();
-        }
     }
 
     /**
@@ -288,7 +233,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
-        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
         jsonWriter.writeJsonField("storage", this.storage);
         jsonWriter.writeJsonField("backup", this.backup);
         jsonWriter.writeJsonField("highAvailability", this.highAvailability);
@@ -296,7 +240,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
         jsonWriter.writeStringField("replicationRole",
             this.replicationRole == null ? null : this.replicationRole.toString());
         jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
-        jsonWriter.writeJsonField("network", this.network);
         return jsonWriter.writeEndObject();
     }
 
@@ -317,8 +260,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
 
                 if ("administratorLoginPassword".equals(fieldName)) {
                     deserializedServerPropertiesForUpdate.administratorLoginPassword = reader.getString();
-                } else if ("version".equals(fieldName)) {
-                    deserializedServerPropertiesForUpdate.version = ServerVersion.fromString(reader.getString());
                 } else if ("storage".equals(fieldName)) {
                     deserializedServerPropertiesForUpdate.storage = Storage.fromJson(reader);
                 } else if ("backup".equals(fieldName)) {
@@ -332,8 +273,6 @@ public final class ServerPropertiesForUpdate implements JsonSerializable<ServerP
                         = ReplicationRole.fromString(reader.getString());
                 } else if ("dataEncryption".equals(fieldName)) {
                     deserializedServerPropertiesForUpdate.dataEncryption = DataEncryption.fromJson(reader);
-                } else if ("network".equals(fieldName)) {
-                    deserializedServerPropertiesForUpdate.network = Network.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

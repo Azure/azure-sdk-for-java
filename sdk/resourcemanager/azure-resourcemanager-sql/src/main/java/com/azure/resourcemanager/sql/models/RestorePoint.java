@@ -14,24 +14,46 @@ import java.time.OffsetDateTime;
 /** An immutable client-side representation of an Azure SQL database's Restore Point. */
 @Fluent
 public interface RestorePoint extends HasInnerModel<RestorePointInner>, HasResourceGroup, HasName, HasId {
-    /** @return name of the SQL Server to which this replication belongs */
+    /**
+     * Gets name of the SQL Server to which this replication belongs.
+     *
+     * @return name of the SQL Server to which this replication belongs
+     */
     String sqlServerName();
 
-    /** @return name of the SQL Database to which this replication belongs */
+    /**
+     * Gets name of the SQL Database to which this replication belongs.
+     *
+     * @return name of the SQL Database to which this replication belongs
+     */
     String databaseName();
 
-    /** @return the ID of the SQL Database to which this replication belongs */
+    /**
+     * Gets the ID of the SQL Database to which this replication belongs.
+     *
+     * @return the ID of the SQL Database to which this replication belongs
+     */
     String databaseId();
 
-    /** @return the restore point type of the Azure SQL Database restore point. */
+    /**
+     * Gets the restore point type of the Azure SQL Database restore point.
+     *
+     * @return the restore point type of the Azure SQL Database restore point.
+     */
     RestorePointType restorePointType();
 
     /**
+     * Gets restore point creation time.
+     *
      * @return restore point creation time (ISO8601 format). Populated when restorePointType = CONTINUOUS. Null
      *     otherwise.
      */
     OffsetDateTime restorePointCreationDate();
 
-    /** @return earliest restore time (ISO8601 format). Populated when restorePointType = DISCRETE. Null otherwise. */
+    /**
+     * Gets earliest restore time.
+     *
+     * @return earliest restore time (ISO8601 format). Populated when restorePointType = DISCRETE. Null otherwise.
+     */
     OffsetDateTime earliestRestoreDate();
 }

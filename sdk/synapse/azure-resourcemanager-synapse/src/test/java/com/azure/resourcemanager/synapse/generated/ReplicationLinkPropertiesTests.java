@@ -11,7 +11,7 @@ public final class ReplicationLinkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationLinkProperties model = BinaryData.fromString(
-            "{\"isTerminationAllowed\":true,\"replicationMode\":\"npcdpumnzgm\",\"partnerServer\":\"nmabik\",\"partnerDatabase\":\"orgjhxbldt\",\"partnerLocation\":\"wrlkdmtn\",\"role\":\"Source\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-07-06T10:29:53Z\",\"percentComplete\":643963707,\"replicationState\":\"SEEDING\"}")
+            "{\"isTerminationAllowed\":true,\"replicationMode\":\"fpmvmemfnczd\",\"partnerServer\":\"vbalxlllc\",\"partnerDatabase\":\"odbzevwrdnhf\",\"partnerLocation\":\"uvsj\",\"role\":\"Secondary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-03-18T15:17:38Z\",\"percentComplete\":2128270651,\"replicationState\":\"CATCH_UP\"}")
             .toObject(ReplicationLinkProperties.class);
     }
 

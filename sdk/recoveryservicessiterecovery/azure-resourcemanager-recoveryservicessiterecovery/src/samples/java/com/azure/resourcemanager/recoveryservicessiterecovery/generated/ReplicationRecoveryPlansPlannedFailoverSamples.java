@@ -26,10 +26,11 @@ public final class ReplicationRecoveryPlansPlannedFailoverSamples {
      */
     public static void executePlannedFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().plannedFailover("vault1", "resourceGroupPS1", "RPtest1",
-            new RecoveryPlanPlannedFailoverInput().withProperties(new RecoveryPlanPlannedFailoverInputProperties()
-                .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
-                .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryPlans()
+            .plannedFailover("vault1", "resourceGroupPS1", "RPtest1",
+                new RecoveryPlanPlannedFailoverInput().withProperties(new RecoveryPlanPlannedFailoverInputProperties()
+                    .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
+                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
+                com.azure.core.util.Context.NONE);
     }
 }

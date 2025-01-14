@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,9 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     /*
-     * Description of a NotificationHub ApnsCredential.
+     * Properties of NotificationHub ApnsCredential.
      */
-    private ApnsCredentialProperties innerProperties = new ApnsCredentialProperties();
+    private ApnsCredentialProperties innerProperties;
 
     /**
      * Creates an instance of ApnsCredential class.
@@ -30,7 +29,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the innerProperties property: Description of a NotificationHub ApnsCredential.
+     * Get the innerProperties property: Properties of NotificationHub ApnsCredential.
      * 
      * @return the innerProperties value.
      */
@@ -39,7 +38,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the apnsCertificate property: Gets or sets the APNS certificate.
+     * Get the apnsCertificate property: The APNS certificate. Specify if using Certificate Authentication Mode.
      * 
      * @return the apnsCertificate value.
      */
@@ -48,7 +47,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the apnsCertificate property: Gets or sets the APNS certificate.
+     * Set the apnsCertificate property: The APNS certificate. Specify if using Certificate Authentication Mode.
      * 
      * @param apnsCertificate the apnsCertificate value to set.
      * @return the ApnsCredential object itself.
@@ -62,7 +61,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the certificateKey property: Gets or sets the certificate key.
+     * Get the certificateKey property: The APNS certificate password if it exists.
      * 
      * @return the certificateKey value.
      */
@@ -71,7 +70,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the certificateKey property: Gets or sets the certificate key.
+     * Set the certificateKey property: The APNS certificate password if it exists.
      * 
      * @param certificateKey the certificateKey value to set.
      * @return the ApnsCredential object itself.
@@ -85,7 +84,11 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the endpoint property: Gets or sets the endpoint of this credential.
+     * Get the endpoint property: The APNS endpoint of this credential. If using Certificate Authentication Mode and
+     * Sandbox specify 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
+     * 'https://api.push.apple.com:443/3/device'.
      * 
      * @return the endpoint value.
      */
@@ -94,7 +97,11 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the endpoint property: Gets or sets the endpoint of this credential.
+     * Set the endpoint property: The APNS endpoint of this credential. If using Certificate Authentication Mode and
+     * Sandbox specify 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
+     * 'https://api.push.apple.com:443/3/device'.
      * 
      * @param endpoint the endpoint value to set.
      * @return the ApnsCredential object itself.
@@ -108,7 +115,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the thumbprint property: Gets or sets the APNS certificate Thumbprint.
+     * Get the thumbprint property: The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      * 
      * @return the thumbprint value.
      */
@@ -117,7 +124,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the thumbprint property: Gets or sets the APNS certificate Thumbprint.
+     * Set the thumbprint property: The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      * 
      * @param thumbprint the thumbprint value to set.
      * @return the ApnsCredential object itself.
@@ -131,8 +138,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the keyId property: Gets or sets a 10-character key identifier (kid) key, obtained from
-     * your developer account.
+     * Get the keyId property: A 10-character key identifier (kid) key, obtained from your developer account. Specify if
+     * using Token Authentication Mode.
      * 
      * @return the keyId value.
      */
@@ -141,8 +148,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the keyId property: Gets or sets a 10-character key identifier (kid) key, obtained from
-     * your developer account.
+     * Set the keyId property: A 10-character key identifier (kid) key, obtained from your developer account. Specify if
+     * using Token Authentication Mode.
      * 
      * @param keyId the keyId value to set.
      * @return the ApnsCredential object itself.
@@ -156,7 +163,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the appName property: Gets or sets the name of the application.
+     * Get the appName property: The name of the application or BundleId. Specify if using Token Authentication Mode.
      * 
      * @return the appName value.
      */
@@ -165,7 +172,7 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the appName property: Gets or sets the name of the application.
+     * Set the appName property: The name of the application or BundleId. Specify if using Token Authentication Mode.
      * 
      * @param appName the appName value to set.
      * @return the ApnsCredential object itself.
@@ -179,8 +186,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the appId property: Gets or sets the issuer (iss) registered claim key, whose value is
-     * your 10-character Team ID, obtained from your developer account.
+     * Get the appId property: The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from
+     * your developer account. Specify if using Token Authentication Mode.
      * 
      * @return the appId value.
      */
@@ -189,8 +196,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the appId property: Gets or sets the issuer (iss) registered claim key, whose value is
-     * your 10-character Team ID, obtained from your developer account.
+     * Set the appId property: The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from
+     * your developer account. Specify if using Token Authentication Mode.
      * 
      * @param appId the appId value to set.
      * @return the ApnsCredential object itself.
@@ -204,8 +211,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Get the token property: Gets or sets provider Authentication Token, obtained through your
-     * developer account.
+     * Get the token property: Provider Authentication Token, obtained through your developer account. Specify if using
+     * Token Authentication Mode.
      * 
      * @return the token value.
      */
@@ -214,8 +221,8 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
     }
 
     /**
-     * Set the token property: Gets or sets provider Authentication Token, obtained through your
-     * developer account.
+     * Set the token property: Provider Authentication Token, obtained through your developer account. Specify if using
+     * Token Authentication Mode.
      * 
      * @param token the token value to set.
      * @return the ApnsCredential object itself.
@@ -234,15 +241,10 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property innerProperties in model ApnsCredential"));
-        } else {
+        if (innerProperties() != null) {
             innerProperties().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ApnsCredential.class);
 
     /**
      * {@inheritDoc}
@@ -260,7 +262,6 @@ public final class ApnsCredential implements JsonSerializable<ApnsCredential> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApnsCredential if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApnsCredential.
      */
     public static ApnsCredential fromJson(JsonReader jsonReader) throws IOException {

@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IncidentLabelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IncidentLabel model
-            = BinaryData.fromString("{\"labelName\":\"jfzqlqhycavodgg\",\"labelType\":\"AutoAssigned\"}")
-                .toObject(IncidentLabel.class);
-        Assertions.assertEquals("jfzqlqhycavodgg", model.labelName());
+        IncidentLabel model = BinaryData.fromString("{\"labelName\":\"ywbiexzfeyueax\",\"labelType\":\"AutoAssigned\"}")
+            .toObject(IncidentLabel.class);
+        Assertions.assertEquals("ywbiexzfeyueax", model.labelName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentLabel model = new IncidentLabel().withLabelName("jfzqlqhycavodgg");
+        IncidentLabel model = new IncidentLabel().withLabelName("ywbiexzfeyueax");
         model = BinaryData.fromObject(model).toObject(IncidentLabel.class);
-        Assertions.assertEquals("jfzqlqhycavodgg", model.labelName());
+        Assertions.assertEquals("ywbiexzfeyueax", model.labelName());
     }
 }

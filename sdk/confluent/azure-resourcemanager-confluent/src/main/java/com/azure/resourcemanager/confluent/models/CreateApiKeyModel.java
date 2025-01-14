@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Create API Key model.
  */
 @Fluent
-public final class CreateApiKeyModel {
+public final class CreateApiKeyModel implements JsonSerializable<CreateApiKeyModel> {
     /*
      * Name of the API Key
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the API Key
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -76,5 +78,44 @@ public final class CreateApiKeyModel {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateApiKeyModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateApiKeyModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateApiKeyModel.
+     */
+    public static CreateApiKeyModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateApiKeyModel deserializedCreateApiKeyModel = new CreateApiKeyModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCreateApiKeyModel.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCreateApiKeyModel.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateApiKeyModel;
+        });
     }
 }

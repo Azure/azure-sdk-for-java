@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class RulesEngineMatchVariable extends ExpandableStringEnum<RulesEn
      * @param name a name to look for.
      * @return the corresponding RulesEngineMatchVariable.
      */
-    @JsonCreator
     public static RulesEngineMatchVariable fromString(String name) {
         return fromString(name, RulesEngineMatchVariable.class);
     }

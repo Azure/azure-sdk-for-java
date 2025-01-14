@@ -16,7 +16,7 @@ public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceIdentity model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"b6530509-94c7-4e0d-95ac-1e4e78448f71\",\"clientId\":\"c48be21d-ce83-40e4-a49c-ae0060c973e9\"},\"qik\":{\"principalId\":\"64799503-0174-4da8-9b23-9124b8c6506d\",\"clientId\":\"23a7338f-5f5b-4819-9023-acec91c1bd3f\"},\"ovplw\":{\"principalId\":\"6826292f-a310-47eb-8590-89dd0506f502\",\"clientId\":\"3146ab84-69f6-46e1-af4c-2125972011a4\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"23b4e7ab-bed4-48d5-b835-33db915ab81c\",\"clientId\":\"93ab5b70-2990-4fdc-8f04-1ad6db474dea\"},\"qik\":{\"principalId\":\"a4be7bfb-e769-4665-9b64-2c3ffd045676\",\"clientId\":\"dce9e292-c0f6-46a8-b565-0da60edeeadd\"},\"ovplw\":{\"principalId\":\"c6576fa6-c26f-4f66-92a6-7fed8fc5128b\",\"clientId\":\"4f733958-d169-4fb6-8848-8cca54998b91\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
             .toObject(ResourceIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }

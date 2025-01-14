@@ -6,43 +6,29 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.notificationhubs.models.NamespaceStatus;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
-import com.azure.resourcemanager.notificationhubs.models.NetworkAcls;
-import com.azure.resourcemanager.notificationhubs.models.OperationProvisioningState;
-import com.azure.resourcemanager.notificationhubs.models.PublicNetworkAccess;
-import com.azure.resourcemanager.notificationhubs.models.ReplicationRegion;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.azure.resourcemanager.notificationhubs.models.ZoneRedundancyPreference;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Notification Hubs Namespace Resource.
+ * Description of a Namespace resource.
  */
 @Fluent
 public final class NamespaceResourceInner extends Resource {
     /*
-     * The Sku description for a namespace
-     */
-    private Sku sku;
-
-    /*
-     * Represents namespace properties.
+     * Properties of the Namespace.
      */
     private NamespaceProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The sku of the created namespace
      */
-    private SystemData systemData;
+    private Sku sku;
 
     /*
      * The type of the resource.
@@ -66,27 +52,7 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the sku property: The Sku description for a namespace.
-     * 
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku description for a namespace.
-     * 
-     * @param sku the sku value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the innerProperties property: Represents namespace properties.
+     * Get the innerProperties property: Properties of the Namespace.
      * 
      * @return the innerProperties value.
      */
@@ -95,12 +61,23 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the sku property: The sku of the created namespace.
      * 
-     * @return the systemData value.
+     * @return the sku value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku of the created namespace.
+     * 
+     * @param sku the sku value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -152,8 +129,7 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the name property: Name of the Notification Hubs namespace. This is immutable property, set automatically
-     * by the service when the namespace is created.
+     * Get the name property: The name of the namespace.
      * 
      * @return the name value.
      */
@@ -162,21 +138,35 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Defines values for OperationProvisioningState.
+     * Set the name property: The name of the namespace.
+     * 
+     * @param name the name value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withName(name);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Namespace.
      * 
      * @return the provisioningState value.
      */
-    public OperationProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Set the provisioningState property: Defines values for OperationProvisioningState.
+     * Set the provisioningState property: Provisioning state of the Namespace.
      * 
      * @param provisioningState the provisioningState value to set.
      * @return the NamespaceResourceInner object itself.
      */
-    public NamespaceResourceInner withProvisioningState(OperationProvisioningState provisioningState) {
+    public NamespaceResourceInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NamespaceProperties();
         }
@@ -185,59 +175,9 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the status property: Namespace status.
-     * 
-     * @return the status value.
-     */
-    public NamespaceStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: Namespace status.
-     * 
-     * @param status the status value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withStatus(NamespaceStatus status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NamespaceProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the enabled property: Gets or sets whether or not the namespace is currently enabled.
-     * 
-     * @return the enabled value.
-     */
-    public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
-    }
-
-    /**
-     * Get the critical property: Gets or sets whether or not the namespace is set as Critical.
-     * 
-     * @return the critical value.
-     */
-    public Boolean critical() {
-        return this.innerProperties() == null ? null : this.innerProperties().critical();
-    }
-
-    /**
-     * Get the subscriptionId property: Namespace subscription id.
-     * 
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
-    }
-
-    /**
-     * Get the region property: Region. The value is always set to the same value as Namespace.Location, so we are
-     * deprecating
-     * this property.
+     * Get the region property: Specifies the targeted region in which the namespace should be created. It can be any of
+     * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
+     * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
      * 
      * @return the region value.
      */
@@ -246,7 +186,23 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the metricId property: Azure Insights Metrics id.
+     * Set the region property: Specifies the targeted region in which the namespace should be created. It can be any of
+     * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
+     * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
+     * 
+     * @param region the region value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withRegion(String region) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withRegion(region);
+        return this;
+    }
+
+    /**
+     * Get the metricId property: Identifier for Azure Insights metrics.
      * 
      * @return the metricId value.
      */
@@ -255,7 +211,32 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the createdAt property: Time when the namespace was created.
+     * Get the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
+     * Suspended4 = Deleting.
+     * 
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
+     * Suspended4 = Deleting.
+     * 
+     * @param status the status value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withStatus(String status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the createdAt property: The time the namespace was created.
      * 
      * @return the createdAt value.
      */
@@ -264,7 +245,21 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the updatedAt property: Time when the namespace was updated.
+     * Set the createdAt property: The time the namespace was created.
+     * 
+     * @param createdAt the createdAt value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withCreatedAt(OffsetDateTime createdAt) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withCreatedAt(createdAt);
+        return this;
+    }
+
+    /**
+     * Get the updatedAt property: The time the namespace was updated.
      * 
      * @return the updatedAt value.
      */
@@ -273,123 +268,21 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the namespaceType property: Defines values for NamespaceType.
+     * Set the updatedAt property: The time the namespace was updated.
      * 
-     * @return the namespaceType value.
-     */
-    public NamespaceType namespaceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().namespaceType();
-    }
-
-    /**
-     * Set the namespaceType property: Defines values for NamespaceType.
-     * 
-     * @param namespaceType the namespaceType value to set.
+     * @param updatedAt the updatedAt value to set.
      * @return the NamespaceResourceInner object itself.
      */
-    public NamespaceResourceInner withNamespaceType(NamespaceType namespaceType) {
+    public NamespaceResourceInner withUpdatedAt(OffsetDateTime updatedAt) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NamespaceProperties();
         }
-        this.innerProperties().withNamespaceType(namespaceType);
+        this.innerProperties().withUpdatedAt(updatedAt);
         return this;
     }
 
     /**
-     * Get the replicationRegion property: Allowed replication region.
-     * 
-     * @return the replicationRegion value.
-     */
-    public ReplicationRegion replicationRegion() {
-        return this.innerProperties() == null ? null : this.innerProperties().replicationRegion();
-    }
-
-    /**
-     * Set the replicationRegion property: Allowed replication region.
-     * 
-     * @param replicationRegion the replicationRegion value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withReplicationRegion(ReplicationRegion replicationRegion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NamespaceProperties();
-        }
-        this.innerProperties().withReplicationRegion(replicationRegion);
-        return this;
-    }
-
-    /**
-     * Get the zoneRedundancy property: Namespace SKU name.
-     * 
-     * @return the zoneRedundancy value.
-     */
-    public ZoneRedundancyPreference zoneRedundancy() {
-        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundancy();
-    }
-
-    /**
-     * Set the zoneRedundancy property: Namespace SKU name.
-     * 
-     * @param zoneRedundancy the zoneRedundancy value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withZoneRedundancy(ZoneRedundancyPreference zoneRedundancy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NamespaceProperties();
-        }
-        this.innerProperties().withZoneRedundancy(zoneRedundancy);
-        return this;
-    }
-
-    /**
-     * Get the networkAcls property: A collection of network authorization rules.
-     * 
-     * @return the networkAcls value.
-     */
-    public NetworkAcls networkAcls() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkAcls();
-    }
-
-    /**
-     * Set the networkAcls property: A collection of network authorization rules.
-     * 
-     * @param networkAcls the networkAcls value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withNetworkAcls(NetworkAcls networkAcls) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NamespaceProperties();
-        }
-        this.innerProperties().withNetworkAcls(networkAcls);
-        return this;
-    }
-
-    /**
-     * Get the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
-     * 
-     * @return the pnsCredentials value.
-     */
-    public PnsCredentials pnsCredentials() {
-        return this.innerProperties() == null ? null : this.innerProperties().pnsCredentials();
-    }
-
-    /**
-     * Set the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
-     * 
-     * @param pnsCredentials the pnsCredentials value to set.
-     * @return the NamespaceResourceInner object itself.
-     */
-    public NamespaceResourceInner withPnsCredentials(PnsCredentials pnsCredentials) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NamespaceProperties();
-        }
-        this.innerProperties().withPnsCredentials(pnsCredentials);
-        return this;
-    }
-
-    /**
-     * Get the serviceBusEndpoint property: Gets or sets endpoint you can use to perform NotificationHub
-     * operations.
+     * Get the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
      * 
      * @return the serviceBusEndpoint value.
      */
@@ -398,16 +291,44 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: Private Endpoint Connections for namespace.
+     * Set the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
      * 
-     * @return the privateEndpointConnections value.
+     * @param serviceBusEndpoint the serviceBusEndpoint value to set.
+     * @return the NamespaceResourceInner object itself.
      */
-    public List<PrivateEndpointConnectionResourceInner> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    public NamespaceResourceInner withServiceBusEndpoint(String serviceBusEndpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withServiceBusEndpoint(serviceBusEndpoint);
+        return this;
     }
 
     /**
-     * Get the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+     * Get the subscriptionId property: The Id of the Azure subscription associated with the namespace.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
+    }
+
+    /**
+     * Set the subscriptionId property: The Id of the Azure subscription associated with the namespace.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withSubscriptionId(String subscriptionId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withSubscriptionId(subscriptionId);
+        return this;
+    }
+
+    /**
+     * Get the scaleUnit property: ScaleUnit where the namespace gets created.
      * 
      * @return the scaleUnit value.
      */
@@ -416,7 +337,7 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Set the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+     * Set the scaleUnit property: ScaleUnit where the namespace gets created.
      * 
      * @param scaleUnit the scaleUnit value to set.
      * @return the NamespaceResourceInner object itself.
@@ -430,7 +351,53 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the dataCenter property: Deprecated.
+     * Get the enabled property: Whether or not the namespace is currently enabled.
+     * 
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: Whether or not the namespace is currently enabled.
+     * 
+     * @param enabled the enabled value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the critical property: Whether or not the namespace is set as Critical.
+     * 
+     * @return the critical value.
+     */
+    public Boolean critical() {
+        return this.innerProperties() == null ? null : this.innerProperties().critical();
+    }
+
+    /**
+     * Set the critical property: Whether or not the namespace is set as Critical.
+     * 
+     * @param critical the critical value to set.
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withCritical(Boolean critical) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamespaceProperties();
+        }
+        this.innerProperties().withCritical(critical);
+        return this;
+    }
+
+    /**
+     * Get the dataCenter property: Data center for the namespace.
      * 
      * @return the dataCenter value.
      */
@@ -439,7 +406,7 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Set the dataCenter property: Deprecated.
+     * Set the dataCenter property: Data center for the namespace.
      * 
      * @param dataCenter the dataCenter value to set.
      * @return the NamespaceResourceInner object itself.
@@ -453,25 +420,25 @@ public final class NamespaceResourceInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Type of public network access.
+     * Get the namespaceType property: The namespace type.
      * 
-     * @return the publicNetworkAccess value.
+     * @return the namespaceType value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    public NamespaceType namespaceType() {
+        return this.innerProperties() == null ? null : this.innerProperties().namespaceType();
     }
 
     /**
-     * Set the publicNetworkAccess property: Type of public network access.
+     * Set the namespaceType property: The namespace type.
      * 
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param namespaceType the namespaceType value to set.
      * @return the NamespaceResourceInner object itself.
      */
-    public NamespaceResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public NamespaceResourceInner withNamespaceType(NamespaceType namespaceType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NamespaceProperties();
         }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        this.innerProperties().withNamespaceType(namespaceType);
         return this;
     }
 
@@ -481,18 +448,13 @@ public final class NamespaceResourceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model NamespaceResourceInner"));
-        } else {
-            sku().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NamespaceResourceInner.class);
 
     /**
      * {@inheritDoc}
@@ -502,8 +464,8 @@ public final class NamespaceResourceInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -534,12 +496,10 @@ public final class NamespaceResourceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNamespaceResourceInner.withTags(tags);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedNamespaceResourceInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNamespaceResourceInner.innerProperties = NamespaceProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedNamespaceResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNamespaceResourceInner.sku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

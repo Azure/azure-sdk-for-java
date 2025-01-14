@@ -13,25 +13,25 @@ public final class DiscoveredSecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"sruqnmdvha\",\"publisher\":\"c\",\"sku\":\"jy\"},\"location\":\"qswbqerzwx\",\"id\":\"ytxtdgu\",\"name\":\"vlbpktgdstyou\",\"type\":\"mbewreswmo\"}")
+            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"yylhalnswhccsp\",\"publisher\":\"kaivwit\",\"sku\":\"scywuggwoluhc\"},\"location\":\"wem\",\"id\":\"ai\",\"name\":\"sbrgz\",\"type\":\"wmsweypqwd\"}")
             .toObject(DiscoveredSecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("sruqnmdvha", model.offer());
-        Assertions.assertEquals("c", model.publisher());
-        Assertions.assertEquals("jy", model.sku());
+        Assertions.assertEquals("yylhalnswhccsp", model.offer());
+        Assertions.assertEquals("kaivwit", model.publisher());
+        Assertions.assertEquals("scywuggwoluhc", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredSecuritySolutionInner model
             = new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
-                .withOffer("sruqnmdvha")
-                .withPublisher("c")
-                .withSku("jy");
+                .withOffer("yylhalnswhccsp")
+                .withPublisher("kaivwit")
+                .withSku("scywuggwoluhc");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("sruqnmdvha", model.offer());
-        Assertions.assertEquals("c", model.publisher());
-        Assertions.assertEquals("jy", model.sku());
+        Assertions.assertEquals("yylhalnswhccsp", model.offer());
+        Assertions.assertEquals("kaivwit", model.publisher());
+        Assertions.assertEquals("scywuggwoluhc", model.sku());
     }
 }

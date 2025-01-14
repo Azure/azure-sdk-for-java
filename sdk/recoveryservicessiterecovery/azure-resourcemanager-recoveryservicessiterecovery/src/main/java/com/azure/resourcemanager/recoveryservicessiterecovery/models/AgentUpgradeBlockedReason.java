@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -100,7 +99,6 @@ public final class AgentUpgradeBlockedReason extends ExpandableStringEnum<AgentU
      * @param name a name to look for.
      * @return the corresponding AgentUpgradeBlockedReason.
      */
-    @JsonCreator
     public static AgentUpgradeBlockedReason fromString(String name) {
         return fromString(name, AgentUpgradeBlockedReason.class);
     }

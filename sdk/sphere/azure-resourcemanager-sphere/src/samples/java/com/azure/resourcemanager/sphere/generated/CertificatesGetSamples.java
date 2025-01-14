@@ -18,7 +18,7 @@ public final class CertificatesGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void certificatesGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().getWithResponse("MyResourceGroup1", "MyCatalog1", "default",
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -79,7 +78,6 @@ public final class SaaSOfferStatus extends ExpandableStringEnum<SaaSOfferStatus>
      * @param name a name to look for.
      * @return the corresponding SaaSOfferStatus.
      */
-    @JsonCreator
     public static SaaSOfferStatus fromString(String name) {
         return fromString(name, SaaSOfferStatus.class);
     }

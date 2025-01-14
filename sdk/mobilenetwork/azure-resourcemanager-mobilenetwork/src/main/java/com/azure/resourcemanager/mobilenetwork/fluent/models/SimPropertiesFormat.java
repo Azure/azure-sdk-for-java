@@ -5,11 +5,19 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.CommonSimPropertiesFormat;
+import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SIM properties.
@@ -19,14 +27,37 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
     /*
      * The Ki value for the SIM.
      */
-    @JsonProperty(value = "authenticationKey")
     private String authenticationKey;
 
     /*
      * The Opc value for the SIM.
      */
-    @JsonProperty(value = "operatorKeyCode")
     private String operatorKeyCode;
+
+    /*
+     * The public key fingerprint of the SIM vendor who provided this SIM, if any.
+     */
+    private String vendorKeyFingerprint;
+
+    /*
+     * The name of the SIM vendor who provided this SIM, if any.
+     */
+    private String vendorName;
+
+    /*
+     * A dictionary of sites to the provisioning state of this SIM on that site.
+     */
+    private Map<String, SiteProvisioningState> siteProvisioningState;
+
+    /*
+     * The state of the SIM resource.
+     */
+    private SimState simState;
+
+    /*
+     * The provisioning state of the SIM resource.
+     */
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of SimPropertiesFormat class.
@@ -72,6 +103,57 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
     public SimPropertiesFormat withOperatorKeyCode(String operatorKeyCode) {
         this.operatorKeyCode = operatorKeyCode;
         return this;
+    }
+
+    /**
+     * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
+     * any.
+     * 
+     * @return the vendorKeyFingerprint value.
+     */
+    @Override
+    public String vendorKeyFingerprint() {
+        return this.vendorKeyFingerprint;
+    }
+
+    /**
+     * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
+     * 
+     * @return the vendorName value.
+     */
+    @Override
+    public String vendorName() {
+        return this.vendorName;
+    }
+
+    /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
+     * 
+     * @return the siteProvisioningState value.
+     */
+    @Override
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.siteProvisioningState;
+    }
+
+    /**
+     * Get the simState property: The state of the SIM resource.
+     * 
+     * @return the simState value.
+     */
+    @Override
+    public SimState simState() {
+        return this.simState;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the SIM resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -126,6 +208,89 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (internationalMobileSubscriberIdentity() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property internationalMobileSubscriberIdentity in model SimPropertiesFormat"));
+        }
+        if (simPolicy() != null) {
+            simPolicy().validate();
+        }
+        if (staticIpConfiguration() != null) {
+            staticIpConfiguration().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SimPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("internationalMobileSubscriberIdentity", internationalMobileSubscriberIdentity());
+        jsonWriter.writeStringField("integratedCircuitCardIdentifier", integratedCircuitCardIdentifier());
+        jsonWriter.writeStringField("deviceType", deviceType());
+        jsonWriter.writeJsonField("simPolicy", simPolicy());
+        jsonWriter.writeArrayField("staticIpConfiguration", staticIpConfiguration(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("authenticationKey", this.authenticationKey);
+        jsonWriter.writeStringField("operatorKeyCode", this.operatorKeyCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimPropertiesFormat.
+     */
+    public static SimPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPropertiesFormat deserializedSimPropertiesFormat = new SimPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("internationalMobileSubscriberIdentity".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.withInternationalMobileSubscriberIdentity(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("simState".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.simState = SimState.fromString(reader.getString());
+                } else if ("siteProvisioningState".equals(fieldName)) {
+                    Map<String, SiteProvisioningState> siteProvisioningState
+                        = reader.readMap(reader1 -> SiteProvisioningState.fromString(reader1.getString()));
+                    deserializedSimPropertiesFormat.siteProvisioningState = siteProvisioningState;
+                } else if ("integratedCircuitCardIdentifier".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.withIntegratedCircuitCardIdentifier(reader.getString());
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.withDeviceType(reader.getString());
+                } else if ("simPolicy".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.withSimPolicy(SimPolicyResourceId.fromJson(reader));
+                } else if ("staticIpConfiguration".equals(fieldName)) {
+                    List<SimStaticIpProperties> staticIpConfiguration
+                        = reader.readArray(reader1 -> SimStaticIpProperties.fromJson(reader1));
+                    deserializedSimPropertiesFormat.withStaticIpConfiguration(staticIpConfiguration);
+                } else if ("vendorName".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.vendorName = reader.getString();
+                } else if ("vendorKeyFingerprint".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.vendorKeyFingerprint = reader.getString();
+                } else if ("authenticationKey".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.authenticationKey = reader.getString();
+                } else if ("operatorKeyCode".equals(fieldName)) {
+                    deserializedSimPropertiesFormat.operatorKeyCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPropertiesFormat;
+        });
     }
 }

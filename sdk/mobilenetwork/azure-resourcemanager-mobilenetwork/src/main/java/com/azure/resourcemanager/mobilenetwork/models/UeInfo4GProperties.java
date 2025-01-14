@@ -6,48 +6,46 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * UE Information properties for 4G.
  */
 @Fluent
-public final class UeInfo4GProperties {
+public final class UeInfo4GProperties implements JsonSerializable<UeInfo4GProperties> {
     /*
      * International mobile subscriber identifier
      */
-    @JsonProperty(value = "imsi", required = true)
     private String imsi;
 
     /*
      * International mobile equipment identity
      */
-    @JsonProperty(value = "imei")
     private String imei;
 
     /*
      * International mobile equipment identity – software version
      */
-    @JsonProperty(value = "imeisv")
     private String imeisv;
 
     /*
      * Globally Unique Temporary Identifier (4G)
      */
-    @JsonProperty(value = "guti", required = true)
     private Guti4G guti;
 
     /*
      * UE Connection Info for 4G
      */
-    @JsonProperty(value = "connectionInfo")
     private UeConnectionInfo4G connectionInfo;
 
     /*
      * The sessionInfo property.
      */
-    @JsonProperty(value = "sessionInfo")
     private List<UeSessionInfo4G> sessionInfo;
 
     /**
@@ -201,4 +199,57 @@ public final class UeInfo4GProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeInfo4GProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imsi", this.imsi);
+        jsonWriter.writeJsonField("guti", this.guti);
+        jsonWriter.writeStringField("imei", this.imei);
+        jsonWriter.writeStringField("imeisv", this.imeisv);
+        jsonWriter.writeJsonField("connectionInfo", this.connectionInfo);
+        jsonWriter.writeArrayField("sessionInfo", this.sessionInfo, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeInfo4GProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeInfo4GProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeInfo4GProperties.
+     */
+    public static UeInfo4GProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeInfo4GProperties deserializedUeInfo4GProperties = new UeInfo4GProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imsi".equals(fieldName)) {
+                    deserializedUeInfo4GProperties.imsi = reader.getString();
+                } else if ("guti".equals(fieldName)) {
+                    deserializedUeInfo4GProperties.guti = Guti4G.fromJson(reader);
+                } else if ("imei".equals(fieldName)) {
+                    deserializedUeInfo4GProperties.imei = reader.getString();
+                } else if ("imeisv".equals(fieldName)) {
+                    deserializedUeInfo4GProperties.imeisv = reader.getString();
+                } else if ("connectionInfo".equals(fieldName)) {
+                    deserializedUeInfo4GProperties.connectionInfo = UeConnectionInfo4G.fromJson(reader);
+                } else if ("sessionInfo".equals(fieldName)) {
+                    List<UeSessionInfo4G> sessionInfo = reader.readArray(reader1 -> UeSessionInfo4G.fromJson(reader1));
+                    deserializedUeInfo4GProperties.sessionInfo = sessionInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeInfo4GProperties;
+        });
+    }
 }

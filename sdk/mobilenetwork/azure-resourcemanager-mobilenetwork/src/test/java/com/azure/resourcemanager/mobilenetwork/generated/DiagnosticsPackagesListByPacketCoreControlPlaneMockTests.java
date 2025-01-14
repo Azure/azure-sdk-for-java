@@ -21,7 +21,7 @@ public final class DiagnosticsPackagesListByPacketCoreControlPlaneMockTests {
     @Test
     public void testListByPacketCoreControlPlane() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Collected\",\"reason\":\"ck\"},\"id\":\"rrvwey\",\"name\":\"xoy\",\"type\":\"ukphaimmoiroq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"status\":\"Collected\",\"reason\":\"baobn\"},\"id\":\"ujdjltymkmvg\",\"name\":\"ihywartspph\",\"type\":\"ixkykxd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DiagnosticsPackagesListByPacketCoreControlPlaneMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DiagnosticsPackage> response = manager.diagnosticsPackages()
-            .listByPacketCoreControlPlane("ybww", "bdvibidmhmwffpl", com.azure.core.util.Context.NONE);
+            .listByPacketCoreControlPlane("piudeugfsxzecpa", "wkufykhvuhxepm", com.azure.core.util.Context.NONE);
 
     }
 }

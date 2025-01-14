@@ -24,7 +24,7 @@ public final class DscCompilationJobsListByAutomationAccountMockTests {
     @Test
     public void testListByAutomationAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"xlzsxezppk\"},\"startedBy\":\"aaeskyfjlpze\",\"jobId\":\"95fd5f9c-f5da-492d-bc0b-a7469eb9b629\",\"creationTime\":\"2021-01-19T02:40:36Z\",\"provisioningState\":\"Processing\",\"runOn\":\"ixlajmllpquevham\",\"status\":\"Activating\",\"statusDetails\":\"w\",\"startTime\":\"2021-05-25T01:33:51Z\",\"endTime\":\"2021-05-02T00:38:04Z\",\"exception\":\"xpk\",\"lastModifiedTime\":\"2021-05-12T21:36Z\",\"lastStatusModifiedTime\":\"2021-03-09T09:38:44Z\",\"parameters\":{\"vf\":\"qovchiqbp\",\"gmsfepxyi\":\"dusztekxby\"}},\"id\":\"pqadagrhrdicxdwy\",\"name\":\"fowxwyovcxjsgbi\",\"type\":\"cu\"}]}";
+            = "{\"value\":[{\"properties\":{\"configuration\":{\"name\":\"xlzsxezppk\"},\"startedBy\":\"aaeskyfjlpze\",\"jobId\":\"788049c1-25bd-47da-8718-a87604f50ef0\",\"creationTime\":\"2021-01-19T02:40:36Z\",\"provisioningState\":\"Processing\",\"runOn\":\"ixlajmllpquevham\",\"status\":\"Activating\",\"statusDetails\":\"w\",\"startTime\":\"2021-05-25T01:33:51Z\",\"endTime\":\"2021-05-02T00:38:04Z\",\"exception\":\"xpk\",\"lastModifiedTime\":\"2021-05-12T21:36Z\",\"lastStatusModifiedTime\":\"2021-03-09T09:38:44Z\",\"parameters\":{\"vf\":\"qovchiqbp\",\"gmsfepxyi\":\"dusztekxby\"}},\"id\":\"pqadagrhrdicxdwy\",\"name\":\"fowxwyovcxjsgbi\",\"type\":\"cu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

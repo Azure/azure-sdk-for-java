@@ -16,7 +16,6 @@
       <Class name="io.clientcore.core.http.client.DefaultHttpClient" />
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.models.RequestOptions" />
-      <Class name="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
@@ -26,14 +25,15 @@
       <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheLambdaMetaFactory$ResponseConstructor" />
       <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsNoCacheReflection" />
       <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
-      <Class name="io.clientcore.core.implementation.http.rest.RestProxyBase" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer" />
+      <Class name="io.clientcore.core.implementation.http.serializer.CompositeSerializer" />
       <Class name="io.clientcore.core.implementation.util.DateTimeRfc1123" />
       <Class name="io.clientcore.core.implementation.util.InternalContext" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.util.Providers" />
       <Class name="io.clientcore.core.implementation.util.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.util.StreamUtil" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.util.SharedExecutorService" />
@@ -69,8 +69,10 @@
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.pipeline.KeyCredentialPolicy" />
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
-      <Class name="io.clientcore.core.util.ClientLogger" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLogger" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
     </Or>
   </Match>
   <Match>
@@ -120,9 +122,10 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.util.ClientLoggerTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.InstrumentationTestUtils" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
-      <Class name="io.clientcore.core.util.serializer.DefaultJsonSerializerTests" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -163,9 +166,9 @@
   <Match>
     <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
     <Or>
-      <Class name="io.clientcore.core.implementation.util.DefaultLogger" />
+      <Class name="io.clientcore.core.implementation.instrumentation.DefaultLogger" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.UncheckedStreamException" />
-      <Class name="io.clientcore.core.util.ClientLoggerTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
     </Or>
   </Match>
   <Match>
@@ -213,7 +216,10 @@
   </Match>
   <Match>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
-    <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+    <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+      <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE" />
@@ -232,11 +238,15 @@
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="OS_OPEN_STREAM" />
-    <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
+    <Or>
+      <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
+      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationLoggingTests" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="PATH_TRAVERSAL_IN" />
@@ -251,17 +261,23 @@
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.RandomIdUtils" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer" />
       <Class name="io.clientcore.core.implementation.util.Base64Uri" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
       <Class name="io.clientcore.core.util.TestUtils" />
       <Class name="io.clientcore.core.util.serializer.MockSerializer" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
   </Match>
   <Match>
     <Bug pattern="RR_NOT_CHECKED" />
@@ -349,7 +365,7 @@
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest$BinaryDataAsProperty" />
-      <Class name="io.clientcore.core.util.serializer.DefaultJsonSerializerTests$DateTimeWrapper" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>
@@ -385,5 +401,17 @@
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+  </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="AA_ASSERTION_OF_ARGUMENTS" />
+    <Class name="io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext" />
   </Match>
 </FindBugsFilter>

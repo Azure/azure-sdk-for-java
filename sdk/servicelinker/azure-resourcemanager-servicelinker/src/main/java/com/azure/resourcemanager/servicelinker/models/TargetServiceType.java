@@ -27,16 +27,6 @@ public final class TargetServiceType extends ExpandableStringEnum<TargetServiceT
     public static final TargetServiceType CONFLUENT_SCHEMA_REGISTRY = fromString("ConfluentSchemaRegistry");
 
     /**
-     * Static value SelfHostedServer for TargetServiceType.
-     */
-    public static final TargetServiceType SELF_HOSTED_SERVER = fromString("SelfHostedServer");
-
-    /**
-     * Static value FabricPlatform for TargetServiceType.
-     */
-    public static final TargetServiceType FABRIC_PLATFORM = fromString("FabricPlatform");
-
-    /**
      * Creates a new instance of TargetServiceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -14,31 +14,31 @@ public final class RedirectConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RedirectConfiguration model = BinaryData.fromString(
-            "{\"@odata.type\":\"cqpbtuo\",\"redirectType\":\"PermanentRedirect\",\"redirectProtocol\":\"HttpsOnly\",\"customHost\":\"zzhmkd\",\"customPath\":\"vflyhbxcu\",\"customFragment\":\"hxgsrboldfor\",\"customQueryString\":\"wjlvizbfhfov\"}")
+            "{\"@odata.type\":\"#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration\",\"redirectType\":\"PermanentRedirect\",\"redirectProtocol\":\"MatchRequest\",\"customHost\":\"hsln\",\"customPath\":\"xieixynllxec\",\"customFragment\":\"rojphslhcawjutif\",\"customQueryString\":\"fmvigorqjbttzh\"}")
             .toObject(RedirectConfiguration.class);
         Assertions.assertEquals(FrontDoorRedirectType.PERMANENT_REDIRECT, model.redirectType());
-        Assertions.assertEquals(FrontDoorRedirectProtocol.HTTPS_ONLY, model.redirectProtocol());
-        Assertions.assertEquals("zzhmkd", model.customHost());
-        Assertions.assertEquals("vflyhbxcu", model.customPath());
-        Assertions.assertEquals("hxgsrboldfor", model.customFragment());
-        Assertions.assertEquals("wjlvizbfhfov", model.customQueryString());
+        Assertions.assertEquals(FrontDoorRedirectProtocol.MATCH_REQUEST, model.redirectProtocol());
+        Assertions.assertEquals("hsln", model.customHost());
+        Assertions.assertEquals("xieixynllxec", model.customPath());
+        Assertions.assertEquals("rojphslhcawjutif", model.customFragment());
+        Assertions.assertEquals("fmvigorqjbttzh", model.customQueryString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RedirectConfiguration model
             = new RedirectConfiguration().withRedirectType(FrontDoorRedirectType.PERMANENT_REDIRECT)
-                .withRedirectProtocol(FrontDoorRedirectProtocol.HTTPS_ONLY)
-                .withCustomHost("zzhmkd")
-                .withCustomPath("vflyhbxcu")
-                .withCustomFragment("hxgsrboldfor")
-                .withCustomQueryString("wjlvizbfhfov");
+                .withRedirectProtocol(FrontDoorRedirectProtocol.MATCH_REQUEST)
+                .withCustomHost("hsln")
+                .withCustomPath("xieixynllxec")
+                .withCustomFragment("rojphslhcawjutif")
+                .withCustomQueryString("fmvigorqjbttzh");
         model = BinaryData.fromObject(model).toObject(RedirectConfiguration.class);
         Assertions.assertEquals(FrontDoorRedirectType.PERMANENT_REDIRECT, model.redirectType());
-        Assertions.assertEquals(FrontDoorRedirectProtocol.HTTPS_ONLY, model.redirectProtocol());
-        Assertions.assertEquals("zzhmkd", model.customHost());
-        Assertions.assertEquals("vflyhbxcu", model.customPath());
-        Assertions.assertEquals("hxgsrboldfor", model.customFragment());
-        Assertions.assertEquals("wjlvizbfhfov", model.customQueryString());
+        Assertions.assertEquals(FrontDoorRedirectProtocol.MATCH_REQUEST, model.redirectProtocol());
+        Assertions.assertEquals("hsln", model.customHost());
+        Assertions.assertEquals("xieixynllxec", model.customPath());
+        Assertions.assertEquals("rojphslhcawjutif", model.customFragment());
+        Assertions.assertEquals("fmvigorqjbttzh", model.customQueryString());
     }
 }

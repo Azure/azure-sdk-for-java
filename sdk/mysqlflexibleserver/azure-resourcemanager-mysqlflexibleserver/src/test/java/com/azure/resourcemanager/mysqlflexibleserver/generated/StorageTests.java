@@ -12,28 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString(
-            "{\"storageSizeGB\":873426494,\"iops\":303390013,\"autoGrow\":\"Disabled\",\"logOnDisk\":\"Enabled\",\"storageSku\":\"fhotw\",\"autoIoScaling\":\"Enabled\"}")
+        Storage model = BinaryData
+            .fromString(
+                "{\"storageSizeGB\":337855308,\"iops\":419341930,\"autoGrow\":\"Disabled\",\"storageSku\":\"k\"}")
             .toObject(Storage.class);
-        Assertions.assertEquals(873426494, model.storageSizeGB());
-        Assertions.assertEquals(303390013, model.iops());
+        Assertions.assertEquals(337855308, model.storageSizeGB());
+        Assertions.assertEquals(419341930, model.iops());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoGrow());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.logOnDisk());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.autoIoScaling());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withStorageSizeGB(873426494)
-            .withIops(303390013)
-            .withAutoGrow(EnableStatusEnum.DISABLED)
-            .withLogOnDisk(EnableStatusEnum.ENABLED)
-            .withAutoIoScaling(EnableStatusEnum.ENABLED);
+        Storage model
+            = new Storage().withStorageSizeGB(337855308).withIops(419341930).withAutoGrow(EnableStatusEnum.DISABLED);
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals(873426494, model.storageSizeGB());
-        Assertions.assertEquals(303390013, model.iops());
+        Assertions.assertEquals(337855308, model.storageSizeGB());
+        Assertions.assertEquals(419341930, model.iops());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoGrow());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.logOnDisk());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.autoIoScaling());
     }
 }

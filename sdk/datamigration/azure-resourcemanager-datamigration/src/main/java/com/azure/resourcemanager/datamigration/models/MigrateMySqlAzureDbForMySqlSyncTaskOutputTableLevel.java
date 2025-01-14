@@ -88,11 +88,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
      */
     private OffsetDateTime lastModifiedTime;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel class.
      */
@@ -227,16 +222,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -273,7 +258,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.id = reader.getString();
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.resultType = reader.getString();
                 } else if ("tableName".equals(fieldName)) {

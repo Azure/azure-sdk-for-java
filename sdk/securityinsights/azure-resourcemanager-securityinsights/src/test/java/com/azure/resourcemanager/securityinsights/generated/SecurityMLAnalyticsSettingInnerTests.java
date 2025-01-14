@@ -12,15 +12,15 @@ public final class SecurityMLAnalyticsSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityMLAnalyticsSettingInner model = BinaryData.fromString(
-            "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"sggux\",\"id\":\"mlwywaeeczg\",\"name\":\"bukklels\",\"type\":\"xblycsxzuj\"}")
+            "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"eyvpnqicvinvkj\",\"id\":\"dxrbuukzcle\",\"name\":\"yhmlwpaztzp\",\"type\":\"fn\"}")
             .toObject(SecurityMLAnalyticsSettingInner.class);
-        Assertions.assertEquals("sggux", model.etag());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityMLAnalyticsSettingInner model = new SecurityMLAnalyticsSettingInner().withEtag("sggux");
+        SecurityMLAnalyticsSettingInner model = new SecurityMLAnalyticsSettingInner().withEtag("eyvpnqicvinvkj");
         model = BinaryData.fromObject(model).toObject(SecurityMLAnalyticsSettingInner.class);
-        Assertions.assertEquals("sggux", model.etag());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.etag());
     }
 }
