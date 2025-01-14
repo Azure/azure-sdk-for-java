@@ -42,6 +42,8 @@ public class FeatureManager {
     private final FeatureManagementProperties featureManagementConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
+    
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(100);
 
     /**
      * Can be called to check if a feature is enabled or disabled.
@@ -80,7 +82,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
-        return checkFeature(feature, null).block(Duration.ofSeconds(100));
+        return checkFeature(feature, null).block(DEFAULT_REQUEST_TIMEOUT);
     }
 
     /**
@@ -108,7 +110,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature, Object featureContext) throws FilterNotFoundException {
-        return checkFeature(feature, featureContext).block(Duration.ofSeconds(100));
+        return checkFeature(feature, featureContext).block(DEFAULT_REQUEST_TIMEOUT);
     }
 
     private Mono<Boolean> checkFeature(String featureName, Object featureContext) throws FilterNotFoundException {

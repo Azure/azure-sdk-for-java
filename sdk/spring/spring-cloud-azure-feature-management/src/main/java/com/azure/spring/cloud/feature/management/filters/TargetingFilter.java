@@ -232,8 +232,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         return isTargeted(defaultContextId, audience.getDefaultRolloutPercentage());
     }
 
-    private boolean targetUser(String userId, Collection<String> collection) {
-        return userId != null && collection != null && collection.stream().anyMatch(user -> equals(userId, user));
+    private boolean targetUser(String userId, Collection<String> users) {
+        return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
     }
 
     private boolean targetGroup(Audience audience, TargetingFilterContext targetingContext,

@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 
 /**
  * A Filter for Feature Management that is attached to Features. The filter needs to have @Component set to be found by
- * feature management.
+ * feature management. As a Contextual feature filter any context that is passed in to the feature request will be
+ * passed along to the filter(s).
  */
 @FunctionalInterface
 public interface ContextualFeatureFilterAsync {
