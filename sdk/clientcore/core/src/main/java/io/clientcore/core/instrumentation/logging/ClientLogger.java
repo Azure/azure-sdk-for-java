@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util;
+package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.implementation.util.Slf4jLoggerShim;
+import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
+import io.clientcore.core.implementation.instrumentation.DefaultLogger;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
@@ -23,6 +24,12 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EVENT_NAME_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_TYPE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_ID_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TRACE_ID_KEY;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -60,8 +67,20 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
+        this(className, null);
+    }
+
+    /**
+     * Retrieves a logger for the passed class name.
+     *
+     * @param className Class name creating the logger.
+     * @param context Context to be populated on every log record written with this logger.
+     * Objects are serialized with {@code toString()} method.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
+     */
+    public ClientLogger(String className, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
-        globalContext = null;
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
     /**
@@ -288,6 +307,7 @@ public class ClientLogger {
         private final boolean isEnabled;
         private Map<String, Object> keyValuePairs;
         private String eventName;
+        private InstrumentationContext context = null;
 
         /**
          * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
@@ -431,6 +451,18 @@ public class ClientLogger {
         }
 
         /**
+         * Sets operation context on the log event being created.
+         * It's used to correlate logs between each other and with other telemetry items.
+         *
+         * @param context operation context.
+         * @return The updated {@code LoggingEventBuilder} object.
+         */
+        public LoggingEvent setInstrumentationContext(InstrumentationContext context) {
+            this.context = context;
+            return this;
+        }
+
+        /**
          * Sets the event name for the current log event. The event name is used to query all logs
          * that describe the same event. It must not contain any dynamic parts.
          *
@@ -444,6 +476,7 @@ public class ClientLogger {
 
         /**
          * Logs event annotated with context.
+         * Logs event with context.
          */
         public void log() {
             log(null);
@@ -473,12 +506,12 @@ public class ClientLogger {
             if (this.isEnabled) {
                 boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
                 if (throwable != null) {
-                    addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
-                    addKeyValueInternal("exception.message", throwable.getMessage());
+                    addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
+                    addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
                     if (isDebugEnabled) {
                         StringBuilder stackTrace = new StringBuilder();
                         DefaultLogger.appendThrowable(stackTrace, throwable);
-                        addKeyValue("exception.stacktrace", stackTrace.toString());
+                        addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
                     }
                 }
                 logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
@@ -487,16 +520,27 @@ public class ClientLogger {
         }
 
         private String getMessageWithContext(String message) {
-            if (message == null) {
-                message = "";
+            if (this.context != null && this.context.isValid()) {
+                // TODO (limolkova) we can set context from implicit current span
+                // we should also support OTel as a logging provider and avoid adding redundant
+                // traceId and spanId to the logs
+
+                addKeyValue(TRACE_ID_KEY, context.getTraceId());
+                addKeyValue(SPAN_ID_KEY, context.getSpanId());
             }
 
             int pairsCount
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
-            int speculatedSize = 20 + pairsCount * 20 + message.length();
+
+            int messageLength = message == null ? 0 : message.length();
+            int speculatedSize = 20 + pairsCount * 20 + messageLength;
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
                 JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
-                jsonWriter.writeStartObject().writeStringField("message", message);
+                jsonWriter.writeStartObject();
+
+                if (message != null) {
+                    jsonWriter.writeStringField("message", message);
+                }
 
                 if (globalPairs != null) {
                     for (Map.Entry<String, Object> kvp : globalPairs.entrySet()) {
@@ -511,7 +555,7 @@ public class ClientLogger {
                 }
 
                 if (eventName != null) {
-                    jsonWriter.writeStringField("event.name", eventName);
+                    jsonWriter.writeStringField(EVENT_NAME_KEY, eventName);
                 }
 
                 jsonWriter.writeEndObject().flush();

@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util;
+package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.util.DefaultLogger;
+import io.clientcore.core.implementation.instrumentation.DefaultLogger;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonOptions;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.util.ClientLogger.LogLevel;
+import io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -28,6 +29,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
+import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -259,7 +262,7 @@ public class ClientLoggerTests {
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertMessage(Collections.singletonMap("message", ""), logValues, logLevel, logLevel);
+        assertMessage(Collections.emptyMap(), logValues, logLevel, logLevel);
     }
 
     @ParameterizedTest
@@ -440,7 +443,6 @@ public class ClientLoggerTests {
         logger.atVerbose().addKeyValue("connectionId", "foo").addKeyValue("linkName", true).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", true);
 
@@ -504,7 +506,6 @@ public class ClientLoggerTests {
         logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", (String) null).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", null);
 
@@ -676,7 +677,6 @@ public class ClientLoggerTests {
                 .log(null, runtimeException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
         expectedMessage.put("exception.type", runtimeException.getClass().getCanonicalName());
@@ -707,7 +707,6 @@ public class ClientLoggerTests {
                 .log(null, ioException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
         expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
@@ -750,6 +749,38 @@ public class ClientLoggerTests {
         expectedMessage.put("linkName", "bar");
 
         assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL, level);
+    }
+
+    @Test
+    public void logWithContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+        InstrumentationContext context = createRandomInstrumentationContext();
+        logger.atInfo().setInstrumentationContext(context).addKeyValue("connectionId", "foo").log("message");
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", "message");
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("trace.id", context.getTraceId());
+        expectedMessage.put("span.id", context.getSpanId());
+
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
+            LogLevel.INFORMATIONAL);
+    }
+
+    @Test
+    public void logWithInvalidContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+        logger.atInfo()
+            .setInstrumentationContext(createInvalidInstrumentationContext())
+            .addKeyValue("connectionId", "foo")
+            .log("message");
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", "message");
+        expectedMessage.put("connectionId", "foo");
+
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
+            LogLevel.INFORMATIONAL);
     }
 
     private String stackTraceToString(Throwable exception) {

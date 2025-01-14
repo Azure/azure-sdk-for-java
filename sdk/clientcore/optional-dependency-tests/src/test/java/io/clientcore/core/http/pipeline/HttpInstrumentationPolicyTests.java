@@ -9,9 +9,8 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
-import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.opentelemetry.api.OpenTelemetry;
@@ -52,8 +51,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
-import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -315,27 +312,6 @@ public class HttpInstrumentationPolicyTests {
     }
 
     @Test
-    public void tracingIsDisabledOnRequest() throws IOException {
-        InstrumentationOptions<OpenTelemetry> options
-            = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(options, null)).httpClient(request -> {
-                assertFalse(Span.current().getSpanContext().isValid());
-                assertFalse(Span.current().isRecording());
-                assertNull(request.getHeaders().get(TRACEPARENT));
-                return new MockHttpResponse(request, 200);
-            }).build();
-
-        URI url = URI.create("http://localhost/");
-
-        RequestOptions requestOptions = new RequestOptions().putContext(DISABLE_TRACING_KEY, true);
-
-        pipeline.send(new HttpRequest(HttpMethod.GET, url).setRequestOptions(requestOptions)).close();
-        assertNotNull(exporter.getFinishedSpanItems());
-        assertEquals(0, exporter.getFinishedSpanItems().size());
-    }
-
-    @Test
     public void userAgentIsRecorded() throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))
@@ -361,10 +337,10 @@ public class HttpInstrumentationPolicyTests {
         HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(otelOptions, logOptions);
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Object span = request.getRequestOptions().getContext().get(TRACE_CONTEXT_KEY);
-            if (span instanceof io.clientcore.core.instrumentation.tracing.Span) {
-                ((io.clientcore.core.instrumentation.tracing.Span) span).setAttribute("custom.request.id",
-                    request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+            io.clientcore.core.instrumentation.tracing.Span span
+                = request.getRequestOptions().getInstrumentationContext().getSpan();
+            if (span.isRecording()) {
+                span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
             }
 
             return next.process();
@@ -423,8 +399,8 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions().putContext(TRACE_CONTEXT_KEY,
-            io.opentelemetry.context.Context.current().with(testSpan));
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
             .setRequestOptions(requestOptions)).close();
@@ -466,9 +442,9 @@ public class HttpInstrumentationPolicyTests {
 
         RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.instrumentation.tracing.Span parent
-            = tracer.spanBuilder("parent", INTERNAL, requestOptions).startSpan();
+            = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
 
-        requestOptions.putContext(TRACE_CONTEXT_KEY, parent);
+        requestOptions.setInstrumentationContext(parent.getInstrumentationContext());
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))
@@ -485,7 +461,7 @@ public class HttpInstrumentationPolicyTests {
         SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
         assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED", 200);
 
-        OTelSpanContext parentContext = ((OTelSpan) parent).getSpanContext();
+        InstrumentationContext parentContext = parent.getInstrumentationContext();
         assertEquals(parentContext.getSpanId(), httpSpan.getParentSpanContext().getSpanId());
         assertEquals(parentContext.getTraceId(), httpSpan.getSpanContext().getTraceId());
     }

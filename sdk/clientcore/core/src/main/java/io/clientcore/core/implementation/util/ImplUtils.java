@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.util;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.FileOutputStream;

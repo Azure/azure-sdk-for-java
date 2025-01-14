@@ -7,7 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.implementation.util.ImplUtils;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.HashMap;
