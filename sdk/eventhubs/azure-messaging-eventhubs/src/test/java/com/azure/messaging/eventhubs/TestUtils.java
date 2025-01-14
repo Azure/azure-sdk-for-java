@@ -84,17 +84,16 @@ public final class TestUtils {
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME
         = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final String OFFSET = "1534L";
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
-    static final Long REPLICATION_SEGMENT = 33L;
+    static final Integer REPLICATION_SEGMENT = 33;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -174,7 +173,8 @@ public final class TestUtils {
      * the application properties. Useful for helping filter messages.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+        final Message message
+            = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
 
         Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
@@ -200,7 +200,7 @@ public final class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, String offsetNumber,
         Date enqueuedTime) {
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
@@ -241,6 +241,20 @@ public final class TestUtils {
         eventData.getProperties().put(MESSAGE_ID, messageTrackingValue);
         eventData.getProperties().put(MESSAGE_POSITION_ID, position);
         return eventData;
+    }
+
+    public static EventData getEvent(AmqpAnnotatedMessage amqpAnnotatedMessage, String offset, long sequenceNumber,
+        Instant enqueuedTime) {
+
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+
+        SystemProperties systemProperties
+            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null, 1);
+
+        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     /**
@@ -402,18 +416,6 @@ public final class TestUtils {
         } else {
             assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
         }
-    }
-
-    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
-        long sequenceNumber, Instant enqueuedTime) {
-
-        amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
-        amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
-
-        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null, 1);
-        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     private TestUtils() {
