@@ -3,25 +3,8 @@
 
 package com.azure.communication.messages;
 
-import com.azure.communication.messages.models.AudioNotificationContent;
-import com.azure.communication.messages.models.DocumentNotificationContent;
-import com.azure.communication.messages.models.ImageNotificationContent;
-import com.azure.communication.messages.models.MessageTemplate;
-import com.azure.communication.messages.models.MessageTemplateBindings;
-import com.azure.communication.messages.models.MessageTemplateDocument;
-import com.azure.communication.messages.models.MessageTemplateImage;
-import com.azure.communication.messages.models.MessageTemplateQuickAction;
-import com.azure.communication.messages.models.MessageTemplateText;
-import com.azure.communication.messages.models.MessageTemplateValue;
-import com.azure.communication.messages.models.MessageTemplateVideo;
-import com.azure.communication.messages.models.TextNotificationContent;
-import com.azure.communication.messages.models.TemplateNotificationContent;
-import com.azure.communication.messages.models.VideoNotificationContent;
-import com.azure.communication.messages.models.SendMessageResult;
-import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.communication.messages.models.*;
+import com.azure.communication.messages.models.channels.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -38,7 +21,8 @@ public class NotificationMessageSample {
 
     public static void main(String[] args) {
         TO_LIST.add(RECIPIENT_IDENTIFIER);
-        sendTemplateMessageWithDocument();
+        //sendTemplateMessageWithDocument();
+        sendStickerMessage();
     }
 
     /*
@@ -387,6 +371,144 @@ public class NotificationMessageSample {
             .buildClient();
         SendMessageResult result = client.send(
             new DocumentNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send sticker message with below details
+     * Supported sticker type - (.webp)
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public static void sendStickerMessage() {
+        //Update the Media URL
+        String mediaUrl = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+        NotificationMessagesClient client = createClientWithConnectionString();
+        SendMessageResult result = client.send(
+            new StickerNotificationContent(CHANNEL_ID, TO_LIST, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send interactive message with Button Action
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithButtonAction() {
+        NotificationMessagesClient client = createClientWithConnectionString();
+        List<ButtonContent> buttonActions =  new ArrayList<>();
+        buttonActions.add( new ButtonContent("no",  "No"));
+        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send button action interactive message with image header
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithButtonActionWithImageHeader() {
+        NotificationMessagesClient client = createClientWithConnectionString();
+        List<ButtonContent> buttonActions =  new ArrayList<>();
+        buttonActions.add( new ButtonContent("no",  "No"));
+        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new ImageMessageContent("https://wallpapercave.com/wp/wp2163723.jpg"));
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send button action interactive message with document header
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithButtonActionWithDocumentHeader() {
+        NotificationMessagesClient client = createClientWithConnectionString();
+        List<ButtonContent> buttonActions =  new ArrayList<>();
+        buttonActions.add( new ButtonContent("no",  "No"));
+        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new DocumentMessageContent("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send button action interactive message with video header
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithButtonActionWithVideoHeader() {
+        NotificationMessagesClient client = createClientWithConnectionString();
+        List<ButtonContent> buttonActions =  new ArrayList<>();
+        buttonActions.add( new ButtonContent("no",  "No"));
+        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you like it?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new VideoMessageContent("https://sample-videos.com/audio/mp3/wave.mp3"));
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send list action interactive message
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithListAction() {
+        List<ActionGroupItem> group1 = new ArrayList<>();
+        group1.add(new ActionGroupItem("priority_express", "Priority Mail Express", "Delivered on same day!"));
+        group1.add(new ActionGroupItem("priority_mail", "Priority Mail", "Delivered in 1-2 days"));
+
+        List<ActionGroupItem> group2 = new ArrayList<>();
+        group2.add(new ActionGroupItem("usps_ground_advantage", "USPS Ground Advantage", "Delivered in 2-5 days"));
+        group2.add(new ActionGroupItem("media_mail", "Media Mail", "Delivered in 5-8 days"));
+
+        List<ActionGroup> options = new ArrayList<>();
+        options.add(new ActionGroup("Express Delivery", group1));
+        options.add(new ActionGroup("Normal Delivery", group2));
+
+        ActionGroupContent actionGroupContent = new ActionGroupContent("Shipping Options", options);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Which shipping option do you want?"), new WhatsAppListActionBindings(actionGroupContent));
+        interactiveMessage.setFooter(new TextMessageContent("Eagle Logistic"));
+        interactiveMessage.setHeader(new TextMessageContent("Shipping Options"));
+
+        NotificationMessagesClient client = createClientWithConnectionString();
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+
+    }
+
+    /*
+     * This sample shows how to send url action interactive message
+     * Note: Business cannot initiate conversation with interactive message.
+     * */
+    public static void sendInteractiveMessageWithUrlAction() {
+        LinkContent urlAction = new LinkContent("Rocket is the best!", "https://wallpapercave.com/wp/wp2163723.jpg");
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("The best Guardian of Galaxy"), new WhatsAppUrlActionBindings(urlAction));
+        interactiveMessage.setFooter(new TextMessageContent("Intergalactic New Ltd"));
+
+        NotificationMessagesClient client = createClientWithConnectionString();
+        SendMessageResult result = client.send(
+            new InteractiveNotificationContent(CHANNEL_ID,  TO_LIST, interactiveMessage));
 
         result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
