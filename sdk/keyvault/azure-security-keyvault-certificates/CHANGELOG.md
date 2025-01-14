@@ -1,5 +1,12 @@
 # Release History
 
+## 4.7.2 (2025-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+
 ## 4.7.1 (2024-12-04)
 
 ### Other Changes
