@@ -86,7 +86,6 @@ class ServiceBusReceiverClientTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions())
