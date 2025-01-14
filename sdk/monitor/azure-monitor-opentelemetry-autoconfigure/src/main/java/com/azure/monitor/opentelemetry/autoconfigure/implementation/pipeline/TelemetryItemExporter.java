@@ -168,8 +168,7 @@ public class TelemetryItemExporter {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
         for (String instrumentationKey : iKeys) {
-            String maskedIKey
-                = "*" + instrumentationKey.substring(instrumentationKey.length() - 13);
+            String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - 13);
             json = json.replace(instrumentationKey, maskedIKey);
         }
         return json;
