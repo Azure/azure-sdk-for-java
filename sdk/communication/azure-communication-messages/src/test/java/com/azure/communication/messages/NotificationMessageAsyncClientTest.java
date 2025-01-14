@@ -104,7 +104,8 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        StepVerifier.create(messagesClient.send(new StickerNotificationContent(CHANNEL_REGISTRATION_ID, recipients, mediaUrl)))
+        StepVerifier
+            .create(messagesClient.send(new StickerNotificationContent(CHANNEL_REGISTRATION_ID, recipients, mediaUrl)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -118,13 +119,15 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -138,14 +141,16 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
         interactiveMessage.setHeader(new ImageMessageContent("https://wallpapercave.com/wp/wp2163723.jpg"));
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -159,14 +164,17 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
-        interactiveMessage.setHeader(new DocumentMessageContent("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        interactiveMessage.setHeader(
+            new DocumentMessageContent("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -180,14 +188,16 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
-        InteractiveMessage interactiveMessage = new InteractiveMessage(
-            new TextMessageContent("Do you like it?"), new WhatsAppButtonActionBindings(buttonSet));
+        InteractiveMessage interactiveMessage = new InteractiveMessage(new TextMessageContent("Do you like it?"),
+            new WhatsAppButtonActionBindings(buttonSet));
         interactiveMessage.setHeader(new VideoMessageContent("https://sample-videos.com/audio/mp3/wave.mp3"));
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -211,15 +221,18 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         options.add(new ActionGroup("Normal Delivery", group2));
 
         ActionGroupContent actionGroupContent = new ActionGroupContent("Shipping Options", options);
-        InteractiveMessage interactiveMessage = new InteractiveMessage(
-            new TextMessageContent("Which shipping option do you want?"), new WhatsAppListActionBindings(actionGroupContent));
+        InteractiveMessage interactiveMessage
+            = new InteractiveMessage(new TextMessageContent("Which shipping option do you want?"),
+                new WhatsAppListActionBindings(actionGroupContent));
         interactiveMessage.setFooter(new TextMessageContent("Eagle Logistic"));
         interactiveMessage.setHeader(new TextMessageContent("Shipping Options"));
 
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -238,7 +251,9 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        StepVerifier.create(messagesClient.send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID,  recipients, interactiveMessage)))
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
