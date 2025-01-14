@@ -13,9 +13,7 @@ import com.azure.security.keyvault.certificates.models.CertificateContact;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * The contacts for the vault certificates.
- */
+/** The contacts for the vault certificates. */
 @Fluent
 public final class Contacts implements JsonSerializable<Contacts> {
     /*
@@ -28,15 +26,13 @@ public final class Contacts implements JsonSerializable<Contacts> {
      */
     private List<CertificateContact> contactList;
 
-    /**
-     * Creates an instance of Contacts class.
-     */
+    /** Creates an instance of Contacts class. */
     public Contacts() {
     }
 
     /**
      * Get the id property: Identifier for the contacts collection.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -45,7 +41,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Get the contactList property: The contact list for the vault certificates.
-     * 
+     *
      * @return the contactList value.
      */
     public List<CertificateContact> getContactList() {
@@ -54,7 +50,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Set the contactList property: The contact list for the vault certificates.
-     * 
+     *
      * @param contactList the contactList value to set.
      * @return the Contacts object itself.
      */
@@ -63,9 +59,6 @@ public final class Contacts implements JsonSerializable<Contacts> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,10 +68,10 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Reads an instance of Contacts from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Contacts if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the Contacts.
      */
     public static Contacts fromJson(JsonReader jsonReader) throws IOException {

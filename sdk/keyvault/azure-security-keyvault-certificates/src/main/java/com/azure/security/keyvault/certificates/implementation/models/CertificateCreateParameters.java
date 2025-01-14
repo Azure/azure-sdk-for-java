@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The certificate create parameters.
- */
+/** The certificate create parameters. */
 @Fluent
 public final class CertificateCreateParameters implements JsonSerializable<CertificateCreateParameters> {
     /*
@@ -32,15 +30,13 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
      */
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of CertificateCreateParameters class.
-     */
+    /** Creates an instance of CertificateCreateParameters class. */
     public CertificateCreateParameters() {
     }
 
     /**
      * Get the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @return the certificatePolicy value.
      */
     public CertificatePolicy getCertificatePolicy() {
@@ -49,7 +45,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @param certificatePolicy the certificatePolicy value to set.
      * @return the CertificateCreateParameters object itself.
      */
@@ -60,7 +56,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Get the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @return the certificateAttributes value.
      */
     public CertificateAttributes getCertificateAttributes() {
@@ -69,7 +65,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @param certificateAttributes the certificateAttributes value to set.
      * @return the CertificateCreateParameters object itself.
      */
@@ -80,7 +76,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -89,7 +85,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the CertificateCreateParameters object itself.
      */
@@ -98,9 +94,6 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,10 +105,10 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
 
     /**
      * Reads an instance of CertificateCreateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateCreateParameters if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateCreateParameters.
      */
     public static CertificateCreateParameters fromJson(JsonReader jsonReader) throws IOException {

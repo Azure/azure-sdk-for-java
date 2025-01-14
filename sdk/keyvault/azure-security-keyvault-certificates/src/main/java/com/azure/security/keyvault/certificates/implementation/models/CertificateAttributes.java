@@ -13,9 +13,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/**
- * The certificate management attributes.
- */
+/** The certificate management attributes. */
 @Fluent
 public final class CertificateAttributes extends Attributes {
     /*
@@ -30,26 +28,14 @@ public final class CertificateAttributes extends Attributes {
      */
     private DeletionRecoveryLevel recoveryLevel;
 
-    /*
-     * Last updated time in UTC.
-     */
-    private Long updated;
-
-    /*
-     * Creation time in UTC.
-     */
-    private Long created;
-
-    /**
-     * Creates an instance of CertificateAttributes class.
-     */
+    /** Creates an instance of CertificateAttributes class. */
     public CertificateAttributes() {
     }
 
     /**
      * Get the recoverableDays property: softDelete data retention days. Value should be &gt;=7 and &lt;=90 when
      * softDelete enabled, otherwise 0.
-     * 
+     *
      * @return the recoverableDays value.
      */
     public Integer getRecoverableDays() {
@@ -60,69 +46,34 @@ public final class CertificateAttributes extends Attributes {
      * Get the recoveryLevel property: Reflects the deletion recovery level currently in effect for certificates in the
      * current vault. If it contains 'Purgeable', the certificate can be permanently deleted by a privileged user;
      * otherwise, only the system can purge the certificate, at the end of the retention interval.
-     * 
+     *
      * @return the recoveryLevel value.
      */
     public DeletionRecoveryLevel getRecoveryLevel() {
         return this.recoveryLevel;
     }
 
-    /**
-     * Get the updated property: Last updated time in UTC.
-     * 
-     * @return the updated value.
-     */
-    @Override
-    public OffsetDateTime getUpdated() {
-        if (this.updated == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updated), ZoneOffset.UTC);
-    }
-
-    /**
-     * Get the created property: Creation time in UTC.
-     * 
-     * @return the created value.
-     */
-    @Override
-    public OffsetDateTime getCreated() {
-        if (this.created == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.created), ZoneOffset.UTC);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CertificateAttributes setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CertificateAttributes setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CertificateAttributes setExpires(OffsetDateTime expires) {
         super.setExpires(expires);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,10 +89,10 @@ public final class CertificateAttributes extends Attributes {
 
     /**
      * Reads an instance of CertificateAttributes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateAttributes if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateAttributes.
      */
     public static CertificateAttributes fromJson(JsonReader jsonReader) throws IOException {
@@ -154,21 +105,21 @@ public final class CertificateAttributes extends Attributes {
                 if ("enabled".equals(fieldName)) {
                     deserializedCertificateAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
                 } else if ("nbf".equals(fieldName)) {
-                    Long notBeforeHolder = reader.getNullable(JsonReader::getLong);
-                    if (notBeforeHolder != null) {
-                        deserializedCertificateAttributes.setNotBefore(
-                            OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBeforeHolder), ZoneOffset.UTC));
+                    Long notBefore = reader.getNullable(JsonReader::getLong);
+                    if (notBefore != null) {
+                        deserializedCertificateAttributes
+                            .setNotBefore(OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
                     }
                 } else if ("exp".equals(fieldName)) {
-                    Long expiresHolder = reader.getNullable(JsonReader::getLong);
-                    if (expiresHolder != null) {
+                    Long expires = reader.getNullable(JsonReader::getLong);
+                    if (expires != null) {
                         deserializedCertificateAttributes
-                            .setExpires(OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresHolder), ZoneOffset.UTC));
+                            .setExpires(OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
                     }
                 } else if ("created".equals(fieldName)) {
-                    deserializedCertificateAttributes.created = reader.getNullable(JsonReader::getLong);
+                    deserializedCertificateAttributes.setCreated(reader.getNullable(JsonReader::getLong));
                 } else if ("updated".equals(fieldName)) {
-                    deserializedCertificateAttributes.updated = reader.getNullable(JsonReader::getLong);
+                    deserializedCertificateAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
                 } else if ("recoverableDays".equals(fieldName)) {
                     deserializedCertificateAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
                 } else if ("recoveryLevel".equals(fieldName)) {

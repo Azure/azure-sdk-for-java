@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The certificate issuer item containing certificate issuer metadata.
- */
+/** The certificate issuer item containing certificate issuer metadata. */
 @Fluent
 public final class CertificateIssuerItem implements JsonSerializable<CertificateIssuerItem> {
     /*
@@ -26,15 +24,13 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
      */
     private String provider;
 
-    /**
-     * Creates an instance of CertificateIssuerItem class.
-     */
+    /** Creates an instance of CertificateIssuerItem class. */
     public CertificateIssuerItem() {
     }
 
     /**
      * Get the id property: Certificate Identifier.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +39,7 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
 
     /**
      * Set the id property: Certificate Identifier.
-     * 
+     *
      * @param id the id value to set.
      * @return the CertificateIssuerItem object itself.
      */
@@ -54,7 +50,7 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
 
     /**
      * Get the provider property: The issuer provider.
-     * 
+     *
      * @return the provider value.
      */
     public String getProvider() {
@@ -63,7 +59,7 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
 
     /**
      * Set the provider property: The issuer provider.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the CertificateIssuerItem object itself.
      */
@@ -72,9 +68,6 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,10 +78,10 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
 
     /**
      * Reads an instance of CertificateIssuerItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateIssuerItem if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateIssuerItem.
      */
     public static CertificateIssuerItem fromJson(JsonReader jsonReader) throws IOException {

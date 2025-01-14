@@ -14,9 +14,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/**
- * The attributes of an issuer managed by the Key Vault service.
- */
+/** The attributes of an issuer managed by the Key Vault service. */
 @Fluent
 public final class IssuerAttributes implements JsonSerializable<IssuerAttributes> {
     /*
@@ -34,15 +32,13 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
      */
     private Long updated;
 
-    /**
-     * Creates an instance of IssuerAttributes class.
-     */
+    /** Creates an instance of IssuerAttributes class. */
     public IssuerAttributes() {
     }
 
     /**
      * Get the enabled property: Determines whether the issuer is enabled.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -51,7 +47,7 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
 
     /**
      * Set the enabled property: Determines whether the issuer is enabled.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the IssuerAttributes object itself.
      */
@@ -62,7 +58,7 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
 
     /**
      * Get the created property: Creation time in UTC.
-     * 
+     *
      * @return the created value.
      */
     public OffsetDateTime getCreated() {
@@ -74,7 +70,7 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
 
     /**
      * Get the updated property: Last updated time in UTC.
-     * 
+     *
      * @return the updated value.
      */
     public OffsetDateTime getUpdated() {
@@ -84,9 +80,6 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updated), ZoneOffset.UTC);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,10 +89,10 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
 
     /**
      * Reads an instance of IssuerAttributes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IssuerAttributes if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the IssuerAttributes.
      */
     public static IssuerAttributes fromJson(JsonReader jsonReader) throws IOException {

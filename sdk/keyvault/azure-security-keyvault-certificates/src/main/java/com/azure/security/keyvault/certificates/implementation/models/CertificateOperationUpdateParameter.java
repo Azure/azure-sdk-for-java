@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The certificate operation update parameters.
- */
+/** The certificate operation update parameters. */
 @Fluent
 public final class CertificateOperationUpdateParameter
     implements JsonSerializable<CertificateOperationUpdateParameter> {
@@ -22,15 +20,13 @@ public final class CertificateOperationUpdateParameter
      */
     private boolean cancellationRequested;
 
-    /**
-     * Creates an instance of CertificateOperationUpdateParameter class.
-     */
+    /** Creates an instance of CertificateOperationUpdateParameter class. */
     public CertificateOperationUpdateParameter() {
     }
 
     /**
      * Get the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
-     * 
+     *
      * @return the cancellationRequested value.
      */
     public boolean isCancellationRequested() {
@@ -39,7 +35,7 @@ public final class CertificateOperationUpdateParameter
 
     /**
      * Set the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
-     * 
+     *
      * @param cancellationRequested the cancellationRequested value to set.
      * @return the CertificateOperationUpdateParameter object itself.
      */
@@ -48,9 +44,6 @@ public final class CertificateOperationUpdateParameter
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -60,10 +53,10 @@ public final class CertificateOperationUpdateParameter
 
     /**
      * Reads an instance of CertificateOperationUpdateParameter from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateOperationUpdateParameter if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     *     or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CertificateOperationUpdateParameter.
      */

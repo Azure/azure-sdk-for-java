@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Details of the organization administrator of the certificate issuer.
- */
+/** Details of the organization administrator of the certificate issuer. */
 @Fluent
 public final class AdministratorContact implements JsonSerializable<AdministratorContact> {
     /*
@@ -36,15 +34,13 @@ public final class AdministratorContact implements JsonSerializable<Administrato
      */
     private String phone;
 
-    /**
-     * Creates an instance of AdministratorContact class.
-     */
+    /** Creates an instance of AdministratorContact class. */
     public AdministratorContact() {
     }
 
     /**
      * Get the firstName property: First name.
-     * 
+     *
      * @return the firstName value.
      */
     public String getFirstName() {
@@ -53,7 +49,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Set the firstName property: First name.
-     * 
+     *
      * @param firstName the firstName value to set.
      * @return the AdministratorContact object itself.
      */
@@ -64,7 +60,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Get the lastName property: Last name.
-     * 
+     *
      * @return the lastName value.
      */
     public String getLastName() {
@@ -73,7 +69,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Set the lastName property: Last name.
-     * 
+     *
      * @param lastName the lastName value to set.
      * @return the AdministratorContact object itself.
      */
@@ -84,7 +80,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Get the email property: Email address.
-     * 
+     *
      * @return the email value.
      */
     public String getEmail() {
@@ -93,7 +89,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Set the email property: Email address.
-     * 
+     *
      * @param email the email value to set.
      * @return the AdministratorContact object itself.
      */
@@ -104,7 +100,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Get the phone property: Phone number.
-     * 
+     *
      * @return the phone value.
      */
     public String getPhone() {
@@ -113,7 +109,7 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Set the phone property: Phone number.
-     * 
+     *
      * @param phone the phone value to set.
      * @return the AdministratorContact object itself.
      */
@@ -122,9 +118,6 @@ public final class AdministratorContact implements JsonSerializable<Administrato
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,10 +130,10 @@ public final class AdministratorContact implements JsonSerializable<Administrato
 
     /**
      * Reads an instance of AdministratorContact from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AdministratorContact if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AdministratorContact.
      */
     public static AdministratorContact fromJson(JsonReader jsonReader) throws IOException {

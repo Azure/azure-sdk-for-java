@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Parameters for the issuer of the X509 component of a certificate.
- */
+/** Parameters for the issuer of the X509 component of a certificate. */
 @Fluent
 public final class IssuerParameters implements JsonSerializable<IssuerParameters> {
     /*
@@ -31,15 +29,13 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
      */
     private Boolean certificateTransparency;
 
-    /**
-     * Creates an instance of IssuerParameters class.
-     */
+    /** Creates an instance of IssuerParameters class. */
     public IssuerParameters() {
     }
 
     /**
      * Get the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -48,7 +44,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
 
     /**
      * Set the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-     * 
+     *
      * @param name the name value to set.
      * @return the IssuerParameters object itself.
      */
@@ -60,7 +56,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     /**
      * Get the certificateType property: Certificate type as supported by the provider (optional); for example 'OV-SSL',
      * 'EV-SSL'.
-     * 
+     *
      * @return the certificateType value.
      */
     public String getCertificateType() {
@@ -70,7 +66,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     /**
      * Set the certificateType property: Certificate type as supported by the provider (optional); for example 'OV-SSL',
      * 'EV-SSL'.
-     * 
+     *
      * @param certificateType the certificateType value to set.
      * @return the IssuerParameters object itself.
      */
@@ -82,7 +78,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     /**
      * Get the certificateTransparency property: Indicates if the certificates generated under this policy should be
      * published to certificate transparency logs.
-     * 
+     *
      * @return the certificateTransparency value.
      */
     public Boolean isCertificateTransparency() {
@@ -92,7 +88,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     /**
      * Set the certificateTransparency property: Indicates if the certificates generated under this policy should be
      * published to certificate transparency logs.
-     * 
+     *
      * @param certificateTransparency the certificateTransparency value to set.
      * @return the IssuerParameters object itself.
      */
@@ -101,9 +97,6 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,10 +108,10 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
 
     /**
      * Reads an instance of IssuerParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IssuerParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the IssuerParameters.
      */
     public static IssuerParameters fromJson(JsonReader jsonReader) throws IOException {

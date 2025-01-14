@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * The certificate list result.
- */
+/** The certificate list result. */
 @Immutable
 public final class CertificateListResult implements JsonSerializable<CertificateListResult> {
     /*
@@ -28,16 +26,14 @@ public final class CertificateListResult implements JsonSerializable<Certificate
      */
     private String nextLink;
 
-    /**
-     * Creates an instance of CertificateListResult class.
-     */
+    /** Creates an instance of CertificateListResult class. */
     public CertificateListResult() {
     }
 
     /**
      * Get the value property: A response message containing a list of certificates in the key vault along with a link
      * to the next page of certificates.
-     * 
+     *
      * @return the value value.
      */
     public List<CertificateItem> getValue() {
@@ -46,16 +42,13 @@ public final class CertificateListResult implements JsonSerializable<Certificate
 
     /**
      * Get the nextLink property: The URL to get the next set of certificates.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -64,10 +57,10 @@ public final class CertificateListResult implements JsonSerializable<Certificate
 
     /**
      * Reads an instance of CertificateListResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateListResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateListResult.
      */
     public static CertificateListResult fromJson(JsonReader jsonReader) throws IOException {

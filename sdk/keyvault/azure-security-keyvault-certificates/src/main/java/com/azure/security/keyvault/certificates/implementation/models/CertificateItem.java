@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * The certificate item containing certificate metadata.
- */
+/** The certificate item containing certificate metadata. */
 @Fluent
 public class CertificateItem implements JsonSerializable<CertificateItem> {
     /*
@@ -40,9 +38,7 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
      */
     private Base64Url x509Thumbprint;
 
-    /**
-     * Creates an instance of CertificateItem class.
-     */
+    /** Creates an instance of CertificateItem class. */
     public CertificateItem() {
     }
 
@@ -133,15 +129,12 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("attributes", this.attributes);
-        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("x5t", Objects.toString(this.x509Thumbprint, null));
         return jsonWriter.writeEndObject();
     }
@@ -151,7 +144,7 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateItem if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateItem.
      */
     public static CertificateItem fromJson(JsonReader jsonReader) throws IOException {

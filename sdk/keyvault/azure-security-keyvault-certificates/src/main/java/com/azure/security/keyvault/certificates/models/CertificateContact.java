@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The contact information for the vault certificates.
- */
+/** The contact information for the vault certificates. */
 @Fluent
 public final class CertificateContact implements JsonSerializable<CertificateContact> {
     /*
@@ -31,15 +29,13 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
      */
     private String phone;
 
-    /**
-     * Creates an instance of CertificateContact class.
-     */
+    /** Creates an instance of CertificateContact class. */
     public CertificateContact() {
     }
 
     /**
      * Get the email property: Email address.
-     * 
+     *
      * @return the email value.
      */
     public String getEmail() {
@@ -48,7 +44,7 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Set the email property: Email address.
-     * 
+     *
      * @param email the email value to set.
      * @return the CertificateContact object itself.
      */
@@ -59,7 +55,7 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Get the name property: Name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +64,7 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Set the name property: Name.
-     * 
+     *
      * @param name the name value to set.
      * @return the CertificateContact object itself.
      */
@@ -79,7 +75,7 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Get the phone property: Phone number.
-     * 
+     *
      * @return the phone value.
      */
     public String getPhone() {
@@ -88,7 +84,7 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Set the phone property: Phone number.
-     * 
+     *
      * @param phone the phone value to set.
      * @return the CertificateContact object itself.
      */
@@ -97,9 +93,6 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,10 +104,10 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
 
     /**
      * Reads an instance of CertificateContact from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateContact if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateContact.
      */
     public static CertificateContact fromJson(JsonReader jsonReader) throws IOException {

@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * The certificate issuer list result.
- */
+/** The certificate issuer list result. */
 @Immutable
 public final class CertificateIssuerListResult implements JsonSerializable<CertificateIssuerListResult> {
     /*
@@ -28,16 +26,14 @@ public final class CertificateIssuerListResult implements JsonSerializable<Certi
      */
     private String nextLink;
 
-    /**
-     * Creates an instance of CertificateIssuerListResult class.
-     */
+    /** Creates an instance of CertificateIssuerListResult class. */
     public CertificateIssuerListResult() {
     }
 
     /**
      * Get the value property: A response message containing a list of certificate issuers in the key vault along with a
      * link to the next page of certificate issuers.
-     * 
+     *
      * @return the value value.
      */
     public List<CertificateIssuerItem> getValue() {
@@ -46,16 +42,13 @@ public final class CertificateIssuerListResult implements JsonSerializable<Certi
 
     /**
      * Get the nextLink property: The URL to get the next set of certificate issuers.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -64,10 +57,10 @@ public final class CertificateIssuerListResult implements JsonSerializable<Certi
 
     /**
      * Reads an instance of CertificateIssuerListResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateIssuerListResult if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateIssuerListResult.
      */
     public static CertificateIssuerListResult fromJson(JsonReader jsonReader) throws IOException {

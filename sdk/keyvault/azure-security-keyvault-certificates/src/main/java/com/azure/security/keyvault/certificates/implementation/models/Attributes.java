@@ -14,9 +14,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/**
- * The object attributes managed by the KeyVault service.
- */
+/** The object attributes managed by the KeyVault service. */
 @Fluent
 public class Attributes implements JsonSerializable<Attributes> {
     /*
@@ -44,15 +42,13 @@ public class Attributes implements JsonSerializable<Attributes> {
      */
     private Long updated;
 
-    /**
-     * Creates an instance of Attributes class.
-     */
+    /** Creates an instance of Attributes class. */
     public Attributes() {
     }
 
     /**
      * Get the enabled property: Determines whether the object is enabled.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -61,7 +57,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Set the enabled property: Determines whether the object is enabled.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the Attributes object itself.
      */
@@ -72,7 +68,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Get the notBefore property: Not before date in UTC.
-     * 
+     *
      * @return the notBefore value.
      */
     public OffsetDateTime getNotBefore() {
@@ -84,7 +80,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Set the notBefore property: Not before date in UTC.
-     * 
+     *
      * @param notBefore the notBefore value to set.
      * @return the Attributes object itself.
      */
@@ -99,7 +95,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Get the expires property: Expiry date in UTC.
-     * 
+     *
      * @return the expires value.
      */
     public OffsetDateTime getExpires() {
@@ -111,7 +107,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Set the expires property: Expiry date in UTC.
-     * 
+     *
      * @param expires the expires value to set.
      * @return the Attributes object itself.
      */
@@ -126,7 +122,7 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Get the created property: Creation time in UTC.
-     * 
+     *
      * @return the created value.
      */
     public OffsetDateTime getCreated() {
@@ -138,22 +134,18 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Set the created property: Creation time in UTC.
-     * 
+     *
      * @param created the created value to set.
      * @return the Attributes object itself.
      */
-    Attributes setCreated(OffsetDateTime created) {
-        if (created == null) {
-            this.created = null;
-        } else {
-            this.created = created.toEpochSecond();
-        }
+    Attributes setCreated(Long created) {
+        this.created = created;
         return this;
     }
 
     /**
      * Get the updated property: Last updated time in UTC.
-     * 
+     *
      * @return the updated value.
      */
     public OffsetDateTime getUpdated() {
@@ -165,22 +157,15 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Set the updated property: Last updated time in UTC.
-     * 
+     *
      * @param updated the updated value to set.
      * @return the Attributes object itself.
      */
-    Attributes setUpdated(OffsetDateTime updated) {
-        if (updated == null) {
-            this.updated = null;
-        } else {
-            this.updated = updated.toEpochSecond();
-        }
+    Attributes setUpdated(Long updated) {
+        this.updated = updated;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -192,10 +177,10 @@ public class Attributes implements JsonSerializable<Attributes> {
 
     /**
      * Reads an instance of Attributes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Attributes if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the Attributes.
      */
     public static Attributes fromJson(JsonReader jsonReader) throws IOException {

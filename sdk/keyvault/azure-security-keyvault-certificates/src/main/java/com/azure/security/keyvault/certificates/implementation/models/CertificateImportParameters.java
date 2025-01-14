@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The certificate import parameters.
- */
+/** The certificate import parameters. */
 @Fluent
 public final class CertificateImportParameters implements JsonSerializable<CertificateImportParameters> {
     /*
@@ -43,16 +41,14 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
      */
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of CertificateImportParameters class.
-     */
+    /** Creates an instance of CertificateImportParameters class. */
     public CertificateImportParameters() {
     }
 
     /**
      * Get the base64EncodedCertificate property: Base64 encoded representation of the certificate object to import.
      * This certificate needs to contain the private key.
-     * 
+     *
      * @return the base64EncodedCertificate value.
      */
     public String getBase64EncodedCertificate() {
@@ -62,7 +58,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     /**
      * Set the base64EncodedCertificate property: Base64 encoded representation of the certificate object to import.
      * This certificate needs to contain the private key.
-     * 
+     *
      * @param base64EncodedCertificate the base64EncodedCertificate value to set.
      * @return the CertificateImportParameters object itself.
      */
@@ -74,7 +70,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     /**
      * Get the password property: If the private key in base64EncodedCertificate is encrypted, the password used for
      * encryption.
-     * 
+     *
      * @return the password value.
      */
     public String getPassword() {
@@ -84,7 +80,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     /**
      * Set the password property: If the private key in base64EncodedCertificate is encrypted, the password used for
      * encryption.
-     * 
+     *
      * @param password the password value to set.
      * @return the CertificateImportParameters object itself.
      */
@@ -95,7 +91,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Get the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @return the certificatePolicy value.
      */
     public CertificatePolicy getCertificatePolicy() {
@@ -104,7 +100,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @param certificatePolicy the certificatePolicy value to set.
      * @return the CertificateImportParameters object itself.
      */
@@ -115,7 +111,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Get the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @return the certificateAttributes value.
      */
     public CertificateAttributes getCertificateAttributes() {
@@ -124,7 +120,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @param certificateAttributes the certificateAttributes value to set.
      * @return the CertificateImportParameters object itself.
      */
@@ -135,7 +131,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -144,7 +140,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the CertificateImportParameters object itself.
      */
@@ -153,9 +149,6 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,10 +162,10 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Reads an instance of CertificateImportParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateImportParameters if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CertificateImportParameters.
      */

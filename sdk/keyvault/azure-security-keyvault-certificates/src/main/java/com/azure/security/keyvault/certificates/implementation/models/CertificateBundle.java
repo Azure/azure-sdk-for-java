@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * A certificate bundle consists of a certificate (X509) plus its attributes.
- */
+/** A certificate bundle consists of a certificate (X509) plus its attributes. */
 @Fluent
 public class CertificateBundle implements JsonSerializable<CertificateBundle> {
     /*
@@ -64,15 +62,13 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
      */
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of CertificateBundle class.
-     */
+    /** Creates an instance of CertificateBundle class. */
     public CertificateBundle() {
     }
 
     /**
      * Get the id property: The certificate id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -81,7 +77,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the id property: The certificate id.
-     * 
+     *
      * @param id the id value to set.
      * @return the CertificateBundle object itself.
      */
@@ -92,7 +88,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the kid property: The key id.
-     * 
+     *
      * @return the kid value.
      */
     public String getKid() {
@@ -101,7 +97,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the kid property: The key id.
-     * 
+     *
      * @param kid the kid value to set.
      * @return the CertificateBundle object itself.
      */
@@ -112,7 +108,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the sid property: The secret id.
-     * 
+     *
      * @return the sid value.
      */
     public String getSid() {
@@ -121,7 +117,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the sid property: The secret id.
-     * 
+     *
      * @param sid the sid value to set.
      * @return the CertificateBundle object itself.
      */
@@ -132,7 +128,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the x509Thumbprint property: Thumbprint of the certificate.
-     * 
+     *
      * @return the x509Thumbprint value.
      */
     public byte[] getX509Thumbprint() {
@@ -144,22 +140,18 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the x509Thumbprint property: Thumbprint of the certificate.
-     * 
+     *
      * @param x509Thumbprint the x509Thumbprint value to set.
      * @return the CertificateBundle object itself.
      */
-    CertificateBundle setX509Thumbprint(byte[] x509Thumbprint) {
-        if (x509Thumbprint == null) {
-            this.x509Thumbprint = null;
-        } else {
-            this.x509Thumbprint = Base64Url.encode(CoreUtils.clone(x509Thumbprint));
-        }
+    CertificateBundle setX509Thumbprint(Base64Url x509Thumbprint) {
+        this.x509Thumbprint = x509Thumbprint;
         return this;
     }
 
     /**
      * Get the policy property: The management policy.
-     * 
+     *
      * @return the policy value.
      */
     public CertificatePolicy getPolicy() {
@@ -168,7 +160,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the policy property: The management policy.
-     * 
+     *
      * @param policy the policy value to set.
      * @return the CertificateBundle object itself.
      */
@@ -179,7 +171,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the cer property: CER contents of x509 certificate.
-     * 
+     *
      * @return the cer value.
      */
     public byte[] getCer() {
@@ -188,7 +180,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the cer property: CER contents of x509 certificate.
-     * 
+     *
      * @param cer the cer value to set.
      * @return the CertificateBundle object itself.
      */
@@ -200,7 +192,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
     /**
      * Get the contentType property: The content type of the secret. eg. 'application/x-pem-file' or
      * 'application/x-pkcs12',.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -210,7 +202,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
     /**
      * Set the contentType property: The content type of the secret. eg. 'application/x-pem-file' or
      * 'application/x-pkcs12',.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the CertificateBundle object itself.
      */
@@ -221,7 +213,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the attributes property: The certificate attributes.
-     * 
+     *
      * @return the attributes value.
      */
     public CertificateAttributes getAttributes() {
@@ -230,7 +222,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the attributes property: The certificate attributes.
-     * 
+     *
      * @param attributes the attributes value to set.
      * @return the CertificateBundle object itself.
      */
@@ -241,7 +233,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -250,7 +242,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the CertificateBundle object itself.
      */
@@ -259,9 +251,6 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -274,10 +263,10 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
 
     /**
      * Reads an instance of CertificateBundle from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateBundle if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateBundle.
      */
     public static CertificateBundle fromJson(JsonReader jsonReader) throws IOException {

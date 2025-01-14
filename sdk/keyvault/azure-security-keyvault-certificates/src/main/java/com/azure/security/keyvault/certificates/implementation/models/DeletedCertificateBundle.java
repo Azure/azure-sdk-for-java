@@ -36,41 +36,14 @@ public final class DeletedCertificateBundle extends CertificateBundle {
      */
     private Long deletedDate;
 
-    /*
-     * The management policy.
-     */
-    private CertificatePolicy policy;
-
-    /*
-     * Thumbprint of the certificate.
-     */
-    private Base64Url x509Thumbprint;
-
-    /*
-     * The secret id.
-     */
-    private String sid;
-
-    /*
-     * The key id.
-     */
-    private String kid;
-
-    /*
-     * The certificate id.
-     */
-    private String id;
-
-    /**
-     * Creates an instance of DeletedCertificateBundle class.
-     */
+    /** Creates an instance of DeletedCertificateBundle class. */
     public DeletedCertificateBundle() {
     }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     * 
+     *
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -80,7 +53,7 @@ public final class DeletedCertificateBundle extends CertificateBundle {
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     * 
+     *
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedCertificateBundle object itself.
      */
@@ -91,7 +64,7 @@ public final class DeletedCertificateBundle extends CertificateBundle {
 
     /**
      * Get the scheduledPurgeDate property: The time when the certificate is scheduled to be purged, in UTC.
-     * 
+     *
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -103,7 +76,7 @@ public final class DeletedCertificateBundle extends CertificateBundle {
 
     /**
      * Get the deletedDate property: The time when the certificate was deleted, in UTC.
-     * 
+     *
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -113,98 +86,34 @@ public final class DeletedCertificateBundle extends CertificateBundle {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /**
-     * Get the policy property: The management policy.
-     * 
-     * @return the policy value.
-     */
-    @Override
-    public CertificatePolicy getPolicy() {
-        return this.policy;
-    }
-
-    /**
-     * Get the x509Thumbprint property: Thumbprint of the certificate.
-     * 
-     * @return the x509Thumbprint value.
-     */
-    @Override
-    public byte[] getX509Thumbprint() {
-        if (this.x509Thumbprint == null) {
-            return null;
-        }
-        return this.x509Thumbprint.decodedBytes();
-    }
-
-    /**
-     * Get the sid property: The secret id.
-     * 
-     * @return the sid value.
-     */
-    @Override
-    public String getSid() {
-        return this.sid;
-    }
-
-    /**
-     * Get the kid property: The key id.
-     * 
-     * @return the kid value.
-     */
-    @Override
-    public String getKid() {
-        return this.kid;
-    }
-
-    /**
-     * Get the id property: The certificate id.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateBundle setCer(byte[] cer) {
         super.setCer(cer);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateBundle setContentType(String contentType) {
         super.setContentType(contentType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateBundle setAttributes(CertificateAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateBundle setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -218,10 +127,10 @@ public final class DeletedCertificateBundle extends CertificateBundle {
 
     /**
      * Reads an instance of DeletedCertificateBundle from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedCertificateBundle if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedCertificateBundle.
      */
     public static DeletedCertificateBundle fromJson(JsonReader jsonReader) throws IOException {
@@ -232,16 +141,16 @@ public final class DeletedCertificateBundle extends CertificateBundle {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedDeletedCertificateBundle.id = reader.getString();
+                    deserializedDeletedCertificateBundle.setId(reader.getString());
                 } else if ("kid".equals(fieldName)) {
-                    deserializedDeletedCertificateBundle.kid = reader.getString();
+                    deserializedDeletedCertificateBundle.setKid(reader.getString());
                 } else if ("sid".equals(fieldName)) {
-                    deserializedDeletedCertificateBundle.sid = reader.getString();
+                    deserializedDeletedCertificateBundle.setSid(reader.getString());
                 } else if ("x5t".equals(fieldName)) {
-                    deserializedDeletedCertificateBundle.x509Thumbprint
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    deserializedDeletedCertificateBundle.setX509Thumbprint(
+                        reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString())));
                 } else if ("policy".equals(fieldName)) {
-                    deserializedDeletedCertificateBundle.policy = CertificatePolicy.fromJson(reader);
+                    deserializedDeletedCertificateBundle.setPolicy(CertificatePolicy.fromJson(reader));
                 } else if ("cer".equals(fieldName)) {
                     deserializedDeletedCertificateBundle.setCer(reader.getBinary());
                 } else if ("contentType".equals(fieldName)) {

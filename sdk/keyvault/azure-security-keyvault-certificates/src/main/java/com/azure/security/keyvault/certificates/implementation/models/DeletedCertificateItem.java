@@ -9,16 +9,14 @@ import com.azure.core.util.Base64Url;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * The deleted certificate item containing metadata about the deleted certificate.
- */
+/** The deleted certificate item containing metadata about the deleted certificate. */
 @Fluent
 public final class DeletedCertificateItem extends CertificateItem {
     /*
@@ -36,9 +34,7 @@ public final class DeletedCertificateItem extends CertificateItem {
      */
     private Long deletedDate;
 
-    /**
-     * Creates an instance of DeletedCertificateItem class.
-     */
+    /** Creates an instance of DeletedCertificateItem class. */
     public DeletedCertificateItem() {
     }
 
@@ -88,58 +84,44 @@ public final class DeletedCertificateItem extends CertificateItem {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateItem setAttributes(CertificateAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateItem setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DeletedCertificateItem setX509Thumbprint(byte[] x509Thumbprint) {
         super.setX509Thumbprint(x509Thumbprint);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeJsonField("attributes", getAttributes());
-        jsonWriter.writeMapField("tags", getTags(), JsonWriter::writeString);
-
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         if (getX509Thumbprint() != null) {
-            jsonWriter.writeStringField("x5t", Base64Url.encode(getX509Thumbprint()).toString());
+            jsonWriter.writeStringField("x5t", Objects.toString(Base64Url.encode(getX509Thumbprint()), null));
         }
-
         jsonWriter.writeStringField("recoveryId", this.recoveryId);
-
         return jsonWriter.writeEndObject();
     }
 
@@ -148,7 +130,7 @@ public final class DeletedCertificateItem extends CertificateItem {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedCertificateItem if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedCertificateItem.
      */
     public static DeletedCertificateItem fromJson(JsonReader jsonReader) throws IOException {
@@ -166,10 +148,10 @@ public final class DeletedCertificateItem extends CertificateItem {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDeletedCertificateItem.setTags(tags);
                 } else if ("x5t".equals(fieldName)) {
-                    Base64Url x509ThumbprintHolder
+                    Base64Url x509Thumbprint
                         = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                    if (x509ThumbprintHolder != null) {
-                        deserializedDeletedCertificateItem.setX509Thumbprint(x509ThumbprintHolder.decodedBytes());
+                    if (x509Thumbprint != null) {
+                        deserializedDeletedCertificateItem.setX509Thumbprint(x509Thumbprint.decodedBytes());
                     }
                 } else if ("recoveryId".equals(fieldName)) {
                     deserializedDeletedCertificateItem.recoveryId = reader.getString();

@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * A condition to be satisfied for an action to be executed.
- */
+/** A condition to be satisfied for an action to be executed. */
 @Fluent
 public final class Trigger implements JsonSerializable<Trigger> {
     /*
@@ -27,16 +25,14 @@ public final class Trigger implements JsonSerializable<Trigger> {
      */
     private Integer daysBeforeExpiry;
 
-    /**
-     * Creates an instance of Trigger class.
-     */
+    /** Creates an instance of Trigger class. */
     public Trigger() {
     }
 
     /**
      * Get the lifetimePercentage property: Percentage of lifetime at which to trigger. Value should be between 1 and
      * 99.
-     * 
+     *
      * @return the lifetimePercentage value.
      */
     public Integer getLifetimePercentage() {
@@ -46,7 +42,7 @@ public final class Trigger implements JsonSerializable<Trigger> {
     /**
      * Set the lifetimePercentage property: Percentage of lifetime at which to trigger. Value should be between 1 and
      * 99.
-     * 
+     *
      * @param lifetimePercentage the lifetimePercentage value to set.
      * @return the Trigger object itself.
      */
@@ -59,7 +55,7 @@ public final class Trigger implements JsonSerializable<Trigger> {
      * Get the daysBeforeExpiry property: Days before expiry to attempt renewal. Value should be between 1 and
      * validity_in_months multiplied by 27. If validity_in_months is 36, then value should be between 1 and 972 (36 *
      * 27).
-     * 
+     *
      * @return the daysBeforeExpiry value.
      */
     public Integer getDaysBeforeExpiry() {
@@ -70,7 +66,7 @@ public final class Trigger implements JsonSerializable<Trigger> {
      * Set the daysBeforeExpiry property: Days before expiry to attempt renewal. Value should be between 1 and
      * validity_in_months multiplied by 27. If validity_in_months is 36, then value should be between 1 and 972 (36 *
      * 27).
-     * 
+     *
      * @param daysBeforeExpiry the daysBeforeExpiry value to set.
      * @return the Trigger object itself.
      */
@@ -79,9 +75,6 @@ public final class Trigger implements JsonSerializable<Trigger> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,10 +85,10 @@ public final class Trigger implements JsonSerializable<Trigger> {
 
     /**
      * Reads an instance of Trigger from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Trigger if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     *     JSON null.
      * @throws IOException If an error occurs while reading the Trigger.
      */
     public static Trigger fromJson(JsonReader jsonReader) throws IOException {
