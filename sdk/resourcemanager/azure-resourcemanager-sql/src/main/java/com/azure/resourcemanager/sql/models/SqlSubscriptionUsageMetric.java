@@ -14,18 +14,38 @@ import com.azure.resourcemanager.sql.fluent.models.SubscriptionUsageInner;
 public interface SqlSubscriptionUsageMetric
     extends Refreshable<SqlSubscriptionUsageMetric>, HasId, HasName, HasInnerModel<SubscriptionUsageInner> {
 
-    /** @return a user-readable name of the metric */
+    /**
+     * Gets a user-readable name of the metric.
+     *
+     * @return a user-readable name of the metric
+     */
     String displayName();
 
-    /** @return the current value of the metric */
+    /**
+     * Gets the current value of the metric.
+     *
+     * @return the current value of the metric
+     */
     double currentValue();
 
-    /** @return the boundary value of the metric */
+    /**
+     * Gets the boundary value of the metric.
+     *
+     * @return the boundary value of the metric
+     */
     double limit();
 
-    /** @return the unit of the metric */
+    /**
+     * Gets the unit of the metric.
+     *
+     * @return the unit of the metric
+     */
     String unit();
 
-    /** @return the resource type */
+    /**
+     * Gets the resource type.
+     *
+     * @return the resource type
+     */
     String type();
 }

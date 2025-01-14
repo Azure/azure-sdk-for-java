@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>optional-dependency-tests</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Java Core library tests for optional dependencies and features.</name>
   <description>Tests that validate optional dependencies and features of the Core library.</description>
@@ -56,21 +56,21 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.16</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.16</version> <!-- {x-version-update;clientcore_dep_tests_org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

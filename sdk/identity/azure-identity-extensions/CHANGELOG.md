@@ -2,6 +2,9 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
+#### Features Added
+- Support cache for token credential object. [#39393](https://github.com/Azure/azure-sdk-for-java/issues/39393).
+
 #### Bugs Fixed
 - Fix the issue where the token acquisition timeout is not set via the property `azure.accessTokenTimeoutInSeconds`. [#43512](https://github.com/Azure/azure-sdk-for-java/issues/43512).
 

@@ -163,7 +163,15 @@ public class PartitionScopeThresholds {
         return this.targetMicroBatchSize.get();
     }
 
-    private static class CurrentIntervalThresholds {
+    public CurrentIntervalThresholds getCurrentThresholds() {
+        return this.currentThresholds.get();
+    }
+
+    public long getTotalOperationCountSnapshot() {
+        return this.totalOperationCount.longValue();
+    }
+
+    static class CurrentIntervalThresholds {
         public final AtomicLong currentOperationCount = new AtomicLong(0);
         public final AtomicLong currentRetriedOperationCount = new AtomicLong(0);
     }
