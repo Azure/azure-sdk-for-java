@@ -47,8 +47,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAU
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
-        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME
+        = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
     private static final Symbol GEO_REPLICATION = Symbol.valueOf(VENDOR + ":georeplication");
 
     private static final String DEFAULT_REPLICATION_SEGMENT_STRING = String.valueOf(DEFAULT_REPLICATION_SEGMENT);
@@ -116,9 +116,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         // Regardless of whether they are tracking event properties, want to advertise geo-replication support.
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME, GEO_REPLICATION}
-            : new Symbol[]{GEO_REPLICATION};
- 
+            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME, GEO_REPLICATION }
+            : new Symbol[] { GEO_REPLICATION };
+
         final ConsumerFactory consumerFactory;
         if (isV2) {
             consumerFactory = new ConsumerFactory(DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false);
@@ -146,11 +146,13 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
                 : DEFAULT_REPLICATION_SEGMENT_STRING;
             final String position = replicationSegment + ":" + eventPosition.getSequenceNumber();
 
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                position);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, position);
+        }
+
+        if (eventPosition.getOffsetString() != null) {
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, eventPosition.getOffsetString());
         }
 
         if (eventPosition.getOffset() != null) {
