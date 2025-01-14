@@ -98,10 +98,6 @@ final class SynchronousReceiver {
      * @return the subscriber to channel synchronous receive requests to the upstream.
      */
     private WindowedSubscriber<ServiceBusReceivedMessage> subscribeOnce() {
-        if (!asyncClient.isV2()) {
-            throw logger
-                .logExceptionAsError(new UnsupportedOperationException("SynchronousReceiver requires v2 mode."));
-        }
         final WindowedSubscriber<ServiceBusReceivedMessage> s = createSubscriber();
         if (subscriber.compareAndSet(null, s)) {
             // In case of concurrent invocation, the 's' created by the thread which lost the CAS race is eligible for GC.

@@ -5,12 +5,14 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.implementation.CreditFlowMode;
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -29,7 +32,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -45,15 +47,15 @@ class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(20);
+    private static final ServiceBusReceiverInstrumentation INSTRUMENTATION
+        = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "entityPath", null, ReceiverKind.PROCESSOR);
 
     private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
     private final Flux<ServiceBusReceiveLink> linkFlux = linkPublisher.flux();
     private final TestPublisher<Message> messagePublisher = TestPublisher.create();
-    private final Flux<Message> messageFlux = messagePublisher.flux();
     private final TestPublisher<AmqpEndpointState> endpointPublisher = TestPublisher.create();
     private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
-
-    private ServiceBusReceiveLinkProcessor linkProcessor;
+    private MessageFlux messageFlux;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -71,10 +73,11 @@ class ServiceBusAsyncConsumerTest {
         MockitoAnnotations.initMocks(this);
 
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
-        when(link.receive()).thenReturn(messageFlux);
+        when(link.receive()).thenReturn(messagePublisher.flux().publishOn(Schedulers.boundedElastic()));
         when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(link.closeAsync()).thenReturn(Mono.empty());
 
-        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
+        messageFlux = new MessageFlux(linkFlux, 0, CreditFlowMode.RequestDriven, retryPolicy);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -86,7 +89,6 @@ class ServiceBusAsyncConsumerTest {
 
         Mockito.framework().clearInlineMock(this);
 
-        linkProcessor.dispose();
         linkPublisher.complete();
         endpointPublisher.complete();
         messagePublisher.complete();
@@ -98,14 +100,9 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void receiveNoAutoComplete() {
         // Arrange
-        final int prefetch = 10;
-        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
-            prefetch, maxAutoLockRenewDuration, false, "sessionId");
-
         final ServiceBusAsyncConsumer consumer
-            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
+            = new ServiceBusAsyncConsumer(LINK_NAME, messageFlux, serializer, INSTRUMENTATION);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -143,15 +140,11 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void canDispose() {
         // Arrange
-        final int prefetch = 10;
-        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
-            prefetch, maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer
-            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
+            = new ServiceBusAsyncConsumer(LINK_NAME, messageFlux, serializer, INSTRUMENTATION);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -179,15 +172,11 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void onError() {
         // Arrange
-        final int prefetch = 10;
-        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
-            prefetch, maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer
-            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
+            = new ServiceBusAsyncConsumer(LINK_NAME, messageFlux, serializer, INSTRUMENTATION);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
