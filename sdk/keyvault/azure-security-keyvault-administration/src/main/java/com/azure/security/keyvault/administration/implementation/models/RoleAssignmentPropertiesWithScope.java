@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Role assignment properties with scope.
@@ -98,13 +99,10 @@ public final class RoleAssignmentPropertiesWithScope implements JsonSerializable
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        jsonWriter.writeStringField("scope", Objects.toString(this.scope, null));
         jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
         jsonWriter.writeStringField("principalId", this.principalId);
         return jsonWriter.writeEndObject();

@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Role definition create parameters.
@@ -39,9 +41,6 @@ public final class RoleDefinitionCreateParameters implements JsonSerializable<Ro
         return this.properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -74,9 +73,18 @@ public final class RoleDefinitionCreateParameters implements JsonSerializable<Ro
                 }
             }
             if (propertiesFound) {
-                return new RoleDefinitionCreateParameters(properties);
+                RoleDefinitionCreateParameters deserializedRoleDefinitionCreateParameters
+                    = new RoleDefinitionCreateParameters(properties);
+
+                return deserializedRoleDefinitionCreateParameters;
             }
-            throw new IllegalStateException("Missing required property: properties");
+            List<String> missingProperties = new ArrayList<>();
+            if (!propertiesFound) {
+                missingProperties.add("properties");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
         });
     }
 }

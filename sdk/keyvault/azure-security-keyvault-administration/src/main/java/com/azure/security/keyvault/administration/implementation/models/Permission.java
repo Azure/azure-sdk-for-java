@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Role definition permissions.
@@ -109,8 +110,8 @@ public final class Permission implements JsonSerializable<Permission> {
     }
 
     /**
-     * Get the notDataActions property: Data action permissions that are excluded but not denied. They may be granted by
-     * other role definitions assigned to a principal.
+     * Get the notDataActions property: Data action permissions that are excluded but not denied. They may be granted
+     * by other role definitions assigned to a principal.
      * 
      * @return the notDataActions value.
      */
@@ -119,8 +120,8 @@ public final class Permission implements JsonSerializable<Permission> {
     }
 
     /**
-     * Set the notDataActions property: Data action permissions that are excluded but not denied. They may be granted by
-     * other role definitions assigned to a principal.
+     * Set the notDataActions property: Data action permissions that are excluded but not denied. They may be granted
+     * by other role definitions assigned to a principal.
      * 
      * @param notDataActions the notDataActions value to set.
      * @return the Permission object itself.
@@ -130,18 +131,15 @@ public final class Permission implements JsonSerializable<Permission> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("notActions", this.notActions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dataActions", this.dataActions,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeArrayField("notDataActions", this.notDataActions,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         return jsonWriter.writeEndObject();
     }
 

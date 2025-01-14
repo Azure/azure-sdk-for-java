@@ -1,17 +1,5 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
-
-### Features Added
-- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-
 ## 4.6.1 (2024-12-04)
 
 ### Other Changes
@@ -20,6 +8,7 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
 
 ## 4.6.0 (2024-10-15)
 
