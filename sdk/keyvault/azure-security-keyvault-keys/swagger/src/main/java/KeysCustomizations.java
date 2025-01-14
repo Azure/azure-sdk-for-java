@@ -18,22 +18,19 @@ public class KeysCustomizations extends Customization {
     }
 
     private static void modelsCustomizations(PackageCustomization models) {
-        models.getClass("KeyCurveName").customizeAst(ast -> ast.getClassByName("KeyCurveName").ifPresent(clazz -> {
-            clazz.getFieldByName("P256K").ifPresent(field -> field.getVariable(0).setName("P_256K"));
-            clazz.getFieldByName("P256").ifPresent(field -> field.getVariable(0).setName("P_256"));
-            clazz.getFieldByName("P384").ifPresent(field -> field.getVariable(0).setName("P_384"));
-            clazz.getFieldByName("P521").ifPresent(field -> field.getVariable(0).setName("P_521"));
-        }));
+        ClassCustomization keyCurveName = models.getClass("KeyCurveName");
+        keyCurveName.renameEnumMember("P256K", "P_256K");
+        keyCurveName.renameEnumMember("P256", "P_256");
+        keyCurveName.renameEnumMember("P384", "P_384");
+        keyCurveName.renameEnumMember("P521", "P_521");
 
-        models.getClass("KeyType").customizeAst(ast -> ast.getClassByName("KeyType").ifPresent(clazz -> {
-            clazz.getFieldByName("ECHSM").ifPresent(field -> field.getVariable(0).setName("EC_HSM"));
-            clazz.getFieldByName("RSAHSM").ifPresent(field -> field.getVariable(0).setName("RSA_HSM"));
-        }));
+        ClassCustomization keyType = models.getClass("KeyType");
+        keyType.renameEnumMember("ECHSM", "EC_HSM");
+        keyType.renameEnumMember("RSAHSM", "RSA_HSM");
 
-        models.getClass("KeyExportEncryptionAlgorithm").customizeAst(ast -> ast.getClassByName("KeyExportEncryptionAlgorithm").ifPresent(clazz -> {
-            clazz.getFieldByName("CKMRSAAESKEYWRAP").ifPresent(field -> field.getVariable(0).setName("CKM_RSA_AES_KEY_WRAP"));
-            clazz.getFieldByName("RSAAESKEYWRAP256").ifPresent(field -> field.getVariable(0).setName("RSA_AES_KEY_WRAP_256"));
-            clazz.getFieldByName("RSAAESKEYWRAP384").ifPresent(field -> field.getVariable(0).setName("RSA_AES_KEY_WRAP_384"));
-        }));
+        ClassCustomization keyExportEncryptionAlgorithm = models.getClass("KeyExportEncryptionAlgorithm");
+        keyExportEncryptionAlgorithm.renameEnumMember("CKMRSAAESKEYWRAP", "CKM_RSA_AES_KEY_WRAP");
+        keyExportEncryptionAlgorithm.renameEnumMember("RSAAESKEYWRAP256", "RSA_AES_KEY_WRAP_256");
+        keyExportEncryptionAlgorithm.renameEnumMember("RSAAESKEYWRAP384", "RSA_AES_KEY_WRAP_384");
     }
 }

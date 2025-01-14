@@ -69,51 +69,41 @@ import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the KeyClient type.
- */
+/** Initializes a new instance of the KeyClient type. */
 public final class KeyClientImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final KeyClientService service;
 
-    /**
-     * Api Version.
-     */
+    /** Api Version. */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
+    /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The serializer to serialize an object into a string.
-     */
+    /** The serializer to serialize an object into a string. */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -122,7 +112,7 @@ public final class KeyClientImpl {
 
     /**
      * Initializes an instance of KeyClient client.
-     * 
+     *
      * @param apiVersion Api Version.
      */
     public KeyClientImpl(String apiVersion) {
@@ -132,7 +122,7 @@ public final class KeyClientImpl {
 
     /**
      * Initializes an instance of KeyClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
@@ -142,7 +132,7 @@ public final class KeyClientImpl {
 
     /**
      * Initializes an instance of KeyClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
@@ -154,9 +144,7 @@ public final class KeyClientImpl {
         this.service = RestProxy.create(KeyClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
-    /**
-     * The interface defining all the services for KeyClient to be used by the proxy service to perform REST calls.
-     */
+    /** The interface defining all the services for KeyClient to be used by the proxy service to perform REST calls. */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyClient")
     public interface KeyClientService {
@@ -573,19 +561,19 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -594,31 +582,41 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> createKeyWithResponseAsync(String vaultBaseUrl, String keyName, KeyType kty,
         Integer keySize, Integer publicExponent, List<KeyOperation> keyOps, KeyAttributes keyAttributes,
         Map<String, String> tags, KeyCurveName crv, KeyReleasePolicy releasePolicy) {
-        return FluxUtil.withContext(context -> createKeyWithResponseAsync(vaultBaseUrl, keyName, kty, keySize,
-            publicExponent, keyOps, keyAttributes, tags, crv, releasePolicy, context));
+        final String accept = "application/json";
+        KeyCreateParameters parameters = new KeyCreateParameters();
+        parameters.setKty(kty);
+        parameters.setKeySize(keySize);
+        parameters.setPublicExponent(publicExponent);
+        parameters.setKeyOps(keyOps);
+        parameters.setKeyAttributes(keyAttributes);
+        parameters.setTags(tags);
+        parameters.setCrv(crv);
+        parameters.setReleasePolicy(releasePolicy);
+        return FluxUtil.withContext(
+            context -> service.createKey(vaultBaseUrl, keyName, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -628,7 +626,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> createKeyWithResponseAsync(String vaultBaseUrl, String keyName, KeyType kty,
@@ -649,19 +647,19 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -681,19 +679,19 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -714,19 +712,19 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -756,19 +754,19 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
+     *
+     * <p>The create key operation can be used to create any key type in Azure Key Vault. If the named key already
+     * exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     *     provide may be copied globally for the purpose of running the service. The value provided should not include
+     *     personally identifiable or sensitive information.
      * @param kty JsonWebKey Key Type (kty), as defined in
-     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps The keyOps parameter.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param crv Elliptic curve name.
@@ -788,27 +786,29 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> rotateKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> rotateKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.rotateKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @param context The context to associate with this operation.
@@ -816,7 +816,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> rotateKeyWithResponseAsync(String vaultBaseUrl, String keyName, Context context) {
@@ -826,9 +826,9 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,9 +843,9 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @param context The context to associate with this operation.
@@ -862,9 +862,9 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @param context The context to associate with this operation.
@@ -881,9 +881,9 @@ public final class KeyClientImpl {
 
     /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
+     *
+     * <p>The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -898,13 +898,13 @@ public final class KeyClientImpl {
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -914,24 +914,31 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> importKeyWithResponseAsync(String vaultBaseUrl, String keyName, JsonWebKey key,
         Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags, KeyReleasePolicy releasePolicy) {
-        return FluxUtil.withContext(context -> importKeyWithResponseAsync(vaultBaseUrl, keyName, key, hsm,
-            keyAttributes, tags, releasePolicy, context));
+        final String accept = "application/json";
+        KeyImportParameters parameters = new KeyImportParameters();
+        parameters.setHsm(hsm);
+        parameters.setKey(key);
+        parameters.setKeyAttributes(keyAttributes);
+        parameters.setTags(tags);
+        parameters.setReleasePolicy(releasePolicy);
+        return FluxUtil.withContext(
+            context -> service.importKey(vaultBaseUrl, keyName, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -942,7 +949,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> importKeyWithResponseAsync(String vaultBaseUrl, String keyName, JsonWebKey key,
@@ -960,13 +967,13 @@ public final class KeyClientImpl {
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -986,13 +993,13 @@ public final class KeyClientImpl {
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -1013,13 +1020,13 @@ public final class KeyClientImpl {
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -1046,13 +1053,13 @@ public final class KeyClientImpl {
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
+     *
+     * <p>The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
      * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
+     *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param key The Json web key.
      * @param hsm Whether to import as a hardware key (HSM) or software key.
      * @param keyAttributes The key management attributes.
@@ -1072,39 +1079,41 @@ public final class KeyClientImpl {
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKeyBundle>> deleteKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> deleteKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKeyBundle>> deleteKeyWithResponseAsync(String vaultBaseUrl, String keyName,
@@ -1115,18 +1124,18 @@ public final class KeyClientImpl {
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName) {
@@ -1135,11 +1144,11 @@ public final class KeyClientImpl {
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @param context The context to associate with this operation.
@@ -1147,7 +1156,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, Context context) {
@@ -1157,19 +1166,19 @@ public final class KeyClientImpl {
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKeyBundle> deleteKeyWithResponse(String vaultBaseUrl, String keyName, Context context) {
@@ -1179,11 +1188,11 @@ public final class KeyClientImpl {
 
     /**
      * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
+     *
+     * <p>The delete key operation cannot be used to remove individual versions of a key. This operation removes the
      * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,10 +1208,10 @@ public final class KeyClientImpl {
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1214,23 +1223,29 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> updateKeyWithResponseAsync(String vaultBaseUrl, String keyName, String keyVersion,
         List<KeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags,
         KeyReleasePolicy releasePolicy) {
-        return FluxUtil.withContext(context -> updateKeyWithResponseAsync(vaultBaseUrl, keyName, keyVersion, keyOps,
-            keyAttributes, tags, releasePolicy, context));
+        final String accept = "application/json";
+        KeyUpdateParameters parameters = new KeyUpdateParameters();
+        parameters.setKeyOps(keyOps);
+        parameters.setKeyAttributes(keyAttributes);
+        parameters.setTags(tags);
+        parameters.setReleasePolicy(releasePolicy);
+        return FluxUtil.withContext(context -> service.updateKey(vaultBaseUrl, keyName, keyVersion,
+            this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1243,7 +1258,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> updateKeyWithResponseAsync(String vaultBaseUrl, String keyName, String keyVersion,
@@ -1261,10 +1276,10 @@ public final class KeyClientImpl {
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1288,10 +1303,10 @@ public final class KeyClientImpl {
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1316,10 +1331,10 @@ public final class KeyClientImpl {
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1350,10 +1365,10 @@ public final class KeyClientImpl {
     /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
+     *
+     * <p>In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic
+     * material of a key itself cannot be changed. This operation requires the keys/update permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
@@ -1375,41 +1390,43 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> getKeyWithResponseAsync(String vaultBaseUrl, String keyName, String keyVersion) {
-        return FluxUtil.withContext(context -> getKeyWithResponseAsync(vaultBaseUrl, keyName, keyVersion, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getKey(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(), accept, context));
     }
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> getKeyWithResponseAsync(String vaultBaseUrl, String keyName, String keyVersion,
@@ -1420,14 +1437,14 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1441,14 +1458,14 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1463,14 +1480,14 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1486,14 +1503,14 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
+     *
+     * <p>The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
+     * is released in the response. This operation requires the keys/get permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
+     *     optional. If not specified, the latest version of the key is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1506,14 +1523,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1531,14 +1548,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1556,14 +1573,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1577,14 +1594,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1600,14 +1617,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1624,14 +1641,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1650,14 +1667,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1671,14 +1688,14 @@ public final class KeyClientImpl {
 
     /**
      * Retrieves a list of individual key versions with the same key name.
-     * 
-     * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
-     * permission.
-     * 
+     *
+     * <p>The full key identifier, attributes, and tags are provided in the response. This operation requires the
+     * keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1694,15 +1711,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1719,15 +1736,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1745,15 +1762,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1767,15 +1784,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1790,15 +1807,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1815,15 +1832,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1841,15 +1858,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1863,15 +1880,15 @@ public final class KeyClientImpl {
 
     /**
      * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     * stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes,
+     * and tags are provided in the response. Individual versions of a key are not listed in the response. This
+     * operation requires the keys/list permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1886,8 +1903,8 @@ public final class KeyClientImpl {
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -1896,24 +1913,26 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup key result, containing the backup blob along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupKeyResult>> backupKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> backupKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.backupKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -1922,7 +1941,7 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -1930,7 +1949,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup key result, containing the backup blob along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupKeyResult>> backupKeyWithResponseAsync(String vaultBaseUrl, String keyName,
@@ -1941,8 +1960,8 @@ public final class KeyClientImpl {
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -1951,7 +1970,7 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1966,8 +1985,8 @@ public final class KeyClientImpl {
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -1976,7 +1995,7 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -1993,8 +2012,8 @@ public final class KeyClientImpl {
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -2003,7 +2022,7 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -2020,8 +2039,8 @@ public final class KeyClientImpl {
 
     /**
      * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
+     *
+     * <p>The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
      * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
      * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
      * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
@@ -2030,7 +2049,7 @@ public final class KeyClientImpl {
      * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
      * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
      * area. This operation requires the key/backup permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2045,8 +2064,8 @@ public final class KeyClientImpl {
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2055,24 +2074,28 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> restoreKeyWithResponseAsync(String vaultBaseUrl, byte[] keyBundleBackup) {
-        return FluxUtil.withContext(context -> restoreKeyWithResponseAsync(vaultBaseUrl, keyBundleBackup, context));
+        final String accept = "application/json";
+        KeyRestoreParameters parameters = new KeyRestoreParameters();
+        parameters.setKeyBundleBackup(keyBundleBackup);
+        return FluxUtil.withContext(
+            context -> service.restoreKey(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2081,7 +2104,7 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @param context The context to associate with this operation.
@@ -2089,7 +2112,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> restoreKeyWithResponseAsync(String vaultBaseUrl, byte[] keyBundleBackup,
@@ -2102,8 +2125,8 @@ public final class KeyClientImpl {
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2112,7 +2135,7 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2128,8 +2151,8 @@ public final class KeyClientImpl {
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2138,7 +2161,7 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @param context The context to associate with this operation.
@@ -2155,8 +2178,8 @@ public final class KeyClientImpl {
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2165,7 +2188,7 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @param context The context to associate with this operation.
@@ -2184,8 +2207,8 @@ public final class KeyClientImpl {
 
     /**
      * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
+     *
+     * <p>Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
      * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
      * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
      * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
@@ -2194,7 +2217,7 @@ public final class KeyClientImpl {
      * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
      * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
      * operation requires the keys/restore permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyBundleBackup The backup blob associated with a key bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2209,15 +2232,15 @@ public final class KeyClientImpl {
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2234,21 +2257,28 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyOperationResult>> encryptWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, byte[] iv, byte[] aad, byte[] tag) {
-        return FluxUtil.withContext(context -> encryptWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm,
-            value, iv, aad, tag, context));
+        final String accept = "application/json";
+        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setValue(value);
+        parameters.setIv(iv);
+        parameters.setAad(aad);
+        parameters.setTag(tag);
+        return FluxUtil.withContext(context -> service.encrypt(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2279,15 +2309,15 @@ public final class KeyClientImpl {
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2310,15 +2340,15 @@ public final class KeyClientImpl {
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2342,15 +2372,15 @@ public final class KeyClientImpl {
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2381,15 +2411,15 @@ public final class KeyClientImpl {
 
     /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
+     *
+     * <p>The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure
+     * Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent
+     * on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
      * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
      * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
      * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2412,15 +2442,15 @@ public final class KeyClientImpl {
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2437,21 +2467,28 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyOperationResult>> decryptWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, byte[] iv, byte[] aad, byte[] tag) {
-        return FluxUtil.withContext(context -> decryptWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm,
-            value, iv, aad, tag, context));
+        final String accept = "application/json";
+        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setValue(value);
+        parameters.setIv(iv);
+        parameters.setAad(aad);
+        parameters.setTag(tag);
+        return FluxUtil.withContext(context -> service.decrypt(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2482,15 +2519,15 @@ public final class KeyClientImpl {
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2513,15 +2550,15 @@ public final class KeyClientImpl {
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2545,15 +2582,15 @@ public final class KeyClientImpl {
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2584,15 +2621,15 @@ public final class KeyClientImpl {
 
     /**
      * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
+     *
+     * <p>The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
      * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
      * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
      * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2615,15 +2652,15 @@ public final class KeyClientImpl {
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2633,21 +2670,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyOperationResult>> signWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value) {
-        return FluxUtil.withContext(
-            context -> signWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value, context));
+        final String accept = "application/json";
+        KeySignParameters parameters = new KeySignParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setValue(value);
+        return FluxUtil.withContext(context -> service.sign(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2667,15 +2708,15 @@ public final class KeyClientImpl {
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2691,15 +2732,15 @@ public final class KeyClientImpl {
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2716,15 +2757,15 @@ public final class KeyClientImpl {
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2744,15 +2785,15 @@ public final class KeyClientImpl {
 
     /**
      * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
+     *
+     * <p>The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this
+     * operation uses the private portion of the key. This operation requires the keys/sign permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types,
-     * see JsonWebKeySignatureAlgorithm.
+     *     see JsonWebKeySignatureAlgorithm.
      * @param value The value parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2767,17 +2808,17 @@ public final class KeyClientImpl {
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2788,23 +2829,28 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVerifyResult>> verifyWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
-        return FluxUtil.withContext(context -> verifyWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm,
-            digest, signature, context));
+        final String accept = "application/json";
+        KeyVerifyParameters parameters = new KeyVerifyParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setDigest(digest);
+        parameters.setSignature(signature);
+        return FluxUtil.withContext(context -> service.verify(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @param context The context to associate with this operation.
@@ -2826,17 +2872,17 @@ public final class KeyClientImpl {
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2853,17 +2899,17 @@ public final class KeyClientImpl {
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @param context The context to associate with this operation.
@@ -2881,17 +2927,17 @@ public final class KeyClientImpl {
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @param context The context to associate with this operation.
@@ -2913,17 +2959,17 @@ public final class KeyClientImpl {
 
     /**
      * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
+     *
+     * <p>The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+     * necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the
+     * public portion of the key but this operation is supported as a convenience for callers that only have a
+     * key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see
-     * JsonWebKeySignatureAlgorithm.
+     *     JsonWebKeySignatureAlgorithm.
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2940,13 +2986,13 @@ public final class KeyClientImpl {
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -2963,19 +3009,26 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyOperationResult>> wrapKeyWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, byte[] iv, byte[] aad, byte[] tag) {
-        return FluxUtil.withContext(context -> wrapKeyWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm,
-            value, iv, aad, tag, context));
+        final String accept = "application/json";
+        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setValue(value);
+        parameters.setIv(iv);
+        parameters.setAad(aad);
+        parameters.setTag(tag);
+        return FluxUtil.withContext(context -> service.wrapKey(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3006,13 +3059,13 @@ public final class KeyClientImpl {
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3035,13 +3088,13 @@ public final class KeyClientImpl {
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3065,13 +3118,13 @@ public final class KeyClientImpl {
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3102,13 +3155,13 @@ public final class KeyClientImpl {
 
     /**
      * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
+     *
+     * <p>The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
      * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
      * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
      * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
      * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3131,12 +3184,12 @@ public final class KeyClientImpl {
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3153,18 +3206,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyOperationResult>> unwrapKeyWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, byte[] iv, byte[] aad, byte[] tag) {
-        return FluxUtil.withContext(context -> unwrapKeyWithResponseAsync(vaultBaseUrl, keyName, keyVersion, algorithm,
-            value, iv, aad, tag, context));
+        final String accept = "application/json";
+        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        parameters.setAlgorithm(algorithm);
+        parameters.setValue(value);
+        parameters.setIv(iv);
+        parameters.setAad(aad);
+        parameters.setTag(tag);
+        return FluxUtil.withContext(context -> service.unwrapKey(vaultBaseUrl, keyName, keyVersion,
+            this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3195,12 +3255,12 @@ public final class KeyClientImpl {
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3223,12 +3283,12 @@ public final class KeyClientImpl {
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3252,12 +3312,12 @@ public final class KeyClientImpl {
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3288,12 +3348,12 @@ public final class KeyClientImpl {
 
     /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
+     *
+     * <p>The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys
+     * stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+     * keys/unwrapKey permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
@@ -3316,10 +3376,10 @@ public final class KeyClientImpl {
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3330,21 +3390,26 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the release result, containing the released key along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReleaseKeyResult>> releaseWithResponseAsync(String vaultBaseUrl, String keyName,
         String keyVersion, String targetAttestationToken, String nonce, KeyExportEncryptionAlgorithm enc) {
-        return FluxUtil.withContext(context -> releaseWithResponseAsync(vaultBaseUrl, keyName, keyVersion,
-            targetAttestationToken, nonce, enc, context));
+        final String accept = "application/json";
+        KeyReleaseParameters parameters = new KeyReleaseParameters();
+        parameters.setTargetAttestationToken(targetAttestationToken);
+        parameters.setNonce(nonce);
+        parameters.setEnc(enc);
+        return FluxUtil.withContext(context -> service.release(vaultBaseUrl, keyName, keyVersion, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3356,7 +3421,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the release result, containing the released key along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReleaseKeyResult>> releaseWithResponseAsync(String vaultBaseUrl, String keyName,
@@ -3372,10 +3437,10 @@ public final class KeyClientImpl {
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3396,10 +3461,10 @@ public final class KeyClientImpl {
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3421,10 +3486,10 @@ public final class KeyClientImpl {
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3451,10 +3516,10 @@ public final class KeyClientImpl {
 
     /**
      * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
+     *
+     * <p>The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
@@ -3475,20 +3540,20 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedKeyItem>> getDeletedKeysSinglePageAsync(String vaultBaseUrl, Integer maxresults) {
@@ -3502,21 +3567,21 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedKeyItem>> getDeletedKeysSinglePageAsync(String vaultBaseUrl, Integer maxresults,
@@ -3529,15 +3594,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3551,15 +3616,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -3574,15 +3639,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3599,15 +3664,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -3626,15 +3691,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3648,15 +3713,15 @@ public final class KeyClientImpl {
 
     /**
      * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
+     *
+     * <p>Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
      * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
      * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
      * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     * 25 results.
+     *     25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -3671,39 +3736,41 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKeyBundle>> getDeletedKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> getDeletedKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getDeletedKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKeyBundle>> getDeletedKeyWithResponseAsync(String vaultBaseUrl, String keyName,
@@ -3714,18 +3781,18 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKeyBundle> getDeletedKeyAsync(String vaultBaseUrl, String keyName) {
@@ -3734,11 +3801,11 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -3746,7 +3813,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKeyBundle> getDeletedKeyAsync(String vaultBaseUrl, String keyName, Context context) {
@@ -3756,19 +3823,19 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with
-     * {@link Response}.
+     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKeyBundle> getDeletedKeyWithResponse(String vaultBaseUrl, String keyName, Context context) {
@@ -3778,11 +3845,11 @@ public final class KeyClientImpl {
 
     /**
      * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
+     *
+     * <p>The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
+     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
      * keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3797,11 +3864,11 @@ public final class KeyClientImpl {
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3811,16 +3878,18 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> purgeDeletedKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.purgeDeletedKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -3837,11 +3906,11 @@ public final class KeyClientImpl {
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3856,11 +3925,11 @@ public final class KeyClientImpl {
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -3876,11 +3945,11 @@ public final class KeyClientImpl {
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
@@ -3897,11 +3966,11 @@ public final class KeyClientImpl {
 
     /**
      * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
+     *
+     * <p>The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be
+     * invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation
+     * requires the keys/purge permission.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3915,33 +3984,35 @@ public final class KeyClientImpl {
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> recoverDeletedKeyWithResponseAsync(String vaultBaseUrl, String keyName) {
-        return FluxUtil.withContext(context -> recoverDeletedKeyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.recoverDeletedKey(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @param context The context to associate with this operation.
@@ -3949,7 +4020,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyBundle>> recoverDeletedKeyWithResponseAsync(String vaultBaseUrl, String keyName,
@@ -3960,12 +4031,12 @@ public final class KeyClientImpl {
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3981,12 +4052,12 @@ public final class KeyClientImpl {
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @param context The context to associate with this operation.
@@ -4003,12 +4074,12 @@ public final class KeyClientImpl {
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @param context The context to associate with this operation.
@@ -4025,12 +4096,12 @@ public final class KeyClientImpl {
 
     /**
      * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
+     *
+     * <p>The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers
+     * the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
      * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
      * the keys/recover permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the deleted key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4045,10 +4116,10 @@ public final class KeyClientImpl {
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4059,15 +4130,17 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponseAsync(String vaultBaseUrl,
         String keyName) {
-        return FluxUtil.withContext(context -> getKeyRotationPolicyWithResponseAsync(vaultBaseUrl, keyName, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getKeyRotationPolicy(vaultBaseUrl, keyName, this.getApiVersion(), accept, context));
     }
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @param context The context to associate with this operation.
@@ -4085,10 +4158,10 @@ public final class KeyClientImpl {
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4104,10 +4177,10 @@ public final class KeyClientImpl {
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @param context The context to associate with this operation.
@@ -4124,10 +4197,10 @@ public final class KeyClientImpl {
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @param context The context to associate with this operation.
@@ -4145,10 +4218,10 @@ public final class KeyClientImpl {
 
     /**
      * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
+     *
+     * <p>The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
      * operation requires the keys/get permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4163,10 +4236,10 @@ public final class KeyClientImpl {
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4178,16 +4251,17 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponseAsync(String vaultBaseUrl,
         String keyName, KeyRotationPolicy keyRotationPolicy) {
-        return FluxUtil.withContext(
-            context -> updateKeyRotationPolicyWithResponseAsync(vaultBaseUrl, keyName, keyRotationPolicy, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateKeyRotationPolicy(vaultBaseUrl, keyName,
+            this.getApiVersion(), keyRotationPolicy, accept, context));
     }
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4207,10 +4281,10 @@ public final class KeyClientImpl {
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4228,10 +4302,10 @@ public final class KeyClientImpl {
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4250,10 +4324,10 @@ public final class KeyClientImpl {
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4273,10 +4347,10 @@ public final class KeyClientImpl {
 
     /**
      * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
+     *
+     * <p>Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
      * permission.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
@@ -4293,27 +4367,31 @@ public final class KeyClientImpl {
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested number of bytes containing random values from a managed HSM along with {@link Response} on
-     * successful completion of {@link Mono}.
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RandomBytes>> getRandomBytesWithResponseAsync(String vaultBaseUrl, int count) {
-        return FluxUtil.withContext(context -> getRandomBytesWithResponseAsync(vaultBaseUrl, count, context));
+        final String accept = "application/json";
+        GetRandomBytesRequest parameters = new GetRandomBytesRequest();
+        parameters.setCount(count);
+        return FluxUtil.withContext(
+            context -> service.getRandomBytes(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @param context The context to associate with this operation.
@@ -4321,7 +4399,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested number of bytes containing random values from a managed HSM along with {@link Response} on
-     * successful completion of {@link Mono}.
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RandomBytes>> getRandomBytesWithResponseAsync(String vaultBaseUrl, int count,
@@ -4334,16 +4412,16 @@ public final class KeyClientImpl {
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested number of bytes containing random values from a managed HSM on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RandomBytes> getRandomBytesAsync(String vaultBaseUrl, int count) {
@@ -4352,9 +4430,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @param context The context to associate with this operation.
@@ -4362,7 +4440,7 @@ public final class KeyClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested number of bytes containing random values from a managed HSM on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RandomBytes> getRandomBytesAsync(String vaultBaseUrl, int count, Context context) {
@@ -4372,9 +4450,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @param context The context to associate with this operation.
@@ -4393,9 +4471,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
+     *
+     * <p>Get the requested number of bytes containing random values from a managed HSM.
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param count The requested number of random bytes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4410,8 +4488,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4428,8 +4507,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4448,8 +4528,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4466,8 +4547,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4485,8 +4567,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4503,8 +4586,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4523,8 +4607,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4541,8 +4626,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4560,14 +4646,15 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedKeyItem>> getDeletedKeysNextSinglePageAsync(String nextLink, String vaultBaseUrl) {
@@ -4579,15 +4666,16 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedKeyItem>> getDeletedKeysNextSinglePageAsync(String nextLink, String vaultBaseUrl,
@@ -4600,8 +4688,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4619,8 +4708,9 @@ public final class KeyClientImpl {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -13,10 +13,9 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * The key update parameters.
- */
+/** The key update parameters. */
 @Fluent
 public final class KeyUpdateParameters implements JsonSerializable<KeyUpdateParameters> {
     /*
@@ -39,16 +38,14 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
      */
     private KeyReleasePolicy releasePolicy;
 
-    /**
-     * Creates an instance of KeyUpdateParameters class.
-     */
+    /** Creates an instance of KeyUpdateParameters class. */
     public KeyUpdateParameters() {
     }
 
     /**
      * Get the keyOps property: Json web key operations. For more information on possible key operations, see
      * JsonWebKeyOperation.
-     * 
+     *
      * @return the keyOps value.
      */
     public List<KeyOperation> getKeyOps() {
@@ -58,7 +55,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
     /**
      * Set the keyOps property: Json web key operations. For more information on possible key operations, see
      * JsonWebKeyOperation.
-     * 
+     *
      * @param keyOps the keyOps value to set.
      * @return the KeyUpdateParameters object itself.
      */
@@ -69,7 +66,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Get the keyAttributes property: The attributes of a key managed by the key vault service.
-     * 
+     *
      * @return the keyAttributes value.
      */
     public KeyAttributes getKeyAttributes() {
@@ -78,7 +75,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Set the keyAttributes property: The attributes of a key managed by the key vault service.
-     * 
+     *
      * @param keyAttributes the keyAttributes value to set.
      * @return the KeyUpdateParameters object itself.
      */
@@ -89,7 +86,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -98,7 +95,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the KeyUpdateParameters object itself.
      */
@@ -109,7 +106,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Get the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @return the releasePolicy value.
      */
     public KeyReleasePolicy getReleasePolicy() {
@@ -118,7 +115,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Set the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @param releasePolicy the releasePolicy value to set.
      * @return the KeyUpdateParameters object itself.
      */
@@ -127,14 +124,11 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("key_ops", this.keyOps,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeJsonField("attributes", this.keyAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("release_policy", this.releasePolicy);
@@ -143,10 +137,10 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
 
     /**
      * Reads an instance of KeyUpdateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyUpdateParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyUpdateParameters.
      */
     public static KeyUpdateParameters fromJson(JsonReader jsonReader) throws IOException {

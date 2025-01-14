@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Management policy for a key.
- */
+/** Management policy for a key. */
 @Fluent
 public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPolicy> {
     /*
@@ -34,15 +32,13 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
      */
     private KeyRotationPolicyAttributes attributes;
 
-    /**
-     * Creates an instance of KeyRotationPolicy class.
-     */
+    /** Creates an instance of KeyRotationPolicy class. */
     public KeyRotationPolicy() {
     }
 
     /**
      * Get the id property: The key policy id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -53,7 +49,7 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
      * Get the lifetimeActions property: Actions that will be performed by Key Vault over the lifetime of a key. For
      * preview, lifetimeActions can only have two items at maximum: one for rotate, one for notify. Notification time
      * would be default to 30 days before expiry and it is not configurable.
-     * 
+     *
      * @return the lifetimeActions value.
      */
     public List<LifetimeActions> getLifetimeActions() {
@@ -64,7 +60,7 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
      * Set the lifetimeActions property: Actions that will be performed by Key Vault over the lifetime of a key. For
      * preview, lifetimeActions can only have two items at maximum: one for rotate, one for notify. Notification time
      * would be default to 30 days before expiry and it is not configurable.
-     * 
+     *
      * @param lifetimeActions the lifetimeActions value to set.
      * @return the KeyRotationPolicy object itself.
      */
@@ -75,7 +71,7 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
 
     /**
      * Get the attributes property: The key rotation policy attributes.
-     * 
+     *
      * @return the attributes value.
      */
     public KeyRotationPolicyAttributes getAttributes() {
@@ -84,7 +80,7 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
 
     /**
      * Set the attributes property: The key rotation policy attributes.
-     * 
+     *
      * @param attributes the attributes value to set.
      * @return the KeyRotationPolicy object itself.
      */
@@ -93,9 +89,6 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,10 +100,10 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
 
     /**
      * Reads an instance of KeyRotationPolicy from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyRotationPolicy if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyRotationPolicy.
      */
     public static KeyRotationPolicy fromJson(JsonReader jsonReader) throws IOException {

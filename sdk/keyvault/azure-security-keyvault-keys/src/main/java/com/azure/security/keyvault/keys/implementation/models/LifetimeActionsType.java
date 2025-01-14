@@ -11,26 +11,23 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * The action that will be executed.
- */
+/** The action that will be executed. */
 @Fluent
 public final class LifetimeActionsType implements JsonSerializable<LifetimeActionsType> {
     /*
-     * The type of the action. The value should be compared case-insensitively.
+     * The type of the action.
      */
     private KeyRotationPolicyAction type;
 
-    /**
-     * Creates an instance of LifetimeActionsType class.
-     */
+    /** Creates an instance of LifetimeActionsType class. */
     public LifetimeActionsType() {
     }
 
     /**
-     * Get the type property: The type of the action. The value should be compared case-insensitively.
-     * 
+     * Get the type property: The type of the action.
+     *
      * @return the type value.
      */
     public KeyRotationPolicyAction getType() {
@@ -38,8 +35,8 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
     }
 
     /**
-     * Set the type property: The type of the action. The value should be compared case-insensitively.
-     * 
+     * Set the type property: The type of the action.
+     *
      * @param type the type value to set.
      * @return the LifetimeActionsType object itself.
      */
@@ -48,22 +45,19 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of LifetimeActionsType from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LifetimeActionsType if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the LifetimeActionsType.
      */
     public static LifetimeActionsType fromJson(JsonReader jsonReader) throws IOException {

@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The get random bytes request object.
- */
+/** The get random bytes request object. */
 @Fluent
 public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBytesRequest> {
     /*
@@ -21,15 +19,13 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
      */
     private int count;
 
-    /**
-     * Creates an instance of GetRandomBytesRequest class.
-     */
+    /** Creates an instance of GetRandomBytesRequest class. */
     public GetRandomBytesRequest() {
     }
 
     /**
      * Get the count property: The requested number of random bytes.
-     * 
+     *
      * @return the count value.
      */
     public int getCount() {
@@ -38,7 +34,7 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
 
     /**
      * Set the count property: The requested number of random bytes.
-     * 
+     *
      * @param count the count value to set.
      * @return the GetRandomBytesRequest object itself.
      */
@@ -47,9 +43,6 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,10 +52,10 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
 
     /**
      * Reads an instance of GetRandomBytesRequest from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of GetRandomBytesRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GetRandomBytesRequest.
      */

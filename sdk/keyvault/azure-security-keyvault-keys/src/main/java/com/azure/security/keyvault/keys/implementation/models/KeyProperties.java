@@ -12,10 +12,9 @@ import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyType;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * Properties of the key pair backing a certificate.
- */
+/** Properties of the key pair backing a certificate. */
 @Fluent
 public final class KeyProperties implements JsonSerializable<KeyProperties> {
     /*
@@ -44,16 +43,14 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      */
     private KeyCurveName crv;
 
-    /**
-     * Creates an instance of KeyProperties class.
-     */
+    /** Creates an instance of KeyProperties class. */
     public KeyProperties() {
     }
 
     /**
      * Get the exportable property: Indicates if the private key can be exported. Release policy must be provided when
      * creating the first version of an exportable key.
-     * 
+     *
      * @return the exportable value.
      */
     public Boolean isExportable() {
@@ -63,7 +60,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     /**
      * Set the exportable property: Indicates if the private key can be exported. Release policy must be provided when
      * creating the first version of an exportable key.
-     * 
+     *
      * @param exportable the exportable value to set.
      * @return the KeyProperties object itself.
      */
@@ -75,7 +72,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     /**
      * Get the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     * 
+     *
      * @return the kty value.
      */
     public KeyType getKty() {
@@ -85,7 +82,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     /**
      * Set the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     * 
+     *
      * @param kty the kty value to set.
      * @return the KeyProperties object itself.
      */
@@ -96,7 +93,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-     * 
+     *
      * @return the keySize value.
      */
     public Integer getKeySize() {
@@ -105,7 +102,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-     * 
+     *
      * @param keySize the keySize value to set.
      * @return the KeyProperties object itself.
      */
@@ -116,7 +113,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Get the reuseKey property: Indicates if the same key pair will be used on certificate renewal.
-     * 
+     *
      * @return the reuseKey value.
      */
     public Boolean isReuseKey() {
@@ -125,7 +122,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Set the reuseKey property: Indicates if the same key pair will be used on certificate renewal.
-     * 
+     *
      * @param reuseKey the reuseKey value to set.
      * @return the KeyProperties object itself.
      */
@@ -136,7 +133,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Get the crv property: Elliptic curve name.
-     * 
+     *
      * @return the crv value.
      */
     public KeyCurveName getCrv() {
@@ -145,7 +142,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Set the crv property: Elliptic curve name.
-     * 
+     *
      * @param crv the crv value to set.
      * @return the KeyProperties object itself.
      */
@@ -154,26 +151,23 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("exportable", this.exportable);
-        jsonWriter.writeStringField("kty", this.kty == null ? null : this.kty.toString());
+        jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
         jsonWriter.writeNumberField("key_size", this.keySize);
         jsonWriter.writeBooleanField("reuse_key", this.reuseKey);
-        jsonWriter.writeStringField("crv", this.crv == null ? null : this.crv.toString());
+        jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of KeyProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyProperties.
      */
     public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {

@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The key vault error exception.
- */
+/** The key vault error exception. */
 @Immutable
 public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
     /*
@@ -21,24 +19,19 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
      */
     private Error error;
 
-    /**
-     * Creates an instance of KeyVaultError class.
-     */
+    /** Creates an instance of KeyVaultError class. */
     public KeyVaultError() {
     }
 
     /**
      * Get the error property: The key vault server error.
-     * 
+     *
      * @return the error value.
      */
     public Error getError() {
         return this.error;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -47,10 +40,10 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
 
     /**
      * Reads an instance of KeyVaultError from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyVaultError if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyVaultError.
      */
     public static KeyVaultError fromJson(JsonReader jsonReader) throws IOException {

@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The key import parameters.
- */
+/** The key import parameters. */
 @Fluent
 public final class KeyImportParameters implements JsonSerializable<KeyImportParameters> {
     /*
@@ -42,15 +40,13 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
      */
     private KeyReleasePolicy releasePolicy;
 
-    /**
-     * Creates an instance of KeyImportParameters class.
-     */
+    /** Creates an instance of KeyImportParameters class. */
     public KeyImportParameters() {
     }
 
     /**
      * Get the hsm property: Whether to import as a hardware key (HSM) or software key.
-     * 
+     *
      * @return the hsm value.
      */
     public Boolean isHsm() {
@@ -59,7 +55,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Set the hsm property: Whether to import as a hardware key (HSM) or software key.
-     * 
+     *
      * @param hsm the hsm value to set.
      * @return the KeyImportParameters object itself.
      */
@@ -70,7 +66,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Get the key property: The Json web key.
-     * 
+     *
      * @return the key value.
      */
     public JsonWebKey getKey() {
@@ -79,7 +75,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Set the key property: The Json web key.
-     * 
+     *
      * @param key the key value to set.
      * @return the KeyImportParameters object itself.
      */
@@ -90,7 +86,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Get the keyAttributes property: The key management attributes.
-     * 
+     *
      * @return the keyAttributes value.
      */
     public KeyAttributes getKeyAttributes() {
@@ -99,7 +95,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Set the keyAttributes property: The key management attributes.
-     * 
+     *
      * @param keyAttributes the keyAttributes value to set.
      * @return the KeyImportParameters object itself.
      */
@@ -110,7 +106,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -119,7 +115,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the KeyImportParameters object itself.
      */
@@ -130,7 +126,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Get the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @return the releasePolicy value.
      */
     public KeyReleasePolicy getReleasePolicy() {
@@ -139,7 +135,7 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Set the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @param releasePolicy the releasePolicy value to set.
      * @return the KeyImportParameters object itself.
      */
@@ -148,9 +144,6 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -164,10 +157,10 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
 
     /**
      * Reads an instance of KeyImportParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyImportParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyImportParameters.
      */

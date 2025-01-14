@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * The key restore parameters.
- */
+/** The key restore parameters. */
 @Fluent
 public final class KeyRestoreParameters implements JsonSerializable<KeyRestoreParameters> {
     /*
@@ -24,15 +22,13 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
      */
     private Base64Url keyBundleBackup;
 
-    /**
-     * Creates an instance of KeyRestoreParameters class.
-     */
+    /** Creates an instance of KeyRestoreParameters class. */
     public KeyRestoreParameters() {
     }
 
     /**
      * Get the keyBundleBackup property: The backup blob associated with a key bundle.
-     * 
+     *
      * @return the keyBundleBackup value.
      */
     public byte[] getKeyBundleBackup() {
@@ -44,7 +40,7 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
 
     /**
      * Set the keyBundleBackup property: The backup blob associated with a key bundle.
-     * 
+     *
      * @param keyBundleBackup the keyBundleBackup value to set.
      * @return the KeyRestoreParameters object itself.
      */
@@ -57,9 +53,6 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,10 +62,10 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
 
     /**
      * Reads an instance of KeyRestoreParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyRestoreParameters if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyRestoreParameters.
      */

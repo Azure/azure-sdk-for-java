@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * The get random bytes response object containing the bytes.
- */
+/** The get random bytes response object containing the bytes. */
 @Fluent
 public final class RandomBytes implements JsonSerializable<RandomBytes> {
     /*
@@ -24,15 +22,13 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
      */
     private Base64Url value;
 
-    /**
-     * Creates an instance of RandomBytes class.
-     */
+    /** Creates an instance of RandomBytes class. */
     public RandomBytes() {
     }
 
     /**
      * Get the value property: The bytes encoded as a base64url string.
-     * 
+     *
      * @return the value value.
      */
     public byte[] getValue() {
@@ -44,7 +40,7 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
 
     /**
      * Set the value property: The bytes encoded as a base64url string.
-     * 
+     *
      * @param value the value value to set.
      * @return the RandomBytes object itself.
      */
@@ -57,9 +53,6 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,10 +62,10 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
 
     /**
      * Reads an instance of RandomBytes from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RandomBytes if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RandomBytes.
      */

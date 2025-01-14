@@ -1,8 +1,5 @@
 [
   [
-    "com.azure.security.keyvault.keys.implementation.KeyClientImpl$KeyClientService"
-  ],
-  [
-    "com.azure.security.keyvault.keys.implementation.SecretMinClientImpl$SecretMinClientService"
+    "com.azure.security.keyvault.keys.implementation.KeyClientImpl$KeyService"
   ]
 ]

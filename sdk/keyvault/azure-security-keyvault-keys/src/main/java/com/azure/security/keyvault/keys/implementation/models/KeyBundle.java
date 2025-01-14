@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * A KeyBundle consisting of a WebKey plus its attributes.
- */
+/** A KeyBundle consisting of a WebKey plus its attributes. */
 @Fluent
 public class KeyBundle implements JsonSerializable<KeyBundle> {
     /*
@@ -43,15 +41,13 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
      */
     private KeyReleasePolicy releasePolicy;
 
-    /**
-     * Creates an instance of KeyBundle class.
-     */
+    /** Creates an instance of KeyBundle class. */
     public KeyBundle() {
     }
 
     /**
      * Get the key property: The Json web key.
-     * 
+     *
      * @return the key value.
      */
     public JsonWebKey getKey() {
@@ -60,7 +56,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Set the key property: The Json web key.
-     * 
+     *
      * @param key the key value to set.
      * @return the KeyBundle object itself.
      */
@@ -71,7 +67,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Get the attributes property: The key management attributes.
-     * 
+     *
      * @return the attributes value.
      */
     public KeyAttributes getAttributes() {
@@ -80,7 +76,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Set the attributes property: The key management attributes.
-     * 
+     *
      * @param attributes the attributes value to set.
      * @return the KeyBundle object itself.
      */
@@ -91,7 +87,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -100,7 +96,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the KeyBundle object itself.
      */
@@ -112,7 +108,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
     /**
      * Get the managed property: True if the key's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     * 
+     *
      * @return the managed value.
      */
     public Boolean isManaged() {
@@ -122,7 +118,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
     /**
      * Set the managed property: True if the key's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     * 
+     *
      * @param managed the managed value to set.
      * @return the KeyBundle object itself.
      */
@@ -133,7 +129,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Get the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @return the releasePolicy value.
      */
     public KeyReleasePolicy getReleasePolicy() {
@@ -142,7 +138,7 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Set the releasePolicy property: The policy rules under which the key can be exported.
-     * 
+     *
      * @param releasePolicy the releasePolicy value to set.
      * @return the KeyBundle object itself.
      */
@@ -151,9 +147,6 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,10 +159,10 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
 
     /**
      * Reads an instance of KeyBundle from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyBundle if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the KeyBundle.
      */
     public static KeyBundle fromJson(JsonReader jsonReader) throws IOException {
