@@ -23,6 +23,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
@@ -157,10 +158,11 @@ public class AppConfigurationReplicaClientsBuilder {
                 clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
             }
         } else {
+            DefaultAzureCredential defautAzureCredential = new DefaultAzureCredentialBuilder().build();
             for (String endpoint : endpoints) {
                 ConfigurationClientBuilder builder = this.createBuilderInstance();
                 if (!credentialConfigured) {
-                    builder.credential(new DefaultAzureCredentialBuilder().build());
+                    builder.credential(defautAzureCredential);
                 }
 
                 builder.endpoint(endpoint);
