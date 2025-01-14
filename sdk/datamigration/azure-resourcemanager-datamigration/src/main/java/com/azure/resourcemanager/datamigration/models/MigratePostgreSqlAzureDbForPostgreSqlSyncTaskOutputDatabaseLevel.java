@@ -98,11 +98,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLe
      */
     private Long latency;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel class.
      */
@@ -255,16 +250,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLe
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -302,8 +287,8 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLe
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.id
-                        = reader.getString();
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel
+                        .withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.resultType
                         = reader.getString();

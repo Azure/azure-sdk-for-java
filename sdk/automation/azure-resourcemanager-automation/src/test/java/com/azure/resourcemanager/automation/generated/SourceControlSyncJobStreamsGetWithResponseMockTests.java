@@ -34,7 +34,7 @@ public final class SourceControlSyncJobStreamsGetWithResponseMockTests {
 
         SourceControlSyncJobStreamById response = manager.sourceControlSyncJobStreams()
             .getWithResponse("xheq", "gcruxspinym", "qgwokmikp",
-                UUID.fromString("f5bfd8b4-1b44-42c8-b9c7-e5470c4b07f5"), "zfbmjxuv", com.azure.core.util.Context.NONE)
+                UUID.fromString("c797b039-d455-4466-9529-55b48a68b3b9"), "zfbmjxuv", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals("ehpphthdklmveta", response.sourceControlSyncJobStreamId());

@@ -51,7 +51,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private ServiceBusTopicOutputDataSourceProperties innerProperties() {
+    ServiceBusTopicOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

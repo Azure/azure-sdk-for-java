@@ -19,7 +19,7 @@ public class GranularCopyLogDetails implements JsonSerializable<GranularCopyLogD
     /*
      * Indicates the type of job details.
      */
-    private ClassDiscriminator copyLogDetailsType = ClassDiscriminator.fromString("GranularCopyLogDetails");
+    private ClassDiscriminator copyLogDetailsType;
 
     /**
      * Creates an instance of GranularCopyLogDetails class.

@@ -21,7 +21,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wr\",\"display\":{\"provider\":\"twaenuuzko\",\"resource\":\"minrfdw\",\"operation\":\"uhhziuiefozbhdm\",\"description\":\"l\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"trmaequiahxicslf\",\"displayName\":\"qzpiyyl\",\"blobDuration\":\"lnswhcc\",\"categoryGroups\":[\"kaivwit\"]},{\"name\":\"cywuggwol\",\"displayName\":\"czbwemhairsbr\",\"blobDuration\":\"dwmsweypqwd\",\"categoryGroups\":[\"icccn\",\"qhuexm\",\"ttlstvlzywemhz\"]},{\"name\":\"csdtclusiypbs\",\"displayName\":\"ytguslf\",\"blobDuration\":\"dcygqukyhejhz\",\"categoryGroups\":[\"gfpelolppvksrpqv\",\"jzraehtwdwrf\",\"swibyr\"]}],\"metricSpecifications\":[{\"name\":\"h\",\"displayName\":\"fwpracstwi\",\"displayDescription\":\"khevxccedc\",\"unit\":\"md\",\"aggregationType\":\"dnwzxltjcvnhltiu\",\"availabilities\":[{},{}],\"supportedTimeGrainTypes\":[\"vvwxqi\",\"y\"],\"metricFilterPattern\":\"nyowxwlmdjrkvfg\",\"fillGapWithZero\":false}]}},\"isDataAction\":false}]}";
+            = "{\"value\":[{\"name\":\"jjugwdkcglhslaz\",\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

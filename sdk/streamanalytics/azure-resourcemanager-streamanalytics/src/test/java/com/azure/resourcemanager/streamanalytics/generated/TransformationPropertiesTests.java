@@ -13,21 +13,21 @@ public final class TransformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransformationProperties model = BinaryData.fromString(
-            "{\"streamingUnits\":194307867,\"validStreamingUnits\":[1382743089,384033547,701234104],\"query\":\"xzlocxscp\",\"etag\":\"erhhbcsglumm\"}")
+            "{\"streamingUnits\":864037829,\"validStreamingUnits\":[1694152390,670343743,1341916746,1792293314],\"query\":\"xypininmayhuybbk\",\"etag\":\"depoog\"}")
             .toObject(TransformationProperties.class);
-        Assertions.assertEquals(194307867, model.streamingUnits());
-        Assertions.assertEquals(1382743089, model.validStreamingUnits().get(0));
-        Assertions.assertEquals("xzlocxscp", model.query());
+        Assertions.assertEquals(864037829, model.streamingUnits());
+        Assertions.assertEquals(1694152390, model.validStreamingUnits().get(0));
+        Assertions.assertEquals("xypininmayhuybbk", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformationProperties model = new TransformationProperties().withStreamingUnits(194307867)
-            .withValidStreamingUnits(Arrays.asList(1382743089, 384033547, 701234104))
-            .withQuery("xzlocxscp");
+        TransformationProperties model = new TransformationProperties().withStreamingUnits(864037829)
+            .withValidStreamingUnits(Arrays.asList(1694152390, 670343743, 1341916746, 1792293314))
+            .withQuery("xypininmayhuybbk");
         model = BinaryData.fromObject(model).toObject(TransformationProperties.class);
-        Assertions.assertEquals(194307867, model.streamingUnits());
-        Assertions.assertEquals(1382743089, model.validStreamingUnits().get(0));
-        Assertions.assertEquals("xzlocxscp", model.query());
+        Assertions.assertEquals(864037829, model.streamingUnits());
+        Assertions.assertEquals(1694152390, model.validStreamingUnits().get(0));
+        Assertions.assertEquals("xypininmayhuybbk", model.query());
     }
 }

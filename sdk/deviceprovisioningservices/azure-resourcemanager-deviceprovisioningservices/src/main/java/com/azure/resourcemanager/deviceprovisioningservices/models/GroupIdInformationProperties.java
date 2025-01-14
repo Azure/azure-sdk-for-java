@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties for a group information object. */
+/**
+ * The properties for a group information object.
+ */
 @Fluent
-public final class GroupIdInformationProperties {
+public final class GroupIdInformationProperties implements JsonSerializable<GroupIdInformationProperties> {
     /*
      * The group id
      */
-    @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
      * The required members for a specific group id
      */
-    @JsonProperty(value = "requiredMembers")
     private List<String> requiredMembers;
 
     /*
      * The required DNS zones for a specific group id
      */
-    @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
     /**
+     * Creates an instance of GroupIdInformationProperties class.
+     */
+    public GroupIdInformationProperties() {
+    }
+
+    /**
      * Get the groupId property: The group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -40,7 +49,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Set the groupId property: The group id.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -51,7 +60,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Get the requiredMembers property: The required members for a specific group id.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -60,7 +69,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Set the requiredMembers property: The required members for a specific group id.
-     *
+     * 
      * @param requiredMembers the requiredMembers value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -71,7 +80,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Get the requiredZoneNames property: The required DNS zones for a specific group id.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -80,7 +89,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Set the requiredZoneNames property: The required DNS zones for a specific group id.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -91,9 +100,55 @@ public final class GroupIdInformationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeArrayField("requiredMembers", this.requiredMembers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("requiredZoneNames", this.requiredZoneNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupIdInformationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupIdInformationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupIdInformationProperties.
+     */
+    public static GroupIdInformationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupIdInformationProperties deserializedGroupIdInformationProperties = new GroupIdInformationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedGroupIdInformationProperties.groupId = reader.getString();
+                } else if ("requiredMembers".equals(fieldName)) {
+                    List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGroupIdInformationProperties.requiredMembers = requiredMembers;
+                } else if ("requiredZoneNames".equals(fieldName)) {
+                    List<String> requiredZoneNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGroupIdInformationProperties.requiredZoneNames = requiredZoneNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupIdInformationProperties;
+        });
     }
 }

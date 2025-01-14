@@ -51,7 +51,7 @@ public final class BlobStreamInputDataSource extends StreamInputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private BlobStreamInputDataSourceProperties innerProperties() {
+    BlobStreamInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

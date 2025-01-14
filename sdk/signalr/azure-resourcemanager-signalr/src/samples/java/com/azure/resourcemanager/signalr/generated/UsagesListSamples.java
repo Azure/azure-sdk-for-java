@@ -10,8 +10,7 @@ package com.azure.resourcemanager.signalr.generated;
 public final class UsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Usages_List.
-     * json
+     * specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/Usages_List.json
      */
     /**
      * Sample code: Usages_List.

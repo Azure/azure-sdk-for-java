@@ -20,7 +20,7 @@ public final class ReplicationFabricsRemoveInfraSamples {
      */
     public static void removesTheApplianceSInfrastructureUnderTheFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().removeInfra("resourceGroupPS1", "vault1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .removeInfra("resourceGroupPS1", "vault1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

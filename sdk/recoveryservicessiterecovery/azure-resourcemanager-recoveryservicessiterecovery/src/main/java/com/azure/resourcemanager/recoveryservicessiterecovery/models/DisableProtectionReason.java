@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DisableProtectionReason extends ExpandableStringEnum<DisableP
      * @param name a name to look for.
      * @return the corresponding DisableProtectionReason.
      */
-    @JsonCreator
     public static DisableProtectionReason fromString(String name) {
         return fromString(name, DisableProtectionReason.class);
     }

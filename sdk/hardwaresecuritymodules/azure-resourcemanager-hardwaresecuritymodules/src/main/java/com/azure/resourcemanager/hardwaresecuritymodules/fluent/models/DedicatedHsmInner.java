@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmResource;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Sku;
 import java.io.IOException;
 import java.util.List;
@@ -21,26 +21,16 @@ import java.util.Map;
  * Resource information with extended details.
  */
 @Fluent
-public final class DedicatedHsmInner extends Resource {
+public final class DedicatedHsmInner extends DedicatedHsmResource {
     /*
-     * SKU details
+     * Metadata pertaining to creation and last modification of the resource
      */
-    private Sku sku;
-
-    /*
-     * The Dedicated Hsm zones.
-     */
-    private List<String> zones;
+    private SystemData systemData;
 
     /*
      * Properties of the dedicated HSM
      */
     private DedicatedHsmProperties properties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -64,43 +54,12 @@ public final class DedicatedHsmInner extends Resource {
     }
 
     /**
-     * Get the sku property: SKU details.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
-     * @return the sku value.
+     * @return the systemData value.
      */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: SKU details.
-     * 
-     * @param sku the sku value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the zones property: The Dedicated Hsm zones.
-     * 
-     * @return the zones value.
-     */
-    public List<String> zones() {
-        return this.zones;
-    }
-
-    /**
-     * Set the zones property: The Dedicated Hsm zones.
-     * 
-     * @param zones the zones value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withZones(List<String> zones) {
-        this.zones = zones;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -121,15 +80,6 @@ public final class DedicatedHsmInner extends Resource {
     public DedicatedHsmInner withProperties(DedicatedHsmProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -166,6 +116,24 @@ public final class DedicatedHsmInner extends Resource {
      * {@inheritDoc}
      */
     @Override
+    public DedicatedHsmInner withSku(Sku sku) {
+        super.withSku(sku);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DedicatedHsmInner withZones(List<String> zones) {
+        super.withZones(zones);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DedicatedHsmInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -185,18 +153,16 @@ public final class DedicatedHsmInner extends Resource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model DedicatedHsmInner"));
-        } else {
-            sku().validate();
-        }
         if (properties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property properties in model DedicatedHsmInner"));
         } else {
             properties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 
@@ -210,9 +176,9 @@ public final class DedicatedHsmInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -244,12 +210,12 @@ public final class DedicatedHsmInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDedicatedHsmInner.withTags(tags);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedDedicatedHsmInner.sku = Sku.fromJson(reader);
-                } else if ("properties".equals(fieldName)) {
-                    deserializedDedicatedHsmInner.properties = DedicatedHsmProperties.fromJson(reader);
+                    deserializedDedicatedHsmInner.withSku(Sku.fromJson(reader));
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDedicatedHsmInner.zones = zones;
+                    deserializedDedicatedHsmInner.withZones(zones);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.properties = DedicatedHsmProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDedicatedHsmInner.systemData = SystemData.fromJson(reader);
                 } else {

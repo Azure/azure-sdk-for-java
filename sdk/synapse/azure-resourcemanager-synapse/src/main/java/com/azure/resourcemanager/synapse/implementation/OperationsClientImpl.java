@@ -125,11 +125,10 @@ public final class OperationsClientImpl implements OperationsClient {
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), request, accept, context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -161,11 +160,10 @@ public final class OperationsClientImpl implements OperationsClient {
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            request, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), request, accept, context);
     }
 
     /**
@@ -338,11 +336,11 @@ public final class OperationsClientImpl implements OperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
+            .withContext(
+                context -> service.getLocationHeaderResult(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -381,11 +379,10 @@ public final class OperationsClientImpl implements OperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, workspaceName, operationId, accept, context);
+        return service.getLocationHeaderResult(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context);
     }
 
     /**
@@ -479,11 +476,11 @@ public final class OperationsClientImpl implements OperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getAzureAsyncHeaderResult(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
+            .withContext(
+                context -> service.getAzureAsyncHeaderResult(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -522,11 +519,10 @@ public final class OperationsClientImpl implements OperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAzureAsyncHeaderResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, workspaceName, operationId, accept, context);
+        return service.getAzureAsyncHeaderResult(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context);
     }
 
     /**

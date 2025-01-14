@@ -13,11 +13,11 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.EnableStatusEnum;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailabilityMode;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerSku;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerSkuTier;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
+import com.azure.resourcemanager.mysqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -30,8 +30,8 @@ import java.util.Map;
 public final class ServersCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
-     * ServerCreateReplica.json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateReplica.
+     * json
      */
     /**
      * Sample code: Create a replica server.
@@ -51,8 +51,7 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerCreate
-     * .json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -65,16 +64,14 @@ public final class ServersCreateSamples {
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("num", "1"))
-            .withSku(new MySqlServerSku().withName("Standard_D2ds_v4").withTier(ServerSkuTier.GENERAL_PURPOSE))
+            .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("your_password")
             .withVersion(ServerVersion.FIVE_SEVEN)
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.DEFAULT)
             .withStorage(new Storage().withStorageSizeGB(100).withIops(600).withAutoGrow(EnableStatusEnum.DISABLED))
-            .withBackup(new Backup().withBackupRetentionDays(7)
-                .withBackupIntervalHours(24)
-                .withGeoRedundantBackup(EnableStatusEnum.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(EnableStatusEnum.DISABLED))
             .withHighAvailability(
                 new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT).withStandbyAvailabilityZone("3"))
             .create();
@@ -82,8 +79,8 @@ public final class ServersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
-     * ServerCreateWithBYOK.json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateWithBYOK.
+     * json
      */
     /**
      * Sample code: Create a server with byok.
@@ -97,12 +94,12 @@ public final class ServersCreateSamples {
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("num", "1"))
-            .withIdentity(new MySqlServerIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withIdentity(new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
                     SerializerFactory.createDefaultManagementSerializerAdapter()
                         .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withSku(new MySqlServerSku().withName("Standard_D2ds_v4").withTier(ServerSkuTier.GENERAL_PURPOSE))
+            .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("your_password")
             .withVersion(ServerVersion.FIVE_SEVEN)
@@ -116,17 +113,14 @@ public final class ServersCreateSamples {
                 .withGeoBackupKeyUri("fakeTokenPlaceholder")
                 .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .withStorage(new Storage().withStorageSizeGB(100).withIops(600).withAutoGrow(EnableStatusEnum.DISABLED))
-            .withBackup(new Backup().withBackupRetentionDays(7)
-                .withBackupIntervalHours(24)
-                .withGeoRedundantBackup(EnableStatusEnum.DISABLED))
+            .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(EnableStatusEnum.DISABLED))
             .withHighAvailability(
                 new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT).withStandbyAvailabilityZone("3"))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
      * ServerCreateWithPointInTimeRestore.json
      */
     /**
@@ -141,7 +135,7 @@ public final class ServersCreateSamples {
             .withRegion("SoutheastAsia")
             .withExistingResourceGroup("TargetResourceGroup")
             .withTags(mapOf("num", "1"))
-            .withSku(new MySqlServerSku().withName("Standard_D14_v2").withTier(ServerSkuTier.GENERAL_PURPOSE))
+            .withSku(new Sku().withName("Standard_D14_v2").withTier(SkuTier.GENERAL_PURPOSE))
             .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
             .withSourceServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforMySQL/flexibleServers/sourceserver")

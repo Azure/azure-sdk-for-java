@@ -58,11 +58,6 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
      */
     private List<ReportableException> exceptionsAndWarnings;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMITaskOutputLoginLevel class.
      */
@@ -143,16 +138,6 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -191,7 +176,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.resultType = reader.getString();
                 } else if ("loginName".equals(fieldName)) {

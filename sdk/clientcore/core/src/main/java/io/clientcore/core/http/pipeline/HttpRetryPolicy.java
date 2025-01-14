@@ -143,7 +143,10 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
         final List<Exception> suppressed) {
-        HttpRequestAccessHelper.setRetryCount(httpRequest, tryCount + 1);
+
+        // the tryCount is updated by the caller and represents the number of attempts made so far.
+        // It can be used by the policies during the process call.
+        HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
 
         Response<?> response;
 
@@ -284,9 +287,9 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
-        String message, Throwable throwable) {
-        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(message, throwable);
+    private static void logRetryWithError(ClientLogger.LoggingEvent loggingEvent, int tryCount, String message,
+        Throwable throwable) {
+        loggingEvent.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(message, throwable);
     }
 
     private Duration calculateRetryDelay(int retryAttempts) {

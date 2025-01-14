@@ -10,16 +10,16 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NamespacesDeleteAuthorizationRuleSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/AuthorizationRuleDelete.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleDelete.json
      */
     /**
-     * Sample code: Namespaces_DeleteAuthorizationRule.
+     * Sample code: NameSpaceAuthorizationRuleDelete.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void
-        namespacesDeleteAuthorizationRule(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        nameSpaceAuthorizationRuleDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.namespaces()
             .deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
                 com.azure.core.util.Context.NONE);

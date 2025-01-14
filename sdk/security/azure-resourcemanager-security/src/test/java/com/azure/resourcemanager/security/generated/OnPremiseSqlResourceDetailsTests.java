@@ -12,30 +12,30 @@ public final class OnPremiseSqlResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OnPremiseSqlResourceDetails model = BinaryData.fromString(
-            "{\"source\":\"OnPremiseSql\",\"serverName\":\"kwxnhwhhnoyrza\",\"databaseName\":\"oeehpmjenvjeatea\",\"workspaceId\":\"xc\",\"vmuuid\":\"xoxdjxldnaryyi\",\"sourceComputerId\":\"zkdolrndwdbvxvza\",\"machineName\":\"edoyqxlunkft\"}")
+            "{\"source\":\"OnPremiseSql\",\"serverName\":\"bta\",\"databaseName\":\"ypnyghshxc\",\"workspaceId\":\"lhkgmnsghp\",\"vmuuid\":\"ycphdrwjjkhvyo\",\"sourceComputerId\":\"ac\",\"machineName\":\"u\"}")
             .toObject(OnPremiseSqlResourceDetails.class);
-        Assertions.assertEquals("xc", model.workspaceId());
-        Assertions.assertEquals("xoxdjxldnaryyi", model.vmuuid());
-        Assertions.assertEquals("zkdolrndwdbvxvza", model.sourceComputerId());
-        Assertions.assertEquals("edoyqxlunkft", model.machineName());
-        Assertions.assertEquals("kwxnhwhhnoyrza", model.serverName());
-        Assertions.assertEquals("oeehpmjenvjeatea", model.databaseName());
+        Assertions.assertEquals("lhkgmnsghp", model.workspaceId());
+        Assertions.assertEquals("ycphdrwjjkhvyo", model.vmuuid());
+        Assertions.assertEquals("ac", model.sourceComputerId());
+        Assertions.assertEquals("u", model.machineName());
+        Assertions.assertEquals("bta", model.serverName());
+        Assertions.assertEquals("ypnyghshxc", model.databaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnPremiseSqlResourceDetails model = new OnPremiseSqlResourceDetails().withWorkspaceId("xc")
-            .withVmuuid("xoxdjxldnaryyi")
-            .withSourceComputerId("zkdolrndwdbvxvza")
-            .withMachineName("edoyqxlunkft")
-            .withServerName("kwxnhwhhnoyrza")
-            .withDatabaseName("oeehpmjenvjeatea");
+        OnPremiseSqlResourceDetails model = new OnPremiseSqlResourceDetails().withWorkspaceId("lhkgmnsghp")
+            .withVmuuid("ycphdrwjjkhvyo")
+            .withSourceComputerId("ac")
+            .withMachineName("u")
+            .withServerName("bta")
+            .withDatabaseName("ypnyghshxc");
         model = BinaryData.fromObject(model).toObject(OnPremiseSqlResourceDetails.class);
-        Assertions.assertEquals("xc", model.workspaceId());
-        Assertions.assertEquals("xoxdjxldnaryyi", model.vmuuid());
-        Assertions.assertEquals("zkdolrndwdbvxvza", model.sourceComputerId());
-        Assertions.assertEquals("edoyqxlunkft", model.machineName());
-        Assertions.assertEquals("kwxnhwhhnoyrza", model.serverName());
-        Assertions.assertEquals("oeehpmjenvjeatea", model.databaseName());
+        Assertions.assertEquals("lhkgmnsghp", model.workspaceId());
+        Assertions.assertEquals("ycphdrwjjkhvyo", model.vmuuid());
+        Assertions.assertEquals("ac", model.sourceComputerId());
+        Assertions.assertEquals("u", model.machineName());
+        Assertions.assertEquals("bta", model.serverName());
+        Assertions.assertEquals("ypnyghshxc", model.databaseName());
     }
 }

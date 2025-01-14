@@ -50,10 +50,6 @@
 - [Get](#privateendpoints_get)
 - [ListByCluster](#privateendpoints_listbycluster)
 
-## Sku
-
-- [List](#sku_list)
-
 ## StreamingJobs
 
 - [CreateOrReplace](#streamingjobs_createorreplace)
@@ -68,12 +64,7 @@
 
 ## Subscriptions
 
-- [CompileQuery](#subscriptions_compilequery)
 - [ListQuotas](#subscriptions_listquotas)
-- [SampleInput](#subscriptions_sampleinput)
-- [TestInput](#subscriptions_testinput)
-- [TestOutput](#subscriptions_testoutput)
-- [TestQuery](#subscriptions_testquery)
 
 ## Transformations
 
@@ -94,7 +85,7 @@ import java.util.Map;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_Create.json
      */
     /**
@@ -135,7 +126,7 @@ public final class ClustersCreateOrUpdateSamples {
 public final class ClustersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_Delete.json
      */
     /**
@@ -158,8 +149,8 @@ public final class ClustersDeleteSamples {
 public final class ClustersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
-     * Cluster_Get.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Cluster_Get.
+     * json
      */
     /**
      * Sample code: Get a cluster.
@@ -181,7 +172,7 @@ public final class ClustersGetByResourceGroupSamples {
 public final class ClustersListSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_ListBySubscription.json
      */
     /**
@@ -205,7 +196,7 @@ public final class ClustersListSamples {
 public final class ClustersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_ListByResourceGroup.json
      */
     /**
@@ -229,7 +220,7 @@ public final class ClustersListByResourceGroupSamples {
 public final class ClustersListStreamingJobsSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_ListStreamingJobs.json
      */
     /**
@@ -256,7 +247,7 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Cluster_Update.json
      */
     /**
@@ -276,19 +267,14 @@ public final class ClustersUpdateSamples {
 ### Functions_CreateOrReplace
 
 ```java
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningServiceFunctionBinding;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningServiceInputColumn;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningServiceOutputColumn;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioFunctionBinding;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioInputColumn;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioInputs;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioOutputColumn;
-import com.azure.resourcemanager.streamanalytics.models.CSharpFunctionBinding;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceFunctionBinding;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceInputColumn;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceInputs;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceOutputColumn;
 import com.azure.resourcemanager.streamanalytics.models.FunctionInput;
 import com.azure.resourcemanager.streamanalytics.models.FunctionOutput;
 import com.azure.resourcemanager.streamanalytics.models.JavaScriptFunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.ScalarFunctionProperties;
-import com.azure.resourcemanager.streamanalytics.models.UpdateMode;
 import java.util.Arrays;
 
 /**
@@ -297,63 +283,7 @@ import java.util.Arrays;
 public final class FunctionsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Function_Create_CSharp.json
-     */
-    /**
-     * Sample code: Create a CLRUdf function.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void createACLRUdfFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions()
-            .define("function588")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withProperties(new ScalarFunctionProperties()
-                .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
-                .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
-                .withBinding(new CSharpFunctionBinding().withDllPath("ASAEdgeApplication2_CodeBehind")
-                    .withClassProperty("ASAEdgeUDFDemo.Class1")
-                    .withMethod("SquareFunction")
-                    .withUpdateMode(UpdateMode.STATIC)))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Function_Create_AzureMLService.json
-     */
-    /**
-     * Sample code: Create an Azure ML Service function.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnAzureMLServiceFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions()
-            .define("function588")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withProperties(new ScalarFunctionProperties()
-                .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
-                .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
-                .withBinding(new AzureMachineLearningServiceFunctionBinding().withEndpoint("someAzureMLEndpointURL")
-                    .withApiKey("fakeTokenPlaceholder")
-                    .withInputs(Arrays.asList(new AzureMachineLearningServiceInputColumn().withName("data")
-                        .withDataType("array")
-                        .withMapTo(0)))
-                    .withOutputs(Arrays.asList(
-                        new AzureMachineLearningServiceOutputColumn().withName("Sentiment").withDataType("string")))
-                    .withBatchSize(1000)
-                    .withNumberOfParallelRequests(1)
-                    .withInputRequestName("Inputs")
-                    .withOutputResponseName("Results")))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Create_JavaScript.json
      */
     /**
@@ -375,7 +305,7 @@ public final class FunctionsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Create_AzureML.json
      */
     /**
@@ -391,14 +321,14 @@ public final class FunctionsCreateOrReplaceSamples {
             .withProperties(new ScalarFunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
                 .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
-                .withBinding(new AzureMachineLearningStudioFunctionBinding().withEndpoint("someAzureMLEndpointURL")
+                .withBinding(new AzureMachineLearningWebServiceFunctionBinding().withEndpoint("someAzureMLEndpointURL")
                     .withApiKey("fakeTokenPlaceholder")
-                    .withInputs(new AzureMachineLearningStudioInputs().withName("input1")
-                        .withColumnNames(Arrays.asList(new AzureMachineLearningStudioInputColumn().withName("tweet")
+                    .withInputs(new AzureMachineLearningWebServiceInputs().withName("input1")
+                        .withColumnNames(Arrays.asList(new AzureMachineLearningWebServiceInputColumn().withName("tweet")
                             .withDataType("string")
                             .withMapTo(0))))
                     .withOutputs(Arrays.asList(
-                        new AzureMachineLearningStudioOutputColumn().withName("Sentiment").withDataType("string")))
+                        new AzureMachineLearningWebServiceOutputColumn().withName("Sentiment").withDataType("string")))
                     .withBatchSize(1000)))
             .create();
     }
@@ -414,7 +344,7 @@ public final class FunctionsCreateOrReplaceSamples {
 public final class FunctionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Delete.json
      */
     /**
@@ -437,7 +367,7 @@ public final class FunctionsDeleteSamples {
 public final class FunctionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Get_AzureML.json
      */
     /**
@@ -451,7 +381,7 @@ public final class FunctionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Get_JavaScript.json
      */
     /**
@@ -475,7 +405,7 @@ public final class FunctionsGetSamples {
 public final class FunctionsListByStreamingJobSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_ListByStreamingJob.json
      */
     /**
@@ -493,7 +423,7 @@ public final class FunctionsListByStreamingJobSamples {
 ### Functions_RetrieveDefaultDefinition
 
 ```java
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
 
 /**
@@ -502,7 +432,7 @@ import com.azure.resourcemanager.streamanalytics.models.UdfType;
 public final class FunctionsRetrieveDefaultDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_RetrieveDefaultDefinition_AzureML.json
      */
     /**
@@ -514,7 +444,7 @@ public final class FunctionsRetrieveDefaultDefinitionSamples {
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         manager.functions()
             .retrieveDefaultDefinitionWithResponse("sjrg7", "sj9093", "function588",
-                new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
+                new AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters()
                     .withExecuteEndpoint("someAzureMLExecuteEndpointUrl")
                     .withUdfType(UdfType.SCALAR),
                 com.azure.core.util.Context.NONE);
@@ -532,7 +462,7 @@ public final class FunctionsRetrieveDefaultDefinitionSamples {
 public final class FunctionsTestSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Test_AzureML.json
      */
     /**
@@ -542,12 +472,12 @@ public final class FunctionsTestSamples {
      */
     public static void testTheConnectionForAnAzureMLFunction(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().test("sjrg", "sjName", "function588", null, com.azure.core.util.Context.NONE);
+        manager.functions().test("sjrg7", "sj9093", "function588", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Test_JavaScript.json
      */
     /**
@@ -565,7 +495,7 @@ public final class FunctionsTestSamples {
 ### Functions_Update
 
 ```java
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioFunctionBinding;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceFunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.JavaScriptFunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.ScalarFunctionProperties;
@@ -576,7 +506,7 @@ import com.azure.resourcemanager.streamanalytics.models.ScalarFunctionProperties
 public final class FunctionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Update_JavaScript.json
      */
     /**
@@ -597,7 +527,7 @@ public final class FunctionsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Function_Update_AzureML.json
      */
     /**
@@ -612,7 +542,7 @@ public final class FunctionsUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new ScalarFunctionProperties()
-                .withBinding(new AzureMachineLearningStudioFunctionBinding().withBatchSize(5000)))
+                .withBinding(new AzureMachineLearningWebServiceFunctionBinding().withBatchSize(5000)))
             .apply();
     }
 }
@@ -621,20 +551,14 @@ public final class FunctionsUpdateSamples {
 ### Inputs_CreateOrReplace
 
 ```java
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
 import com.azure.resourcemanager.streamanalytics.models.BlobReferenceInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.EventGridEventSchemaType;
-import com.azure.resourcemanager.streamanalytics.models.EventGridStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.EventHubStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.EventHubV2StreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.FileReferenceInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.GatewayMessageBusStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.InputWatermarkMode;
-import com.azure.resourcemanager.streamanalytics.models.InputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.IoTHubStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
 import com.azure.resourcemanager.streamanalytics.models.ReferenceInputProperties;
@@ -648,38 +572,7 @@ import java.util.Arrays;
 public final class InputsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Input_Create_EventGrid.json
-     */
-    /**
-     * Sample code: Create an Event Grid input.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnEventGridInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs()
-            .define("input7970")
-            .withExistingStreamingjob("sjrg3467", "sj9742")
-            .withProperties(new StreamInputProperties().withDatasource(new EventGridStreamInputDataSource()
-                .withSubscriber(new EventHubV2StreamInputDataSource().withConsumerGroupName("sdkconsumergroup")
-                    .withEventHubName("sdkeventhub")
-                    .withPartitionCount(16)
-                    .withServiceBusNamespace("sdktest")
-                    .withSharedAccessPolicyName("RootManageSharedAccessKey")
-                    .withSharedAccessPolicyKey("fakeTokenPlaceholder")
-                    .withAuthenticationMode(AuthenticationMode.MSI))
-                .withSchema(EventGridEventSchemaType.CLOUD_EVENT_SCHEMA)
-                .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("myaccount")
-                    .withAccountKey("fakeTokenPlaceholder")
-                    .withAuthenticationMode(AuthenticationMode.MSI)))
-                .withEventTypes(Arrays.asList("Microsoft.Storage.BlobCreated"))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Reference_File.json
      */
     /**
@@ -699,7 +592,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_IoTHub_Avro.json
      */
     /**
@@ -723,7 +616,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Reference_Blob_CSV.json
      */
     /**
@@ -738,11 +631,7 @@ public final class InputsCreateOrReplaceSamples {
             .withExistingStreamingjob("sjrg8440", "sj9597")
             .withProperties(new ReferenceInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                .withDatasource(new BlobReferenceInputDataSource().withBlobName("myblobinput")
-                    .withDeltaPathPattern("/testBlob/{date}/delta/{time}/")
-                    .withSourcePartitionCount(16)
-                    .withFullSnapshotRefreshRate("16:14:30")
-                    .withDeltaSnapshotRefreshRate("16:14:30")
+                .withDatasource(new BlobReferenceInputDataSource()
                     .withStorageAccounts(Arrays.asList(
                         new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
                     .withContainer("state")
@@ -754,7 +643,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_GatewayMessageBus.json
      */
     /**
@@ -774,7 +663,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_EventHub_JSON.json
      */
     /**
@@ -789,8 +678,6 @@ public final class InputsCreateOrReplaceSamples {
             .withExistingStreamingjob("sjrg3139", "sj197")
             .withProperties(
                 new StreamInputProperties().withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                    .withWatermarkSettings(
-                        new InputWatermarkProperties().withWatermarkMode(InputWatermarkMode.READ_WATERMARK))
                     .withDatasource(new EventHubStreamInputDataSource().withConsumerGroupName("sdkconsumergroup")
                         .withEventHubName("sdkeventhub")
                         .withServiceBusNamespace("sdktest")
@@ -801,7 +688,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_Blob_CSV.json
      */
     /**
@@ -837,8 +724,8 @@ public final class InputsCreateOrReplaceSamples {
 public final class InputsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Input_Delete.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Delete.
+     * json
      */
     /**
      * Sample code: Delete an input.
@@ -860,7 +747,7 @@ public final class InputsDeleteSamples {
 public final class InputsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Reference_Blob_CSV.json
      */
     /**
@@ -875,7 +762,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_EventHub_JSON.json
      */
     /**
@@ -890,7 +777,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_IoTHub_Avro.json
      */
     /**
@@ -905,7 +792,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_Blob_CSV.json
      */
     /**
@@ -929,7 +816,7 @@ public final class InputsGetSamples {
 public final class InputsListByStreamingJobSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_ListByStreamingJob.json
      */
     /**
@@ -944,7 +831,7 @@ public final class InputsListByStreamingJobSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_ListByStreamingJob_Diagnostics.json
      */
     /**
@@ -970,8 +857,8 @@ public final class InputsListByStreamingJobSamples {
 public final class InputsTestSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Input_Test.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Test.
+     * json
      */
     /**
      * Sample code: Test the connection for an input.
@@ -1005,7 +892,7 @@ import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
 public final class InputsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Update_Stream_IoTHub.json
      */
     /**
@@ -1027,7 +914,7 @@ public final class InputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Update_Reference_Blob.json
      */
     /**
@@ -1049,7 +936,7 @@ public final class InputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Update_Stream_EventHub.json
      */
     /**
@@ -1071,7 +958,7 @@ public final class InputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Update_Stream_Blob.json
      */
     /**
@@ -1102,7 +989,7 @@ public final class InputsUpdateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Operation_List.json
      */
     /**
@@ -1122,27 +1009,20 @@ public final class OperationsListSamples {
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
-import com.azure.resourcemanager.streamanalytics.models.AzureDataExplorerOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureDataLakeStoreOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureFunctionOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureSynapseOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureTableOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.BlobWriteMode;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.DeltaSerialization;
 import com.azure.resourcemanager.streamanalytics.models.DocumentDbOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventHubOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.GatewayMessageBusOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.JsonOutputSerializationFormat;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
-import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkMode;
-import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
-import com.azure.resourcemanager.streamanalytics.models.PostgreSqlOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.PowerBIOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusQueueOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusTopicOutputDataSource;
@@ -1156,7 +1036,55 @@ import java.util.Arrays;
 public final class OutputsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureFunction.json
+     */
+    /**
+     * Sample code: Create an Azure Function output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("azureFunction1")
+            .withExistingStreamingjob("sjrg", "sjName")
+            .withDatasource(new AzureFunctionOutputDataSource().withFunctionAppName("functionappforasaautomation")
+                .withFunctionName("HttpTrigger2")
+                .withMaxBatchSize(256.0F)
+                .withMaxBatchCount(100.0F))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_Blob_CSV.json
+     */
+    /**
+     * Sample code: Create a blob output with CSV serialization.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void createABlobOutputWithCSVSerialization(
+        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("output1623")
+            .withExistingStreamingjob("sjrg5023", "sj900")
+            .withDatasource(new BlobOutputDataSource()
+                .withStorageAccounts(Arrays.asList(
+                    new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
+                .withContainer("state")
+                .withPathPattern("{date}/{time}")
+                .withDateFormat("yyyy/MM/dd")
+                .withTimeFormat("HH"))
+            .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_ServiceBusTopic_CSV.json
      */
     /**
@@ -1180,7 +1108,77 @@ public final class OutputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureSQL.json
+     */
+    /**
+     * Sample code: Create an Azure SQL database output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("output1755")
+            .withExistingStreamingjob("sjrg2157", "sj6458")
+            .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("someServer")
+                .withDatabase("someDatabase")
+                .withUser("<user>")
+                .withPassword("fakeTokenPlaceholder")
+                .withTable("someTable"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_DataWarehouse.json
+     */
+    /**
+     * Sample code: Create an Azure Data Warehouse output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("dwOutput")
+            .withExistingStreamingjob("sjrg", "sjName")
+            .withDatasource(new AzureSynapseOutputDataSource().withServer("asatestserver")
+                .withDatabase("zhayaSQLpool")
+                .withTable("test2")
+                .withUser("tolladmin")
+                .withPassword("fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_PowerBI.json
+     */
+    /**
+     * Sample code: Create a Power BI output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void createAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("output3022")
+            .withExistingStreamingjob("sjrg7983", "sj2331")
+            .withDatasource(new PowerBIOutputDataSource().withDataset("someDataset")
+                .withTable("someTable")
+                .withGroupId("ac40305e-3e8d-43ac-8161-c33799f43e95")
+                .withGroupName("MyPowerBIGroup")
+                .withRefreshToken("fakeTokenPlaceholder")
+                .withTokenUserPrincipalName("fakeTokenPlaceholder")
+                .withTokenUserDisplayName("fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_EventHub_JSON.json
      */
     /**
@@ -1200,15 +1198,12 @@ public final class OutputsCreateOrReplaceSamples {
                 .withSharedAccessPolicyKey("fakeTokenPlaceholder"))
             .withSerialization(
                 new JsonSerialization().withEncoding(Encoding.UTF8).withFormat(JsonOutputSerializationFormat.ARRAY))
-            .withWatermarkSettings(
-                new OutputWatermarkProperties().withWatermarkMode(OutputWatermarkMode.SEND_CURRENT_PARTITION_WATERMARK)
-                    .withMaxWatermarkDifferenceAcrossPartitions("16:14:30"))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_ServiceBusQueue_Avro.json
      */
     /**
@@ -1235,7 +1230,31 @@ public final class OutputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_DocumentDB.json
+     */
+    /**
+     * Sample code: Create a DocumentDB output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("output3022")
+            .withExistingStreamingjob("sjrg7983", "sj2331")
+            .withDatasource(new DocumentDbOutputDataSource().withAccountId("someAccountId")
+                .withAccountKey("fakeTokenPlaceholder")
+                .withDatabase("db01")
+                .withCollectionNamePattern("collection")
+                .withPartitionKey("fakeTokenPlaceholder")
+                .withDocumentId("documentId"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_GatewayMessageBus.json
      */
     /**
@@ -1254,7 +1273,7 @@ public final class OutputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_AzureTable.json
      */
     /**
@@ -1279,7 +1298,7 @@ public final class OutputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Create_AzureDataLakeStore_JSON.json
      */
     /**
@@ -1304,223 +1323,6 @@ public final class OutputsCreateOrReplaceSamples {
                 new JsonSerialization().withEncoding(Encoding.UTF8).withFormat(JsonOutputSerializationFormat.ARRAY))
             .create();
     }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_AzureFunction.json
-     */
-    /**
-     * Sample code: Create an Azure Function output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("azureFunction1")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withDatasource(new AzureFunctionOutputDataSource().withFunctionAppName("functionappforasaautomation")
-                .withFunctionName("HttpTrigger2")
-                .withMaxBatchSize(256.0F)
-                .withMaxBatchCount(100.0F))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_Blob_CSV.json
-     */
-    /**
-     * Sample code: Create a blob output with CSV serialization.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void createABlobOutputWithCSVSerialization(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output1623")
-            .withExistingStreamingjob("sjrg5023", "sj900")
-            .withDatasource(new BlobOutputDataSource().withBlobPathPrefix("my/path")
-                .withBlobWriteMode(BlobWriteMode.ONCE)
-                .withStorageAccounts(Arrays.asList(
-                    new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
-                .withContainer("state")
-                .withPathPattern("{date}/{time}")
-                .withDateFormat("yyyy/MM/dd")
-                .withTimeFormat("HH"))
-            .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_AzureSQL.json
-     */
-    /**
-     * Sample code: Create an Azure SQL database output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output1755")
-            .withExistingStreamingjob("sjrg2157", "sj6458")
-            .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("someServer")
-                .withDatabase("someDatabase")
-                .withUser("<user>")
-                .withPassword("fakeTokenPlaceholder")
-                .withTable("someTable"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_PostgreSQL.json
-     */
-    /**
-     * Sample code: Create a PostgreSQL output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAPostgreSQLOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output3022")
-            .withExistingStreamingjob("sjrg7983", "sj2331")
-            .withDatasource(new PostgreSqlOutputDataSource().withServer("someServer")
-                .withDatabase("someDatabase")
-                .withTable("someTable")
-                .withUser("user")
-                .withPassword("fakeTokenPlaceholder")
-                .withMaxWriterCount(1.0F)
-                .withAuthenticationMode(AuthenticationMode.MSI))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_DataWarehouse.json
-     */
-    /**
-     * Sample code: Create an Azure Data Warehouse output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("dwOutput")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withDatasource(new AzureSynapseOutputDataSource().withServer("asatestserver")
-                .withDatabase("zhayaSQLpool")
-                .withTable("test2")
-                .withUser("tolladmin")
-                .withPassword("fakeTokenPlaceholder")
-                .withAuthenticationMode(AuthenticationMode.MSI))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_PowerBI.json
-     */
-    /**
-     * Sample code: Create a Power BI output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void createAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output3022")
-            .withExistingStreamingjob("sjrg7983", "sj2331")
-            .withDatasource(new PowerBIOutputDataSource().withDataset("someDataset")
-                .withTable("someTable")
-                .withGroupId("ac40305e-3e8d-43ac-8161-c33799f43e95")
-                .withGroupName("MyPowerBIGroup")
-                .withRefreshToken("fakeTokenPlaceholder")
-                .withTokenUserPrincipalName("fakeTokenPlaceholder")
-                .withTokenUserDisplayName("fakeTokenPlaceholder"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_AzureDataExplorer.json
-     */
-    /**
-     * Sample code: Create an Azure Data Explorer output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnAzureDataExplorerOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("adxOutput")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withDatasource(
-                new AzureDataExplorerOutputDataSource().withCluster("https://asakustotest.eastus.kusto.windows.net")
-                    .withDatabase("dbname")
-                    .withTable("mytable")
-                    .withAuthenticationMode(AuthenticationMode.MSI))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_DeltaLake.json
-     */
-    /**
-     * Sample code: Create a Delta Lake output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output1221")
-            .withExistingStreamingjob("sjrg", "sjName")
-            .withDatasource(new BlobOutputDataSource()
-                .withStorageAccounts(Arrays.asList(
-                    new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
-                .withContainer("deltaoutput"))
-            .withSerialization(new DeltaSerialization().withDeltaTablePath("/folder1/table1")
-                .withPartitionColumns(Arrays.asList("column1")))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Create_DocumentDB.json
-     */
-    /**
-     * Sample code: Create a DocumentDB output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs()
-            .define("output3022")
-            .withExistingStreamingjob("sjrg7983", "sj2331")
-            .withDatasource(new DocumentDbOutputDataSource().withAccountId("someAccountId")
-                .withAccountKey("fakeTokenPlaceholder")
-                .withDatabase("db01")
-                .withCollectionNamePattern("collection")
-                .withPartitionKey("fakeTokenPlaceholder")
-                .withDocumentId("documentId")
-                .withAuthenticationMode(AuthenticationMode.MSI))
-            .create();
-    }
 }
 ```
 
@@ -1533,8 +1335,8 @@ public final class OutputsCreateOrReplaceSamples {
 public final class OutputsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Delete.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Delete
+     * .json
      */
     /**
      * Sample code: Delete an output.
@@ -1556,21 +1358,7 @@ public final class OutputsDeleteSamples {
 public final class OutputsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Get_DeltaLake.json
-     */
-    /**
-     * Sample code: Get a Delta Lake output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void getADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_DocumentDB.json
      */
     /**
@@ -1584,7 +1372,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_EventHub_JSON.json
      */
     /**
@@ -1599,7 +1387,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureSQL.json
      */
     /**
@@ -1614,7 +1402,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_ServiceBusQueue_Avro.json
      */
     /**
@@ -1629,7 +1417,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureTable.json
      */
     /**
@@ -1643,7 +1431,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_PowerBI.json
      */
     /**
@@ -1657,7 +1445,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_Blob_CSV.json
      */
     /**
@@ -1672,7 +1460,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_ServiceBusTopic_CSV.json
      */
     /**
@@ -1687,7 +1475,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureDataLakeStore_JSON.json
      */
     /**
@@ -1702,7 +1490,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_DataWarehouse.json
      */
     /**
@@ -1717,7 +1505,7 @@ public final class OutputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Get_AzureFunction.json
      */
     /**
@@ -1741,7 +1529,7 @@ public final class OutputsGetSamples {
 public final class OutputsListByStreamingJobSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_ListByStreamingJob.json
      */
     /**
@@ -1766,8 +1554,8 @@ public final class OutputsListByStreamingJobSamples {
 public final class OutputsTestSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Test.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Test.
+     * json
      */
     /**
      * Sample code: Test the connection for an output.
@@ -1790,7 +1578,6 @@ import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseOutputDa
 import com.azure.resourcemanager.streamanalytics.models.AzureTableOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.DeltaSerialization;
 import com.azure.resourcemanager.streamanalytics.models.DocumentDbOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventHubOutputDataSource;
@@ -1800,7 +1587,6 @@ import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.PowerBIOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusQueueOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusTopicOutputDataSource;
-import java.util.Arrays;
 
 /**
  * Samples for Outputs Update.
@@ -1808,7 +1594,7 @@ import java.util.Arrays;
 public final class OutputsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_ServiceBusQueue.json
      */
     /**
@@ -1830,7 +1616,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_DataWarehouse.json
      */
     /**
@@ -1848,7 +1634,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_ServiceBusTopic.json
      */
     /**
@@ -1869,7 +1655,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureDataLakeStore.json
      */
     /**
@@ -1891,7 +1677,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureFunction.json
      */
     /**
@@ -1911,29 +1697,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Update_DeltaLake.json
-     */
-    /**
-     * Sample code: Update a Delta Lake output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        updateADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource = manager.outputs()
-            .getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withDatasource(new BlobOutputDataSource().withContainer("deltaoutput2"))
-            .withSerialization(new DeltaSerialization().withDeltaTablePath("/folder1/table2")
-                .withPartitionColumns(Arrays.asList("column2")))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureTable.json
      */
     /**
@@ -1953,7 +1717,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_PowerBI.json
      */
     /**
@@ -1970,7 +1734,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_Blob.json
      */
     /**
@@ -1991,7 +1755,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureSQL.json
      */
     /**
@@ -2009,7 +1773,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_EventHub.json
      */
     /**
@@ -2031,7 +1795,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_DocumentDB.json
      */
     /**
@@ -2054,7 +1818,6 @@ public final class OutputsUpdateSamples {
 ### PrivateEndpoints_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
 import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
 
@@ -2064,7 +1827,7 @@ import java.util.Arrays;
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * PrivateEndpoint_Create.json
      */
     /**
@@ -2077,10 +1840,10 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
         manager.privateEndpoints()
             .define("testpe")
             .withExistingCluster("sjrg", "testcluster")
-            .withProperties(new PrivateEndpointProperties().withManualPrivateLinkServiceConnections(
-                Arrays.asList(new PrivateLinkServiceConnection().withPrivateLinkServiceId(
+            .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
+                .withPrivateLinkServiceId(
                     "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
-                    .withGroupIds(Arrays.asList("groupIdFromResource")))))
+                .withGroupIds(Arrays.asList("groupIdFromResource"))))
             .create();
     }
 }
@@ -2095,7 +1858,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
 public final class PrivateEndpointsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * PrivateEndpoint_Delete.json
      */
     /**
@@ -2119,7 +1882,7 @@ public final class PrivateEndpointsDeleteSamples {
 public final class PrivateEndpointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * PrivateEndpoint_Get.json
      */
     /**
@@ -2142,7 +1905,7 @@ public final class PrivateEndpointsGetSamples {
 public final class PrivateEndpointsListByClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * PrivateEndpoint_ListByCluster.json
      */
     /**
@@ -2157,35 +1920,9 @@ public final class PrivateEndpointsListByClusterSamples {
 }
 ```
 
-### Sku_List
-
-```java
-/**
- * Samples for Sku List.
- */
-public final class SkuListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * StreamingJob_GetSkus.json
-     */
-    /**
-     * Sample code: Get valid SKUs list for the specified streaming job.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void getValidSKUsListForTheSpecifiedStreamingJob(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.skus().list("sjrg3276", "sj7804", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### StreamingJobs_CreateOrReplace
 
 ```java
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner;
@@ -2194,17 +1931,12 @@ import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSourc
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
-import com.azure.resourcemanager.streamanalytics.models.Identity;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
 import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
-import com.azure.resourcemanager.streamanalytics.models.RefreshConfiguration;
 import com.azure.resourcemanager.streamanalytics.models.Sku;
 import com.azure.resourcemanager.streamanalytics.models.SkuName;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
 import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
-import com.azure.resourcemanager.streamanalytics.models.UpdatableUdfRefreshType;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2215,45 +1947,7 @@ import java.util.Map;
 public final class StreamingJobsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * StreamingJob_Create_UserAssignedIdentity.json
-     */
-    /**
-     * Sample code: Create a streaming job shell (a streaming job with no inputs, outputs, transformation, or functions)
-     * with user assigned identity.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctionsWithUserAssignedIdentity(
-            com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) throws IOException {
-        manager.streamingJobs()
-            .define("sjName")
-            .withRegion("West US")
-            .withExistingResourceGroup("sjrg")
-            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
-                "fakeTokenPlaceholder"))
-            .withIdentity(new Identity().withType("UserAssigned")
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
-                    SerializerFactory.createDefaultManagementSerializerAdapter()
-                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
-            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(5)
-            .withEventsLateArrivalMaxDelayInSeconds(16)
-            .withDataLocale("en-US")
-            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
-            .withInputs(Arrays.asList())
-            .withOutputs(Arrays.asList())
-            .withFunctions(Arrays.asList())
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Create_JobShell.json
      */
     /**
@@ -2270,7 +1964,7 @@ public final class StreamingJobsCreateOrReplaceSamples {
             .withExistingResourceGroup("sjrg6936")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
+            .withSku(new Sku().withName(SkuName.STANDARD))
             .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
             .withOutputErrorPolicy(OutputErrorPolicy.DROP)
             .withEventsOutOfOrderMaxDelayInSeconds(5)
@@ -2285,7 +1979,7 @@ public final class StreamingJobsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Create_CompleteJob.json
      */
     /**
@@ -2302,7 +1996,7 @@ public final class StreamingJobsCreateOrReplaceSamples {
             .withExistingResourceGroup("sjrg3276")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
+            .withSku(new Sku().withName(SkuName.STANDARD))
             .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
             .withOutputErrorPolicy(OutputErrorPolicy.DROP)
             .withEventsOutOfOrderMaxDelayInSeconds(0)
@@ -2332,16 +2026,6 @@ public final class StreamingJobsCreateOrReplaceSamples {
                     .withPassword("fakeTokenPlaceholder")
                     .withTable("tableName"))))
             .withFunctions(Arrays.asList())
-            .withExternals(new External()
-                .withStorageAccount(
-                    new StorageAccount().withAccountName("mystorageaccount").withAccountKey("fakeTokenPlaceholder"))
-                .withContainer("mycontainer")
-                .withPath("UserCustomCode.zip")
-                .withRefreshConfiguration(new RefreshConfiguration().withPathPattern("{date}\\\\{time}")
-                    .withDateFormat("yyyy-dd-MM")
-                    .withTimeFormat("HH")
-                    .withRefreshInterval("00:01:00")
-                    .withRefreshType(UpdatableUdfRefreshType.NONBLOCKING)))
             .create();
     }
 
@@ -2368,7 +2052,7 @@ public final class StreamingJobsCreateOrReplaceSamples {
 public final class StreamingJobsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Delete.json
      */
     /**
@@ -2391,7 +2075,7 @@ public final class StreamingJobsDeleteSamples {
 public final class StreamingJobsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Get_NoExpand.json
      */
     /**
@@ -2407,7 +2091,7 @@ public final class StreamingJobsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Get_Expand.json
      */
     /**
@@ -2435,7 +2119,7 @@ public final class StreamingJobsGetByResourceGroupSamples {
 public final class StreamingJobsListSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_BySubscription_Expand.json
      */
     /**
@@ -2452,7 +2136,7 @@ public final class StreamingJobsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_BySubscription_NoExpand.json
      */
     /**
@@ -2476,7 +2160,7 @@ public final class StreamingJobsListSamples {
 public final class StreamingJobsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_ByResourceGroup_Expand.json
      */
     /**
@@ -2495,7 +2179,7 @@ public final class StreamingJobsListByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_ByResourceGroup_NoExpand.json
      */
     /**
@@ -2521,7 +2205,7 @@ import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParamet
 public final class StreamingJobsScaleSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Scale.json
      */
     /**
@@ -2531,7 +2215,7 @@ public final class StreamingJobsScaleSamples {
      */
     public static void scaleAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         manager.streamingJobs()
-            .scale("sjrg", "sjName", new ScaleStreamingJobParameters().withStreamingUnits(36),
+            .scale("sjrg6936", "sj59", new ScaleStreamingJobParameters().withStreamingUnits(36),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2550,7 +2234,7 @@ import java.time.OffsetDateTime;
 public final class StreamingJobsStartSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_JobStartTime.json
      */
     /**
@@ -2568,7 +2252,7 @@ public final class StreamingJobsStartSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_CustomTime.json
      */
     /**
@@ -2587,7 +2271,7 @@ public final class StreamingJobsStartSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_LastOutputEventTime.json
      */
     /**
@@ -2614,7 +2298,7 @@ public final class StreamingJobsStartSamples {
 public final class StreamingJobsStopSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Stop.json
      */
     /**
@@ -2639,7 +2323,7 @@ import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
 public final class StreamingJobsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Update.json
      */
     /**
@@ -2656,50 +2340,6 @@ public final class StreamingJobsUpdateSamples {
 }
 ```
 
-### Subscriptions_CompileQuery
-
-```java
-import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
-import com.azure.resourcemanager.streamanalytics.models.CompileQuery;
-import com.azure.resourcemanager.streamanalytics.models.FunctionInput;
-import com.azure.resourcemanager.streamanalytics.models.FunctionOutput;
-import com.azure.resourcemanager.streamanalytics.models.JobType;
-import com.azure.resourcemanager.streamanalytics.models.QueryFunction;
-import com.azure.resourcemanager.streamanalytics.models.QueryInput;
-import java.util.Arrays;
-
-/**
- * Samples for Subscriptions CompileQuery.
- */
-public final class SubscriptionsCompileQuerySamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Subscription_CompileQuery.json
-     */
-    /**
-     * Sample code: Compile the Stream Analytics query.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        compileTheStreamAnalyticsQuery(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions()
-            .compileQueryWithResponse("West US",
-                new CompileQuery().withQuery("SELECT\r\n    *\r\nINTO\r\n    [output1]\r\nFROM\r\n    [input1]")
-                    .withInputs(Arrays.asList(new QueryInput().withName("input1").withType("Stream")))
-                    .withFunctions(Arrays.asList(new QueryFunction().withName("function1")
-                        .withType("Scalar")
-                        .withBindingType("Microsoft.StreamAnalytics/JavascriptUdf")
-                        .withInputs(Arrays.asList(new FunctionInput().withDataType("any")))
-                        .withOutput(new FunctionOutput().withDataType("bigint"))))
-                    .withJobType(JobType.CLOUD)
-                    .withCompatibilityLevel(CompatibilityLevel.ONE_TWO),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Subscriptions_ListQuotas
 
 ```java
@@ -2709,7 +2349,7 @@ public final class SubscriptionsCompileQuerySamples {
 public final class SubscriptionsListQuotasSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Subscription_ListQuotas.json
      */
     /**
@@ -2724,229 +2364,6 @@ public final class SubscriptionsListQuotasSamples {
 }
 ```
 
-### Subscriptions_SampleInput
-
-```java
-import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputInner;
-import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
-import java.util.Arrays;
-
-/**
- * Samples for Subscriptions SampleInput.
- */
-public final class SubscriptionsSampleInputSamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Subscription_SampleInput.json
-     */
-    /**
-     * Sample code: Sample the Stream Analytics input data.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        sampleTheStreamAnalyticsInputData(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions()
-            .sampleInput("West US",
-                new SampleInputInner()
-                    .withInput(new InputInner().withProperties(new StreamInputProperties()
-                        .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                        .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
-                            .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
-                                .withAccountKey("fakeTokenPlaceholder")))
-                            .withContainer("state")
-                            .withPathPattern("{date}/{time}")
-                            .withDateFormat("yyyy/MM/dd")
-                            .withTimeFormat("HH"))))
-                    .withCompatibilityLevel("1.2")
-                    .withEventsUri("http://myoutput.com")
-                    .withDataLocale("en-US"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscriptions_TestInput
-
-```java
-import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.TestInputInner;
-import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
-import java.util.Arrays;
-
-/**
- * Samples for Subscriptions TestInput.
- */
-public final class SubscriptionsTestInputSamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Subscription_TestInput.json
-     */
-    /**
-     * Sample code: Test the Stream Analytics input.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        testTheStreamAnalyticsInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions()
-            .testInput("West US",
-                new TestInputInner().withInput(new InputInner().withProperties(new StreamInputProperties()
-                    .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                    .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
-                        .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
-                            .withAccountKey("fakeTokenPlaceholder")))
-                        .withContainer("state")
-                        .withPathPattern("{date}/{time}")
-                        .withDateFormat("yyyy/MM/dd")
-                        .withTimeFormat("HH")))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscriptions_TestOutput
-
-```java
-import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.TestOutputInner;
-import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import java.util.Arrays;
-
-/**
- * Samples for Subscriptions TestOutput.
- */
-public final class SubscriptionsTestOutputSamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Subscription_TestOutput.json
-     */
-    /**
-     * Sample code: Test the Stream Analytics output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        testTheStreamAnalyticsOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions()
-            .testOutput("West US",
-                new TestOutputInner().withOutput(new OutputInner()
-                    .withDatasource(new BlobOutputDataSource()
-                        .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
-                            .withAccountKey("fakeTokenPlaceholder")))
-                        .withContainer("state")
-                        .withPathPattern("{date}/{time}")
-                        .withDateFormat("yyyy/MM/dd")
-                        .withTimeFormat("HH"))
-                    .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscriptions_TestQuery
-
-```java
-import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.StreamingJobInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.TestQueryInner;
-import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner;
-import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
-import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
-import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
-import com.azure.resourcemanager.streamanalytics.models.RawOutputDatasource;
-import com.azure.resourcemanager.streamanalytics.models.RawStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.Sku;
-import com.azure.resourcemanager.streamanalytics.models.SkuName;
-import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
-import com.azure.resourcemanager.streamanalytics.models.TestQueryDiagnostics;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for Subscriptions TestQuery.
- */
-public final class SubscriptionsTestQuerySamples {
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Subscription_TestQuery.json
-     */
-    /**
-     * Sample code: Test the Stream Analytics query.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        testTheStreamAnalyticsQuery(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions()
-            .testQuery("West US",
-                new TestQueryInner()
-                    .withDiagnostics(
-                        new TestQueryDiagnostics().withWriteUri("http://myoutput.com").withPath("/pathto/subdirectory"))
-                    .withStreamingJob(
-                        new StreamingJobInner().withLocation("West US")
-                            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
-                                "fakeTokenPlaceholder"))
-                            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-                            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
-                            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
-                            .withEventsOutOfOrderMaxDelayInSeconds(0)
-                            .withEventsLateArrivalMaxDelayInSeconds(5)
-                            .withDataLocale("en-US")
-                            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
-                            .withInputs(
-                                Arrays.asList(
-                                    new InputInner()
-                                        .withProperties(
-                                            new StreamInputProperties()
-                                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                                                .withDatasource(new RawStreamInputDataSource()
-                                                    .withPayloadUri("http://myinput.com")))
-                                        .withName("inputtest")))
-                            .withTransformation(new TransformationInner().withName("transformationtest")
-                                .withStreamingUnits(1)
-                                .withQuery("Select Id, Name from inputtest"))
-                            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest")
-                                .withDatasource(new RawOutputDatasource().withPayloadUri("http://myoutput.com"))
-                                .withSerialization(new JsonSerialization())))
-                            .withFunctions(Arrays.asList())),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
 ### Transformations_CreateOrReplace
 
 ```java
@@ -2956,7 +2373,7 @@ public final class SubscriptionsTestQuerySamples {
 public final class TransformationsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Create.json
      */
     /**
@@ -2984,7 +2401,7 @@ public final class TransformationsCreateOrReplaceSamples {
 public final class TransformationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Get.json
      */
     /**
@@ -3010,7 +2427,7 @@ import com.azure.resourcemanager.streamanalytics.models.Transformation;
 public final class TransformationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Update.json
      */
     /**

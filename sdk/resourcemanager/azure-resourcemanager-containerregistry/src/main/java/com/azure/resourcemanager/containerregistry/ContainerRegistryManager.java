@@ -97,7 +97,11 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
                 .buildClient());
     }
 
-    /** @return the availability set resource management API entry point */
+    /**
+     * Gets the availability set resource management API entry point.
+     *
+     * @return the availability set resource management API entry point
+     */
     public Registries containerRegistries() {
         if (this.registries == null) {
             this.registries = new RegistriesImpl(this);

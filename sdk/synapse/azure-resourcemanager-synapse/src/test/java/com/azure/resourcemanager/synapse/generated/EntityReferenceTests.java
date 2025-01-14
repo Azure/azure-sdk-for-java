@@ -13,19 +13,19 @@ public final class EntityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityReference model
-            = BinaryData.fromString("{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"ohykfkxbbcbrw\"}")
+            = BinaryData.fromString("{\"type\":\"LinkedServiceReference\",\"referenceName\":\"eeczgfbu\"}")
                 .toObject(EntityReference.class);
-        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("ohykfkxbbcbrw", model.referenceName());
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE, model.type());
+        Assertions.assertEquals("eeczgfbu", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntityReference model
-            = new EntityReference().withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
-                .withReferenceName("ohykfkxbbcbrw");
+            = new EntityReference().withType(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE)
+                .withReferenceName("eeczgfbu");
         model = BinaryData.fromObject(model).toObject(EntityReference.class);
-        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("ohykfkxbbcbrw", model.referenceName());
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE, model.type());
+        Assertions.assertEquals("eeczgfbu", model.referenceName());
     }
 }

@@ -26,12 +26,7 @@ public enum HttpPipelinePosition {
     AUTHENTICATION,
 
     /**
-     * The policy will be positioned adjacent to the {@link HttpLoggingPolicy}.
+     * The policy will be positioned adjacent to the {@link HttpInstrumentationPolicy}.
      */
-    LOGGING,
-
-    /**
-     * The policy will be positioned adjacent to the {@link HttpTelemetryPolicy}.
-     */
-    TELEMETRY;
+    INSTRUMENTATION
 }

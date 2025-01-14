@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 
 /**
- * <p>The Azure JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading and
- * writing has the type itself define how to read JSON to create an instance of itself and how it writes out to JSON.
- * Azure JSON also allows for external implementations for JSON reading and writing by offering a
+ * <p>The Client Core JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading
+ * and writing has the type itself define how to read JSON to create an instance of itself and how it writes out to
+ * JSON. Client Core JSON also allows for external implementations for JSON reading and writing by offering a
  * <a href="https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html">service provider interface</a> to load
- * implementations from the classpath. However, if one is not found, the Azure JSON library provides a default
+ * implementations from the classpath. However, if one is not found, the Client Core JSON library provides a default
  * implementation.</p>
  *
  * <h2>Getting Started</h2>
  *
- * <p>{@link io.clientcore.core.serialization.json.JsonSerializable} is the base of Azure JSON: it's the interface that types implement to
+ * <p>{@link io.clientcore.core.serialization.json.JsonSerializable} is the base of Client Core JSON: it's the interface that types implement to
  * provide stream-style JSON reading and writing functionality. The interface has a single implementable method
  * {@link io.clientcore.core.serialization.json.JsonSerializable#toJson(io.clientcore.core.serialization.json.JsonWriter) toJson(JsonWriter)} that defines how the
  * object is written as JSON, to the {@link io.clientcore.core.serialization.json.JsonWriter}, and a static method
@@ -394,7 +394,7 @@
  *
  * <p>{@link io.clientcore.core.serialization.json.JsonProviders} is a utility class that handles finding {@link io.clientcore.core.serialization.json.JsonProvider}
  * implementations on the classpath and should be the default way to create instances of
- * {@link io.clientcore.core.serialization.json.JsonReader} and {@link io.clientcore.core.serialization.json.JsonWriter}. As mentioned earlier, the Azure JSON
+ * {@link io.clientcore.core.serialization.json.JsonReader} and {@link io.clientcore.core.serialization.json.JsonWriter}. As mentioned earlier, the Client Core JSON
  * package provides a default implementation allowing for the library to be used stand-alone.
  * {@link io.clientcore.core.serialization.json.JsonReader} can be created from {@code byte[]}, {@link java.lang.String},
  * {@link java.io.InputStream}, and {@link java.io.Reader} sources, {@link io.clientcore.core.serialization.json.JsonWriter} can be created
@@ -437,7 +437,7 @@
  *     + &quot;&#92;&quot;threads&#92;&quot;16&#92;&quot;,&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Processor Corp&#92;&quot;,&#92;&quot;clockSpeedInHertz&#92;&quot;:4000000000,&quot;
  *     + &quot;&#92;&quot;releaseDate&#92;&quot;:&#92;&quot;2023-01-01&#92;&quot;&#125;,&#92;&quot;Memory&#92;&quot;:&#123;&#92;&quot;memoryInBytes&#92;&quot;:10000000000,&quot;
  *     + &quot;&#92;&quot;clockSpeedInHertz&#92;&quot;:4800000000,&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Memory Corp&#92;&quot;,&#92;&quot;errorCorrecting&#92;&quot;:true&#125;,&quot;
- *     + &quot;&#92;&quot;AcceleratedNetwork&#92;&quot;:true,&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;Azure&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;
+ *     + &quot;&#92;&quot;AcceleratedNetwork&#92;&quot;:true,&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;SomeCloud&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;
  *     .getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
  *
  * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
@@ -454,7 +454,7 @@
  *     + &quot;&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Processor Corp&#92;&quot;,&#92;&quot;clockSpeedInHertz&#92;&quot;:4000000000,&#92;&quot;releaseDate&#92;&quot;:&#92;&quot;2023-01-01&#92;&quot;&#125;,&quot;
  *     + &quot;&#92;&quot;Memory&#92;&quot;:&#123;&#92;&quot;memoryInBytes&#92;&quot;:10000000000,&#92;&quot;clockSpeedInHertz&#92;&quot;:4800000000,&quot;
  *     + &quot;&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Memory Corp&#92;&quot;,&#92;&quot;errorCorrecting&#92;&quot;:true&#125;,&#92;&quot;AcceleratedNetwork&#92;&quot;:true,&quot;
- *     + &quot;&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;Azure&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;;
+ *     + &quot;&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;SomeCloud&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;;
  *
  * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
  *     return VmStatistics.fromJson&#40;jsonReader&#41;;
@@ -467,7 +467,7 @@
  * <!-- src_embed io.clientcore.core.serialization.json.JsonWriter.writeJsonOutputStream -->
  * <pre>
  * Map&lt;String, Object&gt; additionalVmProperties = new LinkedHashMap&lt;&gt;&#40;&#41;;
- * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;Azure&quot;&#41;;
+ * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;SomeCloud&quot;&#41;;
  * additionalVmProperties.put&#40;&quot;Available&quot;, true&#41;;
  *
  * VmStatistics vmStatistics = new VmStatistics&#40;&quot;large&quot;,
@@ -489,7 +489,7 @@
  * &#47;&#47; &#123;&quot;VMSize&quot;:&quot;large&quot;,&quot;Processor&quot;:&#123;&quot;cores&quot;:8,&quot;threads&quot;:16,&quot;manufacturer&quot;:&quot;Processor Corp&quot;,
  * &#47;&#47;   &quot;clockSpeedInHertz&quot;:4000000000.0,&quot;releaseDate&quot;:&quot;2023-01-01&quot;&#125;,&quot;Memory&quot;:&#123;&quot;memoryInBytes&quot;:10000000000,
  * &#47;&#47;   &quot;clockSpeedInHertz&quot;:4800000000.0,&quot;manufacturer&quot;:&quot;Memory Corp&quot;,&quot;errorCorrecting&quot;:true&#125;,
- * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;Azure&quot;,&quot;Available&quot;:true&#125;
+ * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;SomeCloud&quot;,&quot;Available&quot;:true&#125;
  * System.out.println&#40;json&#41;;
  * </pre>
  * <!-- end io.clientcore.core.serialization.json.JsonWriter.writeJsonOutputStream -->
@@ -499,7 +499,7 @@
  * <!-- src_embed io.clientcore.core.serialization.json.JsonWriter.writeJsonWriter -->
  * <pre>
  * Map&lt;String, Object&gt; additionalVmProperties = new LinkedHashMap&lt;&gt;&#40;&#41;;
- * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;Azure&quot;&#41;;
+ * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;SomeCloud&quot;&#41;;
  * additionalVmProperties.put&#40;&quot;Available&quot;, true&#41;;
  *
  * VmStatistics vmStatistics = new VmStatistics&#40;&quot;large&quot;,
@@ -521,7 +521,7 @@
  * &#47;&#47; &#123;&quot;VMSize&quot;:&quot;large&quot;,&quot;Processor&quot;:&#123;&quot;cores&quot;:8,&quot;threads&quot;:16,&quot;manufacturer&quot;:&quot;Processor Corp&quot;,
  * &#47;&#47;   &quot;clockSpeedInHertz&quot;:4000000000.0,&quot;releaseDate&quot;:&quot;2023-01-01&quot;&#125;,&quot;Memory&quot;:&#123;&quot;memoryInBytes&quot;:10000000000,
  * &#47;&#47;   &quot;clockSpeedInHertz&quot;:4800000000.0,&quot;manufacturer&quot;:&quot;Memory Corp&quot;,&quot;errorCorrecting&quot;:true&#125;,
- * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;Azure&quot;,&quot;Available&quot;:true&#125;
+ * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;SomeCloud&quot;,&quot;Available&quot;:true&#125;
  * System.out.println&#40;json&#41;;
  * </pre>
  * <!-- end io.clientcore.core.serialization.json.JsonWriter.writeJsonWriter -->

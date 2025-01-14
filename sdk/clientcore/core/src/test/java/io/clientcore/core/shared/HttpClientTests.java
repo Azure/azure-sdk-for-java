@@ -26,7 +26,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.util.UriBuilder;
@@ -1491,10 +1490,7 @@ public abstract class HttpClientTests {
         // Scenario: Log the body so that body buffering/replay behavior is exercised.
 
         // Order in which policies applied will be the order in which they added to builder
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setLoggingPolicy(new HttpLoggingPolicy(
-                new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
-            .build();
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 
         Response<HttpBinJSON> response
             = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new JsonSerializer())
@@ -1743,7 +1739,7 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
     public void canRecognizeServerSentEvent() throws IOException {

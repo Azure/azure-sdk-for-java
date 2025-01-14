@@ -23,7 +23,7 @@ public final class ClustersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"Default\",\"capacity\":23704541},\"etag\":\"jwltlwtjjgu\",\"properties\":{\"createdDate\":\"2021-11-29T19:35:06Z\",\"clusterId\":\"snv\",\"provisioningState\":\"Failed\",\"capacityAllocated\":1107187248,\"capacityAssigned\":455457939},\"location\":\"poaimlnwiaaomyl\",\"tags\":{\"lcsethwwnpj\":\"z\"},\"id\":\"l\",\"name\":\"zswpchwa\",\"type\":\"fb\"}]}";
+            = "{\"value\":[{\"sku\":{\"name\":\"Default\",\"capacity\":1584264220},\"etag\":\"dgoihxumwctondzj\",\"properties\":{\"createdDate\":\"2021-02-01T20:04:58Z\",\"clusterId\":\"dlwggytsbwtovv\",\"provisioningState\":\"Canceled\",\"capacityAllocated\":2041049436,\"capacityAssigned\":800109726},\"location\":\"fiufx\",\"tags\":{\"sniffc\":\"pirgnepttwq\",\"frddhcrati\":\"mqnrojlpijnkr\",\"zq\":\"zronasxift\"},\"id\":\"zh\",\"name\":\"tw\",\"type\":\"sgogczhonnxk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ClustersListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Cluster> response
-            = manager.clusters().listByResourceGroup("lkb", com.azure.core.util.Context.NONE);
+            = manager.clusters().listByResourceGroup("knfd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("poaimlnwiaaomyl", response.iterator().next().location());
-        Assertions.assertEquals("z", response.iterator().next().tags().get("lcsethwwnpj"));
+        Assertions.assertEquals("fiufx", response.iterator().next().location());
+        Assertions.assertEquals("pirgnepttwq", response.iterator().next().tags().get("sniffc"));
         Assertions.assertEquals(ClusterSkuName.DEFAULT, response.iterator().next().sku().name());
-        Assertions.assertEquals(23704541, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(1584264220, response.iterator().next().sku().capacity());
     }
 }

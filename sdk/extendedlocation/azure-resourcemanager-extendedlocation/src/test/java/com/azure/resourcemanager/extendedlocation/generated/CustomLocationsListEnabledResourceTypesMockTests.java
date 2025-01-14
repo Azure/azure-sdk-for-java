@@ -22,7 +22,7 @@ public final class CustomLocationsListEnabledResourceTypesMockTests {
     @Test
     public void testListEnabledResourceTypes() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterExtensionId\":\"hibnuqqkpika\",\"extensionType\":\"gvtqagnbuynh\",\"typesMetadata\":[{\"apiVersion\":\"mebf\",\"resourceProviderNamespace\":\"arbu\",\"resourceType\":\"cvpnazzmhjrunmpx\"}]},\"id\":\"dbhrbnlankxm\",\"name\":\"skpbhenbtkcxywn\",\"type\":\"tnrsyn\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterExtensionId\":\"kg\",\"extensionType\":\"auu\",\"typesMetadata\":[{\"apiVersion\":\"vxieduugidyj\",\"resourceProviderNamespace\":\"f\",\"resourceType\":\"aos\"},{\"apiVersion\":\"xc\",\"resourceProviderNamespace\":\"npc\",\"resourceType\":\"ocohslkevleg\"}]},\"id\":\"fbuhfmvfaxkffe\",\"name\":\"ithlvmezyvshxm\",\"type\":\"sbbzo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class CustomLocationsListEnabledResourceTypesMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnabledResourceType> response = manager.customLocations()
-            .listEnabledResourceTypes("fbxzpuzycisp", "qzahmgkbrp", com.azure.core.util.Context.NONE);
+            .listEnabledResourceTypes("kcciwwzjuqkhr", "ajiwkuo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hibnuqqkpika", response.iterator().next().clusterExtensionId());
-        Assertions.assertEquals("gvtqagnbuynh", response.iterator().next().extensionType());
-        Assertions.assertEquals("mebf", response.iterator().next().typesMetadata().get(0).apiVersion());
-        Assertions.assertEquals("arbu", response.iterator().next().typesMetadata().get(0).resourceProviderNamespace());
-        Assertions.assertEquals("cvpnazzmhjrunmpx", response.iterator().next().typesMetadata().get(0).resourceType());
+        Assertions.assertEquals("kg", response.iterator().next().clusterExtensionId());
+        Assertions.assertEquals("auu", response.iterator().next().extensionType());
+        Assertions.assertEquals("vxieduugidyj", response.iterator().next().typesMetadata().get(0).apiVersion());
+        Assertions.assertEquals("f", response.iterator().next().typesMetadata().get(0).resourceProviderNamespace());
+        Assertions.assertEquals("aos", response.iterator().next().typesMetadata().get(0).resourceType());
     }
 }

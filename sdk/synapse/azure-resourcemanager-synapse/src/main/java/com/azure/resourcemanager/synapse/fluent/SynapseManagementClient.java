@@ -26,6 +26,13 @@ public interface SynapseManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      * 
      * @return the httpPipeline value.
@@ -40,11 +47,11 @@ public interface SynapseManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AzureADOnlyAuthenticationsClient object to access its operations.
+     * Gets the BigDataPoolsClient object to access its operations.
      * 
-     * @return the AzureADOnlyAuthenticationsClient object.
+     * @return the BigDataPoolsClient object.
      */
-    AzureADOnlyAuthenticationsClient getAzureADOnlyAuthentications();
+    BigDataPoolsClient getBigDataPools();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -61,11 +68,88 @@ public interface SynapseManagementClient {
     IpFirewallRulesClient getIpFirewallRules();
 
     /**
+     * Gets the IntegrationRuntimesClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimesClient object.
+     */
+    IntegrationRuntimesClient getIntegrationRuntimes();
+
+    /**
+     * Gets the IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeNodeIpAddressOperationsClient object.
+     */
+    IntegrationRuntimeNodeIpAddressOperationsClient getIntegrationRuntimeNodeIpAddressOperations();
+
+    /**
+     * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeObjectMetadatasClient object.
+     */
+    IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas();
+
+    /**
+     * Gets the IntegrationRuntimeNodesClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeNodesClient object.
+     */
+    IntegrationRuntimeNodesClient getIntegrationRuntimeNodes();
+
+    /**
+     * Gets the IntegrationRuntimeCredentialsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeCredentialsClient object.
+     */
+    IntegrationRuntimeCredentialsClient getIntegrationRuntimeCredentials();
+
+    /**
+     * Gets the IntegrationRuntimeConnectionInfosClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeConnectionInfosClient object.
+     */
+    IntegrationRuntimeConnectionInfosClient getIntegrationRuntimeConnectionInfos();
+
+    /**
+     * Gets the IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeAuthKeysOperationsClient object.
+     */
+    IntegrationRuntimeAuthKeysOperationsClient getIntegrationRuntimeAuthKeysOperations();
+
+    /**
+     * Gets the IntegrationRuntimeMonitoringDatasClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeMonitoringDatasClient object.
+     */
+    IntegrationRuntimeMonitoringDatasClient getIntegrationRuntimeMonitoringDatas();
+
+    /**
+     * Gets the IntegrationRuntimeStatusOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeStatusOperationsClient object.
+     */
+    IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations();
+
+    /**
      * Gets the KeysClient object to access its operations.
      * 
      * @return the KeysClient object.
      */
     KeysClient getKeys();
+
+    /**
+     * Gets the LibrariesClient object to access its operations.
+     * 
+     * @return the LibrariesClient object.
+     */
+    LibrariesClient getLibraries();
+
+    /**
+     * Gets the LibrariesOperationsClient object to access its operations.
+     * 
+     * @return the LibrariesOperationsClient object.
+     */
+    LibrariesOperationsClient getLibrariesOperations();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -75,11 +159,11 @@ public interface SynapseManagementClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
-     * Gets the PrivateLinkResourcesOperationsClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
-     * @return the PrivateLinkResourcesOperationsClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    PrivateLinkResourcesOperationsClient getPrivateLinkResourcesOperations();
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the PrivateLinkHubPrivateLinkResourcesClient object to access its operations.
@@ -356,14 +440,6 @@ public interface SynapseManagementClient {
     WorkspaceManagedSqlServerRecoverableSqlPoolsClient getWorkspaceManagedSqlServerRecoverableSqlPools();
 
     /**
-     * Gets the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
-     * 
-     * @return the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object.
-     */
-    WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
-        getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings();
-
-    /**
      * Gets the WorkspacesClient object to access its operations.
      * 
      * @return the WorkspacesClient object.
@@ -397,172 +473,4 @@ public interface SynapseManagementClient {
      * @return the RestorableDroppedSqlPoolsClient object.
      */
     RestorableDroppedSqlPoolsClient getRestorableDroppedSqlPools();
-
-    /**
-     * Gets the BigDataPoolsClient object to access its operations.
-     * 
-     * @return the BigDataPoolsClient object.
-     */
-    BigDataPoolsClient getBigDataPools();
-
-    /**
-     * Gets the LibrariesClient object to access its operations.
-     * 
-     * @return the LibrariesClient object.
-     */
-    LibrariesClient getLibraries();
-
-    /**
-     * Gets the LibrariesOperationsClient object to access its operations.
-     * 
-     * @return the LibrariesOperationsClient object.
-     */
-    LibrariesOperationsClient getLibrariesOperations();
-
-    /**
-     * Gets the IntegrationRuntimesClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimesClient object.
-     */
-    IntegrationRuntimesClient getIntegrationRuntimes();
-
-    /**
-     * Gets the IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeNodeIpAddressOperationsClient object.
-     */
-    IntegrationRuntimeNodeIpAddressOperationsClient getIntegrationRuntimeNodeIpAddressOperations();
-
-    /**
-     * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeObjectMetadatasClient object.
-     */
-    IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas();
-
-    /**
-     * Gets the IntegrationRuntimeNodesClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeNodesClient object.
-     */
-    IntegrationRuntimeNodesClient getIntegrationRuntimeNodes();
-
-    /**
-     * Gets the IntegrationRuntimeCredentialsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeCredentialsClient object.
-     */
-    IntegrationRuntimeCredentialsClient getIntegrationRuntimeCredentials();
-
-    /**
-     * Gets the IntegrationRuntimeConnectionInfosClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeConnectionInfosClient object.
-     */
-    IntegrationRuntimeConnectionInfosClient getIntegrationRuntimeConnectionInfos();
-
-    /**
-     * Gets the IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeAuthKeysOperationsClient object.
-     */
-    IntegrationRuntimeAuthKeysOperationsClient getIntegrationRuntimeAuthKeysOperations();
-
-    /**
-     * Gets the IntegrationRuntimeMonitoringDatasClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeMonitoringDatasClient object.
-     */
-    IntegrationRuntimeMonitoringDatasClient getIntegrationRuntimeMonitoringDatas();
-
-    /**
-     * Gets the IntegrationRuntimeStatusOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeStatusOperationsClient object.
-     */
-    IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations();
-
-    /**
-     * Gets the GetsClient object to access its operations.
-     * 
-     * @return the GetsClient object.
-     */
-    GetsClient getGets();
-
-    /**
-     * Gets the SparkConfigurationsClient object to access its operations.
-     * 
-     * @return the SparkConfigurationsClient object.
-     */
-    SparkConfigurationsClient getSparkConfigurations();
-
-    /**
-     * Gets the SparkConfigurationsOperationsClient object to access its operations.
-     * 
-     * @return the SparkConfigurationsOperationsClient object.
-     */
-    SparkConfigurationsOperationsClient getSparkConfigurationsOperations();
-
-    /**
-     * Gets the KustoOperationsClient object to access its operations.
-     * 
-     * @return the KustoOperationsClient object.
-     */
-    KustoOperationsClient getKustoOperations();
-
-    /**
-     * Gets the KustoPoolsClient object to access its operations.
-     * 
-     * @return the KustoPoolsClient object.
-     */
-    KustoPoolsClient getKustoPools();
-
-    /**
-     * Gets the KustoPoolChildResourcesClient object to access its operations.
-     * 
-     * @return the KustoPoolChildResourcesClient object.
-     */
-    KustoPoolChildResourcesClient getKustoPoolChildResources();
-
-    /**
-     * Gets the KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
-     * 
-     * @return the KustoPoolAttachedDatabaseConfigurationsClient object.
-     */
-    KustoPoolAttachedDatabaseConfigurationsClient getKustoPoolAttachedDatabaseConfigurations();
-
-    /**
-     * Gets the KustoPoolDatabasesClient object to access its operations.
-     * 
-     * @return the KustoPoolDatabasesClient object.
-     */
-    KustoPoolDatabasesClient getKustoPoolDatabases();
-
-    /**
-     * Gets the KustoPoolDataConnectionsClient object to access its operations.
-     * 
-     * @return the KustoPoolDataConnectionsClient object.
-     */
-    KustoPoolDataConnectionsClient getKustoPoolDataConnections();
-
-    /**
-     * Gets the KustoPoolPrincipalAssignmentsClient object to access its operations.
-     * 
-     * @return the KustoPoolPrincipalAssignmentsClient object.
-     */
-    KustoPoolPrincipalAssignmentsClient getKustoPoolPrincipalAssignments();
-
-    /**
-     * Gets the KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
-     * 
-     * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
-     */
-    KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments();
-
-    /**
-     * Gets the KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
-     * 
-     * @return the KustoPoolPrivateLinkResourcesOperationsClient object.
-     */
-    KustoPoolPrivateLinkResourcesOperationsClient getKustoPoolPrivateLinkResourcesOperations();
 }

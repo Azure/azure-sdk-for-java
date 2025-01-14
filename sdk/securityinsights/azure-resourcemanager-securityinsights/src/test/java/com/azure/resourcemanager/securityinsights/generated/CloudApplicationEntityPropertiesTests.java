@@ -11,7 +11,7 @@ public final class CloudApplicationEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudApplicationEntityProperties model = BinaryData.fromString(
-            "{\"appId\":1966845044,\"appName\":\"eqfcbuulpy\",\"instanceName\":\"lq\",\"additionalData\":{\"klkqnqvkixnmb\":\"datahtujcyohigimwdc\",\"zayspzvriet\":\"datamecuyrzwim\",\"pvdvatlzmgs\":\"datafphmdzxplg\"},\"friendlyName\":\"nzrsbkkzovlzdmn\"}")
+            "{\"appId\":1918015991,\"appName\":\"hkfkimrtixokf\",\"instanceName\":\"yinljqe\",\"additionalData\":{\"monstshiyxgve\":\"datahi\",\"wcobie\":\"datafclduccbirdsv\",\"gshejjtbxqmulux\":\"datastmninwjizcilng\"},\"friendlyName\":\"qzvnersbycucr\"}")
             .toObject(CloudApplicationEntityProperties.class);
     }
 

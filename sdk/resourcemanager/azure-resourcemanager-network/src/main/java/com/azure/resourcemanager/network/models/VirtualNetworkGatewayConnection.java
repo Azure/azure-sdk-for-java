@@ -28,13 +28,25 @@ public interface VirtualNetworkGatewayConnection
      */
     String authorizationKey();
 
-    /** @return the reference to virtual network gateway resource */
+    /**
+     * Gets the reference to virtual network gateway resource.
+     *
+     * @return the reference to virtual network gateway resource
+     */
     String virtualNetworkGateway1Id();
 
-    /** @return the reference to virtual network gateway resource. */
+    /**
+     * Gets the reference to virtual network gateway resource.
+     *
+     * @return the reference to virtual network gateway resource.
+     */
     String virtualNetworkGateway2Id();
 
-    /** @return the reference to local network gateway resource */
+    /**
+     * Gets the reference to local network gateway resource.
+     *
+     * @return the reference to local network gateway resource
+     */
     String localNetworkGateway2Id();
 
     /**
@@ -44,10 +56,18 @@ public interface VirtualNetworkGatewayConnection
      */
     VirtualNetworkGatewayConnectionType connectionType();
 
-    /** @return the routing weight */
+    /**
+     * Gets the routing weight.
+     *
+     * @return the routing weight
+     */
     int routingWeight();
 
-    /** @return the IPSec shared key */
+    /**
+     * Gets the IPSec shared key.
+     *
+     * @return the IPSec shared key
+     */
     String sharedKey();
 
     /**
@@ -64,25 +84,53 @@ public interface VirtualNetworkGatewayConnection
      */
     Collection<TunnelConnectionHealth> tunnelConnectionStatus();
 
-    /** @return the egress bytes transferred in this connection */
+    /**
+     * Gets the egress bytes transferred in this connection.
+     *
+     * @return the egress bytes transferred in this connection
+     */
     long egressBytesTransferred();
 
-    /** @return the egress bytes transferred in this connection. */
+    /**
+     * Gets the egress bytes transferred in this connection.
+     *
+     * @return the egress bytes transferred in this connection.
+     */
     long ingressBytesTransferred();
 
-    /** @return the reference to peerings resource */
+    /**
+     * Gets the reference to peerings resource.
+     *
+     * @return the reference to peerings resource
+     */
     String peerId();
 
-    /** @return the enableBgp flag */
+    /**
+     * Checks whether BGP is enabled.
+     *
+     * @return the enableBgp flag
+     */
     boolean isBgpEnabled();
 
-    /** @return if policy-based traffic selectors enabled */
+    /**
+     * Checks whether policy-based traffic selectors enabled.
+     *
+     * @return if policy-based traffic selectors enabled
+     */
     boolean usePolicyBasedTrafficSelectors();
 
-    /** @return the IPSec Policies to be considered by this connection */
+    /**
+     * Gets the IPSec Policies to be considered by this connection.
+     *
+     * @return the IPSec Policies to be considered by this connection
+     */
     Collection<IpsecPolicy> ipsecPolicies();
 
-    /** @return the provisioning state of the VirtualNetworkGatewayConnection resource */
+    /**
+     * Gets the provisioning state of the VirtualNetworkGatewayConnection resource.
+     *
+     * @return the provisioning state of the VirtualNetworkGatewayConnection resource
+     */
     String provisioningState();
 
     /** The entirety of the virtual network gateway connection definition. */
@@ -133,6 +181,8 @@ public interface VirtualNetworkGatewayConnection
         /** Stage of definition allowing to specify local network gateway to connect to. */
         interface WithLocalNetworkGateway {
             /**
+             * Specifies local network gateway to connect to.
+             *
              * @param localNetworkGateway local network gateway to connect to
              * @return the next stage of the definition
              */
@@ -142,6 +192,8 @@ public interface VirtualNetworkGatewayConnection
         /** Stage of definition allowing to specify virtual network gateway to connect to. */
         interface WithSecondVirtualNetworkGateway {
             /**
+             * Specifies virtual network gateway to connect to.
+             *
              * @param virtualNetworkGateway2 virtual network gateway to connect to
              * @return the next stage of the definition
              */

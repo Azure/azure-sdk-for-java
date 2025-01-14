@@ -49,7 +49,7 @@ import java.util.Set;
 public class HttpPipelineBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineBuilder.class);
     private static final Set<String> RESERVED = new HashSet<>(Arrays.asList(HttpRedirectPolicy.NAME,
-        HttpRetryPolicy.NAME, HttpCredentialPolicy.NAME, HttpLoggingPolicy.NAME, HttpTelemetryPolicy.NAME));
+        HttpRetryPolicy.NAME, HttpCredentialPolicy.NAME, HttpInstrumentationPolicy.NAME));
 
     private final Set<String> policyNames = new HashSet<>();
 
@@ -67,13 +67,9 @@ public class HttpPipelineBuilder {
     private HttpCredentialPolicy credentialPolicy;
     private final LinkedList<HttpPipelinePolicy> afterCredential = new LinkedList<>();
 
-    private final LinkedList<HttpPipelinePolicy> beforeLogging = new LinkedList<>();
-    private HttpLoggingPolicy loggingPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterLogging = new LinkedList<>();
-
-    private final LinkedList<HttpPipelinePolicy> beforeTelemetry = new LinkedList<>();
-    private HttpTelemetryPolicy telemetryPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterTelemetry = new LinkedList<>();
+    private final LinkedList<HttpPipelinePolicy> beforeInstrumentation = new LinkedList<>();
+    private HttpInstrumentationPolicy instrumentationPolicy;
+    private final LinkedList<HttpPipelinePolicy> afterInstrumentation = new LinkedList<>();
 
     /**
      * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
@@ -96,8 +92,7 @@ public class HttpPipelineBuilder {
         addPolicies(policies, beforeRedirect, redirectPolicy, afterRedirect);
         addPolicies(policies, beforeRetry, retryPolicy, afterRetry);
         addPolicies(policies, beforeCredential, credentialPolicy, afterCredential);
-        addPolicies(policies, beforeLogging, loggingPolicy, afterLogging);
-        addPolicies(policies, beforeTelemetry, telemetryPolicy, afterTelemetry);
+        addPolicies(policies, beforeInstrumentation, instrumentationPolicy, afterInstrumentation);
 
         HttpClient client;
 
@@ -182,32 +177,17 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Sets the {@link HttpLoggingPolicy} that the pipeline will use to log HTTP requests and responses.
+     * Sets the {@link HttpInstrumentationPolicy} that the pipeline will use to instrument HTTP requests and responses.
      * <p>
-     * If {@code loggingPolicy} is null the pipeline will not log HTTP requests and responses.
-     *
-     * @param loggingPolicy The logging policy to set.
-     * @return The updated HttpPipelineBuilder object.
-     */
-    public HttpPipelineBuilder setLoggingPolicy(HttpLoggingPolicy loggingPolicy) {
-        this.loggingPolicy = loggingPolicy;
-        policyNames.add(loggingPolicy.getName());
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpTelemetryPolicy} that the pipeline will use to collect telemetry about HTTP requests and
+     * If {@code instrumentationPolicy} is null the pipeline will not collect telemetry about HTTP requests and
      * responses.
-     * <p>
-     * If {@code telemetryPolicy} is null the pipeline will not collect telemetry about HTTP requests and responses.
      *
-     * @param telemetryPolicy The telemetry policy to set.
+     * @param instrumentationPolicy The telemetry policy to set.
      * @return The updated HttpPipelineBuilder object.
      */
-    public HttpPipelineBuilder setTelemetryPolicy(HttpTelemetryPolicy telemetryPolicy) {
-        this.telemetryPolicy = telemetryPolicy;
-        policyNames.add(telemetryPolicy.getName());
+    public HttpPipelineBuilder setInstrumentationPolicy(HttpInstrumentationPolicy instrumentationPolicy) {
+        this.instrumentationPolicy = instrumentationPolicy;
+        policyNames.add(instrumentationPolicy.getName());
 
         return this;
     }
@@ -296,19 +276,11 @@ public class HttpPipelineBuilder {
                 }
                 break;
 
-            case LOGGING:
+            case INSTRUMENTATION:
                 if (before) {
-                    beforeLogging.add(policy);
+                    beforeInstrumentation.add(policy);
                 } else {
-                    afterLogging.push(policy);
-                }
-                break;
-
-            case TELEMETRY:
-                if (before) {
-                    beforeTelemetry.add(policy);
-                } else {
-                    afterTelemetry.push(policy);
+                    afterInstrumentation.push(policy);
                 }
                 break;
 
@@ -396,11 +368,8 @@ public class HttpPipelineBuilder {
             return this;
         }
 
-        if (attemptToAdd(policy, policyName, before, beforeLogging, loggingPolicy, afterLogging)) {
-            return this;
-        }
-
-        if (attemptToAdd(policy, policyName, before, beforeTelemetry, telemetryPolicy, afterTelemetry)) {
+        if (attemptToAdd(policy, policyName, before, beforeInstrumentation, instrumentationPolicy,
+            afterInstrumentation)) {
             return this;
         }
 
@@ -530,11 +499,7 @@ public class HttpPipelineBuilder {
             return this;
         }
 
-        if (attemptToSetOrRemove(policy, policyName, beforeLogging, afterLogging)) {
-            return this;
-        }
-
-        if (attemptToSetOrRemove(policy, policyName, beforeTelemetry, afterTelemetry)) {
+        if (attemptToSetOrRemove(policy, policyName, beforeInstrumentation, afterInstrumentation)) {
             return this;
         }
 

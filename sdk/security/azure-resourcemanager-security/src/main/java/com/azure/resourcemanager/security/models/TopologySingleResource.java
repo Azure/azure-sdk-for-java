@@ -5,60 +5,56 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The TopologySingleResource model.
  */
 @Immutable
-public final class TopologySingleResource {
+public final class TopologySingleResource implements JsonSerializable<TopologySingleResource> {
     /*
      * Azure resource id
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
      * The security severity of the resource
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * Indicates if the resource has security recommendations
      */
-    @JsonProperty(value = "recommendationsExist", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean recommendationsExist;
 
     /*
      * Indicates the resource connectivity level to the Internet (InternetFacing, Internal ,etc.)
      */
-    @JsonProperty(value = "networkZones", access = JsonProperty.Access.WRITE_ONLY)
     private String networkZones;
 
     /*
      * Score of the resource based on its security severity
      */
-    @JsonProperty(value = "topologyScore", access = JsonProperty.Access.WRITE_ONLY)
     private Integer topologyScore;
 
     /*
      * The location of this resource
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Azure resources connected to this resource which are in higher level in the topology view
      */
-    @JsonProperty(value = "parents", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResourceParent> parents;
 
     /*
      * Azure resources connected to this resource which are in lower level in the topology view
      */
-    @JsonProperty(value = "children", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResourceChild> children;
 
     /**
@@ -154,5 +150,59 @@ public final class TopologySingleResource {
         if (children() != null) {
             children().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologySingleResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologySingleResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologySingleResource.
+     */
+    public static TopologySingleResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologySingleResource deserializedTopologySingleResource = new TopologySingleResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedTopologySingleResource.resourceId = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedTopologySingleResource.severity = reader.getString();
+                } else if ("recommendationsExist".equals(fieldName)) {
+                    deserializedTopologySingleResource.recommendationsExist
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkZones".equals(fieldName)) {
+                    deserializedTopologySingleResource.networkZones = reader.getString();
+                } else if ("topologyScore".equals(fieldName)) {
+                    deserializedTopologySingleResource.topologyScore = reader.getNullable(JsonReader::getInt);
+                } else if ("location".equals(fieldName)) {
+                    deserializedTopologySingleResource.location = reader.getString();
+                } else if ("parents".equals(fieldName)) {
+                    List<TopologySingleResourceParent> parents
+                        = reader.readArray(reader1 -> TopologySingleResourceParent.fromJson(reader1));
+                    deserializedTopologySingleResource.parents = parents;
+                } else if ("children".equals(fieldName)) {
+                    List<TopologySingleResourceChild> children
+                        = reader.readArray(reader1 -> TopologySingleResourceChild.fromJson(reader1));
+                    deserializedTopologySingleResource.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologySingleResource;
+        });
     }
 }

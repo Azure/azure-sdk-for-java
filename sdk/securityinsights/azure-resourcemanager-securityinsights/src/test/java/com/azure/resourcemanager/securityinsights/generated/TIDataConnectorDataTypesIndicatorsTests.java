@@ -13,15 +13,15 @@ public final class TIDataConnectorDataTypesIndicatorsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TIDataConnectorDataTypesIndicators model
-            = BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(TIDataConnectorDataTypesIndicators.class);
-        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(TIDataConnectorDataTypesIndicators.class);
+        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TIDataConnectorDataTypesIndicators model
-            = new TIDataConnectorDataTypesIndicators().withState(DataTypeState.ENABLED);
+            = new TIDataConnectorDataTypesIndicators().withState(DataTypeState.DISABLED);
         model = BinaryData.fromObject(model).toObject(TIDataConnectorDataTypesIndicators.class);
-        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
+        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
     }
 }

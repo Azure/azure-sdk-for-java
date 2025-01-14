@@ -86,7 +86,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
@@ -96,7 +96,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({ 202, 204 })
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
@@ -166,7 +166,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +208,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
@@ -250,7 +250,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,7 +269,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
@@ -291,7 +291,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,7 +308,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
@@ -326,7 +326,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,7 +344,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
@@ -363,7 +363,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -379,7 +379,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
@@ -397,8 +397,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -439,8 +439,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,8 +481,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -500,8 +500,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,8 +521,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -538,8 +538,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -556,8 +556,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -574,8 +574,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,8 +593,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -609,8 +609,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Update a dedicated HSM in the specified subscription.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,8 +627,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -661,8 +661,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -696,8 +696,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,8 +713,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -733,8 +733,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,8 +748,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -764,8 +764,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -779,8 +779,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -795,8 +795,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -809,8 +809,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -824,8 +824,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -859,8 +859,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -894,8 +894,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -910,8 +910,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -927,8 +927,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -943,7 +943,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -978,7 +978,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1014,7 +1014,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1031,7 +1031,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1048,7 +1048,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1067,7 +1067,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1083,7 +1083,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1234,8 +1234,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1276,8 +1276,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1320,8 +1320,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1342,8 +1342,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1366,8 +1366,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1387,8 +1387,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.

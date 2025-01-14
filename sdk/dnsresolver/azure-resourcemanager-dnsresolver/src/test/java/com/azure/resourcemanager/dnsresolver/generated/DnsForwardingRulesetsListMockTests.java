@@ -22,7 +22,7 @@ public final class DnsForwardingRulesetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"uwqlgzrfzeey\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"zi\"},{\"id\":\"yuhqlbjbsybbqwrv\"},{\"id\":\"dgmfpgvmpipasl\"}],\"provisioningState\":\"Canceled\",\"resourceGuid\":\"fxssm\"},\"location\":\"twbdsrezpdrhn\",\"tags\":{\"ircgpikpz\":\"owqkdwytisi\",\"rmbzo\":\"mejzanlfzxia\",\"zpfrla\":\"okixrjqcir\",\"indfpwpjyl\":\"szrnwo\"},\"id\":\"bt\",\"name\":\"h\",\"type\":\"lsj\"}]}";
+            = "{\"value\":[{\"etag\":\"skfc\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"umiekkezzi\"}],\"provisioningState\":\"Canceled\",\"resourceGuid\":\"fjhdg\"},\"location\":\"gebdunygaeq\",\"tags\":{\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\"},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DnsForwardingRulesetsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsForwardingRuleset> response
-            = manager.dnsForwardingRulesets().list(1604322971, com.azure.core.util.Context.NONE);
+            = manager.dnsForwardingRulesets().list(802895356, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("twbdsrezpdrhn", response.iterator().next().location());
-        Assertions.assertEquals("owqkdwytisi", response.iterator().next().tags().get("ircgpikpz"));
-        Assertions.assertEquals("zi", response.iterator().next().dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("gebdunygaeq", response.iterator().next().location());
+        Assertions.assertEquals("qfatpxllrxcyjm", response.iterator().next().tags().get("a"));
+        Assertions.assertEquals("umiekkezzi", response.iterator().next().dnsResolverOutboundEndpoints().get(0).id());
     }
 }

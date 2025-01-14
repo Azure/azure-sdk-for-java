@@ -22,7 +22,7 @@ public final class SqlPoolWorkloadGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"minResourcePercent\":756636638,\"maxResourcePercent\":1143558986,\"minResourcePercentPerRequest\":91.5593139339048,\"maxResourcePercentPerRequest\":1.7688079195071205,\"importance\":\"mdutzfk\",\"queryExecutionTimeout\":1273960341},\"id\":\"no\",\"name\":\"dccgndjgdpriggqq\",\"type\":\"eqfcbuulpy\"}]}";
+            = "{\"value\":[{\"properties\":{\"minResourcePercent\":998362511,\"maxResourcePercent\":1079143873,\"minResourcePercentPerRequest\":11.698060849667225,\"maxResourcePercentPerRequest\":42.57665178263599,\"importance\":\"uzvkunhdimjuk\",\"queryExecutionTimeout\":57578265},\"id\":\"zkaugpucdocfqpl\",\"name\":\"gofmhxwrjlv\",\"type\":\"klkvb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class SqlPoolWorkloadGroupsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadGroup> response = manager.sqlPoolWorkloadGroups()
-            .list("zdqekivycpzcvd", "zulrqt", "htre", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadGroup> response
+            = manager.sqlPoolWorkloadGroups().list("oihppi", "bxv", "nzuz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(756636638, response.iterator().next().minResourcePercent());
-        Assertions.assertEquals(1143558986, response.iterator().next().maxResourcePercent());
-        Assertions.assertEquals(91.5593139339048, response.iterator().next().minResourcePercentPerRequest());
-        Assertions.assertEquals(1.7688079195071205D, response.iterator().next().maxResourcePercentPerRequest());
-        Assertions.assertEquals("mdutzfk", response.iterator().next().importance());
-        Assertions.assertEquals(1273960341, response.iterator().next().queryExecutionTimeout());
+        Assertions.assertEquals(998362511, response.iterator().next().minResourcePercent());
+        Assertions.assertEquals(1079143873, response.iterator().next().maxResourcePercent());
+        Assertions.assertEquals(11.698060849667225, response.iterator().next().minResourcePercentPerRequest());
+        Assertions.assertEquals(42.57665178263599D, response.iterator().next().maxResourcePercentPerRequest());
+        Assertions.assertEquals("uzvkunhdimjuk", response.iterator().next().importance());
+        Assertions.assertEquals(57578265, response.iterator().next().queryExecutionTimeout());
     }
 }

@@ -13,18 +13,18 @@ public final class ServerRestartParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerRestartParameter model
-            = BinaryData.fromString("{\"restartWithFailover\":\"Disabled\",\"maxFailoverSeconds\":28529322}")
+            = BinaryData.fromString("{\"restartWithFailover\":\"Disabled\",\"maxFailoverSeconds\":127605943}")
                 .toObject(ServerRestartParameter.class);
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.restartWithFailover());
-        Assertions.assertEquals(28529322, model.maxFailoverSeconds());
+        Assertions.assertEquals(127605943, model.maxFailoverSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerRestartParameter model = new ServerRestartParameter().withRestartWithFailover(EnableStatusEnum.DISABLED)
-            .withMaxFailoverSeconds(28529322);
+            .withMaxFailoverSeconds(127605943);
         model = BinaryData.fromObject(model).toObject(ServerRestartParameter.class);
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.restartWithFailover());
-        Assertions.assertEquals(28529322, model.maxFailoverSeconds());
+        Assertions.assertEquals(127605943, model.maxFailoverSeconds());
     }
 }

@@ -11,7 +11,7 @@ public final class MailboxEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MailboxEntity model = BinaryData.fromString(
-            "{\"kind\":\"Mailbox\",\"properties\":{\"mailboxPrimaryAddress\":\"zhrbkhtmqo\",\"displayName\":\"uasfgqgucyhfaimq\",\"upn\":\"ruozkgyfp\",\"externalDirectoryObjectId\":\"81938e9e-ecba-46be-8cb3-43f7b00ee693\",\"additionalData\":{\"sk\":\"datagfmq\",\"xplhpeva\":\"dataixvlz\",\"vvbq\":\"datayntvzjyielbq\"},\"friendlyName\":\"nmpecqxgiqasifub\"},\"id\":\"nstlpwqpjn\",\"name\":\"jkht\",\"type\":\"psvyouweuiyxfw\"}")
+            "{\"kind\":\"Mailbox\",\"properties\":{\"mailboxPrimaryAddress\":\"dlpukhpyrne\",\"displayName\":\"jcpeogkhnmg\",\"upn\":\"ouxddbhfhpfpazj\",\"externalDirectoryObjectId\":\"92562bc9-b4d6-4c40-8dfc-867973c0fa94\",\"additionalData\":{\"qwtehtuevr\":\"datajxhpdulontacn\",\"gwbsreurf\":\"datarljyoogwxhnsdu\",\"htkln\":\"datakfuarenlv\"},\"friendlyName\":\"afvvk\"},\"id\":\"edev\",\"name\":\"bo\",\"type\":\"lcqxypokk\"}")
             .toObject(MailboxEntity.class);
     }
 
