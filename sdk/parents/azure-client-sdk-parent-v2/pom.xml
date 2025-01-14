@@ -702,6 +702,9 @@
               <arg>-Xlint:try</arg>
               <arg>-Xlint:unchecked</arg>
               <arg>-Xlint:varargs</arg>
+              <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+              <arg>-Xlint:removal</arg>
+              <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
             </compilerArgs>
 
             <!-- Default is annotation processing being off. -->
@@ -818,7 +821,6 @@
               com.azure.endtoend*:
               com.azure.perf*:
               com.azure.storage.internal.avro*:
-              com.azure.cosmos.encryption.implementation.mdesrc*:
               ${javadoc.excludePackageNames}
             </excludePackageNames>
             <sourcepath>
@@ -1616,52 +1618,6 @@
           </snapshots>
         </repository>
       </repositories>
-    </profile>
-
-    <profile>
-      <id>test-module-base-compile</id>
-      <activation>
-        <file>
-          <exists>${projectTestSourceDirectory}/module-info.java</exists>
-        </file>
-      </activation>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <!-- then compile with Java 11 as the base version that supports module-info -->
-              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
-              when the Azure SDK policy is changed -->
-              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
-              <execution>
-                <id>base-modules-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <release>17</release>
-                  <testRelease>17</testRelease>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>java-18-plus-allow-securitymanager</id>
-      <activation>
-        <jdk>[18,)</jdk>
-      </activation>
-
-      <properties>
-        <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
-      </properties>
     </profile>
   </profiles>
 </project>
