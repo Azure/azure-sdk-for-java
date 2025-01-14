@@ -9,12 +9,12 @@ import com.azure.core.util.Base64Url;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
-import java.util.Objects;
 
 /** The deleted certificate item containing metadata about the deleted certificate. */
 @Fluent
@@ -117,11 +117,14 @@ public final class DeletedCertificateItem extends CertificateItem {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeJsonField("attributes", getAttributes());
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), JsonWriter::writeString);
+
         if (getX509Thumbprint() != null) {
-            jsonWriter.writeStringField("x5t", Objects.toString(Base64Url.encode(getX509Thumbprint()), null));
+            jsonWriter.writeStringField("x5t", Base64Url.encode(getX509Thumbprint()).toString());
         }
+
         jsonWriter.writeStringField("recoveryId", this.recoveryId);
+
         return jsonWriter.writeEndObject();
     }
 

@@ -134,7 +134,7 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("attributes", this.attributes);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString);
         jsonWriter.writeStringField("x5t", Objects.toString(this.x509Thumbprint, null));
         return jsonWriter.writeEndObject();
     }
