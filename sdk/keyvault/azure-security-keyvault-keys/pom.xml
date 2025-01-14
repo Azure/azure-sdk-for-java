@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-keys</artifactId>
-  <version>4.9.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+  <version>4.9.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
 
   <name>Microsoft Azure client library for KeyVault Keys</name>
   <description>This module contains client library for Microsoft Azure KeyVault Keys.</description>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
