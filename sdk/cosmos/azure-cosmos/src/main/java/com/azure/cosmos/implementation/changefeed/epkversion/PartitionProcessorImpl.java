@@ -120,7 +120,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         this.settings.getCollectionSelfLink(),
                         this.options,
                         itemType)
-                    .limitRequest(1);
+                    .take(1, false);
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
@@ -229,6 +229,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         case TRANSIENT_ERROR: {
                             // Retry on transient (429) errors
                             if (clientException.getRetryAfterDuration().toMillis() > 0) {
+                                System.out.println("Retrying 429");
                                 Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                     // the repeat loop

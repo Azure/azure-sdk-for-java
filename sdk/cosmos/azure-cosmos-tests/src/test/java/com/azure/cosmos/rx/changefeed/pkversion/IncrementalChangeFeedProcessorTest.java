@@ -4,6 +4,7 @@ package com.azure.cosmos.rx.changefeed.pkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
@@ -34,6 +36,16 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,6 +87,8 @@ import static org.assertj.core.api.Assertions.fail;
 public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(IncrementalChangeFeedProcessorTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+            ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     private CosmosAsyncDatabase createdDatabase;
 //    private final String databaseId = "testdb1";
@@ -190,6 +204,97 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(500);
         }
      }
+
+    @Test(groups = {"query" }/*, timeOut = 2 * TIMEOUT*/)
+    public void exhaustedRUs() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, 300);
+
+//            FaultInjectionServerErrorResult serverErrorResult = FaultInjectionResultBuilders
+//                    .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+//                    .build();
+//
+//            FaultInjectionServerErrorResult serverErrorResult2 = FaultInjectionResultBuilders
+//                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+//                    .delay(Duration.ofSeconds(6))
+//                    .build();
+//
+//
+//
+//            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("faultInjectionRule-" + UUID.randomUUID());
+//
+//            FaultInjectionCondition faultInjectionConditionForRegion = new FaultInjectionConditionBuilder()
+//                    .connectionType(clientAccessor.getConnectionMode(client).equals(ConnectionMode.DIRECT.toString()) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY)
+//                    .operationType(FaultInjectionOperationType.REPLACE_ITEM)
+//                    .build();
+//
+//            FaultInjectionRule faultInjectionRule = faultInjectionRuleBuilder
+//                    .condition(faultInjectionConditionForRegion)
+//                    .result(serverErrorResult)
+//                    .startDelay(Duration.ofSeconds(2))
+//                    .build();
+//
+//            FaultInjectionRule faultInjectionRule2 = faultInjectionRuleBuilder
+//                    .condition(faultInjectionConditionForRegion)
+//                    .result(serverErrorResult2)
+//                    .duration(Duration.ofSeconds(3))
+//                    .startDelay(Duration.ofSeconds(2))
+//                    .build();
+//
+//            CosmosFaultInjectionHelper
+//                    .configureFaultInjectionRules(createdLeaseCollection, Arrays.asList(faultInjectionRule, faultInjectionRule2))
+//                    .block();
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                    .hostName(hostName)
+                    .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                    .feedContainer(createdFeedCollection)
+                    .leaseContainer(createdLeaseCollection)
+                    .options(new ChangeFeedProcessorOptions()
+                            .setLeaseRenewInterval(Duration.ofMinutes(10)) // only for debugging remove later
+                            .setLeaseExpirationInterval(Duration.ofMinutes(11)) // only for debugging remove later
+                            .setFeedPollDelay(Duration.ofSeconds(2))
+                            .setLeasePrefix("TEST")
+                            .setMaxItemCount(10)
+                            .setStartFromBeginning(true)
+                    )
+                    .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic()) // add timeout
+                        .subscribe();
+            } catch (Exception ex) {
+                logger.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(6 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).subscribe(); // add timeout
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
 
     @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() throws InterruptedException {
