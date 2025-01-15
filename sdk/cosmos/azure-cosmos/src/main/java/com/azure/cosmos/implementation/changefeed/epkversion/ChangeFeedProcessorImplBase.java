@@ -386,18 +386,19 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.changeFeedMode);
 
         Bootstrapper bootstrapper;
-        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
 
-            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
-            RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
-            LeaseStoreManager pkRangeIdVersionLeaseStoreManager =
-                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
-                    .leasePrefix(pkRangeIdVersionLeasePrefix)
-                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
-                    .leaseContextClient(this.leaseContextClient)
-                    .requestOptionsFactory(requestOptionsFactory)
-                    .hostName(this.hostName)
-                    .build();
+        String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
+        RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
+        LeaseStoreManager pkRangeIdVersionLeaseStoreManager =
+            com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
+                .leasePrefix(pkRangeIdVersionLeasePrefix)
+                .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                .leaseContextClient(this.leaseContextClient)
+                .requestOptionsFactory(requestOptionsFactory)
+                .hostName(this.hostName)
+                .build();
+
+        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
 
             bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
                 synchronizer,
@@ -414,6 +415,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.lockTime,
                 this.sleepTime,
                 leaseStoreManager,
+                pkRangeIdVersionLeaseStoreManager,
                 this.changeFeedMode);
         }
 

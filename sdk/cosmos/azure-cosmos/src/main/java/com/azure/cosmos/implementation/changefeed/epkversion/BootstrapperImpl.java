@@ -27,6 +27,7 @@ class BootstrapperImpl implements Bootstrapper {
     private final PartitionSynchronizer synchronizer;
     private final LeaseStore leaseStore;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
+    private final LeaseStoreManager pkRangeVersionLeaseStoreManager;
     private final ChangeFeedMode changeFeedModeToStart;
     private final Duration lockTime;
     private final Duration sleepTime;
@@ -34,7 +35,15 @@ class BootstrapperImpl implements Bootstrapper {
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime, LeaseStoreManager epkRangeVersionLeaseStoreManager, ChangeFeedMode changeFeedModeToStart) {
+    public BootstrapperImpl(
+        PartitionSynchronizer synchronizer,
+        LeaseStore leaseStore,
+        Duration lockTime,
+        Duration sleepTime,
+        LeaseStoreManager epkRangeVersionLeaseStoreManager,
+        LeaseStoreManager pkRangeVersionLeaseStoreManager,
+        ChangeFeedMode changeFeedModeToStart) {
+
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
@@ -43,6 +52,7 @@ class BootstrapperImpl implements Bootstrapper {
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
+        this.pkRangeVersionLeaseStoreManager = pkRangeVersionLeaseStoreManager;
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
@@ -98,10 +108,20 @@ class BootstrapperImpl implements Bootstrapper {
     private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
 
         // fetches only 1 epk-based lease for a given lease prefix
-        return this.epkRangeVersionLeaseStoreManager
+        return this.pkRangeVersionLeaseStoreManager
             .getTopLeases(1)
-            // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .next()
+            .flatMap(lease -> {
+
+                    if (lease != null) {
+                        return Mono.error(new IllegalStateException(""));
+                    } else {
+                        return Mono.empty();
+                    }
+                }
+            )
+            .then(this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
+            // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .flatMap(lease -> {
 
                 if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {

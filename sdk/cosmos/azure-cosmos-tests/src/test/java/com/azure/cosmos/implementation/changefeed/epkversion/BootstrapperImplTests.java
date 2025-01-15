@@ -104,6 +104,8 @@ public class BootstrapperImplTests {
         Mockito.when(leaseStoreMock.releaseInitializationLock()).thenReturn(Mono.empty());
 
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
         Bootstrapper bootstrapper = new BootstrapperImpl(
             partitionSynchronizerMock,
@@ -111,6 +113,7 @@ public class BootstrapperImplTests {
             lockTime,
             expireTIme,
             epkRangeVersionLeaseStoreManagerMock,
+            pkRangeVersionLeaseStoreManagerMock,
             ChangeFeedMode.FULL_FIDELITY);
 
         if (expectIllegalStateException) {
