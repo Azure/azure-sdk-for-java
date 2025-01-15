@@ -81,7 +81,9 @@ final class SystemProperties implements Map<String, Object> {
      *
      * @return The offset within the Event Hubs stream.
      */
-    String getOffsetString() { return offsetString; }
+    String getOffsetString() {
+        return offsetString;
+    }
 
     /**
      * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select

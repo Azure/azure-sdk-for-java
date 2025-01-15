@@ -25,6 +25,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTA
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -89,6 +90,7 @@ public class SystemPropertiesTest {
     /**
      * Asserts that there are no items when the message is new.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void emptyMessage() {
         // Act
@@ -99,6 +101,7 @@ public class SystemPropertiesTest {
         assertNull(systemProperties.getEnqueuedTime());
         assertNull(systemProperties.getSequenceNumber());
         assertNull(systemProperties.getOffset());
+        assertNull(systemProperties.getOffsetString());
 
         assertTrue(systemProperties.isEmpty());
     }
@@ -158,8 +161,8 @@ public class SystemPropertiesTest {
     @Test
     public void queryProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber,
-            partitionKey, null);
+        final SystemProperties properties
+            = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber, partitionKey, null);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
@@ -173,7 +176,7 @@ public class SystemPropertiesTest {
         assertEquals(message.getProperties().getTo().toString(), properties.get(AmqpMessageConstant.TO.getValue()));
 
         final Object actualUserId = properties.get(AmqpMessageConstant.USER_ID.getValue());
-        assertTrue(actualUserId instanceof byte[]);
+        assertInstanceOf(byte[].class, actualUserId);
         assertArrayEquals(message.getProperties().getUserId(), (byte[]) actualUserId);
         assertEquals(message.getProperties().getAbsoluteExpiryTime(),
             properties.get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
