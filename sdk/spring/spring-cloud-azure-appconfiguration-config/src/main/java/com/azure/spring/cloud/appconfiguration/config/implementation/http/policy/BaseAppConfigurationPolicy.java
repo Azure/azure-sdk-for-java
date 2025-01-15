@@ -5,12 +5,11 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 import org.springframework.util.StringUtils;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants;
+import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 
 import reactor.core.publisher.Mono;
 
@@ -27,10 +26,12 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     /**
      * Format of User Agent
      */
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
+    private static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    final TracingInfo tracingInfo;
+    private static Boolean watchRequests = false;
+
+    private final TracingInfo tracingInfo;
 
     /**
      * App Configuration Http Pipeline Policy
@@ -40,13 +41,12 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         this.tracingInfo = tracingInfo;
     }
 
+    
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Boolean watchRequests = (Boolean) context.getData("refresh").orElse(false);
-        HttpHeaders headers = context.getHttpRequest().getHeaders();
-        String sdkUserAgent = headers.get(HttpHeaderName.USER_AGENT).getValue();
-        headers.set(HttpHeaderName.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
-        headers.set(HttpHeaderName.fromString(AppConfigurationConstants.CORRELATION_CONTEXT),
+        String sdkUserAgent = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.USER_AGENT);
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()),
             tracingInfo.getValue(watchRequests));
 
         return next.process();

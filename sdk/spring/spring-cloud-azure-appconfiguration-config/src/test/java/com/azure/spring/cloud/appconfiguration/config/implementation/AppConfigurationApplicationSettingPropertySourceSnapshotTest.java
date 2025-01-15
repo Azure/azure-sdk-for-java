@@ -128,10 +128,10 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, false);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream().map(t -> {
@@ -155,10 +155,10 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
         when(configurationListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, false);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -174,9 +174,9 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
         when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
+        when(clientMock.listSettingSnapshot(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, false);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames =

@@ -14,6 +14,8 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -43,9 +44,9 @@ import com.nimbusds.jose.util.Base64URL;
  * take priority.
  */
 @Component
-public class FeatureFlagClient {
+class FeatureFlagClient {
 
-    protected final Map<String, Feature> properties = new LinkedHashMap<>();
+    private final Map<String, Feature> properties = new LinkedHashMap<>();
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
@@ -62,7 +63,7 @@ public class FeatureFlagClient {
      * </p>
      *
      */
-    public List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter, boolean isRefresh) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
@@ -84,7 +85,7 @@ public class FeatureFlagClient {
         return loadedFeatureFlags;
     }
 
-    public List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
+    List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
         loadedFeatureFlags.add(features);
 
@@ -151,11 +152,15 @@ public class FeatureFlagClient {
      */
     private static String calculateFeatureFlagId(String key, String label) {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
-        final SHA256.Digest digest = new SHA256.Digest();
-        final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
-            .toString().replace('+', '-').replace('/', '_');
-        final int index = beforeTrim.indexOf('=');
-        return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
+        try {
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+            final String beforeTrim = Base64URL.encode(sha256.digest(data.getBytes(StandardCharsets.UTF_8)))
+                .toString().replace('+', '-').replace('/', '_');
+            final int index = beforeTrim.indexOf('=');
+            return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
+        } catch (NoSuchAlgorithmException e) {
+        }
+        return "";
     }
 
     /**
