@@ -1,15 +1,9 @@
 ## Release History
 
-### 2.1.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 2.1.0 (2025-01-14)
 
 #### Bugs Fixed
 * Fixed `BadRequestException` when customer using Serverless CosmosDB database account and metadata container does not exists. - See [PR 43125](https://github.com/Azure/azure-sdk-for-java/pull/43125) 
-
-#### Other Changes
 
 ### 2.0.0 (2024-11-04)
 

@@ -162,23 +162,23 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
+[api_reference_doc]: https://learn.microsoft.com/azure/azure-monitor/overview
 [package_mvn]: https://central.sonatype.com/artifact/com.azure/azure-monitor-opentelemetry-exporter
-[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[product_documentation]: https://learn.microsoft.com/azure/azure-monitor/overview
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/blob/master/QUICKSTART.md
 [opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
-[application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
-[application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
+[application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
+[application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
 [opentelemetry_io]: https://opentelemetry.io/ 
 [span_data]: https://opentelemetry.lightstep.com/spans

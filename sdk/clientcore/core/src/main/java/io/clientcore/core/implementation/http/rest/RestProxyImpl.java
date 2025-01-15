@@ -25,7 +25,7 @@ import io.clientcore.core.implementation.http.serializer.MalformedValueException
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;

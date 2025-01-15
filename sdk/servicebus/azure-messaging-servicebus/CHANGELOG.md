@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
+
 ### Other Changes
 
 ## 7.17.8 (2025-01-09)

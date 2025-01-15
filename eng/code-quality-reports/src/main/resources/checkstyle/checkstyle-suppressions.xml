@@ -161,6 +161,10 @@
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+  
+  <!-- Test class for spring-messaging-azure-servicebus module -->
+  <suppress checks="InnerAssignment" files="com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer"/>
+  <suppress checks="InnerAssignment" files="com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.java"/>
   <!-- ### end: Spring related suppression -->
 
   <!-- Suppress checks for Core Perf package. -->

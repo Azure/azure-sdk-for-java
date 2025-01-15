@@ -135,7 +135,7 @@ This code sample show common scenario operation with the Azure Health Insights C
 -->
 
 ## Additional documentation
-For more extensive documentation on Azure Health Insights Clinical Matching, see the [Clinical Matching documentation][clinical_matching_docs] on docs.microsoft.com.
+For more extensive documentation on Azure Health Insights Clinical Matching, see the [Clinical Matching documentation][clinical_matching_docs] on learn.microsoft.com.
 
 
 ## Contributing
@@ -152,9 +152,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[cognitive_resource_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [health_insights]: https://learn.microsoft.com/azure/azure-health-insights/overview?branch=main
 [clinical_matching_docs]: https://learn.microsoft.com/azure/azure-health-insights/trial-matcher/overview

@@ -1,9 +1,9 @@
 ## Release History
 
-### 4.66.0-beta.1 (Unreleased)
+### 4.67.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added Beta public API fto enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
+* Added Beta public API to enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
 
 #### Breaking Changes
 
@@ -11,6 +11,10 @@
 
 #### Other Changes
 
+### 4.66.0 (2025-01-14)
+
+#### Other Changes
+* Added client vmId info to Rntbd health check logs - See [43079](https://github.com/Azure/azure-sdk-for-java/pull/43079)
 * Added support to enable http2 for gateway mode with system property `COSMOS.HTTP2_ENABLED` and system variable `COSMOS_HTTP2_ENABLED`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
@@ -24,8 +28,7 @@
   *`cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation`
   *`cosmos.client.req.rntbd.bulkGlobalOpCount`
   *`cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize`
- 
->>>>>>> 5495b4cea69f47d905c8d4929b3c00af8e4bbcf3
+
 ### 4.65.0 (2024-11-19)
 
 #### Features Added

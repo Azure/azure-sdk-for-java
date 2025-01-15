@@ -4,7 +4,7 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;

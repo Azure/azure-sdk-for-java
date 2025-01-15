@@ -11,7 +11,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.SerializationFormat;
 
