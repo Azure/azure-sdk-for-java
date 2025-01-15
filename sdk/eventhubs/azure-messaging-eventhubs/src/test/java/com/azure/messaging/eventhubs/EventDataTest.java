@@ -98,6 +98,7 @@ public class EventDataTest {
      * Tests that the system properties are properly populated. In addition, partition key is removed because it is not
      * a system property.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void testSystemProperties() {
         // Act
@@ -125,10 +126,14 @@ public class EventDataTest {
         Assertions.assertEquals(OFFSET, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(sequenceNumber, systemProperties.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME, systemProperties.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(replicationSegment, systemProperties.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(replicationSegment,
+            systemProperties.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()));
 
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
-        Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(OFFSET, eventData.getOffsetString());
+
+        // Null because it could not be parsed into a number.
+        Assertions.assertNull(eventData.getOffset());
         Assertions.assertEquals(sequenceNumber, eventData.getSequenceNumber());
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
         Assertions.assertEquals(replicationSegment, eventData.getReplicationSegment());
