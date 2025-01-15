@@ -27,8 +27,7 @@ public class PartitionPropertiesTest {
 
         // Act
         final PartitionProperties properties = new PartitionProperties(eventHub, id, beginningSequence, endSequence,
-            lastEnqueuedOffset, lastEnqueuedTime, isEmpty, beginningReplicationSegment,
-            lastEnqueuedReplicationSegment);
+            lastEnqueuedOffset, lastEnqueuedTime, isEmpty, beginningReplicationSegment, lastEnqueuedReplicationSegment);
 
         // Assert
         Assertions.assertEquals(eventHub, properties.getEventHubName());

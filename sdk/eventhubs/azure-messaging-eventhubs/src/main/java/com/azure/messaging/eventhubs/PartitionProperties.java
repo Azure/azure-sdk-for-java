@@ -22,15 +22,9 @@ public final class PartitionProperties {
     private final Instant lastEnqueuedTime;
     private final boolean isEmpty;
 
-    PartitionProperties(
-        final String eventHubName,
-        final String id,
-        final long beginningSequenceNumber,
-        final long lastEnqueuedSequenceNumber,
-        final String lastEnqueuedOffset,
-        final Instant lastEnqueuedTime,
-        final boolean isEmpty,
-        final Integer beginningReplicationSegment,
+    PartitionProperties(final String eventHubName, final String id, final long beginningSequenceNumber,
+        final long lastEnqueuedSequenceNumber, final String lastEnqueuedOffset, final Instant lastEnqueuedTime,
+        final boolean isEmpty, final Integer beginningReplicationSegment,
         final Integer lastEnqueuedReplicationSegment) {
         this.eventHubName = eventHubName;
         this.id = id;
