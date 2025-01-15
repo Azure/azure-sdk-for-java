@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -23,6 +24,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -338,7 +340,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
-    private final ConnectionCacheWrapper connectionCacheWrapper;
+    private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
@@ -361,24 +363,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityPath The name of the topic or queue.
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
-     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
+     * @param connectionCache The AMQP connection to the Service Bus resource.
      * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
     // Client to work with a non-session entity.
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper, Duration cleanupInterval,
-        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-        String identifier) {
+        ReceiverOptions receiverOptions, ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache,
+        Duration cleanupInterval, ServiceBusReceiverInstrumentation instrumentation,
+        MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionCacheWrapper
-            = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
-        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
+        this.connectionCache = Objects.requireNonNull(connectionCache, "'connectionCache' cannot be null.");
+        this.connectionProcessor = this.connectionCache.get().cast(ServiceBusAmqpConnection.class);
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -407,17 +408,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     // Client to work with a session-enabled entity (client to receive from one-session).
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper, Duration cleanupInterval,
-        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-        ServiceBusSingleSessionManager sessionManager) {
+        ReceiverOptions receiverOptions, ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache,
+        Duration cleanupInterval, ServiceBusReceiverInstrumentation instrumentation,
+        MessageSerializer messageSerializer, Runnable onClientClose, ServiceBusSingleSessionManager sessionManager) {
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionCacheWrapper
-            = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
-        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
+        this.connectionCache = Objects.requireNonNull(connectionCache, "'connectionCache' cannot be null.");
+        this.connectionProcessor = this.connectionCache.get().cast(ServiceBusAmqpConnection.class);
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -1619,7 +1619,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
                 //
                 return new AmqpException(true, e.getMessage(), e, null);
-            }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
+            }), connectionCache.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
         // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
@@ -1635,7 +1635,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCache.getRetryOptions());
         final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
             CreditFlowMode.RequestDriven, retryPolicy);
         final ServiceBusAsyncConsumer newConsumer
@@ -1752,7 +1752,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     boolean isConnectionClosed() {
-        return this.connectionCacheWrapper.isChannelClosed();
+        return this.connectionCache.isCurrentConnectionClosed();
     }
 
     boolean isManagementNodeLocksClosed() {

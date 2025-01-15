@@ -125,7 +125,7 @@ class ServiceBusReceiverAsyncClientTest {
         = Sinks.many().replay().latestOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
 
-    private ConnectionCacheWrapper connectionCacheWrapper;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
     private AutoCloseable mocksCloseable;
@@ -176,17 +176,15 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class), anyString(), anyString())).thenReturn(Mono.just(sessionReceiveLink));
 
-        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
-            = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
-                new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
+        connectionCache = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
+            new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID),
-            connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
+            connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
             mock(ServiceBusSingleSessionManager.class));
     }
 
@@ -332,8 +330,7 @@ class ServiceBusReceiverAsyncClientTest {
             = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration, false,
                     SESSION_ID),
-                connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
-                sessionManager);
+                connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew
@@ -436,8 +433,8 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions options
             = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
-            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            MessagingEntityType.QUEUE, options, connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer,
+            onClientClose, CLIENT_IDENTIFIER);
 
         final String lockToken1 = UUID.randomUUID().toString();
 
@@ -458,8 +455,8 @@ class ServiceBusReceiverAsyncClientTest {
         // arrangeForV2();
         final ReceiverOptions options = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
-            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            MessagingEntityType.QUEUE, options, connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer,
+            onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(null);
 
@@ -590,7 +587,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions
             = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -617,7 +614,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions
             = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, mock(ServiceBusSingleSessionManager.class));
 
         // Act & Assert
@@ -695,7 +692,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions
             = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -747,7 +744,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions
             = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
@@ -1092,7 +1089,7 @@ class ServiceBusReceiverAsyncClientTest {
             = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, CLEANUP_INTERVAL, false,
                     SESSION_ID),
-                connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
+                connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
                 mock(ServiceBusSingleSessionManager.class));
 
         when(managementNode.getSessionState(SESSION_ID, null)).thenReturn(Mono.just(bytes));
@@ -1287,7 +1284,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions
             = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -1327,9 +1324,9 @@ class ServiceBusReceiverAsyncClientTest {
         final ServiceBusSingleSessionManager sessionManager = mock(ServiceBusSingleSessionManager.class);
         final ReceiverOptions receiverOptions
             = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID);
-        final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
-            messageSerializer, onClientClose, sessionManager);
+        final ServiceBusReceiverAsyncClient sessionReceiver2
+            = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, receiverOptions,
+                connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);
 
@@ -1374,7 +1371,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter,
             NAMESPACE, ENTITY_PATH, SUBSCRIPTION_NAME, receiverKind);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Arrange
@@ -1416,7 +1413,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter,
             NAMESPACE, ENTITY_PATH, SUBSCRIPTION_NAME, receiverKind);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn("mylockToken");
@@ -1510,7 +1507,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, meter,
             NAMESPACE, ENTITY_PATH, SUBSCRIPTION_NAME, receiverKind);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Arrange
@@ -1568,7 +1565,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverInstrumentation instrumentation
             = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH, null, receiverKind);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Arrange
@@ -1602,7 +1599,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverInstrumentation instrumentation
             = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH, null, receiverKind);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Arrange
@@ -1665,9 +1662,8 @@ class ServiceBusReceiverAsyncClientTest {
         final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
             = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
                 new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCacheWrapper,
+            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
     }
 }
