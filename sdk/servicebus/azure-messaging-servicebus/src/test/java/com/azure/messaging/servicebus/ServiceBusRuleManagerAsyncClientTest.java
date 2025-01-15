@@ -5,8 +5,10 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
@@ -15,10 +17,9 @@ import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.HashMap;
 
 import static org.mockito.Mockito.when;
 
@@ -47,7 +49,6 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
-    private ServiceBusConnectionProcessor connectionProcessor;
 
     private AutoCloseable mocksCloseable;
     private CreateRuleOptions ruleOptions;
@@ -59,7 +60,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private TokenCredential tokenCredential;
 
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
 
     @Mock
     private ServiceBusManagementNode managementNode;
@@ -85,14 +86,15 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
         ruleOptions = new CreateRuleOptions(ruleFilter);
 
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 
-        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = new ReactorConnectionCache<>(() -> connection, connectionOptions.getFullyQualifiedNamespace(),
+                ENTITY_PATH, new FixedAmqpRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
         ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE,
-            new ConnectionCacheWrapper(connectionProcessor), onClientClose);
+            new ConnectionCacheWrapper(connectionCache), onClientClose);
 
     }
 
