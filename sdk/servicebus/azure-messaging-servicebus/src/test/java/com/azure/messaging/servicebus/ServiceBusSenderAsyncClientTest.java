@@ -144,7 +144,7 @@ class ServiceBusSenderAsyncClientTest {
         .setTryTimeout(Duration.ofSeconds(10));
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private ServiceBusSenderAsyncClient sender;
-    private ConnectionCacheWrapper connectionCacheWrapper;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
 
     @BeforeEach
     void setup() {
@@ -159,14 +159,11 @@ class ServiceBusSenderAsyncClientTest {
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
         when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
 
-        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
-            = new ReactorConnectionCache<>(() -> connection, connectionOptions.getFullyQualifiedNamespace(), "queue0",
-                new FixedAmqpRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
+        connectionCache = new ReactorConnectionCache<>(() -> connection, connectionOptions.getFullyQualifiedNamespace(),
+            "queue0", new FixedAmqpRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
-
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
@@ -412,8 +409,8 @@ class ServiceBusSenderAsyncClientTest {
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024, errorContextProvider,
             instrumentation.getTracer(), serializer);
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -461,8 +458,8 @@ class ServiceBusSenderAsyncClientTest {
         ServiceBusSenderInstrumentation instrumentation
             = new ServiceBusSenderInstrumentation(tracer1, meter, NAMESPACE, ENTITY_NAME);
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -509,8 +506,8 @@ class ServiceBusSenderAsyncClientTest {
         ServiceBusSenderInstrumentation instrumentation
             = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -543,8 +540,8 @@ class ServiceBusSenderAsyncClientTest {
         ServiceBusSenderInstrumentation instrumentation
             = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -586,8 +583,8 @@ class ServiceBusSenderAsyncClientTest {
         ServiceBusSenderInstrumentation instrumentation
             = new ServiceBusSenderInstrumentation(tracer, meter, NAMESPACE, ENTITY_NAME);
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -630,8 +627,8 @@ class ServiceBusSenderAsyncClientTest {
         batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
         batch.tryAddMessage(new ServiceBusMessage(TEST_CONTENTS));
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -658,8 +655,8 @@ class ServiceBusSenderAsyncClientTest {
         ServiceBusSenderInstrumentation instrumentation
             = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
-            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
@@ -1092,8 +1089,7 @@ class ServiceBusSenderAsyncClientTest {
         final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
             = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_NAME,
                 new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE,
-            new ConnectionCacheWrapper(connectionCache), retryOptions, DEFAULT_INSTRUMENTATION, serializer,
-            onClientClose, null, CLIENT_IDENTIFIER);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCache, retryOptions,
+            DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
     }
 }
