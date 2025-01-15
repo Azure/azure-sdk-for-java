@@ -24,11 +24,13 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.WorkloadsSapVirtualInstanceMgmtClient;
+import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.OperationsImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapApplicationServerInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapCentralServerInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapDatabaseInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapVirtualInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.WorkloadsSapVirtualInstanceMgmtClientBuilder;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.Operations;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstances;
@@ -45,6 +47,8 @@ import java.util.stream.Collectors;
  * Workloads client provides access to various workload operations.
  */
 public final class WorkloadsSapVirtualInstanceManager {
+    private Operations operations;
+
     private SapVirtualInstances sapVirtualInstances;
 
     private SapCentralServerInstances sapCentralServerInstances;
@@ -263,6 +267,18 @@ public final class WorkloadsSapVirtualInstanceManager {
                 .build();
             return new WorkloadsSapVirtualInstanceManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**
