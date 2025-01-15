@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.AudioFormat;
 import com.azure.communication.callautomation.models.CallIntelligenceOptions;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallResult;
@@ -402,12 +403,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // Create call automation client and use source as the caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndMediaStreamingTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndMediaStreamingTest", next))
                 .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
@@ -470,6 +471,126 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // Stop Media Streaming
             StopMediaStreamingOptions stopMediaStreamingOptions = new StopMediaStreamingOptions();
             // stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .stopMediaStreamingWithResponse(stopMediaStreamingOptions)
+                .block();
+            MediaStreamingStopped mediaStreamingStopped
+                = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(mediaStreamingStopped);
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndMediaStreamingWithAudioFormatPcm24kMonoTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call and Media Streaming
+        * 1. create a CallAutomationClient.
+        * 2. Start Media Streaming with AudioFormat Pcm24kMono and Stop Media Streaming
+        * 3. See Media Streaming sterted and stoped in call
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy(
+                    (context, next) -> logHeaders("createVOIPCallAndMediaStreamingWithAudioFormatPcm24kMonoTest", next))
+                .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy(
+                    (context, next) -> logHeaders("createVOIPCallAndMediaStreamingWithAudioFormatPcm24kMonoTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy(
+                    (context, next) -> logHeaders("createVOIPCallAndMediaStreamingWithAudioFormatPcm24kMonoTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create options
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            MediaStreamingOptions mediaStreamingOptions
+                = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingTransport.WEBSOCKET,
+                    MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.UNMIXED, false);
+            mediaStreamingOptions.setAudioFormat(AudioFormat.PCM_24K_MONO);
+            mediaStreamingOptions.setEnableBidirectional(true);
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+
+            createCallOptions.setMediaStreamingOptions(mediaStreamingOptions);
+
+            // create a call
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+
+            // validate the call
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+
+            // get call connection id
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            // Start Media Streaming
+            StartMediaStreamingOptions startMediaStreamingOptions = new StartMediaStreamingOptions();
+            CallMediaAsync callMedia = callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync();
+
+            System.out.println("TRANSPORT_URL: " + TRANSPORT_URL);
+            callMedia.startMediaStreamingWithResponse(startMediaStreamingOptions).block();
+
+            MediaStreamingStarted mediaStreamingStarted
+                = waitForEvent(MediaStreamingStarted.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(mediaStreamingStarted);
+
+            // Stop Media Streaming
+            StopMediaStreamingOptions stopMediaStreamingOptions = new StopMediaStreamingOptions();
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId)
                 .getCallMediaAsync()
