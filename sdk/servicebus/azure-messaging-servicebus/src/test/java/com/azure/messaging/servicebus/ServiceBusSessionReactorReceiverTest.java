@@ -41,7 +41,7 @@ public class ServiceBusSessionReactorReceiverTest {
     private static final String ENTITY_PATH = "queue0";
     private static final String SESSION_ID = "1";
     private static final String LINK_NAME = "queue0-session-1";
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReactorReceiverTest.class);
 
     private final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.createCold();
     private final TestPublisher<Message> messagePublisher = TestPublisher.createCold();
