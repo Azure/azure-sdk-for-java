@@ -27,7 +27,6 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -135,8 +134,6 @@ class ServiceBusSenderAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
     @Captor
-    private ArgumentCaptor<ServiceBusMessage> singleSBMessageCaptor;
-    @Captor
     private ArgumentCaptor<List<ServiceBusMessage>> sbMessagesCaptor;
     @Captor
     private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
@@ -147,28 +144,26 @@ class ServiceBusSenderAsyncClientTest {
         .setTryTimeout(Duration.ofSeconds(10));
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private ServiceBusSenderAsyncClient sender;
-    private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionCacheWrapper connectionCacheWrapper;
-    private ConnectionOptions connectionOptions;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+        final ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
             SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
         endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
 
-        connectionProcessor = Mono.fromCallable(() -> connection)
-            .repeat(10)
-            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = new ReactorConnectionCache<>(() -> connection, connectionOptions.getFullyQualifiedNamespace(), "queue0",
+                new FixedAmqpRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
             retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
