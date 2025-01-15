@@ -1,16 +1,17 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0 (2025-01-15)
 
-#### Features Added
+### Features Added
 - Support cache for token credential object. [#39393](https://github.com/Azure/azure-sdk-for-java/issues/39393).
 
-#### Bugs Fixed
+### Bugs Fixed
 - Fix the issue where the token acquisition timeout is not set via the property `azure.accessTokenTimeoutInSeconds`. [#43512](https://github.com/Azure/azure-sdk-for-java/issues/43512).
 
 ### Other Changes
 
 #### Dependency Updates
+- Upgraded `azure-identity` from `1.14.2` to version `1.15.0`.
 
 ## 1.1.22 (2024-12-04)
 
