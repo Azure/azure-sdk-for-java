@@ -18,6 +18,11 @@ import java.io.IOException;
 public final class AcsEmailDeliveryReportStatusDetails
     implements JsonSerializable<AcsEmailDeliveryReportStatusDetails> {
     /*
+     * Recipient Mail Server Host Name
+     */
+    private String recipientMailServerHostName;
+
+    /*
      * Detailed status message
      */
     private String statusMessage;
@@ -26,6 +31,26 @@ public final class AcsEmailDeliveryReportStatusDetails
      * Creates an instance of AcsEmailDeliveryReportStatusDetails class.
      */
     public AcsEmailDeliveryReportStatusDetails() {
+    }
+
+    /**
+     * Get the recipientMailServerHostName property: Recipient Mail Server Host Name.
+     * 
+     * @return the recipientMailServerHostName value.
+     */
+    public String getRecipientMailServerHostName() {
+        return this.recipientMailServerHostName;
+    }
+
+    /**
+     * Set the recipientMailServerHostName property: Recipient Mail Server Host Name.
+     * 
+     * @param recipientMailServerHostName the recipientMailServerHostName value to set.
+     * @return the AcsEmailDeliveryReportStatusDetails object itself.
+     */
+    public AcsEmailDeliveryReportStatusDetails setRecipientMailServerHostName(String recipientMailServerHostName) {
+        this.recipientMailServerHostName = recipientMailServerHostName;
+        return this;
     }
 
     /**
@@ -48,9 +73,13 @@ public final class AcsEmailDeliveryReportStatusDetails
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recipientMailServerHostName", this.recipientMailServerHostName);
         jsonWriter.writeStringField("statusMessage", this.statusMessage);
         return jsonWriter.writeEndObject();
     }
@@ -71,7 +100,9 @@ public final class AcsEmailDeliveryReportStatusDetails
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("statusMessage".equals(fieldName)) {
+                if ("recipientMailServerHostName".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportStatusDetails.recipientMailServerHostName = reader.getString();
+                } else if ("statusMessage".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportStatusDetails.statusMessage = reader.getString();
                 } else {
                     reader.skipChildren();

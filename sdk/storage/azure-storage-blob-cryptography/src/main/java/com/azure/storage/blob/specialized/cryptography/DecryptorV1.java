@@ -35,8 +35,8 @@ class DecryptorV1 extends Decryptor {
     }
 
     @Override
-    Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
-        boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
+    Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange, boolean padding,
+        String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
         LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
             + "which is no longer secure. Path: " + requestUri);
 
@@ -82,8 +82,7 @@ class DecryptorV1 extends Decryptor {
              * max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
              * larger than what the real outputSize is. This is accounted for below.
              */
-            ByteBuffer plaintextByteBuffer = ByteBuffer
-                .allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
+            ByteBuffer plaintextByteBuffer = ByteBuffer.allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
 
             // First, determine if we should update or finalize and fill the output buffer.
             int bytesToInput = encryptedByteBuffer.remaining();
@@ -107,12 +106,10 @@ class DecryptorV1 extends Decryptor {
     }
 
     @Override
-    protected Cipher getCipher(byte[] contentEncryptionKey, byte[] iv, boolean padding)
-        throws InvalidKeyException {
+    protected Cipher getCipher(byte[] contentEncryptionKey, byte[] iv, boolean padding) throws InvalidKeyException {
         // validate encryption data
         try {
-            SecretKey keySpec = new SecretKeySpec(contentEncryptionKey, 0, contentEncryptionKey.length,
-                AES);
+            SecretKey keySpec = new SecretKeySpec(contentEncryptionKey, 0, contentEncryptionKey.length, AES);
             Cipher cipher;
             if (padding) {
                 cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);

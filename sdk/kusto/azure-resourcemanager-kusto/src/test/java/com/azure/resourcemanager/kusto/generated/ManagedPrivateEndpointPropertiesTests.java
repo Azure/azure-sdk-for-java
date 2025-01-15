@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedPrivateEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedPrivateEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"privateLinkResourceId\":\"q\",\"privateLinkResourceRegion\":\"qoaxoruzfgs\",\"groupId\":\"uyfxrxxleptramxj\",\"requestMessage\":\"wlwnwxuqlcv\",\"provisioningState\":\"Deleting\"}")
-                .toObject(ManagedPrivateEndpointProperties.class);
+        ManagedPrivateEndpointProperties model = BinaryData.fromString(
+            "{\"privateLinkResourceId\":\"q\",\"privateLinkResourceRegion\":\"qoaxoruzfgs\",\"groupId\":\"uyfxrxxleptramxj\",\"requestMessage\":\"wlwnwxuqlcv\",\"provisioningState\":\"Deleting\"}")
+            .toObject(ManagedPrivateEndpointProperties.class);
         Assertions.assertEquals("q", model.privateLinkResourceId());
         Assertions.assertEquals("qoaxoruzfgs", model.privateLinkResourceRegion());
         Assertions.assertEquals("uyfxrxxleptramxj", model.groupId());
@@ -24,12 +22,10 @@ public final class ManagedPrivateEndpointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointProperties model =
-            new ManagedPrivateEndpointProperties()
-                .withPrivateLinkResourceId("q")
-                .withPrivateLinkResourceRegion("qoaxoruzfgs")
-                .withGroupId("uyfxrxxleptramxj")
-                .withRequestMessage("wlwnwxuqlcv");
+        ManagedPrivateEndpointProperties model = new ManagedPrivateEndpointProperties().withPrivateLinkResourceId("q")
+            .withPrivateLinkResourceRegion("qoaxoruzfgs")
+            .withGroupId("uyfxrxxleptramxj")
+            .withRequestMessage("wlwnwxuqlcv");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointProperties.class);
         Assertions.assertEquals("q", model.privateLinkResourceId());
         Assertions.assertEquals("qoaxoruzfgs", model.privateLinkResourceRegion());

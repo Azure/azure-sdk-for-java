@@ -41,11 +41,9 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     }
 
     PasswordCredentialImpl(String name, HasCredential<T> parent) {
-        super(
-            new MicrosoftGraphPasswordCredentialInner()
-                .withDisplayName(name)
-                .withStartDateTime(OffsetDateTime.now())
-                .withEndDateTime(OffsetDateTime.now().plusYears(1)));
+        super(new MicrosoftGraphPasswordCredentialInner().withDisplayName(name)
+            .withStartDateTime(OffsetDateTime.now())
+            .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -102,14 +100,12 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     }
 
     void exportAuthFile(ServicePrincipalImpl servicePrincipal) {
-        exportAuthFile(servicePrincipal.manager().environment(),
-            servicePrincipal.applicationId(),
+        exportAuthFile(servicePrincipal.manager().environment(), servicePrincipal.applicationId(),
             servicePrincipal.manager().tenantId());
     }
 
     void exportAuthFile(ActiveDirectoryApplicationImpl activeDirectoryApplication) {
-        exportAuthFile(activeDirectoryApplication.manager().environment(),
-            activeDirectoryApplication.applicationId(),
+        exportAuthFile(activeDirectoryApplication.manager().environment(), activeDirectoryApplication.applicationId(),
             activeDirectoryApplication.manager().tenantId());
     }
 
@@ -119,38 +115,24 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
         }
 
         StringBuilder builder = new StringBuilder("{\n");
-        builder
-            .append("  ")
-            .append(String.format("\"clientId\": \"%s\",", clientId))
-            .append("\n");
+        builder.append("  ").append(String.format("\"clientId\": \"%s\",", clientId)).append("\n");
         builder.append("  ").append(String.format("\"clientSecret\": \"%s\",", value())).append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"tenantId\": \"%s\",", tenantId))
-            .append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"subscriptionId\": \"%s\",", subscriptionId))
-            .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ").append(String.format("\"tenantId\": \"%s\",", tenantId)).append("\n");
+        builder.append("  ").append(String.format("\"subscriptionId\": \"%s\",", subscriptionId)).append("\n");
+        builder.append("  ")
             .append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"%s\": \"%s\",",
-                AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(), environment.getMicrosoftGraphEndpoint()))
+        builder.append("  ")
+            .append(String.format("\"%s\": \"%s\",", AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(),
+                environment.getMicrosoftGraphEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint()))
             .append("\n");
         builder.append("}");

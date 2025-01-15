@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="DM_DEFAULT_ENCODING" />
+    <Class name="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.DeletedSecretListResult" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretBundle" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretItem" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretListResult" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretSetParameters" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretUpdateParameters" />
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.security.keyvault.secrets.SecretClientBuilder" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretBundle" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretItem" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretSetParameters" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretUpdateParameters" />
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+    <Or>
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.BackupSecretResult" />
+      <Class name="com.azure.security.keyvault.secrets.implementation.models.SecretRestoreParameters" />
+    </Or>
+  </Match>
+</FindBugsFilter>

@@ -6,55 +6,52 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The script action profile.
  */
 @Fluent
-public final class ScriptActionProfile {
+public final class ScriptActionProfile implements JsonSerializable<ScriptActionProfile> {
     /*
      * Type of the script action. Supported type is bash scripts.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * Script name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Url of the script file.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Additional parameters for the script action. It should be space-separated list of arguments required for script
      * execution.
      */
-    @JsonProperty(value = "parameters")
     private String parameters;
 
     /*
      * List of services to apply the script action.
      */
-    @JsonProperty(value = "services", required = true)
     private List<String> services;
 
     /*
      * Timeout duration for the script action in minutes.
      */
-    @JsonProperty(value = "timeoutInMinutes")
     private Integer timeoutInMinutes;
 
     /*
      * Specify if the script should persist on the cluster.
      */
-    @JsonProperty(value = "shouldPersist")
     private Boolean shouldPersist;
 
     /**
@@ -212,22 +209,78 @@ public final class ScriptActionProfile {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ScriptActionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ScriptActionProfile"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ScriptActionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ScriptActionProfile"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model ScriptActionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model ScriptActionProfile"));
         }
         if (services() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property services in model ScriptActionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property services in model ScriptActionProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScriptActionProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeArrayField("services", this.services, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("parameters", this.parameters);
+        jsonWriter.writeNumberField("timeoutInMinutes", this.timeoutInMinutes);
+        jsonWriter.writeBooleanField("shouldPersist", this.shouldPersist);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActionProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptActionProfile.
+     */
+    public static ScriptActionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActionProfile deserializedScriptActionProfile = new ScriptActionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedScriptActionProfile.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScriptActionProfile.name = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedScriptActionProfile.url = reader.getString();
+                } else if ("services".equals(fieldName)) {
+                    List<String> services = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScriptActionProfile.services = services;
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedScriptActionProfile.parameters = reader.getString();
+                } else if ("timeoutInMinutes".equals(fieldName)) {
+                    deserializedScriptActionProfile.timeoutInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("shouldPersist".equals(fieldName)) {
+                    deserializedScriptActionProfile.shouldPersist = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActionProfile;
+        });
+    }
 }

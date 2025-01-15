@@ -67,14 +67,20 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, deploymentName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Deployment create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, deploymentName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -89,14 +95,20 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment apply() {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, deploymentName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Deployment apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, deploymentName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -111,14 +123,16 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment refresh() {
-        this.innerObject = serviceManager.serviceClient().getDeployments()
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
             .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName, Context.NONE)
             .getValue();
         return this;
     }
 
     public Deployment refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments()
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
             .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName, context)
             .getValue();
         return this;

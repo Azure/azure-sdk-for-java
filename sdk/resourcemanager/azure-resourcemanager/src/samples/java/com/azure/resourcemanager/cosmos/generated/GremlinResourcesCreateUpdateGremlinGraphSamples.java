@@ -12,10 +12,10 @@ import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphResource;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
+import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
 import com.azure.resourcemanager.cosmos.models.IndexingMode;
 import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
-import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBGremlinGraphCreateUpdate.json
      */
     /**

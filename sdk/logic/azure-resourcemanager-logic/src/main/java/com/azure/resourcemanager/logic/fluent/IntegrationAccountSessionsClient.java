@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionInner;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountSessionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountSessionsClient.
+ */
 public interface IntegrationAccountSessionsClient {
     /**
      * Gets a list of integration account sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface IntegrationAccountSessionsClient {
 
     /**
      * Gets a list of integration account sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -40,12 +42,12 @@ public interface IntegrationAccountSessionsClient {
      * @return a list of integration account sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationAccountSessionInner> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountSessionInner> list(String resourceGroupName, String integrationAccountName,
+        Integer top, String filter, Context context);
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -56,12 +58,12 @@ public interface IntegrationAccountSessionsClient {
      * @return an integration account session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountSessionInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context);
+    Response<IntegrationAccountSessionInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String sessionName, Context context);
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -75,7 +77,7 @@ public interface IntegrationAccountSessionsClient {
 
     /**
      * Creates or updates an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -87,16 +89,12 @@ public interface IntegrationAccountSessionsClient {
      * @return the integration account session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountSessionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String sessionName,
-        IntegrationAccountSessionInner session,
-        Context context);
+    Response<IntegrationAccountSessionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String sessionName, IntegrationAccountSessionInner session, Context context);
 
     /**
      * Creates or updates an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -107,15 +105,12 @@ public interface IntegrationAccountSessionsClient {
      * @return the integration account session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountSessionInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String sessionName,
-        IntegrationAccountSessionInner session);
+    IntegrationAccountSessionInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String sessionName, IntegrationAccountSessionInner session);
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -126,12 +121,12 @@ public interface IntegrationAccountSessionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String sessionName,
+        Context context);
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.

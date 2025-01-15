@@ -15,10 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class RoleAssignmentResourceFormatImpl
-    implements RoleAssignmentResourceFormat,
-        RoleAssignmentResourceFormat.Definition,
-        RoleAssignmentResourceFormat.Update {
+public final class RoleAssignmentResourceFormatImpl implements RoleAssignmentResourceFormat,
+    RoleAssignmentResourceFormat.Definition, RoleAssignmentResourceFormat.Update {
     private RoleAssignmentResourceFormatInner innerObject;
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
@@ -155,25 +153,21 @@ public final class RoleAssignmentResourceFormatImpl
     }
 
     public RoleAssignmentResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RoleAssignmentResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), context);
         return this;
     }
 
-    RoleAssignmentResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    RoleAssignmentResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new RoleAssignmentResourceFormatInner();
         this.serviceManager = serviceManager;
         this.assignmentName = name;
@@ -184,50 +178,41 @@ public final class RoleAssignmentResourceFormatImpl
     }
 
     public RoleAssignmentResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RoleAssignmentResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .createOrUpdate(resourceGroupName, hubName, assignmentName, this.innerModel(), context);
         return this;
     }
 
-    RoleAssignmentResourceFormatImpl(
-        RoleAssignmentResourceFormatInner innerObject,
+    RoleAssignmentResourceFormatImpl(RoleAssignmentResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.assignmentName = Utils.getValueFromIdByName(innerObject.id(), "roleAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.assignmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "roleAssignments");
     }
 
     public RoleAssignmentResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .getWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .getWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RoleAssignmentResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoleAssignments()
-                .getWithResponse(resourceGroupName, hubName, assignmentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoleAssignments()
+            .getWithResponse(resourceGroupName, hubName, assignmentName, context)
+            .getValue();
         return this;
     }
 

@@ -4,7 +4,7 @@
 package com.azure.ai.translation.text.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -42,7 +42,6 @@ public final class LanguageScope extends ExpandableStringEnum<LanguageScope> {
      * @param name a name to look for.
      * @return the corresponding LanguageScope.
      */
-    @JsonCreator
     public static LanguageScope fromString(String name) {
         return fromString(name, LanguageScope.class);
     }

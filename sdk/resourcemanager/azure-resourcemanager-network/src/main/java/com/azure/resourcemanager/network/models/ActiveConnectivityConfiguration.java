@@ -271,7 +271,12 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (configurationGroups() != null) {
+            configurationGroups().forEach(e -> e.validate());
+        }
     }
 
     /**

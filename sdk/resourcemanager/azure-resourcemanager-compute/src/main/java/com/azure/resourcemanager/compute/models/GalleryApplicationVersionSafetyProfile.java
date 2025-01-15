@@ -38,7 +38,6 @@ public final class GalleryApplicationVersionSafetyProfile extends GalleryArtifac
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

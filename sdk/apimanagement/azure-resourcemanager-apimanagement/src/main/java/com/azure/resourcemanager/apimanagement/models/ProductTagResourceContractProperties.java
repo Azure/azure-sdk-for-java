@@ -6,30 +6,35 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Product profile. */
+/**
+ * Product profile.
+ */
 @Fluent
 public final class ProductTagResourceContractProperties extends ProductEntityBaseParameters {
     /*
      * Identifier of the product in the form of /products/{productId}
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Product name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of ProductTagResourceContractProperties class. */
+    /**
+     * Creates an instance of ProductTagResourceContractProperties class.
+     */
     public ProductTagResourceContractProperties() {
     }
 
     /**
      * Get the id property: Identifier of the product in the form of /products/{productId}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +43,7 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
 
     /**
      * Set the id property: Identifier of the product in the form of /products/{productId}.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProductTagResourceContractProperties object itself.
      */
@@ -49,7 +54,7 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
 
     /**
      * Get the name property: Product name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +63,7 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
 
     /**
      * Set the name property: Product name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ProductTagResourceContractProperties object itself.
      */
@@ -67,42 +72,54 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withTerms(String terms) {
         super.withTerms(terms);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withApprovalRequired(Boolean approvalRequired) {
         super.withApprovalRequired(approvalRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withSubscriptionsLimit(Integer subscriptionsLimit) {
         super.withSubscriptionsLimit(subscriptionsLimit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductTagResourceContractProperties withState(ProductState state) {
         super.withState(state);
@@ -111,19 +128,80 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ProductTagResourceContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ProductTagResourceContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProductTagResourceContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("terms", terms());
+        jsonWriter.writeBooleanField("subscriptionRequired", subscriptionRequired());
+        jsonWriter.writeBooleanField("approvalRequired", approvalRequired());
+        jsonWriter.writeNumberField("subscriptionsLimit", subscriptionsLimit());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductTagResourceContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductTagResourceContractProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductTagResourceContractProperties.
+     */
+    public static ProductTagResourceContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductTagResourceContractProperties deserializedProductTagResourceContractProperties
+                = new ProductTagResourceContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties.withDescription(reader.getString());
+                } else if ("terms".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties.withTerms(reader.getString());
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties
+                        .withSubscriptionRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("approvalRequired".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties
+                        .withApprovalRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subscriptionsLimit".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties
+                        .withSubscriptionsLimit(reader.getNullable(JsonReader::getInt));
+                } else if ("state".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties
+                        .withState(ProductState.fromString(reader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedProductTagResourceContractProperties.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductTagResourceContractProperties;
+        });
+    }
 }

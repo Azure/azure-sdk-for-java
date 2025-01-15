@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.fluent.models.DatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A List of databases. */
+/**
+ * A List of databases.
+ */
 @Fluent
-public final class DatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseListResult.class);
-
+public final class DatabaseListResult implements JsonSerializable<DatabaseListResult> {
     /*
      * The list of databases housed in a server
      */
-    @JsonProperty(value = "value")
     private List<DatabaseInner> value;
 
     /**
+     * Creates an instance of DatabaseListResult class.
+     */
+    public DatabaseListResult() {
+    }
+
+    /**
      * Get the value property: The list of databases housed in a server.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseInner> value() {
@@ -33,7 +40,7 @@ public final class DatabaseListResult {
 
     /**
      * Set the value property: The list of databases housed in a server.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatabaseListResult object itself.
      */
@@ -44,12 +51,49 @@ public final class DatabaseListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseListResult.
+     */
+    public static DatabaseListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseListResult deserializedDatabaseListResult = new DatabaseListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DatabaseInner> value = reader.readArray(reader1 -> DatabaseInner.fromJson(reader1));
+                    deserializedDatabaseListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseListResult;
+        });
     }
 }

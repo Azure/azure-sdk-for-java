@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** type of alert. */
+/**
+ * type of alert.
+ */
 public final class AlertType extends ExpandableStringEnum<AlertType> {
-    /** Static value Budget for AlertType. */
+    /**
+     * Static value Budget for AlertType.
+     */
     public static final AlertType BUDGET = fromString("Budget");
 
-    /** Static value Invoice for AlertType. */
+    /**
+     * Static value Invoice for AlertType.
+     */
     public static final AlertType INVOICE = fromString("Invoice");
 
-    /** Static value Credit for AlertType. */
+    /**
+     * Static value Credit for AlertType.
+     */
     public static final AlertType CREDIT = fromString("Credit");
 
-    /** Static value Quota for AlertType. */
+    /**
+     * Static value Quota for AlertType.
+     */
     public static final AlertType QUOTA = fromString("Quota");
 
-    /** Static value General for AlertType. */
+    /**
+     * Static value General for AlertType.
+     */
     public static final AlertType GENERAL = fromString("General");
 
-    /** Static value xCloud for AlertType. */
+    /**
+     * Static value xCloud for AlertType.
+     */
     public static final AlertType X_CLOUD = fromString("xCloud");
 
-    /** Static value BudgetForecast for AlertType. */
+    /**
+     * Static value BudgetForecast for AlertType.
+     */
     public static final AlertType BUDGET_FORECAST = fromString("BudgetForecast");
 
     /**
      * Creates a new instance of AlertType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class AlertType extends ExpandableStringEnum<AlertType> {
 
     /**
      * Creates or finds a AlertType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertType.
      */
-    @JsonCreator
     public static AlertType fromString(String name) {
         return fromString(name, AlertType.class);
     }
 
     /**
      * Gets known AlertType values.
-     *
+     * 
      * @return known AlertType values.
      */
     public static Collection<AlertType> values() {

@@ -14,45 +14,42 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountSchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSchemaInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"tjivfxzsjabib\",\"documentName\":\"stawfsdjpvkv\",\"fileName\":\"jxbkzbzkdvn\",\"createdTime\":\"2021-04-26T00:18:09Z\",\"changedTime\":\"2021-03-23T01:16:39Z\",\"metadata\":\"dataurgkakmokzhjjk\",\"content\":\"fhmouwq\",\"contentType\":\"zrfze\",\"contentLink\":{\"uri\":\"bizikayuhq\",\"contentVersion\":\"jbsybbqw\",\"contentSize\":629489002910902814,\"metadata\":\"datamfpgv\"}},\"location\":\"pip\",\"tags\":{\"wbdsr\":\"thaqfxssmwu\"},\"id\":\"zpdrhneu\",\"name\":\"owqkdwytisi\",\"type\":\"ircgpikpz\"}")
-                .toObject(IntegrationAccountSchemaInner.class);
-        Assertions.assertEquals("pip", model.location());
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
+        IntegrationAccountSchemaInner model = BinaryData.fromString(
+            "{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"tcojocqwo\",\"documentName\":\"nzjvusfzldm\",\"fileName\":\"uxylfsbtkadpy\",\"createdTime\":\"2020-12-29T00:26:56Z\",\"changedTime\":\"2021-06-16T11:37:33Z\",\"metadata\":\"datagkbugrjqct\",\"content\":\"cmisofie\",\"contentType\":\"efojyqdhcupl\",\"contentLink\":{\"uri\":\"cwkhihi\",\"contentVersion\":\"hzdsqtzbsrgnow\",\"contentSize\":4272824792965282046,\"contentHash\":{\"algorithm\":\"vecactx\",\"value\":\"oteyowc\"},\"metadata\":\"dataqovekqvgqou\"}},\"location\":\"ifzmpjwyivqi\",\"tags\":{\"uagrttikteusqc\":\"cvhrfsp\",\"bl\":\"kvyklxubyjaffmm\"},\"id\":\"qcuubgqibrta\",\"name\":\"metttwgd\",\"type\":\"lqxihhrmooiz\"}")
+            .toObject(IntegrationAccountSchemaInner.class);
+        Assertions.assertEquals("ifzmpjwyivqi", model.location());
+        Assertions.assertEquals("cvhrfsp", model.tags().get("uagrttikteusqc"));
         Assertions.assertEquals(SchemaType.NOT_SPECIFIED, model.schemaType());
-        Assertions.assertEquals("tjivfxzsjabib", model.targetNamespace());
-        Assertions.assertEquals("stawfsdjpvkv", model.documentName());
-        Assertions.assertEquals("jxbkzbzkdvn", model.fileName());
-        Assertions.assertEquals("fhmouwq", model.content());
-        Assertions.assertEquals("zrfze", model.contentType());
+        Assertions.assertEquals("tcojocqwo", model.targetNamespace());
+        Assertions.assertEquals("nzjvusfzldm", model.documentName());
+        Assertions.assertEquals("uxylfsbtkadpy", model.fileName());
+        Assertions.assertEquals("cmisofie", model.content());
+        Assertions.assertEquals("efojyqdhcupl", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountSchemaInner model =
-            new IntegrationAccountSchemaInner()
-                .withLocation("pip")
-                .withTags(mapOf("wbdsr", "thaqfxssmwu"))
-                .withSchemaType(SchemaType.NOT_SPECIFIED)
-                .withTargetNamespace("tjivfxzsjabib")
-                .withDocumentName("stawfsdjpvkv")
-                .withFileName("jxbkzbzkdvn")
-                .withMetadata("dataurgkakmokzhjjk")
-                .withContent("fhmouwq")
-                .withContentType("zrfze");
+        IntegrationAccountSchemaInner model = new IntegrationAccountSchemaInner().withLocation("ifzmpjwyivqi")
+            .withTags(mapOf("uagrttikteusqc", "cvhrfsp", "bl", "kvyklxubyjaffmm"))
+            .withSchemaType(SchemaType.NOT_SPECIFIED)
+            .withTargetNamespace("tcojocqwo")
+            .withDocumentName("nzjvusfzldm")
+            .withFileName("uxylfsbtkadpy")
+            .withMetadata("datagkbugrjqct")
+            .withContent("cmisofie")
+            .withContentType("efojyqdhcupl");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountSchemaInner.class);
-        Assertions.assertEquals("pip", model.location());
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
+        Assertions.assertEquals("ifzmpjwyivqi", model.location());
+        Assertions.assertEquals("cvhrfsp", model.tags().get("uagrttikteusqc"));
         Assertions.assertEquals(SchemaType.NOT_SPECIFIED, model.schemaType());
-        Assertions.assertEquals("tjivfxzsjabib", model.targetNamespace());
-        Assertions.assertEquals("stawfsdjpvkv", model.documentName());
-        Assertions.assertEquals("jxbkzbzkdvn", model.fileName());
-        Assertions.assertEquals("fhmouwq", model.content());
-        Assertions.assertEquals("zrfze", model.contentType());
+        Assertions.assertEquals("tcojocqwo", model.targetNamespace());
+        Assertions.assertEquals("nzjvusfzldm", model.documentName());
+        Assertions.assertEquals("uxylfsbtkadpy", model.fileName());
+        Assertions.assertEquals("cmisofie", model.content());
+        Assertions.assertEquals("efojyqdhcupl", model.contentType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

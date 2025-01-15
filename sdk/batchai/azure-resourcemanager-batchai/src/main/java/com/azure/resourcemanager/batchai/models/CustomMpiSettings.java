@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Custom MPI job settings. */
 @Fluent
 public final class CustomMpiSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomMpiSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CustomMpiSettings.class);
 
     /*
      * The command line to be executed by mpi runtime on each compute node.
@@ -76,9 +77,8 @@ public final class CustomMpiSettings {
      */
     public void validate() {
         if (commandLine() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property commandLine in model CustomMpiSettings"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property commandLine in model CustomMpiSettings"));
         }
     }
 }

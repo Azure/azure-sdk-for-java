@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.DeploymentLicenseResponseInner;
 import com.azure.resourcemanager.azurestack.models.DeploymentLicenseRequest;
 
-/** An instance of this class provides access to all the operations defined in DeploymentLicensesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentLicensesClient.
+ */
 public interface DeploymentLicensesClient {
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,12 +26,12 @@ public interface DeploymentLicensesClient {
      * @return a license that can be used to deploy an Azure Stack device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentLicenseResponseInner> createWithResponse(
-        DeploymentLicenseRequest deploymentLicenseRequest, Context context);
+    Response<DeploymentLicenseResponseInner> createWithResponse(DeploymentLicenseRequest deploymentLicenseRequest,
+        Context context);
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

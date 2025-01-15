@@ -7,11 +7,13 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Usages. */
+/**
+ * Resource collection API of Usages.
+ */
 public interface Usages {
     /**
      * Retrieve the usage for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface Usages {
 
     /**
      * Retrieve the usage for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -32,6 +34,6 @@ public interface Usages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the get usage operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Usage> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<Usage> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

@@ -25,17 +25,23 @@ import com.azure.resourcemanager.defendereasm.fluent.TasksClient;
 import com.azure.resourcemanager.defendereasm.fluent.models.TaskResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TasksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TasksClient.
+ */
 public final class TasksClientImpl implements TasksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TasksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of TasksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TasksClientImpl(EasmMgmtClientImpl client) {
@@ -50,25 +56,19 @@ public final class TasksClientImpl implements TasksClient {
     @Host("{$host}")
     @ServiceInterface(name = "EasmMgmtClientTasks")
     public interface TasksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Easm/workspaces/{workspaceName}/tasks/{taskId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Easm/workspaces/{workspaceName}/tasks/{taskId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskResourceInner>> getByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("taskId") String taskId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TaskResourceInner>> getByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -78,23 +78,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, String taskId) {
+    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, String taskId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -104,24 +100,14 @@ public final class TasksClientImpl implements TasksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            taskId,
-                            accept,
-                            context))
+            .withContext(context -> service.getByWorkspace(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, taskId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -132,23 +118,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, String taskId, Context context) {
+    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, String taskId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -158,21 +140,13 @@ public final class TasksClientImpl implements TasksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                taskId,
-                accept,
-                context);
+        return service.getByWorkspace(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, taskId, accept, context);
     }
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -189,7 +163,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -200,14 +174,14 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskResourceInner> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context) {
+    public Response<TaskResourceInner> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String taskId, Context context) {
         return getByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, taskId, context).block();
     }
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.

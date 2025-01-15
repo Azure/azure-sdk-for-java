@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.ImageDefinitionInner;
 import com.azure.resourcemanager.customerinsights.models.GetImageUploadUrlInput;
 
-/** An instance of this class provides access to all the operations defined in ImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImagesClient.
+ */
 public interface ImagesClient {
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
@@ -26,12 +28,12 @@ public interface ImagesClient {
      * @return entity type (profile or interaction) image upload URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageDefinitionInner> getUploadUrlForEntityTypeWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    Response<ImageDefinitionInner> getUploadUrlForEntityTypeWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
 
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
@@ -41,12 +43,12 @@ public interface ImagesClient {
      * @return entity type (profile or interaction) image upload URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageDefinitionInner getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
+    ImageDefinitionInner getUploadUrlForEntityType(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 
     /**
      * Gets data image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.
@@ -57,12 +59,12 @@ public interface ImagesClient {
      * @return data image upload URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageDefinitionInner> getUploadUrlForDataWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    Response<ImageDefinitionInner> getUploadUrlForDataWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
 
     /**
      * Gets data image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.
@@ -72,6 +74,6 @@ public interface ImagesClient {
      * @return data image upload URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageDefinitionInner getUploadUrlForData(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
+    ImageDefinitionInner getUploadUrlForData(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 }

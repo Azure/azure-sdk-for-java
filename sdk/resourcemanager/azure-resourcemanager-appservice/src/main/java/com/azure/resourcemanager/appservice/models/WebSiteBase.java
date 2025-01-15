@@ -17,78 +17,160 @@ import java.util.Set;
  */
 public interface WebSiteBase extends Resource, HasResourceGroup, HasInnerModel<SiteInner> {
 
-    /** @return state of the web app */
+    /**
+     * Gets state of the web app.
+     *
+     * @return state of the web app
+     */
     String state();
 
-    /** @return hostnames associated with web app */
+    /**
+     * Gets hostnames associated with web app.
+     *
+     * @return hostnames associated with web app
+     */
     Set<String> hostnames();
 
-    /** @return name of repository site */
+    /**
+     * Gets name of repository site.
+     *
+     * @return name of repository site
+     */
     String repositorySiteName();
 
-    /** @return state indicating whether web app has exceeded its quota usage */
+    /**
+     * Gets state indicating whether web app has exceeded its quota usage.
+     *
+     * @return state indicating whether web app has exceeded its quota usage
+     */
     UsageState usageState();
 
-    /** @return true if the site is enabled; otherwise, false */
+    /**
+     * Check whether the site is enabled.
+     *
+     * @return true if the site is enabled; otherwise, false
+     */
     boolean enabled();
 
-    /** @return host names for the web app that are enabled */
+    /**
+     * Gets host names for the web app that are enabled.
+     *
+     * @return host names for the web app that are enabled
+     */
     Set<String> enabledHostNames();
 
-    /** @return management information availability state for the web app */
+    /**
+     * Gets management information availability state for the web app.
+     *
+     * @return management information availability state for the web app
+     */
     SiteAvailabilityState availabilityState();
 
-    /** @return list of SSL states used to manage the SSL bindings for site's hostnames */
+    /**
+     * Gets list of SSL states used to manage the SSL bindings for site's hostnames.
+     *
+     * @return list of SSL states used to manage the SSL bindings for site's hostnames
+     */
     Map<String, HostnameSslState> hostnameSslStates();
 
-    /** @return Last time web app was modified in UTC */
+    /**
+     * Gets last time web app was modified in UTC.
+     *
+     * @return Last time web app was modified in UTC
+     */
     OffsetDateTime lastModifiedTime();
 
-    /** @return list of Azure Traffic manager host names associated with web app */
+    /**
+     * Gets list of Azure Traffic manager host names associated with web app.
+     *
+     * @return list of Azure Traffic manager host names associated with web app
+     */
     Set<String> trafficManagerHostNames();
 
-    /** @return whether to stop SCM (KUDU) site when the web app is stopped. Default is false. */
+    /**
+     * Check whether to stop SCM (KUDU) site when the web app is stopped.
+     *
+     * @return whether to stop SCM (KUDU) site when the web app is stopped. Default is false.
+     */
     boolean scmSiteAlsoStopped();
 
-    /** @return which slot this app will swap into */
+    /**
+     * Gets which slot this app will swap into.
+     *
+     * @return which slot this app will swap into
+     */
     String targetSwapSlot();
 
     /**
+     * Check whether the client affinity is enabled when load balancing http request for multiple instances of the web app.
+     *
      * @return if the client affinity is enabled when load balancing http request for multiple instances of the web app
      */
     boolean clientAffinityEnabled();
 
-    /** @return if the client certificate is enabled for the web app */
+    /**
+     * Check whether the client certificate is enabled for the web app.
+     *
+     * @return if the client certificate is enabled for the web app
+     */
     boolean clientCertEnabled();
 
     /**
+     * Check whether the public hostnames are disabled for the web app.
+     *
      * @return if the public hostnames are disabled the web app. If set to true the app is only accessible via API
      *     Management process.
      */
     boolean hostnamesDisabled();
 
     /**
+     * Gets list of IP addresses that this web app uses for outbound connections.
+     *
      * @return list of IP addresses that this web app uses for outbound connections. Those can be used when configuring
      *     firewall rules for databases accessed by this web app.
      */
     Set<String> outboundIPAddresses();
 
-    /** @return size of a function container */
+    /**
+     * Gets size of a function container.
+     *
+     * @return size of a function container
+     */
     int containerSize();
 
-    /** @return information about whether the web app is cloned from another */
+    /**
+     * Gets information about whether the web app is cloned from another.
+     *
+     * @return information about whether the web app is cloned from another
+     */
     CloningInfo cloningInfo();
 
-    /** @return site is a default container */
+    /**
+     * Check whether site is a default container.
+     *
+     * @return site is a default container
+     */
     boolean isDefaultContainer();
 
-    /** @return default hostname of the web app */
+    /**
+     * Gets default hostname of the web app.
+     *
+     * @return default hostname of the web app
+     */
     String defaultHostname();
 
-    /** @return true if the web app is configured to accept only HTTPS requests. HTTP requests will be redirected. */
+    /**
+     * Check whether the web app is configured to accept only HTTPS requests.
+     *
+     * @return true if the web app is configured to accept only HTTPS requests. HTTP requests will be redirected.
+     */
     boolean httpsOnly();
 
-    /** @return The resource ID of the app service plan */
+    /**
+     * Gets the resource ID of the app service plan.
+     *
+     * @return The resource ID of the app service plan
+     */
     String appServicePlanId();
 
     /**
@@ -162,6 +244,10 @@ public interface WebSiteBase extends Resource, HasResourceGroup, HasInnerModel<S
      */
     RedundancyMode redundancyMode();
 
-    /** @return the operating system the web app is running on */
+    /**
+     * Gets the operating system the web app is running on.
+     *
+     * @return the operating system the web app is running on
+     */
     OperatingSystem operatingSystem();
 }

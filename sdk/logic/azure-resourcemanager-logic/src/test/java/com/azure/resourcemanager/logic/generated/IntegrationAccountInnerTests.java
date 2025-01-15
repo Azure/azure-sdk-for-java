@@ -17,35 +17,32 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"integrationServiceEnvironment\":{\"id\":\"yhrfouyftaakcpw\",\"name\":\"zvqtmnubexkp\",\"type\":\"smond\"},\"state\":\"Enabled\"},\"sku\":{\"name\":\"NotSpecified\"},\"location\":\"vypomgkopkwho\",\"tags\":{\"mocmbqfqvmk\":\"ajqgxy\",\"helxprglya\":\"xozap\",\"kcbcue\":\"dd\"},\"id\":\"rjxgciqib\",\"name\":\"hos\",\"type\":\"sdqrhzoymibmrq\"}")
-                .toObject(IntegrationAccountInner.class);
-        Assertions.assertEquals("vypomgkopkwho", model.location());
-        Assertions.assertEquals("ajqgxy", model.tags().get("mocmbqfqvmk"));
-        Assertions.assertEquals(IntegrationAccountSkuName.NOT_SPECIFIED, model.sku().name());
-        Assertions.assertEquals("yhrfouyftaakcpw", model.integrationServiceEnvironment().id());
-        Assertions.assertEquals(WorkflowState.ENABLED, model.state());
+        IntegrationAccountInner model = BinaryData.fromString(
+            "{\"properties\":{\"integrationServiceEnvironment\":{\"id\":\"biwkojgcyzt\",\"name\":\"mznbaeqphch\",\"type\":\"rn\"},\"state\":\"Disabled\"},\"sku\":{\"name\":\"Basic\"},\"location\":\"uwrykqgaifmvikl\",\"tags\":{\"vdsrhnjiv\":\"vkhbejdznx\"},\"id\":\"lvtno\",\"name\":\"qfzgemjdftul\",\"type\":\"ltducea\"}")
+            .toObject(IntegrationAccountInner.class);
+        Assertions.assertEquals("uwrykqgaifmvikl", model.location());
+        Assertions.assertEquals("vkhbejdznx", model.tags().get("vdsrhnjiv"));
+        Assertions.assertEquals(IntegrationAccountSkuName.BASIC, model.sku().name());
+        Assertions.assertEquals("biwkojgcyzt", model.integrationServiceEnvironment().id());
+        Assertions.assertEquals(WorkflowState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountInner model =
-            new IntegrationAccountInner()
-                .withLocation("vypomgkopkwho")
-                .withTags(mapOf("mocmbqfqvmk", "ajqgxy", "helxprglya", "xozap", "kcbcue", "dd"))
-                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.NOT_SPECIFIED))
-                .withIntegrationServiceEnvironment(new ResourceReference().withId("yhrfouyftaakcpw"))
-                .withState(WorkflowState.ENABLED);
+        IntegrationAccountInner model = new IntegrationAccountInner().withLocation("uwrykqgaifmvikl")
+            .withTags(mapOf("vdsrhnjiv", "vkhbejdznx"))
+            .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.BASIC))
+            .withIntegrationServiceEnvironment(new ResourceReference().withId("biwkojgcyzt"))
+            .withState(WorkflowState.DISABLED);
         model = BinaryData.fromObject(model).toObject(IntegrationAccountInner.class);
-        Assertions.assertEquals("vypomgkopkwho", model.location());
-        Assertions.assertEquals("ajqgxy", model.tags().get("mocmbqfqvmk"));
-        Assertions.assertEquals(IntegrationAccountSkuName.NOT_SPECIFIED, model.sku().name());
-        Assertions.assertEquals("yhrfouyftaakcpw", model.integrationServiceEnvironment().id());
-        Assertions.assertEquals(WorkflowState.ENABLED, model.state());
+        Assertions.assertEquals("uwrykqgaifmvikl", model.location());
+        Assertions.assertEquals("vkhbejdznx", model.tags().get("vdsrhnjiv"));
+        Assertions.assertEquals(IntegrationAccountSkuName.BASIC, model.sku().name());
+        Assertions.assertEquals("biwkojgcyzt", model.integrationServiceEnvironment().id());
+        Assertions.assertEquals(WorkflowState.DISABLED, model.state());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

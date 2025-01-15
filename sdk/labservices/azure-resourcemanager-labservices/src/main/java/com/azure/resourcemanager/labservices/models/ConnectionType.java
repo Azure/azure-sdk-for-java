@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** A connection type for access labs and VMs (Public, Private or None). */
+/**
+ * A connection type for access labs and VMs (Public, Private or None).
+ */
 public enum ConnectionType {
-    /** Enum value Public. */
+    /**
+     * Enum value Public.
+     */
     PUBLIC("Public"),
 
-    /** Enum value Private. */
+    /**
+     * Enum value Private.
+     */
     PRIVATE("Private"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a ConnectionType instance. */
+    /**
+     * The actual serialized value for a ConnectionType instance.
+     */
     private final String value;
 
     ConnectionType(String value) {
@@ -27,11 +34,10 @@ public enum ConnectionType {
 
     /**
      * Parses a serialized value to a ConnectionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConnectionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ConnectionType fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ConnectionType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

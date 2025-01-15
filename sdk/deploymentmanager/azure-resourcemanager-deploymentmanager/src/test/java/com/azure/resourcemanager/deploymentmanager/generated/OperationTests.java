@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ur\",\"display\":{\"provider\":\"xjnspy\",\"resource\":\"tko\",\"operation\":\"kouknvudwtiu\",\"description\":\"ldngkpoci\"},\"origin\":\"z\",\"properties\":\"datao\"}")
-                .toObject(Operation.class);
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"ur\",\"display\":{\"provider\":\"xjnspy\",\"resource\":\"tko\",\"operation\":\"kouknvudwtiu\",\"description\":\"ldngkpoci\"},\"origin\":\"z\",\"properties\":\"datao\"}")
+            .toObject(Operation.class);
         Assertions.assertEquals("ur", model.name());
         Assertions.assertEquals("xjnspy", model.display().provider());
         Assertions.assertEquals("tko", model.display().resource());
@@ -27,17 +25,13 @@ public final class OperationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Operation model =
-            new Operation()
-                .withName("ur")
-                .withDisplay(
-                    new OperationDetail()
-                        .withProvider("xjnspy")
-                        .withResource("tko")
-                        .withOperation("kouknvudwtiu")
-                        .withDescription("ldngkpoci"))
-                .withOrigin("z")
-                .withProperties("datao");
+        Operation model = new Operation().withName("ur")
+            .withDisplay(new OperationDetail().withProvider("xjnspy")
+                .withResource("tko")
+                .withOperation("kouknvudwtiu")
+                .withDescription("ldngkpoci"))
+            .withOrigin("z")
+            .withProperties("datao");
         model = BinaryData.fromObject(model).toObject(Operation.class);
         Assertions.assertEquals("ur", model.name());
         Assertions.assertEquals("xjnspy", model.display().provider());

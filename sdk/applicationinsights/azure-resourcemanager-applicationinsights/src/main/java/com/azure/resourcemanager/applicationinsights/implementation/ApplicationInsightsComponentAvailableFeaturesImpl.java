@@ -16,8 +16,7 @@ public final class ApplicationInsightsComponentAvailableFeaturesImpl
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentAvailableFeaturesImpl(
-        ApplicationInsightsComponentAvailableFeaturesInner innerObject,
+    ApplicationInsightsComponentAvailableFeaturesImpl(ApplicationInsightsComponentAvailableFeaturesInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

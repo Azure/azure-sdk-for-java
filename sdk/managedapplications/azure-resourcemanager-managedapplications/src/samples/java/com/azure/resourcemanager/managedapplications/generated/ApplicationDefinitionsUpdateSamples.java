@@ -8,23 +8,24 @@ import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitio
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApplicationDefinitions Update. */
+/**
+ * Samples for ApplicationDefinitions Update.
+ */
 public final class ApplicationDefinitionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplicationDefinition.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/
+     * updateApplicationDefinition.json
      */
     /**
      * Sample code: Update managed application definition.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
-    public static void updateManagedApplicationDefinition(
-        com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        ApplicationDefinition resource =
-            manager
-                .applicationDefinitions()
-                .getByResourceGroupWithResponse("rg", "myManagedApplicationDef", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateManagedApplicationDefinition(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
+        ApplicationDefinition resource = manager.applicationDefinitions()
+            .getByResourceGroupWithResponse("rg", "myManagedApplicationDef", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("department", "Finance")).apply();
     }
 

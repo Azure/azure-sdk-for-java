@@ -14,35 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRackInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"jpytp\",\"networkDevices\":[\"dnogehlufbor\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kk\"},\"location\":\"xzsvbxxyji\",\"tags\":{\"qocl\":\"o\",\"oewyhxessmvrkd\":\"l\",\"bdxmd\":\"sqeq\"},\"id\":\"esbrujbjpppktl\",\"name\":\"dibfmthi\",\"type\":\"at\"}")
-                .toObject(NetworkRackInner.class);
-        Assertions.assertEquals("xzsvbxxyji", model.location());
-        Assertions.assertEquals("o", model.tags().get("qocl"));
-        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
-        Assertions.assertEquals("jpytp", model.networkFabricId());
-        Assertions.assertEquals("kk", model.annotation());
+        NetworkRackInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"wmlgicvnpv\",\"networkDevices\":[\"gjnaqyqipsl\",\"mvcdsvmwbitek\"],\"provisioningState\":\"Deleting\",\"annotation\":\"bvfiybxqi\"},\"location\":\"gybfzdqekiv\",\"tags\":{\"ulrqtbht\":\"zcvdi\"},\"id\":\"ezp\",\"name\":\"lpryf\",\"type\":\"xmdutzfkgilnou\"}")
+            .toObject(NetworkRackInner.class);
+        Assertions.assertEquals("gybfzdqekiv", model.location());
+        Assertions.assertEquals("zcvdi", model.tags().get("ulrqtbht"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, model.networkRackType());
+        Assertions.assertEquals("wmlgicvnpv", model.networkFabricId());
+        Assertions.assertEquals("bvfiybxqi", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackInner model =
-            new NetworkRackInner()
-                .withLocation("xzsvbxxyji")
-                .withTags(mapOf("qocl", "o", "oewyhxessmvrkd", "l", "bdxmd", "sqeq"))
-                .withNetworkRackType(NetworkRackType.AGGREGATE)
-                .withNetworkFabricId("jpytp")
-                .withAnnotation("kk");
+        NetworkRackInner model = new NetworkRackInner().withLocation("gybfzdqekiv")
+            .withTags(mapOf("ulrqtbht", "zcvdi"))
+            .withNetworkRackType(NetworkRackType.COMBINED)
+            .withNetworkFabricId("wmlgicvnpv")
+            .withAnnotation("bvfiybxqi");
         model = BinaryData.fromObject(model).toObject(NetworkRackInner.class);
-        Assertions.assertEquals("xzsvbxxyji", model.location());
-        Assertions.assertEquals("o", model.tags().get("qocl"));
-        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
-        Assertions.assertEquals("jpytp", model.networkFabricId());
-        Assertions.assertEquals("kk", model.annotation());
+        Assertions.assertEquals("gybfzdqekiv", model.location());
+        Assertions.assertEquals("zcvdi", model.tags().get("ulrqtbht"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, model.networkRackType());
+        Assertions.assertEquals("wmlgicvnpv", model.networkFabricId());
+        Assertions.assertEquals("bvfiybxqi", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

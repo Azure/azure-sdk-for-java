@@ -74,9 +74,8 @@ public class AppendBlobItem {
      * @param versionId The version identifier of the append blob.
      */
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                          final boolean isServerEncrypted, final String encryptionKeySha256,
-                          final String encryptionScope, final String blobAppendOffset,
-                          final Integer blobCommittedBlockCount, final String versionId) {
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String blobAppendOffset, final Integer blobCommittedBlockCount, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -89,6 +88,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the eTag of the append blob.
+     *
      * @return the eTag of the append blob
      */
     public String getETag() {
@@ -96,6 +97,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the time this append blob was last modified.
+     *
      * @return the time this append blob was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -103,6 +106,8 @@ public class AppendBlobItem {
     };
 
     /**
+     * Gets the encryption status of the append blob on the server.
+     *
      * @return the encryption status of the append blob on the server
      */
     public boolean isServerEncrypted() {
@@ -110,6 +115,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the key that was used to encrypt the append blob.
+     *
      * @return the key that was used to encrypt the append blob
      */
     public String getEncryptionKeySha256() {
@@ -117,6 +124,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the encryption scope that was used to encrypt the append blob.
+     *
      * @return the encryption scope that was used to encrypt the append blob
      */
     public String getEncryptionScope() {
@@ -124,6 +133,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the calculated MD5 of the append blob.
+     *
      * @return the calculated MD5 of the append blob
      */
     public byte[] getContentMd5() {
@@ -131,6 +142,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the offset of the append blob.
+     *
      * @return the offset of the append blob
      */
     public String getBlobAppendOffset() {
@@ -138,6 +151,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the number of committed blocks in the append blob.
+     *
      * @return the number of committed blocks in the append blob
      */
     public Integer getBlobCommittedBlockCount() {
@@ -145,6 +160,8 @@ public class AppendBlobItem {
     }
 
     /**
+     * Gets the version identifier of the append blob.
+     *
      * @return the version identifier of the append blob
      */
     public String getVersionId() {

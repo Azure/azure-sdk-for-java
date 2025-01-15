@@ -6,7 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,49 +20,65 @@ import java.util.Map;
 @Fluent
 public class ResourceModelWithAllowedPropertySet extends Resource {
     /*
-     * The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is
-     * managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if
-     * it is removed from the template since it is managed by another resource.
+     * The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed
+     * by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is
+     * removed from the template since it is managed by another resource.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
-     * Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g.
-     * ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist
+     * Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g.
+     * ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must validate and persist
      * this value.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
-     * per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested
-     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
-     * (section 14.26), and If-Range (section 14.27) header fields.
+     * per the normal etag convention. Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The identity property.
      */
-    @JsonProperty(value = "identity")
     private ResourceModelWithAllowedPropertySetIdentity identity;
 
     /*
      * The sku property.
      */
-    @JsonProperty(value = "sku")
     private ResourceModelWithAllowedPropertySetSku sku;
 
     /*
      * The plan property.
      */
-    @JsonProperty(value = "plan")
     private ResourceModelWithAllowedPropertySetPlan plan;
 
-    /** Creates an instance of ResourceModelWithAllowedPropertySet class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ResourceModelWithAllowedPropertySet class.
+     */
     public ResourceModelWithAllowedPropertySet() {
     }
 
@@ -66,7 +86,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
      * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
      * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
      * delete the resource if it is removed from the template since it is managed by another resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -77,7 +97,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
      * Set the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
      * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
      * delete the resource if it is removed from the template since it is managed by another resource.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ResourceModelWithAllowedPropertySet object itself.
      */
@@ -88,9 +108,9 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Get the kind property: Metadata used by portal/tooling/etc to render different UX experiences for resources of
-     * the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
+     * the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
      * validate and persist this value.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -99,9 +119,9 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Set the kind property: Metadata used by portal/tooling/etc to render different UX experiences for resources of
-     * the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
+     * the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
      * validate and persist this value.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ResourceModelWithAllowedPropertySet object itself.
      */
@@ -115,7 +135,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
      * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
      * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
      * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -123,8 +143,22 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
     }
 
     /**
+     * Set the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
+     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
+     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
+     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * 
+     * @param etag the etag value to set.
+     * @return the ResourceModelWithAllowedPropertySet object itself.
+     */
+    ResourceModelWithAllowedPropertySet withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the identity property: The identity property.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceModelWithAllowedPropertySetIdentity identity() {
@@ -133,7 +167,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Set the identity property: The identity property.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ResourceModelWithAllowedPropertySet object itself.
      */
@@ -144,7 +178,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceModelWithAllowedPropertySetSku sku() {
@@ -153,7 +187,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ResourceModelWithAllowedPropertySet object itself.
      */
@@ -164,7 +198,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Get the plan property: The plan property.
-     *
+     * 
      * @return the plan value.
      */
     public ResourceModelWithAllowedPropertySetPlan plan() {
@@ -173,7 +207,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Set the plan property: The plan property.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the ResourceModelWithAllowedPropertySet object itself.
      */
@@ -182,14 +216,68 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ResourceModelWithAllowedPropertySet object itself.
+     */
+    ResourceModelWithAllowedPropertySet withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySet withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySet withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -198,7 +286,7 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -211,5 +299,75 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
         if (plan() != null) {
             plan().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("plan", this.plan);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceModelWithAllowedPropertySet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceModelWithAllowedPropertySet if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceModelWithAllowedPropertySet.
+     */
+    public static ResourceModelWithAllowedPropertySet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceModelWithAllowedPropertySet deserializedResourceModelWithAllowedPropertySet
+                = new ResourceModelWithAllowedPropertySet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceModelWithAllowedPropertySet.withTags(tags);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.managedBy = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.kind = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.identity
+                        = ResourceModelWithAllowedPropertySetIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.sku
+                        = ResourceModelWithAllowedPropertySetSku.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.plan
+                        = ResourceModelWithAllowedPropertySetPlan.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySet.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceModelWithAllowedPropertySet;
+        });
     }
 }

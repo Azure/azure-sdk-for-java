@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The authentication keys. */
 @Immutable
 public final class CreateServiceRequestKeys extends AuthKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateServiceRequestKeys.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CreateServiceRequestKeys.class);
 
     /** {@inheritDoc} */
     @Override

@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolConnectionPolicies. */
+/**
+ * Resource collection API of SqlPoolConnectionPolicies.
+ */
 public interface SqlPoolConnectionPolicies {
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
-     *
-     * <p>Get a Sql pool's connection policy, which is used with table auditing.
-     *
+     * 
+     * Get a Sql pool's connection policy, which is used with table auditing.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -24,18 +26,14 @@ public interface SqlPoolConnectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
-    Response<SqlPoolConnectionPolicy> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ConnectionPolicyName connectionPolicyName,
-        Context context);
+    Response<SqlPoolConnectionPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ConnectionPolicyName connectionPolicyName, Context context);
 
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
-     *
-     * <p>Get a Sql pool's connection policy, which is used with table auditing.
-     *
+     * 
+     * Get a Sql pool's connection policy, which is used with table auditing.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -45,6 +43,6 @@ public interface SqlPoolConnectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's connection policy, which is used with table auditing.
      */
-    SqlPoolConnectionPolicy get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName);
+    SqlPoolConnectionPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ConnectionPolicyName connectionPolicyName);
 }

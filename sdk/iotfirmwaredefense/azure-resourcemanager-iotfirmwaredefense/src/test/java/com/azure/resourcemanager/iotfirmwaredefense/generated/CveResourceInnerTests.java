@@ -31,10 +31,16 @@ public final class CveResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CveResourceInner model = new CveResourceInner().withCveId("bqqwxrj")
-            .withComponent(new CveComponent().withComponentId("llnwsubi").withName("jampmngnzscxaqw")
+            .withComponent(new CveComponent().withComponentId("llnwsubi")
+                .withName("jampmngnzscxaqw")
                 .withVersion("chcbonqvpkvlrxnj"))
-            .withSeverity("seiphe").withNamePropertiesName("lokeyy").withCvssScore("nj").withCvssVersion("lwtgrhpdj")
-            .withCvssV2Score("umasxazjpq").withCvssV3Score("gual").withDescription("jbavorxzdm");
+            .withSeverity("seiphe")
+            .withNamePropertiesName("lokeyy")
+            .withCvssScore("nj")
+            .withCvssVersion("lwtgrhpdj")
+            .withCvssV2Score("umasxazjpq")
+            .withCvssV3Score("gual")
+            .withDescription("jbavorxzdm");
         model = BinaryData.fromObject(model).toObject(CveResourceInner.class);
         Assertions.assertEquals("bqqwxrj", model.cveId());
         Assertions.assertEquals("llnwsubi", model.component().componentId());

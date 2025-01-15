@@ -10,6 +10,8 @@ package com.azure.resourcemanager.resources.fluentcore.model;
  */
 public interface HasServiceClient<T> {
     /**
+     * Gets The wrapper around a service client.
+     *
      * @return wrapped service client providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API
      */

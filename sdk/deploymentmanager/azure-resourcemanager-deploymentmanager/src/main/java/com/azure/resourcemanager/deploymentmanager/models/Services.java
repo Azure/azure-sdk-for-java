@@ -22,8 +22,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service along with {@link Response}.
      */
-    Response<ServiceResource> getWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<ServiceResource> getWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        Context context);
 
     /**
      * Gets the service.
@@ -50,8 +50,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        Context context);
 
     /**
      * Deletes the service.
@@ -76,8 +76,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of services along with {@link Response}.
      */
-    Response<List<ServiceResource>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
+    Response<List<ServiceResource>> listWithResponse(String resourceGroupName, String serviceTopologyName,
+        Context context);
 
     /**
      * Lists the services in the service topology.

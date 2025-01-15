@@ -7,11 +7,13 @@ package com.azure.resourcemanager.resourcemover.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of UnresolvedDependencies. */
+/**
+ * Resource collection API of UnresolvedDependencies.
+ */
 public interface UnresolvedDependencies {
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface UnresolvedDependencies {
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -35,11 +37,6 @@ public interface UnresolvedDependencies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UnresolvedDependency> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context);
+    PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context);
 }

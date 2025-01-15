@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-/** Samples for DiskPools Deallocate. */
+/**
+ * Samples for DiskPools Deallocate.
+ */
 public final class DiskPoolsDeallocateSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Deallocate.json
+     * x-ms-original-file:
+     * specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Deallocate.
+     * json
      */
     /**
      * Sample code: Deallocate Disk Pool.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deallocateDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {

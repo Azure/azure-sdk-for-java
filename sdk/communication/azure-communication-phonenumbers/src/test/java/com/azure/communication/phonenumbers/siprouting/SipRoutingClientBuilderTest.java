@@ -32,8 +32,8 @@ import static org.mockito.Mockito.*;
 public class SipRoutingClientBuilderTest {
     private static final String ENDPOINT = "https://mycommunication.eastus.dev.communications.azure.net/";
     private static final String ACCESSKEY = "QWNjZXNzS2V5";
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-communication-phonenumbers-siprouting.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-communication-phonenumbers-siprouting.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -56,8 +56,8 @@ public class SipRoutingClientBuilderTest {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
 
         // Build client with required settings
-        SipRoutingClient sipRoutingClient =
-            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildClient();
+        SipRoutingClient sipRoutingClient
+            = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingClient);
@@ -70,8 +70,7 @@ public class SipRoutingClientBuilderTest {
         HttpPipeline httpPipeline = mock(HttpPipeline.class);
 
         // Build client with custom pipeline
-        SipRoutingClient sipRoutingClient =
-            this.setupBuilderCustomPipeline(httpPipeline).buildClient();
+        SipRoutingClient sipRoutingClient = this.setupBuilderCustomPipeline(httpPipeline).buildClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingClient);
@@ -166,9 +165,8 @@ public class SipRoutingClientBuilderTest {
     public void buildClientWithPolicyPerCall() {
         HttpPipelinePolicy policy = mock(HttpPipelinePolicy.class);
         doAnswer(invocation -> HttpPipelinePosition.PER_CALL).when(policy).getPipelinePosition();
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .addPolicy(policy)
-            .buildClient();
+        SipRoutingClient sipRoutingClient
+            = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).addPolicy(policy).buildClient();
         assertNotNull(sipRoutingClient);
     }
 
@@ -176,9 +174,8 @@ public class SipRoutingClientBuilderTest {
     public void buildClientWithPolicyPerRetry() {
         HttpPipelinePolicy policy = mock(HttpPipelinePolicy.class);
         doAnswer(invocation -> HttpPipelinePosition.PER_RETRY).when(policy).getPipelinePosition();
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .addPolicy(policy)
-            .buildClient();
+        SipRoutingClient sipRoutingClient
+            = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).addPolicy(policy).buildClient();
         assertNotNull(sipRoutingClient);
     }
 
@@ -189,9 +186,8 @@ public class SipRoutingClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        SipRoutingClient sipRoutingClient =
-            this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
-                .buildClient();
+        SipRoutingClient sipRoutingClient
+            = this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies).buildClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingClient);
@@ -207,9 +203,8 @@ public class SipRoutingClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        SipRoutingClient sipRoutingClient =
-            this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
-                .buildClient();
+        SipRoutingClient sipRoutingClient
+            = this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies).buildClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingClient);
@@ -235,8 +230,8 @@ public class SipRoutingClientBuilderTest {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
 
         // Build client with required settings
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient
+            = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -249,8 +244,7 @@ public class SipRoutingClientBuilderTest {
         HttpPipeline httpPipeline = mock(HttpPipeline.class);
 
         // Build client with custom pipeline
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderCustomPipeline(httpPipeline).buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient = this.setupBuilderCustomPipeline(httpPipeline).buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -263,10 +257,9 @@ public class SipRoutingClientBuilderTest {
         HttpLogOptions logOptions = mock(HttpLogOptions.class);
 
         // Build client with required settings and mock log options
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .httpLogOptions(logOptions)
-                .buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .httpLogOptions(logOptions)
+            .buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -279,10 +272,9 @@ public class SipRoutingClientBuilderTest {
         Configuration configuration = mock(Configuration.class);
 
         // Build client with required settings and mock configuration
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .configuration(configuration)
-                .buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .configuration(configuration)
+            .buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -292,10 +284,9 @@ public class SipRoutingClientBuilderTest {
     @Test
     public void buildAsyncClientWithServiceVersion() {
         // Build client with required settings and mock configuration
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
-                .buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
+            .buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -308,9 +299,8 @@ public class SipRoutingClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
-                .buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient
+            = this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies).buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -326,9 +316,8 @@ public class SipRoutingClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        SipRoutingAsyncClient sipRoutingAsyncClient =
-            this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
-                .buildAsyncClient();
+        SipRoutingAsyncClient sipRoutingAsyncClient
+            = this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies).buildAsyncClient();
 
         // Validate client created with expected settings
         assertNotNull(sipRoutingAsyncClient);
@@ -364,14 +353,13 @@ public class SipRoutingClientBuilderTest {
     }
 
     private SipRoutingClientBuilder setupBuilderWithHttpClientWithCredential(SipRoutingClientBuilder clientBuilder) {
-        return clientBuilder
-            .endpoint(ENDPOINT)
+        return clientBuilder.endpoint(ENDPOINT)
             .httpClient(this.httpClient)
             .credential(new AzureKeyCredential(ACCESSKEY));
     }
 
-    private SipRoutingClientBuilder setupBuilderWithPolicies(
-        SipRoutingClientBuilder clientBuilder, List<HttpPipelinePolicy> policies) {
+    private SipRoutingClientBuilder setupBuilderWithPolicies(SipRoutingClientBuilder clientBuilder,
+        List<HttpPipelinePolicy> policies) {
         clientBuilder = this.setupBuilderWithHttpClientWithCredential(clientBuilder);
         for (HttpPipelinePolicy policy : policies) {
             clientBuilder.addPolicy(policy);
@@ -381,9 +369,7 @@ public class SipRoutingClientBuilderTest {
     }
 
     private SipRoutingClientBuilder setupBuilderCustomPipeline(HttpPipeline pipeline) {
-        return clientBuilder
-            .endpoint(ENDPOINT)
-            .pipeline(pipeline);
+        return clientBuilder.endpoint(ENDPOINT).pipeline(pipeline);
     }
 
     private void validateRequiredSettings(ClientBuilderSpyHelper spyHelper) {
@@ -401,15 +387,18 @@ public class SipRoutingClientBuilderTest {
         assertTrue(policyCount >= 6);
         assertEquals(spyHelper.userAgentPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.requestIdPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.authenticationPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(3));
+        assertEquals(spyHelper.authenticationPolicyRef.get(),
+            sipRoutingManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.cookiePolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(4));
-        assertEquals(spyHelper.httpLoggingPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(policyCount - 1));
+        assertEquals(spyHelper.httpLoggingPolicyRef.get(),
+            sipRoutingManagementClient.getHttpPipeline().getPolicy(policyCount - 1));
 
         // Validate HttpLogOptions
         assertEquals(spyHelper.defaultHttpLogOptionsRef.get(), spyHelper.httpLogOptionsArg.getValue());
 
         // Validate UserAgentPolicy settings
-        assertEquals(spyHelper.defaultHttpLogOptionsRef.get().getApplicationId(), spyHelper.uaPolicyAppIdArg.getValue());
+        assertEquals(spyHelper.defaultHttpLogOptionsRef.get().getApplicationId(),
+            spyHelper.uaPolicyAppIdArg.getValue());
         assertEquals(PROPERTIES.get((SDK_NAME)), spyHelper.uaPolicySdkNameArg.getValue());
         assertEquals(PROPERTIES.get((SDK_VERSION)), spyHelper.uaPolicySdkVersionArg.getValue());
         assertNull(spyHelper.uaPolicyConfigArg.getValue());
@@ -456,9 +445,11 @@ public class SipRoutingClientBuilderTest {
         assertTrue(actualPolicyCount >= expectedMinPolicyCount);
         assertEquals(spyHelper.userAgentPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.requestIdPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.authenticationPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(3));
+        assertEquals(spyHelper.authenticationPolicyRef.get(),
+            sipRoutingManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.cookiePolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(4));
-        assertEquals(spyHelper.httpLoggingPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
+        assertEquals(spyHelper.httpLoggingPolicyRef.get(),
+            sipRoutingManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 
         for (HttpPipelinePolicy policy : policies) {
             assertEquals(policy, sipRoutingManagementClient.getHttpPipeline().getPolicy(customPolicyIndex));
@@ -476,8 +467,8 @@ public class SipRoutingClientBuilderTest {
         final AtomicReference<CookiePolicy> cookiePolicyRef = new AtomicReference<>();
         final AtomicReference<HttpLoggingPolicy> httpLoggingPolicyRef = new AtomicReference<>();
         final AtomicReference<HttpLogOptions> defaultHttpLogOptionsRef = new AtomicReference<>();
-        final ArgumentCaptor<SipRoutingAdminClientImpl> sipRoutingAdminClientArg =
-            ArgumentCaptor.forClass(SipRoutingAdminClientImpl.class);
+        final ArgumentCaptor<SipRoutingAdminClientImpl> sipRoutingAdminClientArg
+            = ArgumentCaptor.forClass(SipRoutingAdminClientImpl.class);
         final ArgumentCaptor<String> uaPolicyAppIdArg = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<String> uaPolicySdkNameArg = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<String> uaPolicySdkVersionArg = ArgumentCaptor.forClass(String.class);
@@ -528,23 +519,16 @@ public class SipRoutingClientBuilderTest {
         }
 
         void captureSipRoutingAdminClientImpl() {
-            verify(this.clientBuilder, atMostOnce())
-                .createClientImpl(this.sipRoutingAdminClientArg.capture());
-            verify(this.clientBuilder, atMostOnce())
-                .createAsyncClientImpl(this.sipRoutingAdminClientArg.capture());
+            verify(this.clientBuilder, atMostOnce()).createClientImpl(this.sipRoutingAdminClientArg.capture());
+            verify(this.clientBuilder, atMostOnce()).createAsyncClientImpl(this.sipRoutingAdminClientArg.capture());
         }
 
         void captureHttpPipelineSettings() {
-            verify(this.clientBuilder, times(1))
-                .createAuthenticationPolicy();
-            verify(this.clientBuilder, times(1))
-                .createUserAgentPolicy(
-                    this.uaPolicyAppIdArg.capture(),
-                    this.uaPolicySdkNameArg.capture(),
-                    this.uaPolicySdkVersionArg.capture(),
-                    this.uaPolicyConfigArg.capture());
-            verify(this.clientBuilder, times(1))
-                .createHttpLoggingPolicy(this.httpLogOptionsArg.capture());
+            verify(this.clientBuilder, times(1)).createAuthenticationPolicy();
+            verify(this.clientBuilder, times(1)).createUserAgentPolicy(this.uaPolicyAppIdArg.capture(),
+                this.uaPolicySdkNameArg.capture(), this.uaPolicySdkVersionArg.capture(),
+                this.uaPolicyConfigArg.capture());
+            verify(this.clientBuilder, times(1)).createHttpLoggingPolicy(this.httpLogOptionsArg.capture());
         }
     }
 }

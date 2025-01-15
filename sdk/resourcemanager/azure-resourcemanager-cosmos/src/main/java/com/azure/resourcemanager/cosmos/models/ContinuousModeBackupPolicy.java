@@ -77,9 +77,11 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (continuousModeProperties() != null) {
             continuousModeProperties().validate();
+        }
+        if (migrationState() != null) {
+            migrationState().validate();
         }
     }
 

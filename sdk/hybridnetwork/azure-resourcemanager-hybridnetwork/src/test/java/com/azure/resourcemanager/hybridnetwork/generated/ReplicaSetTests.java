@@ -25,8 +25,12 @@ public final class ReplicaSetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaSet model = new ReplicaSet().withName("cjhwq").withNamespace("jrybnwjewgdrjer").withDesired(604177419)
-            .withReady(1214178064).withCurrent(282586156).withCreationTime(OffsetDateTime.parse("2021-01-20T04:38Z"));
+        ReplicaSet model = new ReplicaSet().withName("cjhwq")
+            .withNamespace("jrybnwjewgdrjer")
+            .withDesired(604177419)
+            .withReady(1214178064)
+            .withCurrent(282586156)
+            .withCreationTime(OffsetDateTime.parse("2021-01-20T04:38Z"));
         model = BinaryData.fromObject(model).toObject(ReplicaSet.class);
         Assertions.assertEquals("cjhwq", model.name());
         Assertions.assertEquals("jrybnwjewgdrjer", model.namespace());

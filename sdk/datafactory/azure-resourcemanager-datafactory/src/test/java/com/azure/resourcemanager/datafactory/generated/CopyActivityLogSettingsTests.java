@@ -11,14 +11,14 @@ public final class CopyActivityLogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopyActivityLogSettings model
-            = BinaryData.fromString("{\"logLevel\":\"dataopyq\",\"enableReliableLogging\":\"datapbxspvkcng\"}")
+            = BinaryData.fromString("{\"logLevel\":\"datavsf\",\"enableReliableLogging\":\"datacarfdmlie\"}")
                 .toObject(CopyActivityLogSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CopyActivityLogSettings model
-            = new CopyActivityLogSettings().withLogLevel("dataopyq").withEnableReliableLogging("datapbxspvkcng");
+            = new CopyActivityLogSettings().withLogLevel("datavsf").withEnableReliableLogging("datacarfdmlie");
         model = BinaryData.fromObject(model).toObject(CopyActivityLogSettings.class);
     }
 }

@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPolicyPropertiesType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationSpecification;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of Customization policy. */
+/**
+ * The properties of Customization policy.
+ */
 @Fluent
-public final class CustomizationPolicyProperties {
+public final class CustomizationPolicyProperties implements JsonSerializable<CustomizationPolicyProperties> {
     /*
      * Policy description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Private cloud id
      */
-    @JsonProperty(value = "privateCloudId")
     private String privateCloudId;
 
     /*
      * Detailed customization policy specification
      */
-    @JsonProperty(value = "specification")
     private CustomizationSpecification specification;
 
     /*
      * The type of customization (Linux or Windows)
      */
-    @JsonProperty(value = "type")
     private CustomizationPolicyPropertiesType type;
 
     /*
      * Policy version
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of CustomizationPolicyProperties class. */
+    /**
+     * Creates an instance of CustomizationPolicyProperties class.
+     */
     public CustomizationPolicyProperties() {
     }
 
     /**
      * Get the description property: Policy description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -57,7 +60,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Set the description property: Policy description.
-     *
+     * 
      * @param description the description value to set.
      * @return the CustomizationPolicyProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Get the privateCloudId property: The Private cloud id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -77,7 +80,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Set the privateCloudId property: The Private cloud id.
-     *
+     * 
      * @param privateCloudId the privateCloudId value to set.
      * @return the CustomizationPolicyProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Get the specification property: Detailed customization policy specification.
-     *
+     * 
      * @return the specification value.
      */
     public CustomizationSpecification specification() {
@@ -97,7 +100,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Set the specification property: Detailed customization policy specification.
-     *
+     * 
      * @param specification the specification value to set.
      * @return the CustomizationPolicyProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Get the type property: The type of customization (Linux or Windows).
-     *
+     * 
      * @return the type value.
      */
     public CustomizationPolicyPropertiesType type() {
@@ -117,7 +120,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Set the type property: The type of customization (Linux or Windows).
-     *
+     * 
      * @param type the type value to set.
      * @return the CustomizationPolicyProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Get the version property: Policy version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -137,7 +140,7 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Set the version property: Policy version.
-     *
+     * 
      * @param version the version value to set.
      * @return the CustomizationPolicyProperties object itself.
      */
@@ -148,12 +151,63 @@ public final class CustomizationPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (specification() != null) {
             specification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("privateCloudId", this.privateCloudId);
+        jsonWriter.writeJsonField("specification", this.specification);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationPolicyProperties.
+     */
+    public static CustomizationPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationPolicyProperties deserializedCustomizationPolicyProperties
+                = new CustomizationPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedCustomizationPolicyProperties.description = reader.getString();
+                } else if ("privateCloudId".equals(fieldName)) {
+                    deserializedCustomizationPolicyProperties.privateCloudId = reader.getString();
+                } else if ("specification".equals(fieldName)) {
+                    deserializedCustomizationPolicyProperties.specification
+                        = CustomizationSpecification.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomizationPolicyProperties.type
+                        = CustomizationPolicyPropertiesType.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedCustomizationPolicyProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationPolicyProperties;
+        });
     }
 }

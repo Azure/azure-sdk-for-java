@@ -17,56 +17,83 @@ import java.util.List;
 /** An immutable client-side representation of an Azure SQL Server Security Alert Policy. */
 @Fluent
 public interface SqlServerSecurityAlertPolicy
-    extends HasId,
-        HasInnerModel<ServerSecurityAlertPolicyInner>,
-        HasName,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlServerSecurityAlertPolicy>,
-        Updatable<SqlServerSecurityAlertPolicy.Update> {
+    extends HasId, HasInnerModel<ServerSecurityAlertPolicyInner>, HasName, HasResourceGroup, Indexable,
+    Refreshable<SqlServerSecurityAlertPolicy>, Updatable<SqlServerSecurityAlertPolicy.Update> {
 
-    /** @return name of the SQL Server to which this DNS alias belongs */
+    /**
+     * Gets the name of the SQL Server to which this DNS alias belongs.
+     *
+     * @return name of the SQL Server to which this DNS alias belongs
+     */
     String sqlServerName();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the state of the policy, whether it is enabled or disabled */
+    /**
+     * Gets the state of the policy.
+     *
+     * @return the state of the policy, whether it is enabled or disabled
+     */
     SecurityAlertPolicyState state();
 
-    /** @return a list of alerts that are disabled */
+    /**
+     * Gets a list of alerts that are disabled.
+     *
+     * @return a list of alerts that are disabled
+     */
     List<String> disabledAlerts();
 
-    /** @return a list of e-mail addresses to which the alert is sent */
+    /**
+     * Gets a list of e-mail addresses to which the alert is sent.
+     *
+     * @return a list of e-mail addresses to which the alert is sent
+     */
     List<String> emailAddresses();
 
-    /** @return true if an alert will be sent to the account administrators */
+    /**
+     * Checks whether an alert will be sent to the account administrators.
+     *
+     * @return true if an alert will be sent to the account administrators
+     */
     boolean emailAccountAdmins();
 
     /**
+     * Gets the blob storage endpoint.
+     *
      * @return the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net); this blob storage will hold all
      *     Threat Detection audit logs
      */
     String storageEndpoint();
 
-    /** @return the identifier key of the Threat Detection audit storage account */
+    /**
+     * Gets the identifier key of the Threat Detection audit storage account.
+     *
+     * @return the identifier key of the Threat Detection audit storage account
+     */
     String storageAccountAccessKey();
 
-    /** @return the number of days to keep in the Threat Detection audit logs */
+    /**
+     * Gets the number of days to keep in the Threat Detection audit logs.
+     *
+     * @return the number of days to keep in the Threat Detection audit logs
+     */
     int retentionDays();
 
     /**
      * The template for a SQL Server Security Alert Policy update operation, containing all the settings that can be
      * modified.
      */
-    interface Update
-        extends SqlServerSecurityAlertPolicy.UpdateStages.WithState,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAccountAdmins,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithStorageAccount,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAddresses,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithDisabledAlerts,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithRetentionDays,
-            Appliable<SqlServerSecurityAlertPolicy> {
+    interface Update extends SqlServerSecurityAlertPolicy.UpdateStages.WithState,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAccountAdmins,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithStorageAccount,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAddresses,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithDisabledAlerts,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithRetentionDays, Appliable<SqlServerSecurityAlertPolicy> {
     }
 
     /** Grouping of all the SQL Server Security Alert Policy update stages. */

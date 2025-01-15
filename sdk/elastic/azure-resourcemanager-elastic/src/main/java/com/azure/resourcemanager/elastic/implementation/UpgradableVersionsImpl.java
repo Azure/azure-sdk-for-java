@@ -20,21 +20,18 @@ public final class UpgradableVersionsImpl implements UpgradableVersions {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public UpgradableVersionsImpl(
-        UpgradableVersionsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public UpgradableVersionsImpl(UpgradableVersionsClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<UpgradableVersionsList> detailsWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<UpgradableVersionsListInner> inner =
-            this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
+    public Response<UpgradableVersionsList> detailsWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<UpgradableVersionsListInner> inner
+            = this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UpgradableVersionsListImpl(inner.getValue(), this.manager()));
         } else {
             return null;

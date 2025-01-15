@@ -11,40 +11,42 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.AlertInner;
 
-/** An instance of this class provides access to all the operations defined in AlertsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AlertsClient.
+ */
 public interface AlertsClient {
     /**
      * Gets all the alerts for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AlertInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Gets all the alerts for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AlertInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context);
 
     /**
      * Gets an alert by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The alert name.
      * @param resourceGroupName The resource group name.
@@ -59,7 +61,7 @@ public interface AlertsClient {
 
     /**
      * Gets an alert by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The alert name.
      * @param resourceGroupName The resource group name.

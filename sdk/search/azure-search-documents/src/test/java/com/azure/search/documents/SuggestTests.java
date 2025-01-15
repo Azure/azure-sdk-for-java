@@ -5,7 +5,7 @@ package com.azure.search.documents;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -53,7 +53,7 @@ public class SuggestTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -75,8 +75,7 @@ public class SuggestTests extends SearchTestBase {
         doc2.title("War and Peace");
         doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
 
-        searchIndexClient.getSearchClient(BOOKS_INDEX_NAME)
-            .uploadDocuments(Arrays.asList(doc1, doc2));
+        searchIndexClient.getSearchClient(BOOKS_INDEX_NAME).uploadDocuments(Arrays.asList(doc1, doc2));
         waitForIndexing();
     }
 
@@ -102,10 +101,8 @@ public class SuggestTests extends SearchTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId");
 
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more", "sg", suggestOptions,
-                Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("more", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         verifyDynamicDocumentSuggest(suggestResultIterator.next());
         assertFalse(suggestResultIterator.hasNext());
@@ -126,13 +123,10 @@ public class SuggestTests extends SearchTestBase {
     public void searchFieldsExcludesFieldsFromSuggestSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setSearchFields("HotelName");
+        SuggestOptions suggestOptions = new SuggestOptions().setSearchFields("HotelName");
 
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("luxury",
-                "sg", suggestOptions, Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("luxury", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         verifySuggestionCount(suggestResultIterator.next(), 0);
         assertFalse(suggestResultIterator.hasNext());
@@ -142,8 +136,7 @@ public class SuggestTests extends SearchTestBase {
     public void searchFieldsExcludesFieldsFromSuggestAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setSearchFields("HotelName");
+        SuggestOptions suggestOptions = new SuggestOptions().setSearchFields("HotelName");
 
         StepVerifier.create(asyncClient.suggest("luxury", "sg", suggestOptions).byPage())
             .assertNext(response -> verifySuggestionCount(response, 0))
@@ -154,16 +147,13 @@ public class SuggestTests extends SearchTestBase {
     public void canUseSuggestHitHighlightingSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setHighlightPreTag("<b>")
+        SuggestOptions suggestOptions = new SuggestOptions().setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hotel", "sg", suggestOptions,
-                Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("hotel", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         verifyHitHighlightingSuggest(suggestResultIterator.next());
         assertFalse(suggestResultIterator.hasNext());
@@ -173,8 +163,7 @@ public class SuggestTests extends SearchTestBase {
     public void canUseSuggestHitHighlightingAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setHighlightPreTag("<b>")
+        SuggestOptions suggestOptions = new SuggestOptions().setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
@@ -190,10 +179,8 @@ public class SuggestTests extends SearchTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions().setUseFuzzyMatching(true);
 
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel", "sg", suggestOptions,
-                Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("hitel", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         verifySuggestionCount(suggestResultIterator.next(), 5);
         assertFalse(suggestResultIterator.hasNext());
@@ -216,14 +203,11 @@ public class SuggestTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         //arrange
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("HotelId");
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId");
 
         //act
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more", "sg", suggestOptions,
-                Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("more", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         //assert
         verifyCanSuggestStaticallyTypedDocuments(suggestResultIterator.next(), hotels);
@@ -249,9 +233,8 @@ public class SuggestTests extends SearchTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("War", "sg", suggestOptions, Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("War", "sg", suggestOptions, Context.NONE).iterableByPage().iterator();
 
         //assert
         verifyCanSuggestWithDateTimeInStaticModel(suggestResultIterator.next());
@@ -273,15 +256,13 @@ public class SuggestTests extends SearchTestBase {
     public void fuzzyIsOffByDefaultSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel", "sg", null, Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultIterator
+            = client.suggest("hitel", "sg", null, Context.NONE).iterableByPage().iterator();
 
         verifySuggestionCount(suggestResultIterator.next(), 0);
 
-        Iterator<SuggestPagedResponse> suggestResultWithoutSuggestOptions = client.suggest("hitel", "sg")
-            .iterableByPage()
-            .iterator();
+        Iterator<SuggestPagedResponse> suggestResultWithoutSuggestOptions
+            = client.suggest("hitel", "sg").iterableByPage().iterator();
 
         verifySuggestionCount(suggestResultWithoutSuggestOptions.next(), 0);
     }
@@ -303,11 +284,11 @@ public class SuggestTests extends SearchTestBase {
     public void suggestThrowsWhenGivenBadSuggesterNameSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestPagedIterable suggestResultIterator = client.suggest("Hotel", "Suggester does not exist",
-            new SuggestOptions(), Context.NONE);
+        SuggestPagedIterable suggestResultIterator
+            = client.suggest("Hotel", "Suggester does not exist", new SuggestOptions(), Context.NONE);
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> suggestResultIterator.iterableByPage().iterator().next());
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> suggestResultIterator.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
@@ -331,8 +312,8 @@ public class SuggestTests extends SearchTestBase {
 
         SuggestPagedIterable suggestResultIterator = client.suggest("hotel", "sg", suggestOptions, Context.NONE);
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> suggestResultIterator.iterableByPage().iterator().next());
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> suggestResultIterator.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
@@ -355,15 +336,11 @@ public class SuggestTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         //arrange
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("HotelId")
-            .setMinimumCoverage(50.0);
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId").setMinimumCoverage(50.0);
 
         //act
-        SuggestPagedResponse suggestPagedResponse = client.suggest("luxury", "sg", suggestOptions, Context.NONE)
-            .iterableByPage()
-            .iterator()
-            .next();
+        SuggestPagedResponse suggestPagedResponse
+            = client.suggest("luxury", "sg", suggestOptions, Context.NONE).iterableByPage().iterator().next();
 
         verifyMinimumCoverage(suggestPagedResponse);
     }
@@ -373,9 +350,7 @@ public class SuggestTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         //arrange
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("HotelId")
-            .setMinimumCoverage(50.0);
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId").setMinimumCoverage(50.0);
 
         //act
         StepVerifier.create(asyncClient.suggest("luxury", "sg", suggestOptions).byPage())
@@ -388,15 +363,11 @@ public class SuggestTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         //arrange
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("HotelId")
-            .setTop(3);
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId").setTop(3);
 
         //act
-        SuggestPagedResponse suggestResultIterator = client.suggest("hotel", "sg", suggestOptions, Context.NONE)
-            .iterableByPage()
-            .iterator()
-            .next();
+        SuggestPagedResponse suggestResultIterator
+            = client.suggest("hotel", "sg", suggestOptions, Context.NONE).iterableByPage().iterator().next();
 
         //assert
         verifyTopDocumentSuggest(suggestResultIterator);
@@ -407,9 +378,7 @@ public class SuggestTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         //arrange
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("HotelId")
-            .setTop(3);
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId").setTop(3);
 
         //act
         StepVerifier.create(asyncClient.suggest("hotel", "sg", suggestOptions).byPage())
@@ -421,18 +390,18 @@ public class SuggestTests extends SearchTestBase {
     public void testCanFilterSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy("HotelId");
+        SuggestOptions suggestOptions
+            = new SuggestOptions().setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+                .setOrderBy("HotelId");
 
-        SuggestPagedResponse suggestPagedResponse = client.suggest("hotel", "sg", suggestOptions, Context.NONE)
-            .iterableByPage()
-            .iterator()
-            .next();
+        SuggestPagedResponse suggestPagedResponse
+            = client.suggest("hotel", "sg", suggestOptions, Context.NONE).iterableByPage().iterator().next();
 
         assertNotNull(suggestPagedResponse);
-        List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = suggestPagedResponse.getValue()
+            .stream()
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId"))
+            .collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
         assertEquals(expectedIds, actualIds);
     }
@@ -441,38 +410,36 @@ public class SuggestTests extends SearchTestBase {
     public void testCanFilterAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy("HotelId");
+        SuggestOptions suggestOptions
+            = new SuggestOptions().setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+                .setOrderBy("HotelId");
 
-        StepVerifier.create(asyncClient.suggest("hotel", "sg", suggestOptions).byPage())
-            .assertNext(response -> {
-                List<String> expectedIds = Arrays.asList("1", "5");
-                List<String> actualIds = response.getValue().stream()
-                    .map(sr -> sr.getDocument(SearchDocument.class).get("HotelId").toString())
-                    .collect(Collectors.toList());
+        StepVerifier.create(asyncClient.suggest("hotel", "sg", suggestOptions).byPage()).assertNext(response -> {
+            List<String> expectedIds = Arrays.asList("1", "5");
+            List<String> actualIds = response.getValue()
+                .stream()
+                .map(sr -> sr.getDocument(SearchDocument.class).get("HotelId").toString())
+                .collect(Collectors.toList());
 
-                assertEquals(expectedIds, actualIds);
-            })
-            .verifyComplete();
+            assertEquals(expectedIds, actualIds);
+        }).verifyComplete();
     }
 
     @Test
     public void testOrderByProgressivelyBreaksTiesSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(
-                "Rating desc",
-                "LastRenovationDate asc",
-                "geo.distance(Location, geography'POINT(-122.0 49.0)')");
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("Rating desc", "LastRenovationDate asc",
+            "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
-        SuggestPagedResponse suggestPagedResponse = client.suggest("hotel", "sg", suggestOptions, Context.NONE)
-            .iterableByPage().iterator().next();
+        SuggestPagedResponse suggestPagedResponse
+            = client.suggest("hotel", "sg", suggestOptions, Context.NONE).iterableByPage().iterator().next();
 
         assertNotNull(suggestPagedResponse);
-        List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = suggestPagedResponse.getValue()
+            .stream()
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId"))
+            .collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         assertEquals(expectedIds, actualIds);
     }
@@ -481,32 +448,28 @@ public class SuggestTests extends SearchTestBase {
     public void testOrderByProgressivelyBreaksTiesAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(
-                "Rating desc",
-                "LastRenovationDate asc",
-                "geo.distance(Location, geography'POINT(-122.0 49.0)')");
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("Rating desc", "LastRenovationDate asc",
+            "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
-        StepVerifier.create(asyncClient.suggest("hotel", "sg", suggestOptions).byPage())
-            .assertNext(response -> {
-                List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
-                List<String> actualIds = response.getValue().stream()
-                    .map(sr -> sr.getDocument(SearchDocument.class).get("HotelId").toString())
-                    .collect(Collectors.toList());
+        StepVerifier.create(asyncClient.suggest("hotel", "sg", suggestOptions).byPage()).assertNext(response -> {
+            List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
+            List<String> actualIds = response.getValue()
+                .stream()
+                .map(sr -> sr.getDocument(SearchDocument.class).get("HotelId").toString())
+                .collect(Collectors.toList());
 
-                assertEquals(expectedIds, actualIds);
-            })
-            .verifyComplete();
+            assertEquals(expectedIds, actualIds);
+        }).verifyComplete();
     }
 
     @Test
     public void testCanSuggestWithSelectedFieldsSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
-        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret", "sg",
-            suggestOptions, Context.NONE);
+        SuggestOptions suggestOptions
+            = new SuggestOptions().setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult
+            = client.suggest("secret", "sg", suggestOptions, Context.NONE);
 
         verifySuggestWithSelectedFields(suggestResult.iterableByPage().iterator().next());
     }
@@ -515,8 +478,8 @@ public class SuggestTests extends SearchTestBase {
     public void testCanSuggestWithSelectedFieldsAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
+        SuggestOptions suggestOptions
+            = new SuggestOptions().setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
 
         StepVerifier.create(asyncClient.suggest("secret", "sg", suggestOptions).byPage())
             .assertNext(SuggestTests::verifySuggestWithSelectedFields)
@@ -531,11 +494,7 @@ public class SuggestTests extends SearchTestBase {
     static void verifyHitHighlightingSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         assertNotNull(suggestResultPagedResponse);
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        assertTrue(
-            suggestResultPagedResponse.getValue()
-                .get(0)
-                .getText()
-                .startsWith("Best <b>hotel</b> in town"));
+        assertTrue(suggestResultPagedResponse.getValue().get(0).getText().startsWith("Best <b>hotel</b> in town"));
     }
 
     static void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
@@ -555,9 +514,11 @@ public class SuggestTests extends SearchTestBase {
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
-        List<SearchDocument> expectedHotelsList = expectedHotels.stream().map(SearchDocument::new)
+        List<SearchDocument> expectedHotelsList = expectedHotels.stream()
+            .map(SearchDocument::new)
             .filter(h -> h.get("HotelId").equals("10") || h.get("HotelId").equals("8"))
-            .sorted(Comparator.comparing(h -> h.get("HotelId").toString())).collect(Collectors.toList());
+            .sorted(Comparator.comparing(h -> h.get("HotelId").toString()))
+            .collect(Collectors.toList());
 
         //assert
         //verify fields
@@ -574,8 +535,7 @@ public class SuggestTests extends SearchTestBase {
     static void verifyTopDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         assertNotNull(suggestResultPagedResponse);
         assertEquals(3, suggestResultPagedResponse.getValue().size());
-        List<String> resultIds = suggestResultPagedResponse
-            .getValue()
+        List<String> resultIds = suggestResultPagedResponse.getValue()
             .stream()
             .map(hotel -> hotel.getDocument(Hotel.class).hotelId())
             .collect(Collectors.toList());
@@ -599,8 +559,7 @@ public class SuggestTests extends SearchTestBase {
         assertEquals(4, ((Number) result.get("Rating")).intValue());
         assertEquals("New York", ((LinkedHashMap<?, ?>) result.get("Address")).get("City"));
         assertEquals(Arrays.asList("Budget Room", "Budget Room"),
-            ((List<Map<String, String>>) result.get("Rooms"))
-                .stream()
+            ((List<Map<String, String>>) result.get("Rooms")).stream()
                 .map(room -> room.get("Type"))
                 .collect(Collectors.toList()));
     }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of kek encryption key. */
+/**
+ * The type of kek encryption key.
+ */
 public final class EncryptionKekType extends ExpandableStringEnum<EncryptionKekType> {
-    /** Static value MicrosoftManaged for EncryptionKekType. */
+    /**
+     * Static value MicrosoftManaged for EncryptionKekType.
+     */
     public static final EncryptionKekType MICROSOFT_MANAGED = fromString("MicrosoftManaged");
 
-    /** Static value CustomerManaged for EncryptionKekType. */
+    /**
+     * Static value CustomerManaged for EncryptionKekType.
+     */
     public static final EncryptionKekType CUSTOMER_MANAGED = fromString("CustomerManaged");
 
     /**
      * Creates a new instance of EncryptionKekType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EncryptionKekType extends ExpandableStringEnum<EncryptionKekT
 
     /**
      * Creates or finds a EncryptionKekType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionKekType.
      */
-    @JsonCreator
     public static EncryptionKekType fromString(String name) {
         return fromString(name, EncryptionKekType.class);
     }
 
     /**
      * Gets known EncryptionKekType values.
-     *
+     * 
      * @return known EncryptionKekType values.
      */
     public static Collection<EncryptionKekType> values() {

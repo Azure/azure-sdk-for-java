@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolOperationInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolOperationsClient.
+ */
 public interface SqlPoolOperationsClient {
     /**
      * Gets a list of operations performed on the SQL pool
-     *
-     * <p>Gets a list of operations performed on the SQL pool.
-     *
+     * 
+     * Gets a list of operations performed on the SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -30,9 +32,9 @@ public interface SqlPoolOperationsClient {
 
     /**
      * Gets a list of operations performed on the SQL pool
-     *
-     * <p>Gets a list of operations performed on the SQL pool.
-     *
+     * 
+     * Gets a list of operations performed on the SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -43,6 +45,6 @@ public interface SqlPoolOperationsClient {
      * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolOperationInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolOperationInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

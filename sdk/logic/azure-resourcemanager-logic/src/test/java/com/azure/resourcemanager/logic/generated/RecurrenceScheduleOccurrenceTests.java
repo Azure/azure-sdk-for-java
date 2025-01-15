@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RecurrenceScheduleOccurrenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecurrenceScheduleOccurrence model =
-            BinaryData
-                .fromString("{\"day\":\"Sunday\",\"occurrence\":591118108}")
-                .toObject(RecurrenceScheduleOccurrence.class);
+        RecurrenceScheduleOccurrence model = BinaryData.fromString("{\"day\":\"Sunday\",\"occurrence\":966590340}")
+            .toObject(RecurrenceScheduleOccurrence.class);
         Assertions.assertEquals(DayOfWeek.SUNDAY, model.day());
-        Assertions.assertEquals(591118108, model.occurrence());
+        Assertions.assertEquals(966590340, model.occurrence());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecurrenceScheduleOccurrence model =
-            new RecurrenceScheduleOccurrence().withDay(DayOfWeek.SUNDAY).withOccurrence(591118108);
+        RecurrenceScheduleOccurrence model
+            = new RecurrenceScheduleOccurrence().withDay(DayOfWeek.SUNDAY).withOccurrence(966590340);
         model = BinaryData.fromObject(model).toObject(RecurrenceScheduleOccurrence.class);
         Assertions.assertEquals(DayOfWeek.SUNDAY, model.day());
-        Assertions.assertEquals(591118108, model.occurrence());
+        Assertions.assertEquals(966590340, model.occurrence());
     }
 }

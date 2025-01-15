@@ -11,15 +11,15 @@ public final class AzureDatabricksDeltaLakeDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDatabricksDeltaLakeDatasetTypeProperties model
-            = BinaryData.fromString("{\"table\":\"databbbjoypplod\",\"database\":\"datarbkpozffs\"}")
+            = BinaryData.fromString("{\"table\":\"dataargkwimtc\",\"database\":\"dataeeuquuwczzcujwx\"}")
                 .toObject(AzureDatabricksDeltaLakeDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDatabricksDeltaLakeDatasetTypeProperties model
-            = new AzureDatabricksDeltaLakeDatasetTypeProperties().withTable("databbbjoypplod")
-                .withDatabase("datarbkpozffs");
+            = new AzureDatabricksDeltaLakeDatasetTypeProperties().withTable("dataargkwimtc")
+                .withDatabase("dataeeuquuwczzcujwx");
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeDatasetTypeProperties.class);
     }
 }

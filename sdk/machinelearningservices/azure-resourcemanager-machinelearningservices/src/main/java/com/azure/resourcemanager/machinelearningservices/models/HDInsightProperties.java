@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The HDInsightProperties model. */
 @Fluent
 public final class HDInsightProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(HDInsightProperties.class);
 
     /*
      * Port open for ssh connections on the master node of the cluster.

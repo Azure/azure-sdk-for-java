@@ -12,7 +12,9 @@ import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
  */
 public final class VaultCertificatesCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVaultCred.json
+     * x-ms-original-file:
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * PUTVaultCred.json
      */
     /**
      * Sample code: Download vault credential file.

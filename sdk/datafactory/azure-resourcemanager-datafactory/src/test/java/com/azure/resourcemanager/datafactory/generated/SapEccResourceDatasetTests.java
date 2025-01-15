@@ -19,35 +19,35 @@ public final class SapEccResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapEccResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"SapEccResource\",\"typeProperties\":{\"path\":\"datahxnrn\"},\"description\":\"inaegesbx\",\"structure\":\"datapqm\",\"schema\":\"dataoplukfy\",\"linkedServiceName\":{\"referenceName\":\"kfhsovadkr\",\"parameters\":{\"vporiwbwggi\":\"datamwqpdkesjqbzkqm\",\"ikwsbzrhdugq\":\"datatspzjnrr\",\"ru\":\"datahtrgz\",\"nczk\":\"datajfhrjhiycbause\"}},\"parameters\":{\"jsqwzszoszjgz\":{\"type\":\"Array\",\"defaultValue\":\"datauw\"},\"qhcza\":{\"type\":\"Array\",\"defaultValue\":\"datafnyskwwu\"},\"lhipcukvbljpxpr\":{\"type\":\"Int\",\"defaultValue\":\"datam\"},\"f\":{\"type\":\"Object\",\"defaultValue\":\"datahyluqalpcufj\"}},\"annotations\":[\"dataztqdstahhh\"],\"folder\":{\"name\":\"xxsri\"},\"\":{\"yefmxwoqotii\":\"datawbaaes\"}}")
+            "{\"type\":\"SapEccResource\",\"typeProperties\":{\"path\":\"datawtoi\"},\"description\":\"bxitrapwzhlutj\",\"structure\":\"datazelsr\",\"schema\":\"datamvupm\",\"linkedServiceName\":{\"referenceName\":\"akosysycvldee\",\"parameters\":{\"egbvbbd\":\"datasaipusuof\",\"f\":\"dataedfflzvsluazz\",\"ee\":\"dataveugpx\",\"scboxra\":\"datapup\"}},\"parameters\":{\"fdr\":{\"type\":\"Float\",\"defaultValue\":\"datarjgobekxeheowsec\"},\"seesacuicnvq\":{\"type\":\"Int\",\"defaultValue\":\"dataskiwrjsbdb\"},\"vmrfaptndrmmn\":{\"type\":\"Array\",\"defaultValue\":\"datau\"}},\"annotations\":[\"datak\",\"dataxrqkekcdavi\",\"dataebeqrfza\",\"dataqymcwt\"],\"folder\":{\"name\":\"ceplbrzgkuorwpq\"},\"\":{\"ykk\":\"dataweobptscr\",\"sbnlyoifgdfzjqth\":\"dataelayynoyjyfls\",\"kxxlwwo\":\"datakcvoevcwfzo\",\"ubdmg\":\"dataxgbsdzcgcvypj\"}}")
             .toObject(SapEccResourceDataset.class);
-        Assertions.assertEquals("inaegesbx", model.description());
-        Assertions.assertEquals("kfhsovadkr", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jsqwzszoszjgz").type());
-        Assertions.assertEquals("xxsri", model.folder().name());
+        Assertions.assertEquals("bxitrapwzhlutj", model.description());
+        Assertions.assertEquals("akosysycvldee", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fdr").type());
+        Assertions.assertEquals("ceplbrzgkuorwpq", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapEccResourceDataset model = new SapEccResourceDataset().withDescription("inaegesbx")
-            .withStructure("datapqm")
-            .withSchema("dataoplukfy")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kfhsovadkr")
-                .withParameters(mapOf("vporiwbwggi", "datamwqpdkesjqbzkqm", "ikwsbzrhdugq", "datatspzjnrr", "ru",
-                    "datahtrgz", "nczk", "datajfhrjhiycbause")))
-            .withParameters(mapOf("jsqwzszoszjgz",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datauw"), "qhcza",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datafnyskwwu"),
-                "lhipcukvbljpxpr", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datam"),
-                "f", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datahyluqalpcufj")))
-            .withAnnotations(Arrays.asList("dataztqdstahhh"))
-            .withFolder(new DatasetFolder().withName("xxsri"))
-            .withPath("datahxnrn");
+        SapEccResourceDataset model = new SapEccResourceDataset().withDescription("bxitrapwzhlutj")
+            .withStructure("datazelsr")
+            .withSchema("datamvupm")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("akosysycvldee")
+                .withParameters(mapOf("egbvbbd", "datasaipusuof", "f", "dataedfflzvsluazz", "ee", "dataveugpx",
+                    "scboxra", "datapup")))
+            .withParameters(mapOf("fdr",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datarjgobekxeheowsec"),
+                "seesacuicnvq",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataskiwrjsbdb"),
+                "vmrfaptndrmmn", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datau")))
+            .withAnnotations(Arrays.asList("datak", "dataxrqkekcdavi", "dataebeqrfza", "dataqymcwt"))
+            .withFolder(new DatasetFolder().withName("ceplbrzgkuorwpq"))
+            .withPath("datawtoi");
         model = BinaryData.fromObject(model).toObject(SapEccResourceDataset.class);
-        Assertions.assertEquals("inaegesbx", model.description());
-        Assertions.assertEquals("kfhsovadkr", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jsqwzszoszjgz").type());
-        Assertions.assertEquals("xxsri", model.folder().name());
+        Assertions.assertEquals("bxitrapwzhlutj", model.description());
+        Assertions.assertEquals("akosysycvldee", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fdr").type());
+        Assertions.assertEquals("ceplbrzgkuorwpq", model.folder().name());
     }
 
     // Use "Map.of" if available

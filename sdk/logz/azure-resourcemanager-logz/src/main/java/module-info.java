@@ -10,10 +10,6 @@ module com.azure.resourcemanager.logz {
     exports com.azure.resourcemanager.logz.fluent.models;
     exports com.azure.resourcemanager.logz.models;
 
-    opens com.azure.resourcemanager.logz.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.logz.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.logz.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.logz.models to com.azure.core;
 }

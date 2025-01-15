@@ -19,42 +19,33 @@ public final class WebTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebTableDataset model = BinaryData.fromString(
-            "{\"type\":\"WebTable\",\"typeProperties\":{\"index\":\"dataawexizb\",\"path\":\"dataetji\"},\"description\":\"hpnbm\",\"structure\":\"datavvyxtvvxnakzi\",\"schema\":\"datakaybfmlngf\",\"linkedServiceName\":{\"referenceName\":\"hrmvla\",\"parameters\":{\"zblxna\":\"datajmwxn\",\"kovohwvpr\":\"datahsmfndcbsyhludzj\",\"cntjna\":\"datafdvtdurmdt\",\"twskkfkuyikmxhh\":\"datafhvqiias\"}},\"parameters\":{\"lfl\":{\"type\":\"String\",\"defaultValue\":\"datajkewriglbqtrefe\"},\"cvdefxonztpcjpt\":{\"type\":\"Int\",\"defaultValue\":\"dataffzw\"},\"h\":{\"type\":\"SecureString\",\"defaultValue\":\"dataqrcjqpzjvnpjr\"},\"viqehmdqvaol\":{\"type\":\"Float\",\"defaultValue\":\"datajbioag\"}},\"annotations\":[\"datadfs\",\"datavkjcim\",\"datarsvxphtjnhptj\"],\"folder\":{\"name\":\"dcyzhimmydtd\"},\"\":{\"prk\":\"datamizuzjdurgyzcsla\",\"gacnqp\":\"dataoyimxpggktteag\"}}")
+            "{\"type\":\"WebTable\",\"typeProperties\":{\"index\":\"dataojzdvmsnao\",\"path\":\"datasxoxvim\"},\"description\":\"etqhdbitqsby\",\"structure\":\"datasgomrihumg\",\"schema\":\"datasdbvq\",\"linkedServiceName\":{\"referenceName\":\"gfygfkgxbdpb\",\"parameters\":{\"porrvkxtfctane\":\"datawbdpsesboynpy\",\"g\":\"datainqxdhnpjnezj\",\"uxvf\":\"datadumltpmrzwvwetqf\",\"lmr\":\"datauqhngqqxjbsoto\"}},\"parameters\":{\"xedhxbboceksra\":{\"type\":\"Object\",\"defaultValue\":\"datadeatwxpx\"}},\"annotations\":[\"datahlugfnlvvk\"],\"folder\":{\"name\":\"rxdqhvhauimn\"},\"\":{\"ivlqcwyzhndqkzst\":\"datakqpwqcnbn\",\"u\":\"datapzecdlceirtah\"}}")
             .toObject(WebTableDataset.class);
-        Assertions.assertEquals("hpnbm", model.description());
-        Assertions.assertEquals("hrmvla", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("lfl").type());
-        Assertions.assertEquals("dcyzhimmydtd", model.folder().name());
+        Assertions.assertEquals("etqhdbitqsby", model.description());
+        Assertions.assertEquals("gfygfkgxbdpb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xedhxbboceksra").type());
+        Assertions.assertEquals("rxdqhvhauimn", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebTableDataset model
-            = new WebTableDataset().withDescription("hpnbm")
-                .withStructure("datavvyxtvvxnakzi")
-                .withSchema("datakaybfmlngf")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hrmvla")
-                    .withParameters(mapOf("zblxna", "datajmwxn", "kovohwvpr", "datahsmfndcbsyhludzj", "cntjna",
-                        "datafdvtdurmdt", "twskkfkuyikmxhh", "datafhvqiias")))
-                .withParameters(
-                    mapOf("lfl",
-                        new ParameterSpecification().withType(ParameterType.STRING)
-                            .withDefaultValue("datajkewriglbqtrefe"),
-                        "cvdefxonztpcjpt",
-                        new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataffzw"), "h",
-                        new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("dataqrcjqpzjvnpjr"),
-                        "viqehmdqvaol",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datajbioag")))
-                .withAnnotations(Arrays.asList("datadfs", "datavkjcim", "datarsvxphtjnhptj"))
-                .withFolder(new DatasetFolder().withName("dcyzhimmydtd"))
-                .withIndex("dataawexizb")
-                .withPath("dataetji");
+        WebTableDataset model = new WebTableDataset().withDescription("etqhdbitqsby")
+            .withStructure("datasgomrihumg")
+            .withSchema("datasdbvq")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gfygfkgxbdpb")
+                .withParameters(mapOf("porrvkxtfctane", "datawbdpsesboynpy", "g", "datainqxdhnpjnezj", "uxvf",
+                    "datadumltpmrzwvwetqf", "lmr", "datauqhngqqxjbsoto")))
+            .withParameters(mapOf("xedhxbboceksra",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datadeatwxpx")))
+            .withAnnotations(Arrays.asList("datahlugfnlvvk"))
+            .withFolder(new DatasetFolder().withName("rxdqhvhauimn"))
+            .withIndex("dataojzdvmsnao")
+            .withPath("datasxoxvim");
         model = BinaryData.fromObject(model).toObject(WebTableDataset.class);
-        Assertions.assertEquals("hpnbm", model.description());
-        Assertions.assertEquals("hrmvla", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("lfl").type());
-        Assertions.assertEquals("dcyzhimmydtd", model.folder().name());
+        Assertions.assertEquals("etqhdbitqsby", model.description());
+        Assertions.assertEquals("gfygfkgxbdpb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xedhxbboceksra").type());
+        Assertions.assertEquals("rxdqhvhauimn", model.folder().name());
     }
 
     // Use "Map.of" if available

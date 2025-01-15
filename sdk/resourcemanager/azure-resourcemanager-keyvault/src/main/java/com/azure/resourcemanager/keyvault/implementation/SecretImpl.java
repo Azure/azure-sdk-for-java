@@ -97,10 +97,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     public PagedFlux<Secret> listVersionsAsync() {
-        return PagedConverter.mapPage(vault
-            .secretClient()
-            .listPropertiesOfSecretVersions(name()),
-            this::wrapModel);
+        return PagedConverter.mapPage(vault.secretClient().listPropertiesOfSecretVersions(name()), this::wrapModel);
     }
 
     @Override
@@ -126,33 +123,25 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
     public Mono<Secret> createResourceAsync() {
         KeyVaultSecret newSecret = new KeyVaultSecret(this.name(), secretValueToSet);
         newSecret.setProperties(this.attributes());
-        return vault
-            .secretClient()
-            .setSecret(newSecret)
-            .map(
-                keyVaultSecret -> {
-                    this.setInner(keyVaultSecret.getProperties());
-                    this.secretValue = keyVaultSecret.getValue();
-                    secretValueToSet = null;
-                    return this;
-                });
+        return vault.secretClient().setSecret(newSecret).map(keyVaultSecret -> {
+            this.setInner(keyVaultSecret.getProperties());
+            this.secretValue = keyVaultSecret.getValue();
+            secretValueToSet = null;
+            return this;
+        });
     }
 
     @Override
     public Mono<Secret> updateResourceAsync() {
         if (secretValueToSet == null) {
             // if no update on value, just update properties
-            return vault
-                .secretClient()
-                .updateSecretProperties(this.innerModel())
-                .map(
-                    p -> {
-                        this.setInner(p);
-                        if (!p.isEnabled()) {
-                            secretValue = null;
-                        }
-                        return this;
-                    });
+            return vault.secretClient().updateSecretProperties(this.innerModel()).map(p -> {
+                this.setInner(p);
+                if (!p.isEnabled()) {
+                    secretValue = null;
+                }
+                return this;
+            });
         } else {
             return this.createResourceAsync();
         }

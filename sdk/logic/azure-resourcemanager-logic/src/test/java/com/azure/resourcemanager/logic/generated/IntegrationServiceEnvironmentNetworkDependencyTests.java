@@ -15,60 +15,51 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentNetworkDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentNetworkDependency model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"NotSpecified\",\"displayName\":\"adijaeukmrsie\",\"endpoints\":[{\"accessibility\":\"Available\",\"domainName\":\"aapm\",\"ports\":[\"meqwig\",\"ibudqwy\",\"eb\",\"ybpmzznrtffyaq\"]},{\"accessibility\":\"NotSpecified\",\"domainName\":\"heioqa\",\"ports\":[\"seufuqy\"]},{\"accessibility\":\"NotSpecified\",\"domainName\":\"lcgqlsismj\",\"ports\":[\"ddgamquhiosr\",\"ju\"]},{\"accessibility\":\"Unknown\",\"domainName\":\"disyirnxz\",\"ports\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"]}]}")
-                .toObject(IntegrationServiceEnvironmentNetworkDependency.class);
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentNetworkDependencyCategoryType.NOT_SPECIFIED, model.category());
-        Assertions.assertEquals("adijaeukmrsie", model.displayName());
-        Assertions
-            .assertEquals(
-                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.AVAILABLE,
-                model.endpoints().get(0).accessibility());
-        Assertions.assertEquals("aapm", model.endpoints().get(0).domainName());
-        Assertions.assertEquals("meqwig", model.endpoints().get(0).ports().get(0));
+        IntegrationServiceEnvironmentNetworkDependency model = BinaryData.fromString(
+            "{\"category\":\"AzureManagement\",\"displayName\":\"kbusqo\",\"endpoints\":[{\"accessibility\":\"NotSpecified\",\"domainName\":\"yi\",\"ports\":[\"haru\",\"t\"]},{\"accessibility\":\"Available\",\"domainName\":\"fzyjqt\",\"ports\":[\"kpqhjpenuygbq\",\"qqekewvnqvcdlgu\",\"ucmfdj\",\"nlaxpunjqikcz\"]},{\"accessibility\":\"NotAvailable\",\"domainName\":\"acgxmfcsse\",\"ports\":[\"tvsoxhlwntsj\"]},{\"accessibility\":\"Available\",\"domainName\":\"xypruuuy\",\"ports\":[\"hrszi\",\"oyuelyetn\"]}]}")
+            .toObject(IntegrationServiceEnvironmentNetworkDependency.class);
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkDependencyCategoryType.AZURE_MANAGEMENT,
+            model.category());
+        Assertions.assertEquals("kbusqo", model.displayName());
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED,
+            model.endpoints().get(0).accessibility());
+        Assertions.assertEquals("yi", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("haru", model.endpoints().get(0).ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentNetworkDependency model =
-            new IntegrationServiceEnvironmentNetworkDependency()
-                .withCategory(IntegrationServiceEnvironmentNetworkDependencyCategoryType.NOT_SPECIFIED)
-                .withDisplayName("adijaeukmrsie")
-                .withEndpoints(
-                    Arrays
-                        .asList(
-                            new IntegrationServiceEnvironmentNetworkEndpoint()
-                                .withAccessibility(
-                                    IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.AVAILABLE)
-                                .withDomainName("aapm")
-                                .withPorts(Arrays.asList("meqwig", "ibudqwy", "eb", "ybpmzznrtffyaq")),
-                            new IntegrationServiceEnvironmentNetworkEndpoint()
-                                .withAccessibility(
-                                    IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED)
-                                .withDomainName("heioqa")
-                                .withPorts(Arrays.asList("seufuqy")),
-                            new IntegrationServiceEnvironmentNetworkEndpoint()
-                                .withAccessibility(
-                                    IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED)
-                                .withDomainName("lcgqlsismj")
-                                .withPorts(Arrays.asList("ddgamquhiosr", "ju")),
-                            new IntegrationServiceEnvironmentNetworkEndpoint()
-                                .withAccessibility(
-                                    IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.UNKNOWN)
-                                .withDomainName("disyirnxz")
-                                .withPorts(Arrays.asList("exrxzbujrtrhq", "wrevkhgnlnzon", "lrpiqywnc"))));
+        IntegrationServiceEnvironmentNetworkDependency model
+            = new IntegrationServiceEnvironmentNetworkDependency()
+                .withCategory(IntegrationServiceEnvironmentNetworkDependencyCategoryType.AZURE_MANAGEMENT)
+                .withDisplayName("kbusqo")
+                .withEndpoints(Arrays
+                    .asList(
+                        new IntegrationServiceEnvironmentNetworkEndpoint()
+                            .withAccessibility(
+                                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED)
+                            .withDomainName("yi")
+                            .withPorts(Arrays.asList("haru", "t")),
+                        new IntegrationServiceEnvironmentNetworkEndpoint()
+                            .withAccessibility(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.AVAILABLE)
+                            .withDomainName("fzyjqt")
+                            .withPorts(Arrays.asList("kpqhjpenuygbq", "qqekewvnqvcdlgu", "ucmfdj", "nlaxpunjqikcz")),
+                        new IntegrationServiceEnvironmentNetworkEndpoint()
+                            .withAccessibility(
+                                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_AVAILABLE)
+                            .withDomainName("acgxmfcsse")
+                            .withPorts(Arrays.asList("tvsoxhlwntsj")),
+                        new IntegrationServiceEnvironmentNetworkEndpoint()
+                            .withAccessibility(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.AVAILABLE)
+                            .withDomainName("xypruuuy")
+                            .withPorts(Arrays.asList("hrszi", "oyuelyetn"))));
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentNetworkDependency.class);
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentNetworkDependencyCategoryType.NOT_SPECIFIED, model.category());
-        Assertions.assertEquals("adijaeukmrsie", model.displayName());
-        Assertions
-            .assertEquals(
-                IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.AVAILABLE,
-                model.endpoints().get(0).accessibility());
-        Assertions.assertEquals("aapm", model.endpoints().get(0).domainName());
-        Assertions.assertEquals("meqwig", model.endpoints().get(0).ports().get(0));
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkDependencyCategoryType.AZURE_MANAGEMENT,
+            model.category());
+        Assertions.assertEquals("kbusqo", model.displayName());
+        Assertions.assertEquals(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.NOT_SPECIFIED,
+            model.endpoints().get(0).accessibility());
+        Assertions.assertEquals("yi", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("haru", model.endpoints().get(0).ports().get(0));
     }
 }

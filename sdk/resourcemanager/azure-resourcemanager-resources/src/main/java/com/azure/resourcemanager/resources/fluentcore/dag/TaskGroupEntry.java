@@ -14,8 +14,7 @@ import reactor.core.publisher.Mono;
  *
  * @param <TaskT> the task type that can return a value
  */
-public final class TaskGroupEntry<TaskT extends TaskItem>
-        extends DAGNode<TaskT, TaskGroupEntry<TaskT>> {
+public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT, TaskGroupEntry<TaskT>> {
     /**
      * The proxy entry for this entry if exists.
      */
@@ -52,6 +51,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem>
     }
 
     /**
+     * Gets the proxy entry.
+     *
      * @return the proxy entry if it is set, null if not set.
      */
     public TaskGroupEntry<TaskT> proxy() {
@@ -59,6 +60,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem>
     }
 
     /**
+     * Gets the result produced by the task.
+     *
      * @return the result produced by the task.
      */
     public Indexable taskResult() {
@@ -66,6 +69,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem>
     }
 
     /**
+     * Check whether one or more decedent dependency tasks are in faulted state.
+     *
      * @return true if one or more decedent dependency tasks are in faulted
      * state, false otherwise.
      */

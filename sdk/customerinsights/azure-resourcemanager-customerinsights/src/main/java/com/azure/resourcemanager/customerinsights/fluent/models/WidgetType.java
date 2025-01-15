@@ -5,77 +5,75 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of WidgetType. */
+/**
+ * Definition of WidgetType.
+ */
 @Fluent
-public final class WidgetType {
+public final class WidgetType implements JsonSerializable<WidgetType> {
     /*
      * Name of the widget type.
      */
-    @JsonProperty(value = "widgetTypeName", access = JsonProperty.Access.WRITE_ONLY)
     private String widgetTypeName;
 
     /*
      * Definition for widget type.
      */
-    @JsonProperty(value = "definition", required = true)
     private String definition;
 
     /*
      * Description for widget type.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Localized display name for the widget type.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * The image URL.
      */
-    @JsonProperty(value = "imageUrl")
     private String imageUrl;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The widget version.
      */
-    @JsonProperty(value = "widgetVersion")
     private String widgetVersion;
 
     /*
      * Date time when widget type was last modified.
      */
-    @JsonProperty(value = "changed", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changed;
 
     /*
      * Date time when widget type was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
-    /** Creates an instance of WidgetType class. */
+    /**
+     * Creates an instance of WidgetType class.
+     */
     public WidgetType() {
     }
 
     /**
      * Get the widgetTypeName property: Name of the widget type.
-     *
+     * 
      * @return the widgetTypeName value.
      */
     public String widgetTypeName() {
@@ -84,7 +82,7 @@ public final class WidgetType {
 
     /**
      * Get the definition property: Definition for widget type.
-     *
+     * 
      * @return the definition value.
      */
     public String definition() {
@@ -93,7 +91,7 @@ public final class WidgetType {
 
     /**
      * Set the definition property: Definition for widget type.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the WidgetType object itself.
      */
@@ -104,7 +102,7 @@ public final class WidgetType {
 
     /**
      * Get the description property: Description for widget type.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -113,7 +111,7 @@ public final class WidgetType {
 
     /**
      * Set the description property: Description for widget type.
-     *
+     * 
      * @param description the description value to set.
      * @return the WidgetType object itself.
      */
@@ -124,7 +122,7 @@ public final class WidgetType {
 
     /**
      * Get the displayName property: Localized display name for the widget type.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -133,7 +131,7 @@ public final class WidgetType {
 
     /**
      * Set the displayName property: Localized display name for the widget type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WidgetType object itself.
      */
@@ -144,7 +142,7 @@ public final class WidgetType {
 
     /**
      * Get the imageUrl property: The image URL.
-     *
+     * 
      * @return the imageUrl value.
      */
     public String imageUrl() {
@@ -153,7 +151,7 @@ public final class WidgetType {
 
     /**
      * Set the imageUrl property: The image URL.
-     *
+     * 
      * @param imageUrl the imageUrl value to set.
      * @return the WidgetType object itself.
      */
@@ -164,7 +162,7 @@ public final class WidgetType {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -173,7 +171,7 @@ public final class WidgetType {
 
     /**
      * Get the widgetVersion property: The widget version.
-     *
+     * 
      * @return the widgetVersion value.
      */
     public String widgetVersion() {
@@ -182,7 +180,7 @@ public final class WidgetType {
 
     /**
      * Set the widgetVersion property: The widget version.
-     *
+     * 
      * @param widgetVersion the widgetVersion value to set.
      * @return the WidgetType object itself.
      */
@@ -193,7 +191,7 @@ public final class WidgetType {
 
     /**
      * Get the changed property: Date time when widget type was last modified.
-     *
+     * 
      * @return the changed value.
      */
     public OffsetDateTime changed() {
@@ -202,7 +200,7 @@ public final class WidgetType {
 
     /**
      * Get the created property: Date time when widget type was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -211,16 +209,75 @@ public final class WidgetType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (definition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property definition in model WidgetType"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property definition in model WidgetType"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WidgetType.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("definition", this.definition);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("imageUrl", this.imageUrl);
+        jsonWriter.writeStringField("widgetVersion", this.widgetVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WidgetType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WidgetType if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WidgetType.
+     */
+    public static WidgetType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WidgetType deserializedWidgetType = new WidgetType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("definition".equals(fieldName)) {
+                    deserializedWidgetType.definition = reader.getString();
+                } else if ("widgetTypeName".equals(fieldName)) {
+                    deserializedWidgetType.widgetTypeName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWidgetType.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWidgetType.displayName = displayName;
+                } else if ("imageUrl".equals(fieldName)) {
+                    deserializedWidgetType.imageUrl = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedWidgetType.tenantId = reader.getString();
+                } else if ("widgetVersion".equals(fieldName)) {
+                    deserializedWidgetType.widgetVersion = reader.getString();
+                } else if ("changed".equals(fieldName)) {
+                    deserializedWidgetType.changed = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("created".equals(fieldName)) {
+                    deserializedWidgetType.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWidgetType;
+        });
+    }
 }

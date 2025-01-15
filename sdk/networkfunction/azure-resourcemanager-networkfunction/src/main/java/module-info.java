@@ -10,10 +10,6 @@ module com.azure.resourcemanager.networkfunction {
     exports com.azure.resourcemanager.networkfunction.fluent.models;
     exports com.azure.resourcemanager.networkfunction.models;
 
-    opens com.azure.resourcemanager.networkfunction.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.networkfunction.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.networkfunction.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.networkfunction.models to com.azure.core;
 }

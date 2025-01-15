@@ -9,26 +9,28 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.fluent.models.ArtifactGenerationProperties;
 import java.util.Map;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters GitHubOAuth request object.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with {@link
-     *     Response}.
+     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with
+     * {@link Response}.
      */
-    Response<GitHubOAuthInfoResponse> gitHubOAuthWithResponse(
-        String location, GitHubOAuthCallRequest parameters, Context context);
+    Response<GitHubOAuthInfoResponse> gitHubOAuthWithResponse(String location, GitHubOAuthCallRequest parameters,
+        Context context);
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface ResourceProviders {
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -49,12 +51,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return singleton response of GitHubOAuth containing along with {@link Response}.
      */
-    Response<GitHubOAuthResponse> gitHubOAuthCallbackWithResponse(
-        String location, String code, String state, Context context);
+    Response<GitHubOAuthResponse> gitHubOAuthCallbackWithResponse(String location, String code, String state,
+        Context context);
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -67,7 +69,7 @@ public interface ResourceProviders {
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface ResourceProviders {
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,29 +92,29 @@ public interface ResourceProviders {
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt; along with {@link Response}.
+     * string&gt; along with {@link Response}.
      */
-    Response<Map<String, String>> generatePreviewArtifactsWithResponse(
-        String location, ArtifactGenerationProperties parameters, Context context);
+    Response<Map<String, String>> generatePreviewArtifactsWithResponse(String location,
+        ArtifactGenerationProperties parameters, Context context);
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt;.
+     * string&gt;.
      */
     Map<String, String> generatePreviewArtifacts(String location, ArtifactGenerationProperties parameters);
 }

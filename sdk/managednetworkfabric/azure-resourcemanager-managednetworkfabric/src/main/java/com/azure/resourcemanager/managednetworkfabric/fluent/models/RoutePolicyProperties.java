@@ -6,61 +6,68 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** RoutePolicyProperties defines the resource properties. */
+/**
+ * RoutePolicyProperties defines the resource properties.
+ */
 @Fluent
 public final class RoutePolicyProperties extends AnnotationResource {
     /*
      * Arm Resource ID of Network Fabric.
      */
-    @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
      * AddressFamilyType. This parameter decides whether the given ipv4 or ipv6 route policy.
      */
-    @JsonProperty(value = "addressFamilyType")
     private AddressFamilyType addressFamilyType;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
+
+    /*
+     * Default action that needs to be applied when no condition is matched. Example: Permit | Deny.
+     */
+    private CommunityActionTypes defaultAction;
 
     /*
      * Route Policy statements.
      */
-    @JsonProperty(value = "statements")
     private List<RoutePolicyStatementProperties> statements;
 
-    /** Creates an instance of RoutePolicyProperties class. */
+    /**
+     * Creates an instance of RoutePolicyProperties class.
+     */
     public RoutePolicyProperties() {
     }
 
     /**
      * Get the networkFabricId property: Arm Resource ID of Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     public String networkFabricId() {
@@ -69,7 +76,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Set the networkFabricId property: Arm Resource ID of Network Fabric.
-     *
+     * 
      * @param networkFabricId the networkFabricId value to set.
      * @return the RoutePolicyProperties object itself.
      */
@@ -81,7 +88,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
     /**
      * Get the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
      * route policy.
-     *
+     * 
      * @return the addressFamilyType value.
      */
     public AddressFamilyType addressFamilyType() {
@@ -91,7 +98,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
     /**
      * Set the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
      * route policy.
-     *
+     * 
      * @param addressFamilyType the addressFamilyType value to set.
      * @return the RoutePolicyProperties object itself.
      */
@@ -102,7 +109,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -111,7 +118,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +127,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -128,8 +135,30 @@ public final class RoutePolicyProperties extends AnnotationResource {
     }
 
     /**
+     * Get the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @return the defaultAction value.
+     */
+    public CommunityActionTypes defaultAction() {
+        return this.defaultAction;
+    }
+
+    /**
+     * Set the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @param defaultAction the defaultAction value to set.
+     * @return the RoutePolicyProperties object itself.
+     */
+    public RoutePolicyProperties withDefaultAction(CommunityActionTypes defaultAction) {
+        this.defaultAction = defaultAction;
+        return this;
+    }
+
+    /**
      * Get the statements property: Route Policy statements.
-     *
+     * 
      * @return the statements value.
      */
     public List<RoutePolicyStatementProperties> statements() {
@@ -138,7 +167,7 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Set the statements property: Route Policy statements.
-     *
+     * 
      * @param statements the statements value to set.
      * @return the RoutePolicyProperties object itself.
      */
@@ -147,7 +176,9 @@ public final class RoutePolicyProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutePolicyProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -156,17 +187,15 @@ public final class RoutePolicyProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model RoutePolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricId in model RoutePolicyProperties"));
         }
         if (statements() != null) {
             statements().forEach(e -> e.validate());
@@ -174,4 +203,67 @@ public final class RoutePolicyProperties extends AnnotationResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutePolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeStringField("addressFamilyType",
+            this.addressFamilyType == null ? null : this.addressFamilyType.toString());
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("statements", this.statements, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutePolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutePolicyProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoutePolicyProperties.
+     */
+    public static RoutePolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutePolicyProperties deserializedRoutePolicyProperties = new RoutePolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.withAnnotation(reader.getString());
+                } else if ("networkFabricId".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.networkFabricId = reader.getString();
+                } else if ("addressFamilyType".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.addressFamilyType
+                        = AddressFamilyType.fromString(reader.getString());
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedRoutePolicyProperties.defaultAction
+                        = CommunityActionTypes.fromString(reader.getString());
+                } else if ("statements".equals(fieldName)) {
+                    List<RoutePolicyStatementProperties> statements
+                        = reader.readArray(reader1 -> RoutePolicyStatementProperties.fromJson(reader1));
+                    deserializedRoutePolicyProperties.statements = statements;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutePolicyProperties;
+        });
+    }
 }

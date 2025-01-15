@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Onboarding information.
  */
 @Fluent
-public final class Onboarding {
+public final class Onboarding implements JsonSerializable<Onboarding> {
     /*
      * Onboarding guide.
      */
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
      * The location of the development portal
      */
-    @JsonProperty(value = "developerPortalUri")
     private List<String> developerPortalUri;
 
     /**
@@ -77,5 +79,46 @@ public final class Onboarding {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("developerPortalUri", this.developerPortalUri,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Onboarding from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Onboarding if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Onboarding.
+     */
+    public static Onboarding fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Onboarding deserializedOnboarding = new Onboarding();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instructions".equals(fieldName)) {
+                    deserializedOnboarding.instructions = reader.getString();
+                } else if ("developerPortalUri".equals(fieldName)) {
+                    List<String> developerPortalUri = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOnboarding.developerPortalUri = developerPortalUri;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnboarding;
+        });
     }
 }

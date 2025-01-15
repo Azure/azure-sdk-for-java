@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters allowed to update for a server. */
+/**
+ * Parameters allowed to update for a server.
+ */
 @Fluent
-public final class ServerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParameters.class);
-
+public final class ServerUpdateParameters implements JsonSerializable<ServerUpdateParameters> {
     /*
      * The Azure Active Directory identity of the server.
      */
-    @JsonProperty(value = "identity")
     private ResourceIdentity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The properties that can be updated for a server.
      */
-    @JsonProperty(value = "properties")
     private ServerUpdateParametersProperties innerProperties;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of ServerUpdateParameters class.
+     */
+    public ServerUpdateParameters() {
+    }
+
+    /**
      * Get the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -53,7 +55,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -64,7 +66,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -73,7 +75,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -84,7 +86,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties that can be updated for a server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerUpdateParametersProperties innerProperties() {
@@ -93,7 +95,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -102,7 +104,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -113,7 +115,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -122,7 +124,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -136,7 +138,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -145,7 +147,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -159,7 +161,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the version property: The version of a server.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
@@ -168,7 +170,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the version property: The version of a server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -182,7 +184,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
@@ -191,7 +193,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @param sslEnforcement the sslEnforcement value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -205,7 +207,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
@@ -214,7 +216,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -229,7 +231,7 @@ public final class ServerUpdateParameters {
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
@@ -239,7 +241,7 @@ public final class ServerUpdateParameters {
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -253,7 +255,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Get the replicationRole property: The replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public String replicationRole() {
@@ -262,7 +264,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Set the replicationRole property: The replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -276,7 +278,7 @@ public final class ServerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -289,5 +291,52 @@ public final class ServerUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerUpdateParameters.
+     */
+    public static ServerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerUpdateParameters deserializedServerUpdateParameters = new ServerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedServerUpdateParameters.identity = ResourceIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServerUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerUpdateParameters.innerProperties
+                        = ServerUpdateParametersProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServerUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerUpdateParameters;
+        });
     }
 }

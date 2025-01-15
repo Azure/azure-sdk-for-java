@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"xhqyudxorrqnb\",\"privateEndpointConnections\":[{\"id\":\"vyifqrvkdvjsl\",\"properties\":{\"provisioningState\":\"d\"}},{\"id\":\"atkpnp\",\"properties\":{\"provisioningState\":\"bczw\"}}]}")
-                .toObject(PrivateLinkHubProperties.class);
-        Assertions.assertEquals("xhqyudxorrqnb", model.provisioningState());
+        PrivateLinkHubProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"gofel\",\"privateEndpointConnections\":[{\"id\":\"qmqhldvriii\",\"properties\":{\"privateEndpoint\":{\"id\":\"lg\"},\"privateLinkServiceConnectionState\":{\"status\":\"vtvsexsowueluq\",\"description\":\"ahhxvrh\",\"actionsRequired\":\"kwpjgwwspughftqs\"},\"provisioningState\":\"qxujxukndxd\"}},{\"id\":\"rjguufzdmsyqtf\",\"properties\":{\"privateEndpoint\":{\"id\":\"botzingamvppho\"},\"privateLinkServiceConnectionState\":{\"status\":\"zudphqamvdkfw\",\"description\":\"wcvtbvkayhmtnvyq\",\"actionsRequired\":\"tkzwpcnpwzc\"},\"provisioningState\":\"esgvvsccyaj\"}},{\"id\":\"qfhwyg\",\"properties\":{\"privateEndpoint\":{\"id\":\"nk\"},\"privateLinkServiceConnectionState\":{\"status\":\"semdwzrmu\",\"description\":\"pfcqdp\",\"actionsRequired\":\"xqv\"},\"provisioningState\":\"vuoy\"}}]}")
+            .toObject(PrivateLinkHubProperties.class);
+        Assertions.assertEquals("gofel", model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubProperties model = new PrivateLinkHubProperties().withProvisioningState("xhqyudxorrqnb");
+        PrivateLinkHubProperties model = new PrivateLinkHubProperties().withProvisioningState("gofel");
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubProperties.class);
-        Assertions.assertEquals("xhqyudxorrqnb", model.provisioningState());
+        Assertions.assertEquals("gofel", model.provisioningState());
     }
 }

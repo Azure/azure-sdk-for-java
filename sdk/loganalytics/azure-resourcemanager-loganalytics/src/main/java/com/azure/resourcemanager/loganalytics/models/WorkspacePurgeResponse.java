@@ -6,18 +6,20 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 
-/** An immutable client-side representation of WorkspacePurgeResponse. */
+/**
+ * An immutable client-side representation of WorkspacePurgeResponse.
+ */
 public interface WorkspacePurgeResponse {
     /**
      * Gets the operationId property: Id to use when querying for status for a particular purge operation.
-     *
+     * 
      * @return the operationId value.
      */
     String operationId();
 
     /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkspacePurgeResponseInner innerModel();

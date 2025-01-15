@@ -6,31 +6,38 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Common response for the state updates. */
+/**
+ * Common response for the state updates.
+ */
 @Fluent
-public final class CommonPostActionResponseForStateUpdateInner {
+public final class CommonPostActionResponseForStateUpdateInner
+    implements JsonSerializable<CommonPostActionResponseForStateUpdateInner> {
     /*
      * Gets the configuration state.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of CommonPostActionResponseForStateUpdateInner class. */
+    /**
+     * Creates an instance of CommonPostActionResponseForStateUpdateInner class.
+     */
     public CommonPostActionResponseForStateUpdateInner() {
     }
 
     /**
      * Get the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -39,7 +46,7 @@ public final class CommonPostActionResponseForStateUpdateInner {
 
     /**
      * Get the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -48,7 +55,7 @@ public final class CommonPostActionResponseForStateUpdateInner {
 
     /**
      * Set the error property: The error object.
-     *
+     * 
      * @param error the error value to set.
      * @return the CommonPostActionResponseForStateUpdateInner object itself.
      */
@@ -59,9 +66,49 @@ public final class CommonPostActionResponseForStateUpdateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonPostActionResponseForStateUpdateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonPostActionResponseForStateUpdateInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonPostActionResponseForStateUpdateInner.
+     */
+    public static CommonPostActionResponseForStateUpdateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonPostActionResponseForStateUpdateInner deserializedCommonPostActionResponseForStateUpdateInner
+                = new CommonPostActionResponseForStateUpdateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationState".equals(fieldName)) {
+                    deserializedCommonPostActionResponseForStateUpdateInner.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedCommonPostActionResponseForStateUpdateInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonPostActionResponseForStateUpdateInner;
+        });
     }
 }

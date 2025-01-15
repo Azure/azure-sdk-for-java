@@ -19,7 +19,7 @@ BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAc
 BatchClient client = BatchClient.open(cred);
 ```
 
-* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for detail.
+* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for detail.
 
 ```java
 BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);
@@ -62,16 +62,16 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>11.1.1</version>
+    <version>11.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 # Pre-requisites
 
-- [A Java Developer Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), v 1.7 or later
+- [A Java Developer Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable), v 1.7 or later
 - [Maven](https://central.sonatype.com/artifact/com.microsoft.azure/azure-batch)
-- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
+- Azure Service Principal - see [how to create authentication info](https://learn.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
 
 
 ## Help
@@ -134,7 +134,7 @@ All tests are run from the `sdk/batch` directory. They can be run either on the 
 
 # More Information
 
-* [Javadoc](https://docs.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
+* [Javadoc](https://learn.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
 * [https://azure.com/java](https://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 

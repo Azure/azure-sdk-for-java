@@ -5,268 +5,242 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * InMage provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMage")
 @Fluent
 public final class InMageReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
-     * The active location of the VM. If the VM is being protected from Azure, this field will take values from {
-     * Azure, OnPrem }. If the VM is being protected between two data-centers, this field will be OnPrem always.
+     * Gets the Instance type.
      */
-    @JsonProperty(value = "activeSiteType")
+    private String instanceType = "InMage";
+
+    /*
+     * The active location of the VM. If the VM is being protected from Azure, this field will take values from { Azure,
+     * OnPrem }. If the VM is being protected between two data-centers, this field will be OnPrem always.
+     */
     private String activeSiteType;
 
     /*
      * The CPU count of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmCpuCount")
     private Integer sourceVmCpuCount;
 
     /*
      * The RAM size of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmRamSizeInMB")
     private Integer sourceVmRamSizeInMB;
 
     /*
      * The OS details.
      */
-    @JsonProperty(value = "osDetails")
     private OSDiskDetails osDetails;
 
     /*
      * The protection stage.
      */
-    @JsonProperty(value = "protectionStage")
     private String protectionStage;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
      * The resync details of the machine.
      */
-    @JsonProperty(value = "resyncDetails")
     private InitialReplicationDetails resyncDetails;
 
     /*
      * The retention window start time.
      */
-    @JsonProperty(value = "retentionWindowStart")
     private OffsetDateTime retentionWindowStart;
 
     /*
      * The retention window end time.
      */
-    @JsonProperty(value = "retentionWindowEnd")
     private OffsetDateTime retentionWindowEnd;
 
     /*
      * The compressed data change rate in MB.
      */
-    @JsonProperty(value = "compressedDataRateInMB")
     private Double compressedDataRateInMB;
 
     /*
      * The uncompressed data change rate in MB.
      */
-    @JsonProperty(value = "uncompressedDataRateInMB")
     private Double uncompressedDataRateInMB;
 
     /*
      * The RPO in seconds.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * The list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks")
     private List<InMageProtectedDiskDetails> protectedDisks;
 
     /*
      * The source IP address.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The last heartbeat received from the source server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId")
     private String processServerId;
 
     /*
      * The master target Id.
      */
-    @JsonProperty(value = "masterTargetId")
     private String masterTargetId;
 
     /*
      * The collection of Consistency points.
      */
-    @JsonProperty(value = "consistencyPoints")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, OffsetDateTime> consistencyPoints;
 
     /*
      * A value indicating whether any disk is resized for this VM.
      */
-    @JsonProperty(value = "diskResized")
     private String diskResized;
 
     /*
      * A value indicating whether the source server requires a restart after update.
      */
-    @JsonProperty(value = "rebootAfterUpdateStatus")
     private String rebootAfterUpdateStatus;
 
     /*
      * The multi vm group Id, if any.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The multi vm group name, if any.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * A value indicating whether the multi vm sync is enabled or disabled.
      */
-    @JsonProperty(value = "multiVmSyncStatus")
     private String multiVmSyncStatus;
 
     /*
      * The agent details.
      */
-    @JsonProperty(value = "agentDetails")
     private InMageAgentDetails agentDetails;
 
     /*
      * The vCenter infrastructure Id.
      */
-    @JsonProperty(value = "vCenterInfrastructureId")
     private String vCenterInfrastructureId;
 
     /*
      * The infrastructure VM Id.
      */
-    @JsonProperty(value = "infrastructureVmId")
     private String infrastructureVmId;
 
     /*
      * The PE Network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * A value indicating the discovery type of the machine.
      */
-    @JsonProperty(value = "discoveryType")
     private String discoveryType;
 
     /*
      * A value indicating the underlying Azure storage account. If the VM is not running in Azure, this value shall be
      * set to null.
      */
-    @JsonProperty(value = "azureStorageAccountId")
     private String azureStorageAccountId;
 
     /*
      * The datastores of the on-premise machine Value can be list of strings that contain datastore names.
      */
-    @JsonProperty(value = "datastores")
     private List<String> datastores;
 
     /*
      * The validation errors of the on-premise machine Value can be list of validation errors.
      */
-    @JsonProperty(value = "validationErrors")
     private List<HealthError> validationErrors;
 
     /*
      * The last RPO calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The last update time received from on-prem components.
      */
-    @JsonProperty(value = "lastUpdateReceivedTime")
     private OffsetDateTime lastUpdateReceivedTime;
 
     /*
      * The replica id of the protected item.
      */
-    @JsonProperty(value = "replicaId")
     private String replicaId;
 
     /*
      * The OS Version of the protected item.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * A value indicating whether additional IR stats are available or not.
      */
-    @JsonProperty(value = "isAdditionalStatsAvailable")
     private Boolean isAdditionalStatsAvailable;
 
     /*
      * The total transferred data in bytes.
      */
-    @JsonProperty(value = "totalDataTransferred")
     private Long totalDataTransferred;
 
     /*
      * The progress health.
      */
-    @JsonProperty(value = "totalProgressHealth")
     private String totalProgressHealth;
 
     /**
      * Creates an instance of InMageReplicationDetails class.
      */
     public InMageReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -876,8 +850,8 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Get the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is
-     * not running in Azure, this value shall be set to null.
+     * Get the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is not
+     * running in Azure, this value shall be set to null.
      * 
      * @return the azureStorageAccountId value.
      */
@@ -886,8 +860,8 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Set the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is
-     * not running in Azure, this value shall be set to null.
+     * Set the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is not
+     * running in Azure, this value shall be set to null.
      * 
      * @param azureStorageAccountId the azureStorageAccountId value to set.
      * @return the InMageReplicationDetails object itself.
@@ -1022,8 +996,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
-     * not.
+     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
      * 
      * @return the isAdditionalStatsAvailable value.
      */
@@ -1032,8 +1005,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
-     * not.
+     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
      * 
      * @param isAdditionalStatsAvailable the isAdditionalStatsAvailable value to set.
      * @return the InMageReplicationDetails object itself.
@@ -1090,7 +1062,6 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
      */
     @Override
     public void validate() {
-        super.validate();
         if (osDetails() != null) {
             osDetails().validate();
         }
@@ -1109,5 +1080,192 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("activeSiteType", this.activeSiteType);
+        jsonWriter.writeNumberField("sourceVmCpuCount", this.sourceVmCpuCount);
+        jsonWriter.writeNumberField("sourceVmRamSizeInMB", this.sourceVmRamSizeInMB);
+        jsonWriter.writeJsonField("osDetails", this.osDetails);
+        jsonWriter.writeStringField("protectionStage", this.protectionStage);
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeJsonField("resyncDetails", this.resyncDetails);
+        jsonWriter.writeStringField("retentionWindowStart",
+            this.retentionWindowStart == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retentionWindowStart));
+        jsonWriter.writeStringField("retentionWindowEnd",
+            this.retentionWindowEnd == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retentionWindowEnd));
+        jsonWriter.writeNumberField("compressedDataRateInMB", this.compressedDataRateInMB);
+        jsonWriter.writeNumberField("uncompressedDataRateInMB", this.uncompressedDataRateInMB);
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("masterTargetId", this.masterTargetId);
+        jsonWriter.writeMapField("consistencyPoints", this.consistencyPoints, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeStringField("diskResized", this.diskResized);
+        jsonWriter.writeStringField("rebootAfterUpdateStatus", this.rebootAfterUpdateStatus);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmSyncStatus", this.multiVmSyncStatus);
+        jsonWriter.writeJsonField("agentDetails", this.agentDetails);
+        jsonWriter.writeStringField("vCenterInfrastructureId", this.vCenterInfrastructureId);
+        jsonWriter.writeStringField("infrastructureVmId", this.infrastructureVmId);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("discoveryType", this.discoveryType);
+        jsonWriter.writeStringField("azureStorageAccountId", this.azureStorageAccountId);
+        jsonWriter.writeArrayField("datastores", this.datastores, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("validationErrors", this.validationErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeStringField("lastUpdateReceivedTime",
+            this.lastUpdateReceivedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateReceivedTime));
+        jsonWriter.writeStringField("replicaId", this.replicaId);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeBooleanField("isAdditionalStatsAvailable", this.isAdditionalStatsAvailable);
+        jsonWriter.writeNumberField("totalDataTransferred", this.totalDataTransferred);
+        jsonWriter.writeStringField("totalProgressHealth", this.totalProgressHealth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageReplicationDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageReplicationDetails.
+     */
+    public static InMageReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageReplicationDetails deserializedInMageReplicationDetails = new InMageReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.instanceType = reader.getString();
+                } else if ("activeSiteType".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.activeSiteType = reader.getString();
+                } else if ("sourceVmCpuCount".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.sourceVmCpuCount = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceVmRamSizeInMB".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.sourceVmRamSizeInMB = reader.getNullable(JsonReader::getInt);
+                } else if ("osDetails".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.osDetails = OSDiskDetails.fromJson(reader);
+                } else if ("protectionStage".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.protectionStage = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.vmId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("resyncDetails".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.resyncDetails = InitialReplicationDetails.fromJson(reader);
+                } else if ("retentionWindowStart".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.retentionWindowStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("retentionWindowEnd".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.retentionWindowEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("compressedDataRateInMB".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.compressedDataRateInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("uncompressedDataRateInMB".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.uncompressedDataRateInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.rpoInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<InMageProtectedDiskDetails> protectedDisks
+                        = reader.readArray(reader1 -> InMageProtectedDiskDetails.fromJson(reader1));
+                    deserializedInMageReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.ipAddress = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.processServerId = reader.getString();
+                } else if ("masterTargetId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.masterTargetId = reader.getString();
+                } else if ("consistencyPoints".equals(fieldName)) {
+                    Map<String, OffsetDateTime> consistencyPoints = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedInMageReplicationDetails.consistencyPoints = consistencyPoints;
+                } else if ("diskResized".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.diskResized = reader.getString();
+                } else if ("rebootAfterUpdateStatus".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.rebootAfterUpdateStatus = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.multiVmGroupId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.multiVmGroupName = reader.getString();
+                } else if ("multiVmSyncStatus".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.multiVmSyncStatus = reader.getString();
+                } else if ("agentDetails".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.agentDetails = InMageAgentDetails.fromJson(reader);
+                } else if ("vCenterInfrastructureId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.vCenterInfrastructureId = reader.getString();
+                } else if ("infrastructureVmId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.infrastructureVmId = reader.getString();
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedInMageReplicationDetails.vmNics = vmNics;
+                } else if ("discoveryType".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.discoveryType = reader.getString();
+                } else if ("azureStorageAccountId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.azureStorageAccountId = reader.getString();
+                } else if ("datastores".equals(fieldName)) {
+                    List<String> datastores = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageReplicationDetails.datastores = datastores;
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<HealthError> validationErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedInMageReplicationDetails.validationErrors = validationErrors;
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdateReceivedTime".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.lastUpdateReceivedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("replicaId".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.replicaId = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.osVersion = reader.getString();
+                } else if ("isAdditionalStatsAvailable".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.isAdditionalStatsAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("totalDataTransferred".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.totalDataTransferred = reader.getNullable(JsonReader::getLong);
+                } else if ("totalProgressHealth".equals(fieldName)) {
+                    deserializedInMageReplicationDetails.totalProgressHealth = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageReplicationDetails;
+        });
     }
 }

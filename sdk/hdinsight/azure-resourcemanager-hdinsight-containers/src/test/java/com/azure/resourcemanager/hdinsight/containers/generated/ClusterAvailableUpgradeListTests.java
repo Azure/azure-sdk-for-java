@@ -15,9 +15,9 @@ public final class ClusterAvailableUpgradeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAvailableUpgradeList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"zovawjvz\",\"name\":\"nluthnnp\",\"type\":\"nxipeil\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"uaejxdultsk\",\"name\":\"bbtdzumvee\",\"type\":\"gpw\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"hkfpbs\",\"name\":\"yofd\",\"type\":\"luu\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"touwaboekqv\",\"name\":\"elnsmvbxw\",\"type\":\"jsflhhcaalnjix\"}],\"nextLink\":\"xyawj\"}")
+            "{\"value\":[{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"dyh\",\"name\":\"pkkpw\",\"type\":\"reqnovvqfov\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"ywsuwsy\",\"name\":\"s\",\"type\":\"dsytgadgvr\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"},{\"properties\":{\"upgradeType\":\"ClusterAvailableUpgradeProperties\"},\"id\":\"qkacewii\",\"name\":\"fpubjibwwi\",\"type\":\"tohqkvpuvksgp\"}],\"nextLink\":\"aknynfsynljphuop\"}")
             .toObject(ClusterAvailableUpgradeList.class);
-        Assertions.assertEquals("xyawj", model.nextLink());
+        Assertions.assertEquals("aknynfsynljphuop", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,8 +28,8 @@ public final class ClusterAvailableUpgradeListTests {
                 new ClusterAvailableUpgradeInner().withProperties(new ClusterAvailableUpgradeProperties()),
                 new ClusterAvailableUpgradeInner().withProperties(new ClusterAvailableUpgradeProperties()),
                 new ClusterAvailableUpgradeInner().withProperties(new ClusterAvailableUpgradeProperties())))
-            .withNextLink("xyawj");
+            .withNextLink("aknynfsynljphuop");
         model = BinaryData.fromObject(model).toObject(ClusterAvailableUpgradeList.class);
-        Assertions.assertEquals("xyawj", model.nextLink());
+        Assertions.assertEquals("aknynfsynljphuop", model.nextLink());
     }
 }

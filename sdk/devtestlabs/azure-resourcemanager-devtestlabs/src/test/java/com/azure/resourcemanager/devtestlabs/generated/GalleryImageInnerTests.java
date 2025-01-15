@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GalleryImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GalleryImageInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"author\":\"jmsvpkjp\",\"createdDate\":\"2021-09-03T19:15:23Z\",\"description\":\"cfzq\",\"imageReference\":{\"offer\":\"x\",\"publisher\":\"czheyd\",\"sku\":\"dshmkxmaehvbbx\",\"osType\":\"iplt\",\"version\":\"htba\"},\"icon\":\"gx\",\"enabled\":false,\"planId\":\"kpyklyhp\",\"isPlanAuthorized\":true},\"location\":\"dpvruud\",\"tags\":{\"eclze\":\"ibthostgktstvd\"},\"id\":\"qbcvhzlhplod\",\"name\":\"kdl\",\"type\":\"wqfbumlkxtrqjfsm\"}")
-                .toObject(GalleryImageInner.class);
+        GalleryImageInner model = BinaryData.fromString(
+            "{\"properties\":{\"author\":\"jmsvpkjp\",\"createdDate\":\"2021-09-03T19:15:23Z\",\"description\":\"cfzq\",\"imageReference\":{\"offer\":\"x\",\"publisher\":\"czheyd\",\"sku\":\"dshmkxmaehvbbx\",\"osType\":\"iplt\",\"version\":\"htba\"},\"icon\":\"gx\",\"enabled\":false,\"planId\":\"kpyklyhp\",\"isPlanAuthorized\":true},\"location\":\"dpvruud\",\"tags\":{\"eclze\":\"ibthostgktstvd\"},\"id\":\"qbcvhzlhplod\",\"name\":\"kdl\",\"type\":\"wqfbumlkxtrqjfsm\"}")
+            .toObject(GalleryImageInner.class);
         Assertions.assertEquals("dpvruud", model.location());
         Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));
         Assertions.assertEquals("jmsvpkjp", model.author());
@@ -36,23 +34,19 @@ public final class GalleryImageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryImageInner model =
-            new GalleryImageInner()
-                .withLocation("dpvruud")
-                .withTags(mapOf("eclze", "ibthostgktstvd"))
-                .withAuthor("jmsvpkjp")
-                .withDescription("cfzq")
-                .withImageReference(
-                    new GalleryImageReference()
-                        .withOffer("x")
-                        .withPublisher("czheyd")
-                        .withSku("dshmkxmaehvbbx")
-                        .withOsType("iplt")
-                        .withVersion("htba"))
-                .withIcon("gx")
-                .withEnabled(false)
-                .withPlanId("kpyklyhp")
-                .withIsPlanAuthorized(true);
+        GalleryImageInner model = new GalleryImageInner().withLocation("dpvruud")
+            .withTags(mapOf("eclze", "ibthostgktstvd"))
+            .withAuthor("jmsvpkjp")
+            .withDescription("cfzq")
+            .withImageReference(new GalleryImageReference().withOffer("x")
+                .withPublisher("czheyd")
+                .withSku("dshmkxmaehvbbx")
+                .withOsType("iplt")
+                .withVersion("htba"))
+            .withIcon("gx")
+            .withEnabled(false)
+            .withPlanId("kpyklyhp")
+            .withIsPlanAuthorized(true);
         model = BinaryData.fromObject(model).toObject(GalleryImageInner.class);
         Assertions.assertEquals("dpvruud", model.location());
         Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));

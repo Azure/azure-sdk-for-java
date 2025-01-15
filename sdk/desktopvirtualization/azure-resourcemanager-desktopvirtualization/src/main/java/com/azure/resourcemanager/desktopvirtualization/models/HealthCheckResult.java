@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents the Health state of the health check we performed. */
+/**
+ * Represents the Health state of the health check we performed.
+ */
 public final class HealthCheckResult extends ExpandableStringEnum<HealthCheckResult> {
-    /** Static value Unknown for HealthCheckResult. */
+    /**
+     * Static value Unknown for HealthCheckResult.
+     */
     public static final HealthCheckResult UNKNOWN = fromString("Unknown");
 
-    /** Static value HealthCheckSucceeded for HealthCheckResult. */
+    /**
+     * Static value HealthCheckSucceeded for HealthCheckResult.
+     */
     public static final HealthCheckResult HEALTH_CHECK_SUCCEEDED = fromString("HealthCheckSucceeded");
 
-    /** Static value HealthCheckFailed for HealthCheckResult. */
+    /**
+     * Static value HealthCheckFailed for HealthCheckResult.
+     */
     public static final HealthCheckResult HEALTH_CHECK_FAILED = fromString("HealthCheckFailed");
 
-    /** Static value SessionHostShutdown for HealthCheckResult. */
+    /**
+     * Static value SessionHostShutdown for HealthCheckResult.
+     */
     public static final HealthCheckResult SESSION_HOST_SHUTDOWN = fromString("SessionHostShutdown");
 
     /**
      * Creates a new instance of HealthCheckResult value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class HealthCheckResult extends ExpandableStringEnum<HealthCheckRes
 
     /**
      * Creates or finds a HealthCheckResult from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthCheckResult.
      */
-    @JsonCreator
     public static HealthCheckResult fromString(String name) {
         return fromString(name, HealthCheckResult.class);
     }
 
     /**
      * Gets known HealthCheckResult values.
-     *
+     * 
      * @return known HealthCheckResult values.
      */
     public static Collection<HealthCheckResult> values() {

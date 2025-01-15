@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OnlineRequestSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnlineRequestSettings model =
-            BinaryData
-                .fromString(
-                    "{\"maxConcurrentRequestsPerInstance\":1659306080,\"maxQueueWait\":\"PT185H26M24S\",\"requestTimeout\":\"PT152H42M33S\"}")
-                .toObject(OnlineRequestSettings.class);
-        Assertions.assertEquals(1659306080, model.maxConcurrentRequestsPerInstance());
-        Assertions.assertEquals(Duration.parse("PT185H26M24S"), model.maxQueueWait());
-        Assertions.assertEquals(Duration.parse("PT152H42M33S"), model.requestTimeout());
+        OnlineRequestSettings model = BinaryData.fromString(
+            "{\"maxQueueWait\":\"PT192H43M50S\",\"requestTimeout\":\"PT2H5M54S\",\"maxConcurrentRequestsPerInstance\":1291498461}")
+            .toObject(OnlineRequestSettings.class);
+        Assertions.assertEquals(Duration.parse("PT192H43M50S"), model.maxQueueWait());
+        Assertions.assertEquals(Duration.parse("PT2H5M54S"), model.requestTimeout());
+        Assertions.assertEquals(1291498461, model.maxConcurrentRequestsPerInstance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnlineRequestSettings model =
-            new OnlineRequestSettings()
-                .withMaxConcurrentRequestsPerInstance(1659306080)
-                .withMaxQueueWait(Duration.parse("PT185H26M24S"))
-                .withRequestTimeout(Duration.parse("PT152H42M33S"));
+        OnlineRequestSettings model = new OnlineRequestSettings().withMaxQueueWait(Duration.parse("PT192H43M50S"))
+            .withRequestTimeout(Duration.parse("PT2H5M54S"))
+            .withMaxConcurrentRequestsPerInstance(1291498461);
         model = BinaryData.fromObject(model).toObject(OnlineRequestSettings.class);
-        Assertions.assertEquals(1659306080, model.maxConcurrentRequestsPerInstance());
-        Assertions.assertEquals(Duration.parse("PT185H26M24S"), model.maxQueueWait());
-        Assertions.assertEquals(Duration.parse("PT152H42M33S"), model.requestTimeout());
+        Assertions.assertEquals(Duration.parse("PT192H43M50S"), model.maxQueueWait());
+        Assertions.assertEquals(Duration.parse("PT2H5M54S"), model.requestTimeout());
+        Assertions.assertEquals(1291498461, model.maxConcurrentRequestsPerInstance());
     }
 }

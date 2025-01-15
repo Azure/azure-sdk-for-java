@@ -31,51 +31,44 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
         createAssistantsRunner(assistantCreationOptions -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
             // Create an assistant
-            StepVerifier.create(client.createAssistant(assistantCreationOptions))
-                    .assertNext(assistant -> {
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.createAssistant(assistantCreationOptions)).assertNext(assistant -> {
+                assistantCreated.set(assistant);
+                assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+            }).verifyComplete();
             Assistant assistant = assistantCreated.get();
             String assistantId = assistant.getId();
             // Retrieve the created assistant
-            StepVerifier.create(client.getAssistant(assistantId))
-                    .assertNext(retrievedAssistant -> {
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantId, retrievedAssistant.getId());
-                        assertEquals(assistant.getName(), retrievedAssistant.getName());
-                        assertEquals(assistant.getDescription(), retrievedAssistant.getDescription());
-                        assertEquals(assistant.getInstructions(), retrievedAssistant.getInstructions());
-                        assertEquals(assistant.getTools().get(0).getClass(), retrievedAssistant.getTools().get(0).getClass());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.getAssistant(assistantId)).assertNext(retrievedAssistant -> {
+                assistantCreated.set(assistant);
+                assertEquals(assistantId, retrievedAssistant.getId());
+                assertEquals(assistant.getName(), retrievedAssistant.getName());
+                assertEquals(assistant.getDescription(), retrievedAssistant.getDescription());
+                assertEquals(assistant.getInstructions(), retrievedAssistant.getInstructions());
+                assertEquals(assistant.getTools().get(0).getClass(), retrievedAssistant.getTools().get(0).getClass());
+            }).verifyComplete();
             // Update the created assistant
             String updatedName = "updatedName";
             String updatedDescription = "updatedDescription";
             String updatedInstructions = "updatedInstructions";
             StepVerifier.create(client.updateAssistant(assistantId,
-                    new UpdateAssistantOptions()
-                            .setName(updatedName)
-                            .setDescription(updatedDescription)
-                            .setInstructions(updatedInstructions)))
-                    .assertNext(updatedAssistant -> {
-                        assertEquals(assistantId, updatedAssistant.getId());
-                        assertEquals(updatedName, updatedAssistant.getName());
-                        assertEquals(updatedDescription, updatedAssistant.getDescription());
-                        assertEquals(updatedInstructions, updatedAssistant.getInstructions());
-                        assertEquals(assistant.getTools().get(0).getClass(), updatedAssistant.getTools().get(0).getClass());
-                    })
-                    .verifyComplete();
+                new UpdateAssistantOptions().setName(updatedName)
+                    .setDescription(updatedDescription)
+                    .setInstructions(updatedInstructions)))
+                .assertNext(updatedAssistant -> {
+                    assertEquals(assistantId, updatedAssistant.getId());
+                    assertEquals(updatedName, updatedAssistant.getName());
+                    assertEquals(updatedDescription, updatedAssistant.getDescription());
+                    assertEquals(updatedInstructions, updatedAssistant.getInstructions());
+                    assertEquals(assistant.getTools().get(0).getClass(), updatedAssistant.getTools().get(0).getClass());
+                })
+                .verifyComplete();
             // Deleted created assistant
-            StepVerifier.create(client.deleteAssistant(assistantId))
-                    .assertNext(assistantDeletionStatus -> {
-                        assertEquals(assistantId, assistantDeletionStatus.getId());
-                        assertTrue(assistantDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId)).assertNext(assistantDeletionStatus -> {
+                assertEquals(assistantId, assistantDeletionStatus.getId());
+                assertTrue(assistantDeletionStatus.isDeleted());
+            }).verifyComplete();
         });
     }
 
@@ -87,56 +80,48 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
             // Create an assistant
             StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
-                    new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                    })
-                    .verifyComplete();
+                new RequestOptions())).assertNext(response -> {
+                    Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                    assistantCreated.set(assistant);
+                    assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                    assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                    assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                }).verifyComplete();
             Assistant assistant = assistantCreated.get();
             String assistantId = assistant.getId();
             // Retrieve the created assistant
             StepVerifier.create(client.getAssistantWithResponse(assistantId, new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant retrievedAssistant = assertAndGetValueFromResponse(response, Assistant.class,
-                                200);
-                        assertEquals(assistantId, retrievedAssistant.getId());
-                        assertEquals(assistant.getName(), retrievedAssistant.getName());
-                        assertEquals(assistant.getDescription(), retrievedAssistant.getDescription());
-                        assertEquals(assistant.getInstructions(), retrievedAssistant.getInstructions());
-                        assertEquals(assistant.getTools().get(0).getClass(), retrievedAssistant.getTools().get(0).getClass());
-                    })
-                    .verifyComplete();
+                .assertNext(response -> {
+                    Assistant retrievedAssistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                    assertEquals(assistantId, retrievedAssistant.getId());
+                    assertEquals(assistant.getName(), retrievedAssistant.getName());
+                    assertEquals(assistant.getDescription(), retrievedAssistant.getDescription());
+                    assertEquals(assistant.getInstructions(), retrievedAssistant.getInstructions());
+                    assertEquals(assistant.getTools().get(0).getClass(),
+                        retrievedAssistant.getTools().get(0).getClass());
+                })
+                .verifyComplete();
             // Update the created assistant
             String updatedName = "updatedName";
             String updatedDescription = "updatedDescription";
             String updatedInstructions = "updatedInstructions";
             StepVerifier.create(client.updateAssistantWithResponse(assistantId,
-                    BinaryData.fromObject(new UpdateAssistantOptions()
-                            .setName(updatedName)
-                            .setDescription(updatedDescription)
-                            .setInstructions(updatedInstructions)),
-                    new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant updatedAssistant = assertAndGetValueFromResponse(response, Assistant.class,
-                                200);
-                        assertEquals(assistantId, updatedAssistant.getId());
-                        assertEquals(updatedName, updatedAssistant.getName());
-                        assertEquals(updatedDescription, updatedAssistant.getDescription());
-                        assertEquals(updatedInstructions, updatedAssistant.getInstructions());
-                        assertEquals(assistant.getTools().get(0).getClass(), updatedAssistant.getTools().get(0).getClass());
-                    })
-                    .verifyComplete();
+                BinaryData.fromObject(new UpdateAssistantOptions().setName(updatedName)
+                    .setDescription(updatedDescription)
+                    .setInstructions(updatedInstructions)),
+                new RequestOptions())).assertNext(response -> {
+                    Assistant updatedAssistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                    assertEquals(assistantId, updatedAssistant.getId());
+                    assertEquals(updatedName, updatedAssistant.getName());
+                    assertEquals(updatedDescription, updatedAssistant.getDescription());
+                    assertEquals(updatedInstructions, updatedAssistant.getInstructions());
+                    assertEquals(assistant.getTools().get(0).getClass(), updatedAssistant.getTools().get(0).getClass());
+                }).verifyComplete();
             // Deleted created assistant
-            StepVerifier.create(client.deleteAssistant(assistantId))
-                    .assertNext(assistantDeletionStatus -> {
-                        assertEquals(assistantId, assistantDeletionStatus.getId());
-                        assertTrue(assistantDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId)).assertNext(assistantDeletionStatus -> {
+                assertEquals(assistantId, assistantDeletionStatus.getId());
+                assertTrue(assistantDeletionStatus.isDeleted());
+            }).verifyComplete();
         });
     }
 
@@ -149,21 +134,17 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             String assistantId1 = createAssistant(client, assistantCreationOptions.setName("assistant1"));
             String assistantId2 = createAssistant(client, assistantCreationOptions.setName("assistant2"));
             // List all the assistants; sort by name ascending
-            StepVerifier.create(client.listAssistants())
-                    .assertNext(assistantsAscending -> {
-                        List<Assistant> dataAscending = assistantsAscending.getData();
-                        assertTrue(dataAscending.size() >= 2);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listAssistants()).assertNext(assistantsAscending -> {
+                List<Assistant> dataAscending = assistantsAscending.getData();
+                assertTrue(dataAscending.size() >= 2);
+            }).verifyComplete();
             // List all the assistants with response; sort by name ascending
-            StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions()))
-                    .assertNext(response -> {
-                        PageableList<Assistant> assistantsAscending = asserAndGetPageableListFromResponse(response, 200,
-                            reader -> reader.readArray(Assistant::fromJson));
-                        List<Assistant> dataAscending = assistantsAscending.getData();
-                        assertTrue(dataAscending.size() >= 2);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions())).assertNext(response -> {
+                PageableList<Assistant> assistantsAscending = asserAndGetPageableListFromResponse(response, 200,
+                    reader -> reader.readArray(Assistant::fromJson));
+                List<Assistant> dataAscending = assistantsAscending.getData();
+                assertTrue(dataAscending.size() >= 2);
+            }).verifyComplete();
             // Deleted created assistants
             deleteAssistant(client, assistantId1);
             deleteAssistant(client, assistantId2);
@@ -182,26 +163,24 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             String assistantId4 = createAssistant(client, assistantCreationOptions.setName("assistant4"));
 
             // List only the middle two assistants; sort by name ascending
-            StepVerifier.create(client.listAssistants(100, ListSortOrder.ASCENDING, assistantId1,
-                            assistantId4))
-                    .assertNext(assistantsAscending -> {
-                        List<Assistant> dataAscending = assistantsAscending.getData();
-                        assertEquals(2, dataAscending.size());
-                        assertEquals(assistantId2, dataAscending.get(0).getId());
-                        assertEquals(assistantId3, dataAscending.get(1).getId());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listAssistants(100, ListSortOrder.ASCENDING, assistantId1, assistantId4))
+                .assertNext(assistantsAscending -> {
+                    List<Assistant> dataAscending = assistantsAscending.getData();
+                    assertEquals(2, dataAscending.size());
+                    assertEquals(assistantId2, dataAscending.get(0).getId());
+                    assertEquals(assistantId3, dataAscending.get(1).getId());
+                })
+                .verifyComplete();
 
             // List only the middle two assistants; sort by name descending
-            StepVerifier.create(client.listAssistants(100,
-                    ListSortOrder.DESCENDING, assistantId4, assistantId1))
-                    .assertNext(assistantsDescending -> {
-                        List<Assistant> dataDescending = assistantsDescending.getData();
-                        assertEquals(2, dataDescending.size());
-                        assertEquals(assistantId3, dataDescending.get(0).getId());
-                        assertEquals(assistantId2, dataDescending.get(1).getId());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listAssistants(100, ListSortOrder.DESCENDING, assistantId4, assistantId1))
+                .assertNext(assistantsDescending -> {
+                    List<Assistant> dataDescending = assistantsDescending.getData();
+                    assertEquals(2, dataDescending.size());
+                    assertEquals(assistantId3, dataDescending.get(0).getId());
+                    assertEquals(assistantId2, dataDescending.get(1).getId());
+                })
+                .verifyComplete();
 
             // Deleted created assistant
             deleteAssistant(client, assistantId1);

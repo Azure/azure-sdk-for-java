@@ -6,47 +6,46 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Validation activity properties.
  */
 @Fluent
-public final class ValidationActivityTypeProperties {
+public final class ValidationActivityTypeProperties implements JsonSerializable<ValidationActivityTypeProperties> {
     /*
      * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
      * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
      * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default.
      * Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "sleep")
     private Object sleep;
 
     /*
      * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
      * Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "minimumSize")
     private Object minimumSize;
 
     /*
      * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to
      * false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "childItems")
     private Object childItems;
 
     /*
      * Validation activity dataset reference.
      */
-    @JsonProperty(value = "dataset", required = true)
     private DatasetReference dataset;
 
     /**
@@ -181,4 +180,54 @@ public final class ValidationActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidationActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataset", this.dataset);
+        jsonWriter.writeUntypedField("timeout", this.timeout);
+        jsonWriter.writeUntypedField("sleep", this.sleep);
+        jsonWriter.writeUntypedField("minimumSize", this.minimumSize);
+        jsonWriter.writeUntypedField("childItems", this.childItems);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationActivityTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidationActivityTypeProperties.
+     */
+    public static ValidationActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationActivityTypeProperties deserializedValidationActivityTypeProperties
+                = new ValidationActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataset".equals(fieldName)) {
+                    deserializedValidationActivityTypeProperties.dataset = DatasetReference.fromJson(reader);
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedValidationActivityTypeProperties.timeout = reader.readUntyped();
+                } else if ("sleep".equals(fieldName)) {
+                    deserializedValidationActivityTypeProperties.sleep = reader.readUntyped();
+                } else if ("minimumSize".equals(fieldName)) {
+                    deserializedValidationActivityTypeProperties.minimumSize = reader.readUntyped();
+                } else if ("childItems".equals(fieldName)) {
+                    deserializedValidationActivityTypeProperties.childItems = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationActivityTypeProperties;
+        });
+    }
 }

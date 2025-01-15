@@ -30,26 +30,28 @@ import com.azure.resourcemanager.mariadb.fluent.models.PerformanceTierProperties
 import com.azure.resourcemanager.mariadb.models.PerformanceTierListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocationBasedPerformanceTiersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationBasedPerformanceTiersClient.
+ */
 public final class LocationBasedPerformanceTiersClientImpl implements LocationBasedPerformanceTiersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocationBasedPerformanceTiersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MariaDBManagementClientImpl client;
 
     /**
      * Initializes an instance of LocationBasedPerformanceTiersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocationBasedPerformanceTiersClientImpl(MariaDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    LocationBasedPerformanceTiersService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(LocationBasedPerformanceTiersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,24 +62,18 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
     public interface LocationBasedPerformanceTiersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}"
-                + "/performanceTiers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PerformanceTierListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PerformanceTierListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -87,16 +83,12 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(String locationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -104,26 +96,16 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            accept,
-                            context))
-            .<PagedResponse<PerformanceTierPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                locationName, accept, context))
+            .<PagedResponse<PerformanceTierPropertiesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,19 +114,15 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @return a list of performance tiers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(
-        String locationName, Context context) {
+    private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(String locationName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -154,15 +132,13 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), locationName, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -176,7 +152,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +167,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -205,7 +181,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
 
     /**
      * List all the performance tiers at specified location in a given subscription.
-     *
+     * 
      * @param locationName The name of the location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

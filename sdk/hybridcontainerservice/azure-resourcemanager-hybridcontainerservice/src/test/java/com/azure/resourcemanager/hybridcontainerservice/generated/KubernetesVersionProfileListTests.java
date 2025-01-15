@@ -25,14 +25,12 @@ public final class KubernetesVersionProfileListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesVersionProfileList model
-            = new KubernetesVersionProfileList()
-                .withValue(Arrays.asList(
-                    new KubernetesVersionProfileInner().withExtendedLocation(
-                        new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("iexzfeyue")),
-                    new KubernetesVersionProfileInner().withExtendedLocation(new ExtendedLocation()
-                        .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("xwtctyqiklbbovpl"))))
-                .withNextLink("apskrdqm");
+        KubernetesVersionProfileList model = new KubernetesVersionProfileList().withValue(Arrays.asList(
+            new KubernetesVersionProfileInner().withExtendedLocation(
+                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("iexzfeyue")),
+            new KubernetesVersionProfileInner().withExtendedLocation(
+                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("xwtctyqiklbbovpl"))))
+            .withNextLink("apskrdqm");
         model = BinaryData.fromObject(model).toObject(KubernetesVersionProfileList.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
         Assertions.assertEquals("iexzfeyue", model.value().get(0).extendedLocation().name());

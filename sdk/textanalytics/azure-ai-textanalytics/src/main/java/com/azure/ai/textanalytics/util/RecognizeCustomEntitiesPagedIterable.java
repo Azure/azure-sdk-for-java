@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class RecognizeCustomEntitiesPagedIterable extends ContinuablePagedIterable<String,
-    RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
+public final class RecognizeCustomEntitiesPagedIterable extends
+    ContinuablePagedIterable<String, RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
 
     /**
      * Creates instance given {@code RecognizeCustomEntitiesPagedIterable}.

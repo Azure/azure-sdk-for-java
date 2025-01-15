@@ -10,9 +10,9 @@ import com.azure.core.util.Configuration;
 public class BatchDocumentTranslationClientTestBase extends TestProxyTestBase {
 
     BatchDocumentTranslationClient getClient() {
-        BatchDocumentTranslationClientBuilder builder = new BatchDocumentTranslationClientBuilder()
-            .endpoint(getEndpoint())
-            .credential(new AzureKeyCredential(getKey()));
+        BatchDocumentTranslationClientBuilder builder
+            = new BatchDocumentTranslationClientBuilder().endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getKey()));
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

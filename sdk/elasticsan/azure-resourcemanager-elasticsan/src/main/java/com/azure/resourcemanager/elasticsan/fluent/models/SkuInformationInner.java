@@ -6,53 +6,51 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.SkuCapability;
 import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ElasticSAN SKU and its properties.
  */
 @Fluent
-public final class SkuInformationInner {
+public final class SkuInformationInner implements JsonSerializable<SkuInformationInner> {
     /*
      * Sku Name
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * Sku Tier
      */
-    @JsonProperty(value = "tier")
     private SkuTier tier;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
      * West US, East US, Southeast Asia, etc.).
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * Availability of the SKU for the location/zone
      */
-    @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuLocationInfo> locationInfo;
 
     /*
      * The capability information in the specified SKU.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
     /**
@@ -111,8 +109,8 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the locations property: The set of locations that the SKU is available. This will be supported and
-     * registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
+     * Get the locations property: The set of locations that the SKU is available. This will be supported and registered
+     * Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
      * 
      * @return the locations value.
      */
@@ -145,8 +143,8 @@ public final class SkuInformationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
         if (locationInfo() != null) {
             locationInfo().forEach(e -> e.validate());
@@ -157,4 +155,55 @@ public final class SkuInformationInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuInformationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuInformationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuInformationInner.
+     */
+    public static SkuInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuInformationInner deserializedSkuInformationInner = new SkuInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSkuInformationInner.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSkuInformationInner.tier = SkuTier.fromString(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedSkuInformationInner.resourceType = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuInformationInner.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<SkuLocationInfo> locationInfo = reader.readArray(reader1 -> SkuLocationInfo.fromJson(reader1));
+                    deserializedSkuInformationInner.locationInfo = locationInfo;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedSkuInformationInner.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuInformationInner;
+        });
+    }
 }

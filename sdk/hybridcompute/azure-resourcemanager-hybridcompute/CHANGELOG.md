@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,207 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2024-11-14)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MachineRunCommandsListResult` was added
+
+* `models.Gateway$DefinitionStages` was added
+
+* `models.GatewaysListResult` was added
+
+* `models.MachineRunCommand$UpdateStages` was added
+
+* `models.Settings` was added
+
+* `models.MachineRunCommand` was added
+
+* `models.StorageProfile` was added
+
+* `models.Gateway$Definition` was added
+
+* `models.SettingsOperations` was added
+
+* `models.MachineRunCommandUpdate` was added
+
+* `models.MachineRunCommand$Update` was added
+
+* `models.GatewayUpdate` was added
+
+* `models.MachineRunCommand$Definition` was added
+
+* `models.Gateway$Update` was added
+
+* `models.Processor` was added
+
+* `models.ExtensionsStatusLevelTypes` was added
+
+* `models.Gateway` was added
+
+* `models.Disk` was added
+
+* `models.ExtensionsResourceStatus` was added
+
+* `models.GatewayType` was added
+
+* `models.MachineRunCommandInstanceView` was added
+
+* `models.HardwareProfile` was added
+
+* `models.RunCommandManagedIdentity` was added
+
+* `models.MachineRunCommands` was added
+
+* `models.FirmwareProfile` was added
+
+* `models.Gateways` was added
+
+* `models.Gateway$UpdateStages` was added
+
+* `models.MachineRunCommandScriptSource` was added
+
+* `models.RunCommandInputParameter` was added
+
+* `models.MachineRunCommand$DefinitionStages` was added
+
+* `models.ExecutionState` was added
+
+#### `models.MachineProperties` was modified
+
+* `firmwareProfile()` was added
+* `storageProfile()` was added
+* `hardwareProfile()` was added
+
+#### `models.NetworkInterface` was modified
+
+* `id()` was added
+* `macAddress()` was added
+* `withName(java.lang.String)` was added
+* `withId(java.lang.String)` was added
+* `name()` was added
+* `withMacAddress(java.lang.String)` was added
+
+#### `models.Machine` was modified
+
+* `hardwareProfile()` was added
+* `storageProfile()` was added
+* `firmwareProfile()` was added
+
+#### `HybridComputeManager` was modified
+
+* `settingsOperations()` was added
+* `gateways()` was added
+* `machineRunCommands()` was added
+
+## 1.0.0 (2024-10-10)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.MachineRunCommandsListResult` was removed
+
+* `models.Gateway$DefinitionStages` was removed
+
+* `models.GatewaysListResult` was removed
+
+* `models.MachineRunCommand$UpdateStages` was removed
+
+* `models.Settings` was removed
+
+* `models.MachineRunCommand` was removed
+
+* `models.Gateway$Definition` was removed
+
+* `models.SettingsOperations` was removed
+
+* `models.MachineRunCommandUpdate` was removed
+
+* `models.MachineRunCommand$Update` was removed
+
+* `models.GatewayUpdate` was removed
+
+* `models.MachineRunCommand$Definition` was removed
+
+* `models.Gateway$Update` was removed
+
+* `models.ExtensionsStatusLevelTypes` was removed
+
+* `models.Gateway` was removed
+
+* `models.ExtensionsResourceStatus` was removed
+
+* `models.GatewayType` was removed
+
+* `models.MachineRunCommandInstanceView` was removed
+
+* `models.RunCommandManagedIdentity` was removed
+
+* `models.MachineRunCommands` was removed
+
+* `models.Gateways` was removed
+
+* `models.Gateway$UpdateStages` was removed
+
+* `models.MachineRunCommandScriptSource` was removed
+
+* `models.RunCommandInputParameter` was removed
+
+* `models.MachineRunCommand$DefinitionStages` was removed
+
+* `models.ExecutionState` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurations` was modified
+
+* `void reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String)` -> `models.NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String)`
+* `void reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `HybridComputeManager` was modified
+
+* `machineRunCommands()` was removed
+* `gateways()` was removed
+* `settingsOperations()` was removed
+
+### Features Added
+
+* `models.LicenseProfile$DefinitionStages` was added
+
+* `models.LicenseProfiles` was added
+
+* `models.NetworkSecurityPerimeterConfigurationReconcileResult` was added
+
+* `models.LicenseProfilesListResult` was added
+
+* `models.LicenseProfile` was added
+
+* `models.LicenseProfile$Definition` was added
+
+* `models.LicenseProfile$UpdateStages` was added
+
+* `models.LicenseProfile$Update` was added
+
+* `models.InstanceViewTypes` was added
+
+#### `models.Licenses` was modified
+
+* `validateLicense(fluent.models.LicenseInner)` was added
+* `validateLicense(fluent.models.LicenseInner,com.azure.core.util.Context)` was added
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was added
+
+#### `HybridComputeManager` was modified
+
+* `licenseProfiles()` was added
 
 ## 1.0.0-beta.6 (2024-07-22)
 

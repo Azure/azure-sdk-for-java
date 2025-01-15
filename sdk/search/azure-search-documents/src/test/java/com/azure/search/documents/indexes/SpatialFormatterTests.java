@@ -43,8 +43,7 @@ public class SpatialFormatterTests {
     static Stream<Arguments> encodePointSupplier() {
         final String pointFormat = "geography'POINT(%s %s)'";
 
-        return Stream.of(
-            Arguments.of(0D, 0D, String.format(pointFormat, "0", "0")),
+        return Stream.of(Arguments.of(0D, 0D, String.format(pointFormat, "0", "0")),
             Arguments.of(0.0D, 0.0D, String.format(pointFormat, "0", "0")),
             Arguments.of(0.000000000000D, 0.000000000000D, String.format(pointFormat, "0", "0")),
             Arguments.of(0.01D, 0.01D, String.format(pointFormat, "0.01", "0.01")),
@@ -53,8 +52,7 @@ public class SpatialFormatterTests {
             Arguments.of(-0.0D, -0.0D, String.format(pointFormat, "-0", "-0")),
             Arguments.of(-0.01D, -0.01D, String.format(pointFormat, "-0.01", "-0.01")),
             Arguments.of(-0.000000000000D, -0.000000000000D, String.format(pointFormat, "-0", "-0")),
-            Arguments.of(-0.010000000000D, -0.010000000000D, String.format(pointFormat, "-0.01", "-0.01"))
-        );
+            Arguments.of(-0.010000000000D, -0.010000000000D, String.format(pointFormat, "-0.01", "-0.01")));
     }
 
     @Test
@@ -66,8 +64,8 @@ public class SpatialFormatterTests {
 
     @Test
     public void nonClosingGeoLineStringThrows() {
-        GeoLineString lineString = new GeoLineString(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1),
-            new GeoPosition(0, 2), new GeoPosition(0, 3)));
+        GeoLineString lineString = new GeoLineString(
+            Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1), new GeoPosition(0, 2), new GeoPosition(0, 3)));
 
         assertThrows(IllegalArgumentException.class, () -> SpatialFormatter.encodePolygon(lineString, logger));
     }
@@ -79,19 +77,17 @@ public class SpatialFormatterTests {
     }
 
     static Stream<Arguments> encodeGeoLineStringPolygonSupplier() {
-        return getGeoPositionsAndStringValues()
-            .stream()
-            .map(positionsExpected -> {
-                GeoLineString lineString = new GeoLineString(positionsExpected.getT1());
+        return getGeoPositionsAndStringValues().stream().map(positionsExpected -> {
+            GeoLineString lineString = new GeoLineString(positionsExpected.getT1());
 
-                return Arguments.of(lineString, positionsExpected.getT2());
-            });
+            return Arguments.of(lineString, positionsExpected.getT2());
+        });
     }
 
     @Test
     public void multiRingPolygonThrows() {
-        GeoLinearRing ring = new GeoLinearRing(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1),
-            new GeoPosition(1, 1), new GeoPosition(0, 0)));
+        GeoLinearRing ring = new GeoLinearRing(
+            Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1), new GeoPosition(1, 1), new GeoPosition(0, 0)));
         GeoPolygon multiRingPolygon = new GeoPolygon(Arrays.asList(ring, ring));
 
         assertThrows(IllegalArgumentException.class, () -> SpatialFormatter.encodePolygon(multiRingPolygon, logger));
@@ -104,24 +100,22 @@ public class SpatialFormatterTests {
     }
 
     static Stream<Arguments> encodeGeoPolygonPolygonSupplier() {
-        return getGeoPositionsAndStringValues()
-            .stream()
-            .map(positionsExpected -> {
-                GeoPolygon polygon = new GeoPolygon(new GeoLinearRing(positionsExpected.getT1()));
+        return getGeoPositionsAndStringValues().stream().map(positionsExpected -> {
+            GeoPolygon polygon = new GeoPolygon(new GeoLinearRing(positionsExpected.getT1()));
 
-                return Arguments.of(polygon, positionsExpected.getT2());
-            });
+            return Arguments.of(polygon, positionsExpected.getT2());
+        });
     }
 
     static List<Tuple2<List<GeoPosition>, String>> getGeoPositionsAndStringValues() {
-        List<GeoPosition> noDecimalCoordinates = Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1),
-            new GeoPosition(1, 1), new GeoPosition(0, 0));
+        List<GeoPosition> noDecimalCoordinates
+            = Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1), new GeoPosition(1, 1), new GeoPosition(0, 0));
         String noDecimalCoordinatesString = createGeographyPolygon("0", "0", "0", "1", "1", "1", "0", "0");
 
         List<GeoPosition> negativeNoDecimalCoordinates = Arrays.asList(new GeoPosition(-0D, -0D),
             new GeoPosition(-0D, -1), new GeoPosition(-1, -1), new GeoPosition(-0D, -0D));
-        String negativeNoDecimalCoordinatesString = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1", "-0",
-            "-0");
+        String negativeNoDecimalCoordinatesString
+            = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1", "-0", "-0");
 
         List<GeoPosition> simpleTrailingZerosCoordinates = Arrays.asList(new GeoPosition(0.0, 0.0),
             new GeoPosition(0.0, 1.0), new GeoPosition(1.0, 1.0), new GeoPosition(0.0, 0.0));
@@ -129,18 +123,18 @@ public class SpatialFormatterTests {
 
         List<GeoPosition> negativeSimpleTrailingZerosCoordinates = Arrays.asList(new GeoPosition(-0.0, -0.0),
             new GeoPosition(-0.0, -1.0), new GeoPosition(-1.0, -1.0), new GeoPosition(-0.0, -0.0));
-        String negativeSimpleTrailingZerosCoordinatesString = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1",
-            "-0", "-0");
+        String negativeSimpleTrailingZerosCoordinatesString
+            = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1", "-0", "-0");
 
         List<GeoPosition> simpleNoTrailingZerosCoordinates = Arrays.asList(new GeoPosition(0.01, 0.01),
             new GeoPosition(0.01, 1.01), new GeoPosition(1.01, 1.01), new GeoPosition(0.01, 0.01));
-        String simpleNoTrailingZerosCoordinatesString = createGeographyPolygon("0.01", "0.01", "0.01", "1.01", "1.01",
-            "1.01", "0.01", "0.01");
+        String simpleNoTrailingZerosCoordinatesString
+            = createGeographyPolygon("0.01", "0.01", "0.01", "1.01", "1.01", "1.01", "0.01", "0.01");
 
         List<GeoPosition> negativeSimpleNoTrailingZerosCoordinates = Arrays.asList(new GeoPosition(-0.01, -0.01),
             new GeoPosition(-0.01, -1.01), new GeoPosition(-1.01, -1.01), new GeoPosition(-0.01, -0.01));
-        String negativeSimpleNoTrailingZerosCoordinatesString = createGeographyPolygon("-0.01", "-0.01", "-0.01",
-            "-1.01", "-1.01", "-1.01", "-0.01", "-0.01");
+        String negativeSimpleNoTrailingZerosCoordinatesString
+            = createGeographyPolygon("-0.01", "-0.01", "-0.01", "-1.01", "-1.01", "-1.01", "-0.01", "-0.01");
 
         List<GeoPosition> manyTrailingZerosCoordinates = Arrays.asList(new GeoPosition(0.000000000000, 0.000000000000),
             new GeoPosition(0.000000000000, 1.000000000000), new GeoPosition(1.000000000000, 1.000000000000),
@@ -150,23 +144,22 @@ public class SpatialFormatterTests {
         List<GeoPosition> negativeManyTrailingZerosCoordinates = Arrays.asList(
             new GeoPosition(-0.000000000000, -0.000000000000), new GeoPosition(-0.000000000000, -1.000000000000),
             new GeoPosition(-1.000000000000, -1.000000000000), new GeoPosition(-0.000000000000, -0.000000000000));
-        String negativeManyTrailingZerosCoordinatesString = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1",
-            "-0", "-0");
+        String negativeManyTrailingZerosCoordinatesString
+            = createGeographyPolygon("-0", "-0", "-0", "-1", "-1", "-1", "-0", "-0");
 
         List<GeoPosition> complexTrailingZerosCoordinates = Arrays.asList(
             new GeoPosition(0.010000000000, 0.010000000000), new GeoPosition(0.010000000000, 1.010000000000),
             new GeoPosition(1.010000000000, 1.010000000000), new GeoPosition(0.010000000000, 0.010000000000));
-        String complexTrailingZerosCoordinatesString = createGeographyPolygon("0.01", "0.01", "0.01", "1.01", "1.01",
-            "1.01", "0.01", "0.01");
+        String complexTrailingZerosCoordinatesString
+            = createGeographyPolygon("0.01", "0.01", "0.01", "1.01", "1.01", "1.01", "0.01", "0.01");
 
         List<GeoPosition> negativeComplexTrailingZerosCoordinates = Arrays.asList(
             new GeoPosition(-0.010000000000, -0.010000000000), new GeoPosition(-0.010000000000, -1.010000000000),
             new GeoPosition(-1.010000000000, -1.010000000000), new GeoPosition(-0.010000000000, -0.010000000000));
-        String negativeComplexTrailingZerosCoordinatesString = createGeographyPolygon("-0.01", "-0.01", "-0.01",
-            "-1.01", "-1.01", "-1.01", "-0.01", "-0.01");
+        String negativeComplexTrailingZerosCoordinatesString
+            = createGeographyPolygon("-0.01", "-0.01", "-0.01", "-1.01", "-1.01", "-1.01", "-0.01", "-0.01");
 
-        return Arrays.asList(
-            Tuples.of(noDecimalCoordinates, noDecimalCoordinatesString),
+        return Arrays.asList(Tuples.of(noDecimalCoordinates, noDecimalCoordinatesString),
             Tuples.of(negativeNoDecimalCoordinates, negativeNoDecimalCoordinatesString),
             Tuples.of(simpleTrailingZerosCoordinates, simpleTrailingZerosCoordinatesString),
             Tuples.of(negativeSimpleTrailingZerosCoordinates, negativeSimpleTrailingZerosCoordinatesString),
@@ -175,7 +168,6 @@ public class SpatialFormatterTests {
             Tuples.of(manyTrailingZerosCoordinates, manyTrailingZerosCoordinatesString),
             Tuples.of(negativeManyTrailingZerosCoordinates, negativeManyTrailingZerosCoordinatesString),
             Tuples.of(complexTrailingZerosCoordinates, complexTrailingZerosCoordinatesString),
-            Tuples.of(negativeComplexTrailingZerosCoordinates, negativeComplexTrailingZerosCoordinatesString)
-        );
+            Tuples.of(negativeComplexTrailingZerosCoordinates, negativeComplexTrailingZerosCoordinatesString));
     }
 }

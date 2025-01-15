@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,6 +27,11 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * The time at which the SMS was received
      */
     private OffsetDateTime receivedTimestamp;
+
+    /*
+     * Number of segments in the message
+     */
+    private int segmentCount;
 
     /**
      * Creates an instance of AcsSmsReceivedEventData class.
@@ -74,6 +80,26 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     }
 
     /**
+     * Get the segmentCount property: Number of segments in the message.
+     * 
+     * @return the segmentCount value.
+     */
+    public int getSegmentCount() {
+        return this.segmentCount;
+    }
+
+    /**
+     * Set the segmentCount property: Number of segments in the message.
+     * 
+     * @param segmentCount the segmentCount value to set.
+     * @return the AcsSmsReceivedEventData object itself.
+     */
+    public AcsSmsReceivedEventData setSegmentCount(int segmentCount) {
+        this.segmentCount = segmentCount;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -100,15 +126,21 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeIntField("segmentCount", this.segmentCount);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +150,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsSmsReceivedEventData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsReceivedEventData.
      */
     public static AcsSmsReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -133,11 +166,13 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                     deserializedAcsSmsReceivedEventData.setFrom(reader.getString());
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.setTo(reader.getString());
+                } else if ("segmentCount".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.segmentCount = reader.getInt();
                 } else if ("message".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.message = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsSmsReceivedEventData.receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

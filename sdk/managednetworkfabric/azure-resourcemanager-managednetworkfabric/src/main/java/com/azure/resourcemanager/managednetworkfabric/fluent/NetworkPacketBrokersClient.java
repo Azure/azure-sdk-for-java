@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkPacketBrokerInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatch;
 
-/** An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient.
+ */
 public interface NetworkPacketBrokersClient {
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -30,14 +32,14 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body);
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -48,14 +50,14 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -65,14 +67,14 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body);
+    NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body);
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -83,14 +85,14 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
+    NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body, Context context);
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -100,14 +102,14 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkPacketBrokerName, Context context);
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,9 +122,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -132,14 +134,14 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body);
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -150,14 +152,14 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -167,14 +169,14 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body);
+    NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body);
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -185,14 +187,14 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
+    NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body, Context context);
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,9 +207,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -217,14 +219,14 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkPacketBrokerName,
+        Context context);
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -251,9 +253,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,9 +267,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,9 +282,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedIterable}.
@@ -292,9 +294,9 @@ public interface NetworkPacketBrokersClient {
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

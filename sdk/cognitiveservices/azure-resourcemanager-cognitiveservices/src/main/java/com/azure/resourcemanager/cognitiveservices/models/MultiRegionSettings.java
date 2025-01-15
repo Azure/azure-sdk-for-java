@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The multiregion settings Cognitive Services account. */
+/**
+ * The multiregion settings Cognitive Services account.
+ */
 @Fluent
-public final class MultiRegionSettings {
+public final class MultiRegionSettings implements JsonSerializable<MultiRegionSettings> {
     /*
      * Multiregion routing methods.
      */
-    @JsonProperty(value = "routingMethod")
     private RoutingMethods routingMethod;
 
     /*
      * The regions property.
      */
-    @JsonProperty(value = "regions")
     private List<RegionSetting> regions;
 
-    /** Creates an instance of MultiRegionSettings class. */
+    /**
+     * Creates an instance of MultiRegionSettings class.
+     */
     public MultiRegionSettings() {
     }
 
     /**
      * Get the routingMethod property: Multiregion routing methods.
-     *
+     * 
      * @return the routingMethod value.
      */
     public RoutingMethods routingMethod() {
@@ -38,7 +44,7 @@ public final class MultiRegionSettings {
 
     /**
      * Set the routingMethod property: Multiregion routing methods.
-     *
+     * 
      * @param routingMethod the routingMethod value to set.
      * @return the MultiRegionSettings object itself.
      */
@@ -49,7 +55,7 @@ public final class MultiRegionSettings {
 
     /**
      * Get the regions property: The regions property.
-     *
+     * 
      * @return the regions value.
      */
     public List<RegionSetting> regions() {
@@ -58,7 +64,7 @@ public final class MultiRegionSettings {
 
     /**
      * Set the regions property: The regions property.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the MultiRegionSettings object itself.
      */
@@ -69,12 +75,52 @@ public final class MultiRegionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (regions() != null) {
             regions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("routingMethod", this.routingMethod == null ? null : this.routingMethod.toString());
+        jsonWriter.writeArrayField("regions", this.regions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MultiRegionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MultiRegionSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MultiRegionSettings.
+     */
+    public static MultiRegionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MultiRegionSettings deserializedMultiRegionSettings = new MultiRegionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routingMethod".equals(fieldName)) {
+                    deserializedMultiRegionSettings.routingMethod = RoutingMethods.fromString(reader.getString());
+                } else if ("regions".equals(fieldName)) {
+                    List<RegionSetting> regions = reader.readArray(reader1 -> RegionSetting.fromJson(reader1));
+                    deserializedMultiRegionSettings.regions = regions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMultiRegionSettings;
+        });
     }
 }

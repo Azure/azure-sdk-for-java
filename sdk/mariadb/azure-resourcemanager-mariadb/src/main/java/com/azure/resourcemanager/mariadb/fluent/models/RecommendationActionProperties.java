@@ -5,70 +5,70 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** The properties of a recommendation action. */
+/**
+ * The properties of a recommendation action.
+ */
 @Fluent
-public final class RecommendationActionProperties {
+public final class RecommendationActionProperties implements JsonSerializable<RecommendationActionProperties> {
     /*
      * Advisor name.
      */
-    @JsonProperty(value = "advisorName")
     private String advisorName;
 
     /*
      * Recommendation action session identifier.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Recommendation action identifier.
      */
-    @JsonProperty(value = "actionId")
     private Integer actionId;
 
     /*
      * Recommendation action creation time.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * Recommendation action expiration time.
      */
-    @JsonProperty(value = "expirationTime")
     private OffsetDateTime expirationTime;
 
     /*
      * Recommendation action reason.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Recommendation action type.
      */
-    @JsonProperty(value = "recommendationType")
     private String recommendationType;
 
     /*
      * Recommendation action details.
      */
-    @JsonProperty(value = "details")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> details;
 
-    /** Creates an instance of RecommendationActionProperties class. */
+    /**
+     * Creates an instance of RecommendationActionProperties class.
+     */
     public RecommendationActionProperties() {
     }
 
     /**
      * Get the advisorName property: Advisor name.
-     *
+     * 
      * @return the advisorName value.
      */
     public String advisorName() {
@@ -77,7 +77,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the advisorName property: Advisor name.
-     *
+     * 
      * @param advisorName the advisorName value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -97,7 +97,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -108,7 +108,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the actionId property: Recommendation action identifier.
-     *
+     * 
      * @return the actionId value.
      */
     public Integer actionId() {
@@ -117,7 +117,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the actionId property: Recommendation action identifier.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -128,7 +128,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -137,7 +137,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -148,7 +148,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -157,7 +157,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -168,7 +168,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the reason property: Recommendation action reason.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -177,7 +177,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the reason property: Recommendation action reason.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -188,7 +188,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the recommendationType property: Recommendation action type.
-     *
+     * 
      * @return the recommendationType value.
      */
     public String recommendationType() {
@@ -197,7 +197,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the recommendationType property: Recommendation action type.
-     *
+     * 
      * @param recommendationType the recommendationType value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -208,7 +208,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Get the details property: Recommendation action details.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, String> details() {
@@ -217,7 +217,7 @@ public final class RecommendationActionProperties {
 
     /**
      * Set the details property: Recommendation action details.
-     *
+     * 
      * @param details the details value to set.
      * @return the RecommendationActionProperties object itself.
      */
@@ -228,9 +228,72 @@ public final class RecommendationActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("advisorName", this.advisorName);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeNumberField("actionId", this.actionId);
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("expirationTime",
+            this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("recommendationType", this.recommendationType);
+        jsonWriter.writeMapField("details", this.details, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationActionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationActionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendationActionProperties.
+     */
+    public static RecommendationActionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationActionProperties deserializedRecommendationActionProperties
+                = new RecommendationActionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("advisorName".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.advisorName = reader.getString();
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.sessionId = reader.getString();
+                } else if ("actionId".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.actionId = reader.getNullable(JsonReader::getInt);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reason".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.reason = reader.getString();
+                } else if ("recommendationType".equals(fieldName)) {
+                    deserializedRecommendationActionProperties.recommendationType = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    Map<String, String> details = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRecommendationActionProperties.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationActionProperties;
+        });
     }
 }

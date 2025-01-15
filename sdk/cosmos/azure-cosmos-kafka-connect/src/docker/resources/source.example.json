@@ -1,0 +1,20 @@
+{
+  "name": "cosmosdb-source-connector-v2",
+  "config": {
+    "connector.class": "com.azure.cosmos.kafka.connect.CosmosSourceConnector",
+    "tasks.max": "5",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "azure.cosmos.account.endpoint":"{endpoint}",
+    "azure.cosmos.account.key":"{masterKey}",
+    "azure.cosmos.application.name": "{applicationName}",
+    "azure.cosmos.source.database.name":"{database}",
+    "azure.cosmos.source.containers.includedList":"{container}",
+    "azure.cosmos.source.changeFeed.maxItemCountHint":"500",
+    "azure.cosmos.source.containers.topicMap":"{topic}#{container}",
+    "azure.cosmos.source.metadata.storage.type":"Cosmos",
+    "azure.cosmos.source.metadata.storage.name":"{metadataContainerName}"
+  }
+}

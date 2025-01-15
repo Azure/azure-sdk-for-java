@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datamigration.models.MigrationReportResult;
 public final class MigrationReportResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationReportResult model =
-            BinaryData.fromString("{\"id\":\"zuo\",\"reportUrl\":\"jw\"}").toObject(MigrationReportResult.class);
+        MigrationReportResult model = BinaryData.fromString("{\"id\":\"ywjhhgdnhx\",\"reportUrl\":\"ivfomiloxgg\"}")
+            .toObject(MigrationReportResult.class);
     }
 
     @org.junit.jupiter.api.Test

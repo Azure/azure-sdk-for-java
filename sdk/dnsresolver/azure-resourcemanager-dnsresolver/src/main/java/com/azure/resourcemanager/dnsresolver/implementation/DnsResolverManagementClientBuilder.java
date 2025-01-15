@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DnsResolverManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {DnsResolverManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the DnsResolverManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { DnsResolverManagementClientImpl.class })
 public final class DnsResolverManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the DnsResolverManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class DnsResolverManagementClientBuilder {
 
     /**
      * Builds an instance of DnsResolverManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of DnsResolverManagementClientImpl.
      */
     public DnsResolverManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        DnsResolverManagementClientImpl client =
-            new DnsResolverManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        DnsResolverManagementClientImpl client = new DnsResolverManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

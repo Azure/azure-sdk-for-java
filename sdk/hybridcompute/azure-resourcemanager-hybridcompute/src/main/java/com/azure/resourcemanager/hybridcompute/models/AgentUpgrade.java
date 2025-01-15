@@ -26,12 +26,12 @@ public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     private String desiredVersion;
 
     /*
-     * The correlation ID passed in from RSM per upgrade.
+     * The correlation ID associated with an agent upgrade operation.
      */
     private UUID correlationId;
 
     /*
-     * Specifies if RSM should try to upgrade this machine
+     * Specifies if the machine's agent should be upgraded
      */
     private Boolean enableAutomaticUpgrade;
 
@@ -82,7 +82,7 @@ public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     }
 
     /**
-     * Get the correlationId property: The correlation ID passed in from RSM per upgrade.
+     * Get the correlationId property: The correlation ID associated with an agent upgrade operation.
      * 
      * @return the correlationId value.
      */
@@ -91,7 +91,7 @@ public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     }
 
     /**
-     * Set the correlationId property: The correlation ID passed in from RSM per upgrade.
+     * Set the correlationId property: The correlation ID associated with an agent upgrade operation.
      * 
      * @param correlationId the correlationId value to set.
      * @return the AgentUpgrade object itself.
@@ -102,7 +102,7 @@ public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     }
 
     /**
-     * Get the enableAutomaticUpgrade property: Specifies if RSM should try to upgrade this machine.
+     * Get the enableAutomaticUpgrade property: Specifies if the machine's agent should be upgraded.
      * 
      * @return the enableAutomaticUpgrade value.
      */
@@ -111,7 +111,7 @@ public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     }
 
     /**
-     * Set the enableAutomaticUpgrade property: Specifies if RSM should try to upgrade this machine.
+     * Set the enableAutomaticUpgrade property: Specifies if the machine's agent should be upgraded.
      * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the AgentUpgrade object itself.

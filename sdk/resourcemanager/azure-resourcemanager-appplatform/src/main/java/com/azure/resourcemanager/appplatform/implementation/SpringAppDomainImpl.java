@@ -20,9 +20,10 @@ public class SpringAppDomainImpl
 
     @Override
     public Mono<SpringAppDomain> createResourceAsync() {
-        return manager().serviceClient().getCustomDomains().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), innerModel()
-        )
+        return manager().serviceClient()
+            .getCustomDomains()
+            .createOrUpdateAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+                name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -36,16 +37,16 @@ public class SpringAppDomainImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getBindings().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getBindings()
+            .deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
     protected Mono<CustomDomainResourceInner> getInnerAsync() {
-        return manager().serviceClient().getCustomDomains().getAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getCustomDomains()
+            .getAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override

@@ -38,36 +38,34 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
             StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message)))
-                    .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
-                    .verifyComplete();
+                .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
+                .verifyComplete();
 
             // Submit the message and run
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
             StepVerifier.create(client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId)))
-                    .assertNext(run -> {
-                        assertNotNull(run.getId());
-                        assertNotNull(run.getCreatedAt());
-                        assertEquals("thread.run", run.getObject());
-                        assertEquals(mathTutorAssistantId, run.getAssistantId());
-                        assertNotNull(run.getInstructions());
-                        runReference.set(run);
-                    })
-                    .verifyComplete();
+                .assertNext(run -> {
+                    assertNotNull(run.getId());
+                    assertNotNull(run.getCreatedAt());
+                    assertEquals("thread.run", run.getObject());
+                    assertEquals(mathTutorAssistantId, run.getAssistantId());
+                    assertNotNull(run.getInstructions());
+                    runReference.set(run);
+                })
+                .verifyComplete();
 
             // Wait on Run and poll the Run in a loop
             ThreadRun run = runReference.get();
             do {
-                StepVerifier.create(client.getRun(run.getThreadId(), run.getId()))
-                        .assertNext(threadRun -> {
-                            assertNotNull(threadRun.getId());
-                            assertNotNull(threadRun.getCreatedAt());
-                            assertEquals("thread.run", threadRun.getObject());
-                            assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
-                            assertEquals(threadId, threadRun.getThreadId());
-                            assertNotNull(threadRun.getInstructions());
-                            runReference.set(threadRun);
-                        })
-                        .verifyComplete();
+                StepVerifier.create(client.getRun(run.getThreadId(), run.getId())).assertNext(threadRun -> {
+                    assertNotNull(threadRun.getId());
+                    assertNotNull(threadRun.getCreatedAt());
+                    assertEquals("thread.run", threadRun.getObject());
+                    assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
+                    assertEquals(threadId, threadRun.getThreadId());
+                    assertNotNull(threadRun.getInstructions());
+                    runReference.set(threadRun);
+                }).verifyComplete();
                 run = runReference.get();
 
                 sleepIfRunningAgainstService(1000);
@@ -76,12 +74,10 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            StepVerifier.create(client.listMessages(threadId))
-                    .assertNext(openAIPageableListOfThreadMessage -> {
-                        assertNotNull(openAIPageableListOfThreadMessage);
-                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listMessages(threadId)).assertNext(openAIPageableListOfThreadMessage -> {
+                assertNotNull(openAIPageableListOfThreadMessage);
+                assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+            }).verifyComplete();
 
         });
         // Delete the created thread
@@ -98,41 +94,41 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
             StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message)))
-                    .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
-                    .verifyComplete();
+                .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
+                .verifyComplete();
 
             // Submit the message and run
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
-            StepVerifier.create(client.createRunWithResponse(threadId,
-                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)),
-                    new RequestOptions()))
-                    .assertNext(response -> {
-                        ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
-                        assertNotNull(run.getId());
-                        assertNotNull(run.getCreatedAt());
-                        assertEquals("thread.run", run.getObject());
-                        assertEquals(mathTutorAssistantId, run.getAssistantId());
-                        assertEquals(threadId, run.getThreadId());
-                        assertNotNull(run.getInstructions());
-                        runReference.set(run);
-                    })
-                    .verifyComplete();
+            StepVerifier
+                .create(client.createRunWithResponse(threadId,
+                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)), new RequestOptions()))
+                .assertNext(response -> {
+                    ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                    assertNotNull(run.getId());
+                    assertNotNull(run.getCreatedAt());
+                    assertEquals("thread.run", run.getObject());
+                    assertEquals(mathTutorAssistantId, run.getAssistantId());
+                    assertEquals(threadId, run.getThreadId());
+                    assertNotNull(run.getInstructions());
+                    runReference.set(run);
+                })
+                .verifyComplete();
 
             // Wait on Run and poll the Run in a loop
             ThreadRun run = runReference.get();
             do {
                 StepVerifier.create(client.getRunWithResponse(threadId, run.getId(), new RequestOptions()))
-                        .assertNext(response -> {
-                            ThreadRun threadRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
-                            assertNotNull(threadRun.getId());
-                            assertNotNull(threadRun.getCreatedAt());
-                            assertEquals("thread.run", threadRun.getObject());
-                            assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
-                            assertEquals(threadId, threadRun.getThreadId());
-                            assertNotNull(threadRun.getInstructions());
-                            runReference.set(threadRun);
-                        })
-                        .verifyComplete();
+                    .assertNext(response -> {
+                        ThreadRun threadRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                        assertNotNull(threadRun.getId());
+                        assertNotNull(threadRun.getCreatedAt());
+                        assertEquals("thread.run", threadRun.getObject());
+                        assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
+                        assertEquals(threadId, threadRun.getThreadId());
+                        assertNotNull(threadRun.getInstructions());
+                        runReference.set(threadRun);
+                    })
+                    .verifyComplete();
                 run = runReference.get();
 
                 sleepIfRunningAgainstService(1000);
@@ -141,12 +137,10 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            StepVerifier.create(client.listMessages(threadId))
-                    .assertNext(openAIPageableListOfThreadMessage -> {
-                        assertNotNull(openAIPageableListOfThreadMessage);
-                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listMessages(threadId)).assertNext(openAIPageableListOfThreadMessage -> {
+                assertNotNull(openAIPageableListOfThreadMessage);
+                assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+            }).verifyComplete();
         });
         // Delete the created thread
         deleteThread(client, threadId);
@@ -162,33 +156,29 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
             AtomicReference<String> threadIdReference = new AtomicReference<>();
-            StepVerifier.create(client.createThreadAndRun(createAndRunThreadOptions))
-                    .assertNext(run -> {
-                        assertNotNull(run.getId());
-                        assertNotNull(run.getCreatedAt());
-                        assertEquals("thread.run", run.getObject());
-                        assertEquals(mathTutorAssistantId, run.getAssistantId());
-                        assertNotNull(run.getInstructions());
-                        assertNotNull(run.getThreadId());
-                        threadIdReference.set(run.getThreadId());
-                        runReference.set(run);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.createThreadAndRun(createAndRunThreadOptions)).assertNext(run -> {
+                assertNotNull(run.getId());
+                assertNotNull(run.getCreatedAt());
+                assertEquals("thread.run", run.getObject());
+                assertEquals(mathTutorAssistantId, run.getAssistantId());
+                assertNotNull(run.getInstructions());
+                assertNotNull(run.getThreadId());
+                threadIdReference.set(run.getThreadId());
+                runReference.set(run);
+            }).verifyComplete();
 
             // Wait on Run and poll the Run in a loop
             ThreadRun run = runReference.get();
             do {
-                StepVerifier.create(client.getRun(run.getThreadId(), run.getId()))
-                        .assertNext(threadRun -> {
-                            assertNotNull(threadRun.getId());
-                            assertNotNull(threadRun.getCreatedAt());
-                            assertEquals("thread.run", threadRun.getObject());
-                            assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
-                            assertNotNull(threadRun.getThreadId());
-                            assertNotNull(threadRun.getInstructions());
-                            runReference.set(threadRun);
-                        })
-                        .verifyComplete();
+                StepVerifier.create(client.getRun(run.getThreadId(), run.getId())).assertNext(threadRun -> {
+                    assertNotNull(threadRun.getId());
+                    assertNotNull(threadRun.getCreatedAt());
+                    assertEquals("thread.run", threadRun.getObject());
+                    assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
+                    assertNotNull(threadRun.getThreadId());
+                    assertNotNull(threadRun.getInstructions());
+                    runReference.set(threadRun);
+                }).verifyComplete();
                 run = runReference.get();
 
                 sleepIfRunningAgainstService(1000);
@@ -198,12 +188,10 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
 
             String threadId = threadIdReference.get();
             // List the messages, it should contain the answer other than the question.
-            StepVerifier.create(client.listMessages(threadId))
-                    .assertNext(openAIPageableListOfThreadMessage -> {
-                        assertNotNull(openAIPageableListOfThreadMessage);
-                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listMessages(threadId)).assertNext(openAIPageableListOfThreadMessage -> {
+                assertNotNull(openAIPageableListOfThreadMessage);
+                assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+            }).verifyComplete();
 
             // Delete the created thread
             deleteThread(client, threadId);
@@ -222,34 +210,30 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             // Create a simple thread without a message
             StepVerifier.create(client.createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions),
-                    new RequestOptions()))
-                    .assertNext(response -> {
-                        ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
-                        assertNotNull(run.getId());
-                        assertNotNull(run.getCreatedAt());
-                        assertEquals("thread.run", run.getObject());
-                        assertEquals(mathTutorAssistantId, run.getAssistantId());
-                        assertNotNull(run.getInstructions());
-                        assertNotNull(run.getThreadId());
-                        threadIdReference.set(run.getThreadId());
-                        runReference.set(run);
-                    })
-                    .verifyComplete();
+                new RequestOptions())).assertNext(response -> {
+                    ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                    assertNotNull(run.getId());
+                    assertNotNull(run.getCreatedAt());
+                    assertEquals("thread.run", run.getObject());
+                    assertEquals(mathTutorAssistantId, run.getAssistantId());
+                    assertNotNull(run.getInstructions());
+                    assertNotNull(run.getThreadId());
+                    threadIdReference.set(run.getThreadId());
+                    runReference.set(run);
+                }).verifyComplete();
 
             // Wait on Run and poll the Run in a loop
             ThreadRun run = runReference.get();
             do {
-                StepVerifier.create(client.getRun(run.getThreadId(), run.getId()))
-                        .assertNext(threadRun -> {
-                            assertNotNull(threadRun.getId());
-                            assertNotNull(threadRun.getCreatedAt());
-                            assertEquals("thread.run", threadRun.getObject());
-                            assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
-                            assertNotNull(threadRun.getThreadId());
-                            assertNotNull(threadRun.getInstructions());
-                            runReference.set(threadRun);
-                        })
-                        .verifyComplete();
+                StepVerifier.create(client.getRun(run.getThreadId(), run.getId())).assertNext(threadRun -> {
+                    assertNotNull(threadRun.getId());
+                    assertNotNull(threadRun.getCreatedAt());
+                    assertEquals("thread.run", threadRun.getObject());
+                    assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
+                    assertNotNull(threadRun.getThreadId());
+                    assertNotNull(threadRun.getInstructions());
+                    runReference.set(threadRun);
+                }).verifyComplete();
                 run = runReference.get();
 
                 sleepIfRunningAgainstService(1000);
@@ -259,12 +243,10 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
 
             String threadId = threadIdReference.get();
             // List the messages, it should contain the answer other than the question.
-            StepVerifier.create(client.listMessages(threadId))
-                    .assertNext(openAIPageableListOfThreadMessage -> {
-                        assertNotNull(openAIPageableListOfThreadMessage);
-                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listMessages(threadId)).assertNext(openAIPageableListOfThreadMessage -> {
+                assertNotNull(openAIPageableListOfThreadMessage);
+                assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+            }).verifyComplete();
 
             // Delete the created thread
             deleteThread(client, threadId);
@@ -282,14 +264,12 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             ThreadRun run = createThreadAndRun(client, createAndRunThreadOptions);
             String threadId = run.getThreadId();
             // Cancel the run
-            StepVerifier.create(client.cancelRun(threadId, run.getId()))
-                    .assertNext(cancelRun -> {
-                        RunStatus status = cancelRun.getStatus();
-                        assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
-                        assertEquals(threadId, cancelRun.getThreadId());
-                        assertEquals(run.getId(), cancelRun.getId());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.cancelRun(threadId, run.getId())).assertNext(cancelRun -> {
+                RunStatus status = cancelRun.getStatus();
+                assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
+                assertEquals(threadId, cancelRun.getThreadId());
+                assertEquals(run.getId(), cancelRun.getId());
+            }).verifyComplete();
             // Delete the created thread
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
@@ -307,14 +287,14 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             String threadId = run.getThreadId();
             String runId = run.getId();
             StepVerifier.create(client.cancelRunWithResponse(threadId, runId, new RequestOptions()))
-                    .assertNext(response -> {
-                        ThreadRun cancelRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
-                        RunStatus status = cancelRun.getStatus();
-                        assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
-                        assertEquals(threadId, cancelRun.getThreadId());
-                        assertEquals(runId, cancelRun.getId());
-                    })
-                    .verifyComplete();
+                .assertNext(response -> {
+                    ThreadRun cancelRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                    RunStatus status = cancelRun.getStatus();
+                    assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
+                    assertEquals(threadId, cancelRun.getThreadId());
+                    assertEquals(runId, cancelRun.getId());
+                })
+                .verifyComplete();
             // Delete the created thread
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
@@ -331,25 +311,21 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             ThreadRun run = createThreadAndRun(client, createAndRunThreadOptions);
             String threadId = run.getThreadId();
             // List runs
-            StepVerifier.create(client.listRuns(threadId))
-                    .assertNext(runs -> {
-                        List<ThreadRun> data = runs.getData();
-                        assertNotNull(data);
-                        assertEquals(1, data.size());
-                        validateThreadRun(run, data.get(0));
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listRuns(threadId)).assertNext(runs -> {
+                List<ThreadRun> data = runs.getData();
+                assertNotNull(data);
+                assertEquals(1, data.size());
+                validateThreadRun(run, data.get(0));
+            }).verifyComplete();
             // List runs with response
-            StepVerifier.create(client.listRunsWithResponse(threadId, new RequestOptions()))
-                    .assertNext(response -> {
-                        PageableList<ThreadRun> runs = asserAndGetPageableListFromResponse(response, 200,
-                            reader -> reader.readArray(ThreadRun::fromJson));
-                        List<ThreadRun> data = runs.getData();
-                        assertNotNull(data);
-                        assertEquals(1, data.size());
-                        validateThreadRun(run, data.get(0));
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listRunsWithResponse(threadId, new RequestOptions())).assertNext(response -> {
+                PageableList<ThreadRun> runs = asserAndGetPageableListFromResponse(response, 200,
+                    reader -> reader.readArray(ThreadRun::fromJson));
+                List<ThreadRun> data = runs.getData();
+                assertNotNull(data);
+                assertEquals(1, data.size());
+                validateThreadRun(run, data.get(0));
+            }).verifyComplete();
             // Delete the created thread
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
@@ -370,17 +346,15 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             AtomicReference<ThreadRun> runReference = new AtomicReference<>(run);
             do {
-                StepVerifier.create(client.getRun(run.getThreadId(), run.getId()))
-                        .assertNext(threadRun -> {
-                            assertNotNull(threadRun.getId());
-                            assertNotNull(threadRun.getCreatedAt());
-                            assertEquals("thread.run", threadRun.getObject());
-                            assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
-                            assertEquals(threadId, threadRun.getThreadId());
-                            assertNotNull(threadRun.getInstructions());
-                            runReference.set(threadRun);
-                        })
-                        .verifyComplete();
+                StepVerifier.create(client.getRun(run.getThreadId(), run.getId())).assertNext(threadRun -> {
+                    assertNotNull(threadRun.getId());
+                    assertNotNull(threadRun.getCreatedAt());
+                    assertEquals("thread.run", threadRun.getObject());
+                    assertEquals(mathTutorAssistantId, threadRun.getAssistantId());
+                    assertEquals(threadId, threadRun.getThreadId());
+                    assertNotNull(threadRun.getInstructions());
+                    runReference.set(threadRun);
+                }).verifyComplete();
                 sleepIfRunningAgainstService(1000);
                 run = runReference.get();
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
@@ -388,45 +362,43 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
 
             // List run steps
             AtomicReference<RunStep> runStepRef = new AtomicReference<>();
-            StepVerifier.create(client.listRunSteps(threadId, runId))
-                    .assertNext(runSteps -> {
-                        assertNotNull(runSteps);
-                        List<RunStep> runStepsData = runSteps.getData();
-                        assertNotNull(runStepsData);
-                        assertFalse(runStepsData.isEmpty());
-                        assertEquals("list", runSteps.getObject());
-                        runStepRef.set(runStepsData.get(0));
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.listRunSteps(threadId, runId)).assertNext(runSteps -> {
+                assertNotNull(runSteps);
+                List<RunStep> runStepsData = runSteps.getData();
+                assertNotNull(runStepsData);
+                assertFalse(runStepsData.isEmpty());
+                assertEquals("list", runSteps.getObject());
+                runStepRef.set(runStepsData.get(0));
+            }).verifyComplete();
 
             RunStep runStep = runStepRef.get();
             // Get run step by id
             String runStepId = runStep.getId();
             StepVerifier.create(client.getRunStep(threadId, runId, runStepId))
-                    .assertNext(retrievedStep -> validateRunStep(runStep, retrievedStep));
+                .assertNext(retrievedStep -> validateRunStep(runStep, retrievedStep));
 
             // WITH RESPONSE
 
             // List run steps with response
             StepVerifier.create(client.listRunStepsWithResponse(threadId, runId, new RequestOptions()))
-                    .assertNext(response -> {
-                        PageableList<RunStep> runStepsWithResponse = asserAndGetPageableListFromResponse(response, 200,
-                            reader -> reader.readArray(RunStep::fromJson));
-                        assertNotNull(runStepsWithResponse);
-                        List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
-                        assertNotNull(runStepsDataWithResponse);
-                        assertFalse(runStepsDataWithResponse.isEmpty());
-                        assertEquals("list", runStepsWithResponse.getObject());
-                    })
-                    .verifyComplete();
+                .assertNext(response -> {
+                    PageableList<RunStep> runStepsWithResponse = asserAndGetPageableListFromResponse(response, 200,
+                        reader -> reader.readArray(RunStep::fromJson));
+                    assertNotNull(runStepsWithResponse);
+                    List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
+                    assertNotNull(runStepsDataWithResponse);
+                    assertFalse(runStepsDataWithResponse.isEmpty());
+                    assertEquals("list", runStepsWithResponse.getObject());
+                })
+                .verifyComplete();
             // Get run step with response
             StepVerifier.create(client.getRunStepWithResponse(threadId, run.getId(), runStepId, new RequestOptions()))
-                    .assertNext(response -> {
-                        RunStep retrievedStepResponse = assertAndGetValueFromResponse(response, RunStep.class, 200);
-                        assertNotNull(retrievedStepResponse);
-                        validateRunStep(runStep, retrievedStepResponse);
-                    })
-                    .verifyComplete();
+                .assertNext(response -> {
+                    RunStep retrievedStepResponse = assertAndGetValueFromResponse(response, RunStep.class, 200);
+                    assertNotNull(retrievedStepResponse);
+                    validateRunStep(runStep, retrievedStepResponse);
+                })
+                .verifyComplete();
 
             // Delete the created thread
             deleteThread(client, threadId);

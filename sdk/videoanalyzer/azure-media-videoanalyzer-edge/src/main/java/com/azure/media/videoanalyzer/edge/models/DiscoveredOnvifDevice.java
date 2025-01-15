@@ -5,44 +5,48 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The discovered properties of the ONVIF device that are returned during the discovery. */
+/**
+ * The discovered properties of the ONVIF device that are returned during the discovery.
+ */
 @Fluent
-public final class DiscoveredOnvifDevice {
+public final class DiscoveredOnvifDevice implements JsonSerializable<DiscoveredOnvifDevice> {
     /*
-     * The unique identifier of the ONVIF device that was discovered in the
-     * same subnet as the IoT Edge device.
+     * The unique identifier of the ONVIF device that was discovered in the same subnet as the IoT Edge device.
      */
-    @JsonProperty(value = "serviceIdentifier")
     private String serviceIdentifier;
 
     /*
-     * The IP address of the ONVIF device that was discovered in the same
-     * subnet as the IoT Edge device.
+     * The IP address of the ONVIF device that was discovered in the same subnet as the IoT Edge device.
      */
-    @JsonProperty(value = "remoteIPAddress")
     private String remoteIPAddress;
 
     /*
-     * An array of hostnames for the ONVIF discovered devices that are in the
-     * same subnet as the IoT Edge device.
+     * An array of hostnames for the ONVIF discovered devices that are in the same subnet as the IoT Edge device.
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
     /*
-     * An array of media profile endpoints that the ONVIF discovered device
-     * supports.
+     * An array of media profile endpoints that the ONVIF discovered device supports.
      */
-    @JsonProperty(value = "endpoints")
     private List<String> endpoints;
+
+    /**
+     * Creates an instance of DiscoveredOnvifDevice class.
+     */
+    public DiscoveredOnvifDevice() {
+    }
 
     /**
      * Get the serviceIdentifier property: The unique identifier of the ONVIF device that was discovered in the same
      * subnet as the IoT Edge device.
-     *
+     * 
      * @return the serviceIdentifier value.
      */
     public String getServiceIdentifier() {
@@ -52,7 +56,7 @@ public final class DiscoveredOnvifDevice {
     /**
      * Set the serviceIdentifier property: The unique identifier of the ONVIF device that was discovered in the same
      * subnet as the IoT Edge device.
-     *
+     * 
      * @param serviceIdentifier the serviceIdentifier value to set.
      * @return the DiscoveredOnvifDevice object itself.
      */
@@ -64,7 +68,7 @@ public final class DiscoveredOnvifDevice {
     /**
      * Get the remoteIPAddress property: The IP address of the ONVIF device that was discovered in the same subnet as
      * the IoT Edge device.
-     *
+     * 
      * @return the remoteIPAddress value.
      */
     public String getRemoteIPAddress() {
@@ -74,7 +78,7 @@ public final class DiscoveredOnvifDevice {
     /**
      * Set the remoteIPAddress property: The IP address of the ONVIF device that was discovered in the same subnet as
      * the IoT Edge device.
-     *
+     * 
      * @param remoteIPAddress the remoteIPAddress value to set.
      * @return the DiscoveredOnvifDevice object itself.
      */
@@ -86,7 +90,7 @@ public final class DiscoveredOnvifDevice {
     /**
      * Get the scopes property: An array of hostnames for the ONVIF discovered devices that are in the same subnet as
      * the IoT Edge device.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> getScopes() {
@@ -96,7 +100,7 @@ public final class DiscoveredOnvifDevice {
     /**
      * Set the scopes property: An array of hostnames for the ONVIF discovered devices that are in the same subnet as
      * the IoT Edge device.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the DiscoveredOnvifDevice object itself.
      */
@@ -107,7 +111,7 @@ public final class DiscoveredOnvifDevice {
 
     /**
      * Get the endpoints property: An array of media profile endpoints that the ONVIF discovered device supports.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<String> getEndpoints() {
@@ -116,12 +120,59 @@ public final class DiscoveredOnvifDevice {
 
     /**
      * Set the endpoints property: An array of media profile endpoints that the ONVIF discovered device supports.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the DiscoveredOnvifDevice object itself.
      */
     public DiscoveredOnvifDevice setEndpoints(List<String> endpoints) {
         this.endpoints = endpoints;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceIdentifier", this.serviceIdentifier);
+        jsonWriter.writeStringField("remoteIPAddress", this.remoteIPAddress);
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoveredOnvifDevice from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoveredOnvifDevice if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiscoveredOnvifDevice.
+     */
+    public static DiscoveredOnvifDevice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoveredOnvifDevice deserializedDiscoveredOnvifDevice = new DiscoveredOnvifDevice();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceIdentifier".equals(fieldName)) {
+                    deserializedDiscoveredOnvifDevice.serviceIdentifier = reader.getString();
+                } else if ("remoteIPAddress".equals(fieldName)) {
+                    deserializedDiscoveredOnvifDevice.remoteIPAddress = reader.getString();
+                } else if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoveredOnvifDevice.scopes = scopes;
+                } else if ("endpoints".equals(fieldName)) {
+                    List<String> endpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoveredOnvifDevice.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiscoveredOnvifDevice;
+        });
     }
 }

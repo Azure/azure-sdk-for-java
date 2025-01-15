@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ResourceGraphClientImpl type. */
-@ServiceClientBuilder(serviceClients = {ResourceGraphClientImpl.class})
+/**
+ * A builder for creating a new instance of the ResourceGraphClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { ResourceGraphClientImpl.class })
 public final class ResourceGraphClientBuilder {
     /*
      * server parameter
@@ -24,7 +26,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceGraphClientBuilder.
      */
@@ -99,25 +101,22 @@ public final class ResourceGraphClientBuilder {
 
     /**
      * Builds an instance of ResourceGraphClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceGraphClientImpl.
      */
     public ResourceGraphClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ResourceGraphClientImpl client =
-            new ResourceGraphClientImpl(
-                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        ResourceGraphClientImpl client = new ResourceGraphClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, localEndpoint);
         return client;
     }
 }

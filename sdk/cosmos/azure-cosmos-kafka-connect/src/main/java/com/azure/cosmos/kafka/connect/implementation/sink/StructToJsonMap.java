@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO[GA]: Double check logic here, copied over from V1
 public class StructToJsonMap {
 
     public static Map<String, Object> toJsonMap(Struct struct) {

@@ -7,36 +7,56 @@ package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterManagerType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ScaleType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVmGroupImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A SQL virtual machine group. */
+/**
+ * A SQL virtual machine group.
+ */
 @Fluent
 public final class SqlVirtualMachineGroupInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SqlVirtualMachineGroupProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SqlVirtualMachineGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SqlVirtualMachineGroupInner class.
+     */
     public SqlVirtualMachineGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlVirtualMachineGroupProperties innerProperties() {
@@ -45,21 +65,55 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlVirtualMachineGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlVirtualMachineGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -68,7 +122,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state to track the async operation status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -77,7 +131,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the sqlImageOffer property: SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
-     *
+     * 
      * @return the sqlImageOffer value.
      */
     public String sqlImageOffer() {
@@ -86,7 +140,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Set the sqlImageOffer property: SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
-     *
+     * 
      * @param sqlImageOffer the sqlImageOffer value to set.
      * @return the SqlVirtualMachineGroupInner object itself.
      */
@@ -100,7 +154,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the sqlImageSku property: SQL image sku.
-     *
+     * 
      * @return the sqlImageSku value.
      */
     public SqlVmGroupImageSku sqlImageSku() {
@@ -109,7 +163,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Set the sqlImageSku property: SQL image sku.
-     *
+     * 
      * @param sqlImageSku the sqlImageSku value to set.
      * @return the SqlVirtualMachineGroupInner object itself.
      */
@@ -123,7 +177,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the scaleType property: Scale type.
-     *
+     * 
      * @return the scaleType value.
      */
     public ScaleType scaleType() {
@@ -133,7 +187,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
     /**
      * Get the clusterManagerType property: Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by
      * the scale type of the group and the OS type.
-     *
+     * 
      * @return the clusterManagerType value.
      */
     public ClusterManagerType clusterManagerType() {
@@ -142,7 +196,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the clusterConfiguration property: Cluster type.
-     *
+     * 
      * @return the clusterConfiguration value.
      */
     public ClusterConfiguration clusterConfiguration() {
@@ -151,7 +205,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Get the wsfcDomainProfile property: Cluster Active Directory domain profile.
-     *
+     * 
      * @return the wsfcDomainProfile value.
      */
     public WsfcDomainProfile wsfcDomainProfile() {
@@ -160,7 +214,7 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Set the wsfcDomainProfile property: Cluster Active Directory domain profile.
-     *
+     * 
      * @param wsfcDomainProfile the wsfcDomainProfile value to set.
      * @return the SqlVirtualMachineGroupInner object itself.
      */
@@ -174,12 +228,65 @@ public final class SqlVirtualMachineGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlVirtualMachineGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlVirtualMachineGroupInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlVirtualMachineGroupInner.
+     */
+    public static SqlVirtualMachineGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlVirtualMachineGroupInner deserializedSqlVirtualMachineGroupInner = new SqlVirtualMachineGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlVirtualMachineGroupInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.innerProperties
+                        = SqlVirtualMachineGroupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSqlVirtualMachineGroupInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlVirtualMachineGroupInner;
+        });
     }
 }

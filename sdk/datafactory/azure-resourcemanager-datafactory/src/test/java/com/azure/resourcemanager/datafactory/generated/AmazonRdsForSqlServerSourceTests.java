@@ -12,27 +12,27 @@ public final class AmazonRdsForSqlServerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForSqlServerSource model = BinaryData.fromString(
-            "{\"type\":\"AmazonRdsForSqlServerSource\",\"sqlReaderQuery\":\"datakubljnizwztlcrx\",\"sqlReaderStoredProcedureName\":\"dataiifgxnfarmf\",\"storedProcedureParameters\":\"dataqrd\",\"isolationLevel\":\"datavtrulzlrm\",\"produceAdditionalTypes\":\"datacsmpmhlc\",\"partitionOption\":\"dataa\",\"partitionSettings\":{\"partitionColumnName\":\"datacdfelvap\",\"partitionUpperBound\":\"databicjzntiblxeygo\",\"partitionLowerBound\":\"datahroi\"},\"queryTimeout\":\"datatg\",\"additionalColumns\":\"dataymoanpkcmdixiu\",\"sourceRetryCount\":\"databc\",\"sourceRetryWait\":\"datagspzoafprzlvho\",\"maxConcurrentConnections\":\"datakc\",\"disableMetricsCollection\":\"dataddzposmnm\",\"\":{\"muueoxmkru\":\"datae\"}}")
+            "{\"type\":\"AmazonRdsForSqlServerSource\",\"sqlReaderQuery\":\"dataqfaxtl\",\"sqlReaderStoredProcedureName\":\"datayzcgugslpvy\",\"storedProcedureParameters\":\"datafuhfa\",\"isolationLevel\":\"dataibvslocdkp\",\"produceAdditionalTypes\":\"datakq\",\"partitionOption\":\"datahdxnzjza\",\"partitionSettings\":{\"partitionColumnName\":\"dataiz\",\"partitionUpperBound\":\"datamibwzuhyda\",\"partitionLowerBound\":\"datakgwtbfxxsfj\"},\"queryTimeout\":\"dataascjighmkdsv\",\"additionalColumns\":\"datayhtiyxeh\",\"sourceRetryCount\":\"dataizoybtehky\",\"sourceRetryWait\":\"datanmmyznw\",\"maxConcurrentConnections\":\"datafqwkqulkzovqohwi\",\"disableMetricsCollection\":\"datarqxjxlsso\",\"\":{\"nsjjjcddsv\":\"datanyp\",\"jhpmajg\":\"datadbfniqxbc\",\"jwjhmtca\":\"datazpdioddtjylimz\"}}")
             .toObject(AmazonRdsForSqlServerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForSqlServerSource model = new AmazonRdsForSqlServerSource().withSourceRetryCount("databc")
-            .withSourceRetryWait("datagspzoafprzlvho")
-            .withMaxConcurrentConnections("datakc")
-            .withDisableMetricsCollection("dataddzposmnm")
-            .withQueryTimeout("datatg")
-            .withAdditionalColumns("dataymoanpkcmdixiu")
-            .withSqlReaderQuery("datakubljnizwztlcrx")
-            .withSqlReaderStoredProcedureName("dataiifgxnfarmf")
-            .withStoredProcedureParameters("dataqrd")
-            .withIsolationLevel("datavtrulzlrm")
-            .withProduceAdditionalTypes("datacsmpmhlc")
-            .withPartitionOption("dataa")
-            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("datacdfelvap")
-                .withPartitionUpperBound("databicjzntiblxeygo")
-                .withPartitionLowerBound("datahroi"));
+        AmazonRdsForSqlServerSource model = new AmazonRdsForSqlServerSource().withSourceRetryCount("dataizoybtehky")
+            .withSourceRetryWait("datanmmyznw")
+            .withMaxConcurrentConnections("datafqwkqulkzovqohwi")
+            .withDisableMetricsCollection("datarqxjxlsso")
+            .withQueryTimeout("dataascjighmkdsv")
+            .withAdditionalColumns("datayhtiyxeh")
+            .withSqlReaderQuery("dataqfaxtl")
+            .withSqlReaderStoredProcedureName("datayzcgugslpvy")
+            .withStoredProcedureParameters("datafuhfa")
+            .withIsolationLevel("dataibvslocdkp")
+            .withProduceAdditionalTypes("datakq")
+            .withPartitionOption("datahdxnzjza")
+            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("dataiz")
+                .withPartitionUpperBound("datamibwzuhyda")
+                .withPartitionLowerBound("datakgwtbfxxsfj"));
         model = BinaryData.fromObject(model).toObject(AmazonRdsForSqlServerSource.class);
     }
 }

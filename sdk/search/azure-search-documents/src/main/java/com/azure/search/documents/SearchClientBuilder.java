@@ -195,13 +195,10 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  * @see SearchAsyncClient
  * @see com.azure.search.documents
  */
-@ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
-public final class SearchClientBuilder implements
-    AzureKeyCredentialTrait<SearchClientBuilder>,
-    ConfigurationTrait<SearchClientBuilder>,
-    EndpointTrait<SearchClientBuilder>,
-    HttpTrait<SearchClientBuilder>,
-    TokenCredentialTrait<SearchClientBuilder> {
+@ServiceClientBuilder(serviceClients = { SearchClient.class, SearchAsyncClient.class })
+public final class SearchClientBuilder
+    implements AzureKeyCredentialTrait<SearchClientBuilder>, ConfigurationTrait<SearchClientBuilder>,
+    EndpointTrait<SearchClientBuilder>, HttpTrait<SearchClientBuilder>, TokenCredentialTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
@@ -209,13 +206,13 @@ public final class SearchClientBuilder implements
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
     // Retaining this commented out code as it may be added back in a future release.
-//    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
-//        if (oldBatchCount == 1) {
-//            return 1;
-//        } else {
-//            return Math.max(1, oldBatchCount / 2);
-//        }
-//    };
+    //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
+    //        if (oldBatchCount == 1) {
+    //            return 1;
+    //        } else {
+    //            return Math.max(1, oldBatchCount / 2);
+    //        }
+    //    };
 
     private static final ClientLogger LOGGER = new ClientLogger(SearchClientBuilder.class);
 
@@ -260,14 +257,12 @@ public final class SearchClientBuilder implements
      */
     public SearchClient buildClient() {
         validateIndexNameAndEndpoint();
-        SearchServiceVersion buildVersion = (serviceVersion == null)
-            ? SearchServiceVersion.getLatest()
-            : serviceVersion;
+        SearchServiceVersion buildVersion
+            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
         HttpPipeline pipeline = getHttpPipeline();
-        JsonSerializer serializer = (jsonSerializer == null)
-            ? JsonSerializerProviders.createInstance(true)
-            : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchClient(endpoint, indexName, buildVersion, pipeline, serializer,
             Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline));
     }
@@ -287,14 +282,12 @@ public final class SearchClientBuilder implements
      */
     public SearchAsyncClient buildAsyncClient() {
         validateIndexNameAndEndpoint();
-        SearchServiceVersion buildVersion = (serviceVersion == null)
-            ? SearchServiceVersion.getLatest()
-            : serviceVersion;
+        SearchServiceVersion buildVersion
+            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
         HttpPipeline pipeline = getHttpPipeline();
-        JsonSerializer serializer = (jsonSerializer == null)
-            ? JsonSerializerProviders.createInstance(true)
-            : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, serializer,
             Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline));
     }
@@ -330,8 +323,7 @@ public final class SearchClientBuilder implements
      * Sets the service endpoint for the Azure AI Search instance.
      *
      * @param endpoint The URL of the Azure AI Search instance.
-     * @return The updated SearchClientBuilder object.
-     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @return The updated SearchClientBuilder object.0ed into a valid URL.
      */
     @Override
     public SearchClientBuilder endpoint(String endpoint) {
@@ -617,9 +609,8 @@ public final class SearchClientBuilder implements
      * @see SearchIndexingBufferedSender
      * @see SearchIndexingBufferedAsyncSender
      */
-    @ServiceClientBuilder(serviceClients = {
-        SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class
-    })
+    @ServiceClientBuilder(
+        serviceClients = { SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class })
     public final class SearchIndexingBufferedSenderBuilder<T> {
         private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderBuilder.class);
 
@@ -655,17 +646,16 @@ public final class SearchClientBuilder implements
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
-            SearchServiceVersion buildVersion = (serviceVersion == null)
-                ? SearchServiceVersion.getLatest()
-                : serviceVersion;
+            SearchServiceVersion buildVersion
+                = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
-            JsonSerializer serializer = (jsonSerializer == null)
-                ? JsonSerializerProviders.createInstance(true)
-                : jsonSerializer;
-            return new SearchIndexingBufferedSender<>(buildRestClient(buildVersion, endpoint, indexName,
-                getHttpPipeline()), serializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
-                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+            JsonSerializer serializer
+                = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+            return new SearchIndexingBufferedSender<>(
+                buildRestClient(buildVersion, endpoint, indexName, getHttpPipeline()), serializer, documentKeyRetriever,
+                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
+                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
+                onActionSentConsumer);
         }
 
         /**
@@ -682,17 +672,16 @@ public final class SearchClientBuilder implements
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
-            SearchServiceVersion buildVersion = (serviceVersion == null)
-                ? SearchServiceVersion.getLatest()
-                : serviceVersion;
+            SearchServiceVersion buildVersion
+                = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
-            JsonSerializer serializer = (jsonSerializer == null)
-                ? JsonSerializerProviders.createInstance(true)
-                : jsonSerializer;
-            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(buildVersion, endpoint, indexName,
-                getHttpPipeline()), serializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
-                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+            JsonSerializer serializer
+                = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+            return new SearchIndexingBufferedAsyncSender<>(
+                buildRestClient(buildVersion, endpoint, indexName, getHttpPipeline()), serializer, documentKeyRetriever,
+                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
+                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
+                onActionSentConsumer);
         }
 
         /**
@@ -747,34 +736,34 @@ public final class SearchClientBuilder implements
         }
 
         // Retaining this commented out code as it may be added back in a future release.
-//    /**
-//     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-//     * by the service.
-//     * <p>
-//     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-//     *
-//     * @param scaleDownFunction The batch size scale down function.
-//     * @return The updated SearchIndexingBufferedSenderOptions object.
-//     * @throws NullPointerException If {@code scaleDownFunction} is null.
-//     */
-//    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
-//        Function<Integer, Integer> scaleDownFunction) {
-//        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
-//        return this;
-//    }
+        //    /**
+        //     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+        //     * by the service.
+        //     * <p>
+        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        //     *
+        //     * @param scaleDownFunction The batch size scale down function.
+        //     * @return The updated SearchIndexingBufferedSenderOptions object.
+        //     * @throws NullPointerException If {@code scaleDownFunction} is null.
+        //     */
+        //    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
+        //        Function<Integer, Integer> scaleDownFunction) {
+        //        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
+        //        return this;
+        //    }
 
         // Retaining this commented out code as it may be added back in a future release.
-//    /**
-//     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-//     * by the service.
-//     * <p>
-//     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-//     *
-//     * @return The batch size scale down function.
-//     */
-//    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
-//        return scaleDownFunction;
-//    }
+        //    /**
+        //     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+        //     * by the service.
+        //     * <p>
+        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        //     *
+        //     * @return The batch size scale down function.
+        //     */
+        //    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
+        //        return scaleDownFunction;
+        //    }
 
         /**
          * Sets the number of times an action will retry indexing before it is considered failed.
@@ -790,8 +779,7 @@ public final class SearchClientBuilder implements
          */
         public SearchIndexingBufferedSenderBuilder<T> maxRetriesPerAction(int maxRetriesPerAction) {
             if (maxRetriesPerAction < 1) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("'maxRetries' cannot be less than one."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'maxRetries' cannot be less than one."));
             }
 
             this.maxRetriesPerAction = maxRetriesPerAction;
@@ -813,8 +801,8 @@ public final class SearchClientBuilder implements
             Objects.requireNonNull(throttlingDelay, "'throttlingDelay' cannot be null.");
 
             if (throttlingDelay.isNegative() || throttlingDelay.isZero()) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("'throttlingDelay' cannot be negative or zero."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'throttlingDelay' cannot be negative or zero."));
             }
 
             this.throttlingDelay = throttlingDelay;
@@ -854,8 +842,8 @@ public final class SearchClientBuilder implements
          * queue.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionAdded(
-            Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionAdded(Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
             this.onActionAddedConsumer = onActionAddedConsumer;
             return this;
         }
@@ -867,8 +855,8 @@ public final class SearchClientBuilder implements
          * indexing.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionSucceeded(
-            Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionSucceeded(Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer) {
             this.onActionSucceededConsumer = onActionSucceededConsumer;
             return this;
         }
@@ -880,8 +868,8 @@ public final class SearchClientBuilder implements
          * isn't retryable.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionError(
-            Consumer<OnActionErrorOptions<T>> onActionErrorConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionError(Consumer<OnActionErrorOptions<T>> onActionErrorConsumer) {
             this.onActionErrorConsumer = onActionErrorConsumer;
             return this;
         }
@@ -893,8 +881,8 @@ public final class SearchClientBuilder implements
          * request.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionSent(
-            Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionSent(Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
             this.onActionSentConsumer = onActionSentConsumer;
             return this;
         }
@@ -907,8 +895,8 @@ public final class SearchClientBuilder implements
          * @throws NullPointerException If {@code documentKeyRetriever} is null.
          */
         public SearchIndexingBufferedSenderBuilder<T> documentKeyRetriever(Function<T, String> documentKeyRetriever) {
-            this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
-                "'documentKeyRetriever' cannot be null");
+            this.documentKeyRetriever
+                = Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             return this;
         }
     }

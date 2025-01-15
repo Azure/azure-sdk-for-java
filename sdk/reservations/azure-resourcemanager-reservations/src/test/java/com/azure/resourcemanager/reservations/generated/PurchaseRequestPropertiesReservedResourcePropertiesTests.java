@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PurchaseRequestPropertiesReservedResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurchaseRequestPropertiesReservedResourceProperties model =
-            BinaryData
-                .fromString("{\"instanceFlexibility\":\"Off\"}")
+        PurchaseRequestPropertiesReservedResourceProperties model
+            = BinaryData.fromString("{\"instanceFlexibility\":\"On\"}")
                 .toObject(PurchaseRequestPropertiesReservedResourceProperties.class);
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
+        Assertions.assertEquals(InstanceFlexibility.ON, model.instanceFlexibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurchaseRequestPropertiesReservedResourceProperties model =
-            new PurchaseRequestPropertiesReservedResourceProperties().withInstanceFlexibility(InstanceFlexibility.OFF);
+        PurchaseRequestPropertiesReservedResourceProperties model
+            = new PurchaseRequestPropertiesReservedResourceProperties().withInstanceFlexibility(InstanceFlexibility.ON);
         model = BinaryData.fromObject(model).toObject(PurchaseRequestPropertiesReservedResourceProperties.class);
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
+        Assertions.assertEquals(InstanceFlexibility.ON, model.instanceFlexibility());
     }
 }

@@ -15,8 +15,7 @@ public final class ElasticTrafficFilterResponseImpl implements ElasticTrafficFil
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    ElasticTrafficFilterResponseImpl(
-        ElasticTrafficFilterResponseInner innerObject,
+    ElasticTrafficFilterResponseImpl(ElasticTrafficFilterResponseInner innerObject,
         com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

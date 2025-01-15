@@ -22,8 +22,7 @@ public final class UserSessionsImpl implements UserSessions {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    public UserSessionsImpl(
-        UserSessionsClient innerClient,
+    public UserSessionsImpl(UserSessionsClient innerClient,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,45 +30,32 @@ public final class UserSessionsImpl implements UserSessions {
 
     public PagedIterable<UserSession> listByHostPool(String resourceGroupName, String hostPoolName) {
         PagedIterable<UserSessionInner> inner = this.serviceClient().listByHostPool(resourceGroupName, hostPoolName);
-        return Utils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UserSession> listByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
-        PagedIterable<UserSessionInner> inner =
-            this
-                .serviceClient()
-                .listByHostPool(resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip, context);
-        return Utils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
+    public PagedIterable<UserSession> listByHostPool(String resourceGroupName, String hostPoolName, String filter,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<UserSessionInner> inner = this.serviceClient()
+            .listByHostPool(resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
     }
 
-    public Response<UserSession> getWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
-        Response<UserSessionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, context);
+    public Response<UserSession> getWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, Context context) {
+        Response<UserSessionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UserSessionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public UserSession get(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
-        UserSessionInner inner =
-            this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname, userSessionId);
+    public UserSession get(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
+        UserSessionInner inner
+            = this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname, userSessionId);
         if (inner != null) {
             return new UserSessionImpl(inner, this.manager());
         } else {
@@ -77,15 +63,9 @@ public final class UserSessionsImpl implements UserSessions {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        Boolean force,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, Boolean force, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, force, context);
     }
 
@@ -94,53 +74,38 @@ public final class UserSessionsImpl implements UserSessions {
     }
 
     public PagedIterable<UserSession> list(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        PagedIterable<UserSessionInner> inner =
-            this.serviceClient().list(resourceGroupName, hostPoolName, sessionHostname);
-        return Utils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
+        PagedIterable<UserSessionInner> inner
+            = this.serviceClient().list(resourceGroupName, hostPoolName, sessionHostname);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UserSession> list(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
-        PagedIterable<UserSessionInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip, context);
-        return Utils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
+    public PagedIterable<UserSession> list(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<UserSessionInner> inner = this.serviceClient()
+            .list(resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserSessionImpl(inner1, this.manager()));
     }
 
-    public Response<Void> disconnectWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> disconnectWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, Context context) {
+        return this.serviceClient()
             .disconnectWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, context);
     }
 
-    public void disconnect(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public void disconnect(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         this.serviceClient().disconnect(resourceGroupName, hostPoolName, sessionHostname, userSessionId);
     }
 
-    public Response<Void> sendMessageWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        SendMessage sendMessage,
-        Context context) {
-        return this
-            .serviceClient()
-            .sendMessageWithResponse(
-                resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage, context);
+    public Response<Void> sendMessageWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, SendMessage sendMessage, Context context) {
+        return this.serviceClient()
+            .sendMessageWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage,
+                context);
     }
 
-    public void sendMessage(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public void sendMessage(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         this.serviceClient().sendMessage(resourceGroupName, hostPoolName, sessionHostname, userSessionId);
     }
 

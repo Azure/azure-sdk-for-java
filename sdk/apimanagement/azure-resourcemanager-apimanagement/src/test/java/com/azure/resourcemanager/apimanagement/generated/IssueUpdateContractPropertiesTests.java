@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueUpdateContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueUpdateContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"ru\",\"description\":\"igsyeipqdsmjt\",\"userId\":\"qgdgkkile\",\"createdDate\":\"2021-11-10T16:23:27Z\",\"state\":\"removed\",\"apiId\":\"knh\"}")
-                .toObject(IssueUpdateContractProperties.class);
+        IssueUpdateContractProperties model = BinaryData.fromString(
+            "{\"title\":\"ru\",\"description\":\"igsyeipqdsmjt\",\"userId\":\"qgdgkkile\",\"createdDate\":\"2021-11-10T16:23:27Z\",\"state\":\"removed\",\"apiId\":\"knh\"}")
+            .toObject(IssueUpdateContractProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T16:23:27Z"), model.createdDate());
         Assertions.assertEquals(State.REMOVED, model.state());
         Assertions.assertEquals("knh", model.apiId());
@@ -28,9 +26,8 @@ public final class IssueUpdateContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueUpdateContractProperties model =
-            new IssueUpdateContractProperties()
-                .withCreatedDate(OffsetDateTime.parse("2021-11-10T16:23:27Z"))
+        IssueUpdateContractProperties model
+            = new IssueUpdateContractProperties().withCreatedDate(OffsetDateTime.parse("2021-11-10T16:23:27Z"))
                 .withState(State.REMOVED)
                 .withApiId("knh")
                 .withTitle("ru")

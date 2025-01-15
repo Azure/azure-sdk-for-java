@@ -75,13 +75,13 @@ public interface SqlServerSecurityAlertPolicyOperations {
     /** Container interface for all the definitions that need to be implemented. */
     interface SqlServerSecurityAlertPolicyOperationsDefinition
         extends SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithSqlServer,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAccountAdmins,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithStorageAccount,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAddresses,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithDisabledAlerts,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithRetentionDays,
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate {
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAccountAdmins,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithStorageAccount,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAddresses,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithDisabledAlerts,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithRetentionDays,
+        SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Server Security Alert Policy definition stages. */
@@ -95,8 +95,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState
+                withExistingSqlServer(String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Server Security Alert Policy.
@@ -104,8 +104,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param sqlServerId the parent SQL server ID
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServerId(
-                String sqlServerId);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState
+                withExistingSqlServerId(String sqlServerId);
 
             /**
              * Sets the parent SQL server for the new Server Security Alert Policy.
@@ -113,8 +113,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param sqlServer the parent SQL server
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServer(
-                SqlServer sqlServer);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState
+                withExistingSqlServer(SqlServer sqlServer);
         }
 
         /** The SQL Server Security Alert Policy definition to set the state. */
@@ -125,8 +125,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param state the state of the policy, whether it is enabled or disabled
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAccountAdmins withState(
-                SecurityAlertPolicyState state);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAccountAdmins
+                withState(SecurityAlertPolicyState state);
         }
 
         /**
@@ -161,8 +161,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param storageAccessKey the identifier key of the Threat Detection audit storage account
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate withStorageEndpoint(
-                String storageEndpointUri, String storageAccessKey);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate
+                withStorageEndpoint(String storageEndpointUri, String storageAccessKey);
         }
 
         /**
@@ -176,8 +176,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param emailAddresses an array of e-mail addresses to which the alert is sent to
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate withEmailAddresses(
-                String... emailAddresses);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate
+                withEmailAddresses(String... emailAddresses);
         }
 
         /** The SQL Server Security Alert Policy definition to set an array of alerts that are disabled. */
@@ -188,8 +188,8 @@ public interface SqlServerSecurityAlertPolicyOperations {
              * @param disabledAlerts an array of alerts that are disabled
              * @return The next stage of the definition.
              */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate withDisabledAlerts(
-                String... disabledAlerts);
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithCreate
+                withDisabledAlerts(String... disabledAlerts);
         }
 
         /**
@@ -207,11 +207,10 @@ public interface SqlServerSecurityAlertPolicyOperations {
         }
 
         /** The final stage of the SQL Server Security Alert Policy definition. */
-        interface WithCreate
-            extends SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAddresses,
-                SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithDisabledAlerts,
-                SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithRetentionDays,
-                Creatable<SqlServerSecurityAlertPolicy> {
+        interface WithCreate extends SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithEmailAddresses,
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithDisabledAlerts,
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithRetentionDays,
+            Creatable<SqlServerSecurityAlertPolicy> {
         }
     }
 

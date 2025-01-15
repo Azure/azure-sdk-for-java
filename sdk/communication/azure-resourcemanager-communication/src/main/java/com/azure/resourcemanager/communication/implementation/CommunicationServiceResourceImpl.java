@@ -125,14 +125,16 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
     }
 
     public CommunicationServiceResource create() {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices().createOrUpdate(resourceGroupName,
-            communicationServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .createOrUpdate(resourceGroupName, communicationServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommunicationServiceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices().createOrUpdate(resourceGroupName,
-            communicationServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .createOrUpdate(resourceGroupName, communicationServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -149,14 +151,18 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
     }
 
     public CommunicationServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
-            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CommunicationServiceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
-            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -170,21 +176,26 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
     }
 
     public CommunicationServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
-            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CommunicationServiceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
-            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunicationServices()
+            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context)
+            .getValue();
         return this;
     }
 
     public Response<LinkedNotificationHub>
         linkNotificationHubWithResponse(LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
-        return serviceManager.communicationServices().linkNotificationHubWithResponse(resourceGroupName,
-            communicationServiceName, linkNotificationHubParameters, context);
+        return serviceManager.communicationServices()
+            .linkNotificationHubWithResponse(resourceGroupName, communicationServiceName, linkNotificationHubParameters,
+                context);
     }
 
     public LinkedNotificationHub linkNotificationHub() {
@@ -192,8 +203,8 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
     }
 
     public Response<CommunicationServiceKeys> listKeysWithResponse(Context context) {
-        return serviceManager.communicationServices().listKeysWithResponse(resourceGroupName, communicationServiceName,
-            context);
+        return serviceManager.communicationServices()
+            .listKeysWithResponse(resourceGroupName, communicationServiceName, context);
     }
 
     public CommunicationServiceKeys listKeys() {
@@ -202,13 +213,13 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
 
     public Response<CommunicationServiceKeys> regenerateKeyWithResponse(RegenerateKeyParameters parameters,
         Context context) {
-        return serviceManager.communicationServices().regenerateKeyWithResponse(resourceGroupName,
-            communicationServiceName, parameters, context);
+        return serviceManager.communicationServices()
+            .regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, context);
     }
 
     public CommunicationServiceKeys regenerateKey(RegenerateKeyParameters parameters) {
-        return serviceManager.communicationServices().regenerateKey(resourceGroupName, communicationServiceName,
-            parameters);
+        return serviceManager.communicationServices()
+            .regenerateKey(resourceGroupName, communicationServiceName, parameters);
     }
 
     public CommunicationServiceResourceImpl withRegion(Region location) {

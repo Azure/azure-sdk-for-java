@@ -33,22 +33,28 @@ import com.azure.resourcemanager.desktopvirtualization.models.ExpandMsixImageLis
 import com.azure.resourcemanager.desktopvirtualization.models.MsixImageUri;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MsixImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MsixImagesClient.
+ */
 public final class MsixImagesClientImpl implements MsixImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MsixImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DesktopVirtualizationApiClientImpl client;
 
     /**
      * Initializes an instance of MsixImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MsixImagesClientImpl(DesktopVirtualizationApiClientImpl client) {
-        this.service =
-            RestProxy.create(MsixImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MsixImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,35 +65,27 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DesktopVirtualizatio")
     public interface MsixImagesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/expandMsixImage")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/expandMsixImage")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpandMsixImageList>> expand(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @BodyParam("application/json") MsixImageUri msixImageUri,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ExpandMsixImageList>> expand(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @BodyParam("application/json") MsixImageUri msixImageUri, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpandMsixImageList>> expandNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExpandMsixImageList>> expandNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -97,19 +95,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpandMsixImageInner>> expandSinglePageAsync(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri) {
+    private Mono<PagedResponse<ExpandMsixImageInner>> expandSinglePageAsync(String resourceGroupName,
+        String hostPoolName, MsixImageUri msixImageUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -125,33 +119,16 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .expand(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            msixImageUri,
-                            accept,
-                            context))
-            .<PagedResponse<ExpandMsixImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.expand(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixImageUri, accept, context))
+            .<PagedResponse<ExpandMsixImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -162,19 +139,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpandMsixImageInner>> expandSinglePageAsync(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri, Context context) {
+    private Mono<PagedResponse<ExpandMsixImageInner>> expandSinglePageAsync(String resourceGroupName,
+        String hostPoolName, MsixImageUri msixImageUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,29 +164,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .expand(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                msixImageUri,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .expand(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, hostPoolName, msixImageUri, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -223,16 +182,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpandMsixImageInner> expandAsync(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri) {
-        return new PagedFlux<>(
-            () -> expandSinglePageAsync(resourceGroupName, hostPoolName, msixImageUri),
+    public PagedFlux<ExpandMsixImageInner> expandAsync(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri) {
+        return new PagedFlux<>(() -> expandSinglePageAsync(resourceGroupName, hostPoolName, msixImageUri),
             nextLink -> expandNextSinglePageAsync(nextLink));
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -243,16 +201,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpandMsixImageInner> expandAsync(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri, Context context) {
-        return new PagedFlux<>(
-            () -> expandSinglePageAsync(resourceGroupName, hostPoolName, msixImageUri, context),
+    private PagedFlux<ExpandMsixImageInner> expandAsync(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri, Context context) {
+        return new PagedFlux<>(() -> expandSinglePageAsync(resourceGroupName, hostPoolName, msixImageUri, context),
             nextLink -> expandNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -262,14 +219,14 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpandMsixImageInner> expand(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri) {
+    public PagedIterable<ExpandMsixImageInner> expand(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri) {
         return new PagedIterable<>(expandAsync(resourceGroupName, hostPoolName, msixImageUri));
     }
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -280,16 +237,15 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpandMsixImageInner> expand(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri, Context context) {
+    public PagedIterable<ExpandMsixImageInner> expand(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri, Context context) {
         return new PagedIterable<>(expandAsync(resourceGroupName, hostPoolName, msixImageUri, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,31 +257,20 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.expandNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExpandMsixImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.expandNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ExpandMsixImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,23 +283,13 @@ public final class MsixImagesClientImpl implements MsixImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .expandNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.expandNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

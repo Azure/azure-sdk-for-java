@@ -3,27 +3,26 @@
 
 package com.azure.core.test.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Keeps track of transport layer recording options to send to proxy.
  */
-public class TestProxyRecordingOptions {
-
-    @JsonProperty("HandleRedirects")
+public class TestProxyRecordingOptions implements JsonSerializable<TestProxyRecordingOptions> {
     private boolean autoRedirect = false;
-    @JsonProperty("Transport")
     private ProxyTransport proxyTransportOptions;
 
     /**
      * Model for proxy transport options
      */
-    public static class ProxyTransport {
-        @JsonProperty("Certificates")
+    public static class ProxyTransport implements JsonSerializable<ProxyTransport> {
         private List<Certificate> certificates;
-        @JsonProperty("TLSValidationCert")
         private String tLSValidationCert;
 
         /**
@@ -61,15 +60,40 @@ public class TestProxyRecordingOptions {
             this.tLSValidationCert = tLSValidationCert;
             return this;
         }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeArrayField("Certificates", certificates, JsonWriter::writeJson)
+                .writeStringField("TLSValidationCert", tLSValidationCert)
+                .writeEndObject();
+        }
+
+        /**
+         * Deserializes an instance of ProxyTransport from the input JSON.
+         *
+         * @param jsonReader The JSON reader to deserialize the data from.
+         * @return An instance of ProxyTransport deserialized from the JSON.
+         * @throws IOException If the JSON reader encounters an error while reading the JSON.
+         */
+        public static ProxyTransport fromJson(JsonReader jsonReader) throws IOException {
+            return TestingHelpers.readObject(jsonReader, ProxyTransport::new, (proxyTransport, fieldName, reader) -> {
+                if ("Certificates".equals(fieldName)) {
+                    proxyTransport.certificates = reader.readArray(Certificate::fromJson);
+                } else if ("TLSValidationCert".equals(fieldName)) {
+                    proxyTransport.tLSValidationCert = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            });
+        }
     }
 
     /**
      * Model representing the certificate item object
      */
-    public static class Certificate {
-        @JsonProperty("PemValue")
+    public static class Certificate implements JsonSerializable<Certificate> {
         private String pemValue;
-        @JsonProperty("PemKey")
         private String pemKey;
 
         /**
@@ -107,6 +131,33 @@ public class TestProxyRecordingOptions {
             this.pemKey = pemKey;
             return this;
         }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeStringField("PemValue", pemValue)
+                .writeStringField("PemKey", pemKey)
+                .writeEndObject();
+        }
+
+        /**
+         * Deserializes an instance of Certificate from the input JSON.
+         *
+         * @param jsonReader The JSON reader to deserialize the data from.
+         * @return An instance of Certificate deserialized from the JSON.
+         * @throws IOException If the JSON reader encounters an error while reading the JSON.
+         */
+        public static Certificate fromJson(JsonReader jsonReader) throws IOException {
+            return TestingHelpers.readObject(jsonReader, Certificate::new, (certificate, fieldName, reader) -> {
+                if ("PemValue".equals(fieldName)) {
+                    certificate.pemValue = reader.getString();
+                } else if ("PemKey".equals(fieldName)) {
+                    certificate.pemKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            });
+        }
     }
 
     /**
@@ -143,5 +194,33 @@ public class TestProxyRecordingOptions {
     public TestProxyRecordingOptions setTransportOptions(ProxyTransport proxyTransportOptions) {
         this.proxyTransportOptions = proxyTransportOptions;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeBooleanField("HandleRedirects", autoRedirect)
+            .writeJsonField("Transport", proxyTransportOptions)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of TestProxyRecordingOptions from the input JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize the data from.
+     * @return An instance of TestProxyRecordingOptions deserialized from the JSON.
+     * @throws IOException If the JSON reader encounters an error while reading the JSON.
+     */
+    public static TestProxyRecordingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return TestingHelpers.readObject(jsonReader, TestProxyRecordingOptions::new,
+            (testProxyRecordingOptions, fieldName, reader) -> {
+                if ("HandleRedirects".equals(fieldName)) {
+                    testProxyRecordingOptions.autoRedirect = reader.getBoolean();
+                } else if ("Transport".equals(fieldName)) {
+                    testProxyRecordingOptions.proxyTransportOptions = ProxyTransport.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            });
     }
 }

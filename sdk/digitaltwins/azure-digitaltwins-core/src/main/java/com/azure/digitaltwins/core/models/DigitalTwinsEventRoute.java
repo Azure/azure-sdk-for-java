@@ -138,9 +138,7 @@ public final class DigitalTwinsEventRoute implements JsonSerializable<DigitalTwi
                 throw new IllegalStateException("Missing required property 'endpointName'.");
             }
 
-            return new DigitalTwinsEventRoute(endpointName)
-                .setEventRouteId(id)
-                .setFilter(filter);
+            return new DigitalTwinsEventRoute(endpointName).setEventRouteId(id).setFilter(filter);
         });
     }
 }

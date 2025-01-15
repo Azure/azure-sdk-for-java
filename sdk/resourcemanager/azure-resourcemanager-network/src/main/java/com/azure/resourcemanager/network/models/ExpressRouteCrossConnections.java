@@ -13,9 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to express route crosss connections management API in Azure. */
 @Fluent
 public interface ExpressRouteCrossConnections
-    extends SupportsListing<ExpressRouteCrossConnection>,
-        SupportsListingByResourceGroup<ExpressRouteCrossConnection>,
-        SupportsGettingByResourceGroup<ExpressRouteCrossConnection>,
-        SupportsGettingById<ExpressRouteCrossConnection>,
-        HasManager<NetworkManager> {
+    extends SupportsListing<ExpressRouteCrossConnection>, SupportsListingByResourceGroup<ExpressRouteCrossConnection>,
+    SupportsGettingByResourceGroup<ExpressRouteCrossConnection>, SupportsGettingById<ExpressRouteCrossConnection>,
+    HasManager<NetworkManager> {
 }

@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"actionsRequired\":\"bqidtqaj\",\"description\":\"ulpkudjkrl\",\"status\":\"Approved\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals("bqidtqaj", model.actionsRequired());
-        Assertions.assertEquals("ulpkudjkrl", model.description());
-        Assertions.assertEquals(Status.APPROVED, model.status());
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"actionsRequired\":\"wqsmbsur\",\"description\":\"imoryocfsfksym\",\"status\":\"Unknown\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals("wqsmbsur", model.actionsRequired());
+        Assertions.assertEquals("imoryocfsfksym", model.description());
+        Assertions.assertEquals(Status.UNKNOWN, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withActionsRequired("bqidtqaj")
-                .withDescription("ulpkudjkrl")
-                .withStatus(Status.APPROVED);
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withActionsRequired("wqsmbsur")
+                .withDescription("imoryocfsfksym")
+                .withStatus(Status.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals("bqidtqaj", model.actionsRequired());
-        Assertions.assertEquals("ulpkudjkrl", model.description());
-        Assertions.assertEquals(Status.APPROVED, model.status());
+        Assertions.assertEquals("wqsmbsur", model.actionsRequired());
+        Assertions.assertEquals("imoryocfsfksym", model.description());
+        Assertions.assertEquals(Status.UNKNOWN, model.status());
     }
 }

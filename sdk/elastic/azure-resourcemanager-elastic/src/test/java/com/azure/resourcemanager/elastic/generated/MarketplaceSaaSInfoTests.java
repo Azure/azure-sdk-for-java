@@ -12,26 +12,32 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceSaaSInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceSaaSInfo model =
-            BinaryData
-                .fromString(
-                    "{\"marketplaceSubscription\":{\"id\":\"fidfvzw\"},\"marketplaceName\":\"uht\",\"marketplaceResourceId\":\"wisdkft\"}")
-                .toObject(MarketplaceSaaSInfo.class);
-        Assertions.assertEquals("fidfvzw", model.marketplaceSubscription().id());
-        Assertions.assertEquals("uht", model.marketplaceName());
-        Assertions.assertEquals("wisdkft", model.marketplaceResourceId());
+        MarketplaceSaaSInfo model = BinaryData.fromString(
+            "{\"marketplaceSubscription\":{\"id\":\"mivkwlzuvcc\"},\"marketplaceName\":\"nfnbacfionlebxe\",\"marketplaceResourceId\":\"gtzxdpn\",\"marketplaceStatus\":\"qqwx\",\"billedAzureSubscriptionId\":\"feallnwsu\",\"subscribed\":true}")
+            .toObject(MarketplaceSaaSInfo.class);
+        Assertions.assertEquals("mivkwlzuvcc", model.marketplaceSubscription().id());
+        Assertions.assertEquals("nfnbacfionlebxe", model.marketplaceName());
+        Assertions.assertEquals("gtzxdpn", model.marketplaceResourceId());
+        Assertions.assertEquals("qqwx", model.marketplaceStatus());
+        Assertions.assertEquals("feallnwsu", model.billedAzureSubscriptionId());
+        Assertions.assertEquals(true, model.subscribed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceSaaSInfo model =
-            new MarketplaceSaaSInfo()
-                .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("fidfvzw"))
-                .withMarketplaceName("uht")
-                .withMarketplaceResourceId("wisdkft");
+        MarketplaceSaaSInfo model = new MarketplaceSaaSInfo()
+            .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("mivkwlzuvcc"))
+            .withMarketplaceName("nfnbacfionlebxe")
+            .withMarketplaceResourceId("gtzxdpn")
+            .withMarketplaceStatus("qqwx")
+            .withBilledAzureSubscriptionId("feallnwsu")
+            .withSubscribed(true);
         model = BinaryData.fromObject(model).toObject(MarketplaceSaaSInfo.class);
-        Assertions.assertEquals("fidfvzw", model.marketplaceSubscription().id());
-        Assertions.assertEquals("uht", model.marketplaceName());
-        Assertions.assertEquals("wisdkft", model.marketplaceResourceId());
+        Assertions.assertEquals("mivkwlzuvcc", model.marketplaceSubscription().id());
+        Assertions.assertEquals("nfnbacfionlebxe", model.marketplaceName());
+        Assertions.assertEquals("gtzxdpn", model.marketplaceResourceId());
+        Assertions.assertEquals("qqwx", model.marketplaceStatus());
+        Assertions.assertEquals("feallnwsu", model.billedAzureSubscriptionId());
+        Assertions.assertEquals(true, model.subscribed());
     }
 }

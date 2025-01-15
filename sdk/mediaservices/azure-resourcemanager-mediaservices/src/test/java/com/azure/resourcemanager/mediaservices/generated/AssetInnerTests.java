@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"assetId\":\"1eee949d-1a90-4095-b6ba-1b60aba807e0\",\"created\":\"2021-04-29T18:24:08Z\",\"lastModified\":\"2021-06-15T22:18:20Z\",\"alternateId\":\"ebfqkkrbm\",\"description\":\"kgriwflzlfbx\",\"container\":\"uzycispnqza\",\"storageAccountName\":\"gkbrpyyd\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"uqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}")
-                .toObject(AssetInner.class);
-        Assertions.assertEquals("ebfqkkrbm", model.alternateId());
-        Assertions.assertEquals("kgriwflzlfbx", model.description());
-        Assertions.assertEquals("uzycispnqza", model.container());
-        Assertions.assertEquals("gkbrpyyd", model.storageAccountName());
+        AssetInner model = BinaryData.fromString(
+            "{\"properties\":{\"assetId\":\"9d81cd3e-4956-4485-a4d8-aa349e87e80f\",\"created\":\"2021-11-18T19:16:34Z\",\"lastModified\":\"2021-04-28T10:05:56Z\",\"alternateId\":\"pjzu\",\"description\":\"jxdultskzbbtdzu\",\"container\":\"e\",\"storageAccountName\":\"gpw\",\"storageEncryptionFormat\":\"None\"},\"id\":\"kfpbs\",\"name\":\"yofd\",\"type\":\"luu\"}")
+            .toObject(AssetInner.class);
+        Assertions.assertEquals("pjzu", model.alternateId());
+        Assertions.assertEquals("jxdultskzbbtdzu", model.description());
+        Assertions.assertEquals("e", model.container());
+        Assertions.assertEquals("gpw", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetInner model =
-            new AssetInner()
-                .withAlternateId("ebfqkkrbm")
-                .withDescription("kgriwflzlfbx")
-                .withContainer("uzycispnqza")
-                .withStorageAccountName("gkbrpyyd");
+        AssetInner model = new AssetInner().withAlternateId("pjzu")
+            .withDescription("jxdultskzbbtdzu")
+            .withContainer("e")
+            .withStorageAccountName("gpw");
         model = BinaryData.fromObject(model).toObject(AssetInner.class);
-        Assertions.assertEquals("ebfqkkrbm", model.alternateId());
-        Assertions.assertEquals("kgriwflzlfbx", model.description());
-        Assertions.assertEquals("uzycispnqza", model.container());
-        Assertions.assertEquals("gkbrpyyd", model.storageAccountName());
+        Assertions.assertEquals("pjzu", model.alternateId());
+        Assertions.assertEquals("jxdultskzbbtdzu", model.description());
+        Assertions.assertEquals("e", model.container());
+        Assertions.assertEquals("gpw", model.storageAccountName());
     }
 }

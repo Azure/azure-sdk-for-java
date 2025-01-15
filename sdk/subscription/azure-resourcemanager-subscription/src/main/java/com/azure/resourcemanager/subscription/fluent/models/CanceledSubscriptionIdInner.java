@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ID of the canceled subscription. */
+/**
+ * The ID of the canceled subscription.
+ */
 @Immutable
-public final class CanceledSubscriptionIdInner {
+public final class CanceledSubscriptionIdInner implements JsonSerializable<CanceledSubscriptionIdInner> {
     /*
      * The ID of the canceled subscription
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
-    /** Creates an instance of CanceledSubscriptionIdInner class. */
+    /**
+     * Creates an instance of CanceledSubscriptionIdInner class.
+     */
     public CanceledSubscriptionIdInner() {
     }
 
     /**
      * Get the subscriptionId property: The ID of the canceled subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -31,9 +38,44 @@ public final class CanceledSubscriptionIdInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanceledSubscriptionIdInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanceledSubscriptionIdInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CanceledSubscriptionIdInner.
+     */
+    public static CanceledSubscriptionIdInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanceledSubscriptionIdInner deserializedCanceledSubscriptionIdInner = new CanceledSubscriptionIdInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedCanceledSubscriptionIdInner.subscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanceledSubscriptionIdInner;
+        });
     }
 }

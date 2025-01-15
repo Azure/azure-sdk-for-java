@@ -72,16 +72,15 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         this.sqlADAdminCreator = null;
         this.allowAzureServicesAccess = true;
         this.sqlFirewallRules = new SqlFirewallRulesAsExternalChildResourcesImpl(this, "SqlFirewallRule");
-        this.sqlVirtualNetworkRules =
-            new SqlVirtualNetworkRulesAsExternalChildResourcesImpl(this, "SqlVirtualNetworkRule");
+        this.sqlVirtualNetworkRules
+            = new SqlVirtualNetworkRulesAsExternalChildResourcesImpl(this, "SqlVirtualNetworkRule");
         this.sqlElasticPools = new SqlElasticPoolsAsExternalChildResourcesImpl(this, "SqlElasticPool");
         this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this, "SqlDatabase");
     }
 
     @Override
     protected Mono<ServerInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getServers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -89,25 +88,21 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public Mono<SqlServer> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getServers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
-            .map(
-                serverInner -> {
-                    setInner(serverInner);
-                    return this;
-                });
+            .map(serverInner -> {
+                setInner(serverInner);
+                return this;
+            });
     }
 
     @Override
     public void beforeGroupCreateOrUpdate() {
         if (this.isInCreateMode()) {
             if (allowAzureServicesAccess) {
-                this
-                    .sqlFirewallRules
-                    .defineInlineFirewallRule("AllowAllWindowsAzureIps")
+                this.sqlFirewallRules.defineInlineFirewallRule("AllowAllWindowsAzureIps")
                     .withStartIpAddress("0.0.0.0")
                     .withEndIpAddress("0.0.0.0");
             }
@@ -117,10 +112,10 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         }
         if (this.sqlElasticPools != null && this.sqlDatabases != null) {
             // Databases must be deleted before the Elastic Pools (only an empty Elastic Pool can be deleted)
-            List<SqlDatabaseImpl> dbToBeRemoved =
-                this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
-            List<SqlElasticPoolImpl> epToBeRemoved =
-                this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
+            List<SqlDatabaseImpl> dbToBeRemoved
+                = this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
+            List<SqlElasticPoolImpl> epToBeRemoved
+                = this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
             for (SqlElasticPoolImpl epItem : epToBeRemoved) {
                 for (SqlDatabaseImpl dbItem : dbToBeRemoved) {
                     epItem.addParentDependency(dbItem);
@@ -128,10 +123,10 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             }
 
             // Databases in a new Elastic Pool should be created after the Elastic Pool
-            List<SqlDatabaseImpl> dbToBeCreated =
-                this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
-            List<SqlElasticPoolImpl> epToBeCreated =
-                this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+            List<SqlDatabaseImpl> dbToBeCreated
+                = this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+            List<SqlElasticPoolImpl> epToBeCreated
+                = this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
             for (SqlElasticPoolImpl epItem : epToBeCreated) {
                 for (SqlDatabaseImpl dbItem : dbToBeCreated) {
                     if (dbItem.elasticPoolId() != null
@@ -196,8 +191,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public List<ServerMetric> listUsageMetrics() {
         List<ServerMetric> serverMetrics = new ArrayList<>();
-        PagedIterable<ServerUsageInner> serverUsageInners =
-            this.manager().serviceClient().getServerUsages().listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<ServerUsageInner> serverUsageInners
+            = this.manager().serviceClient().getServerUsages().listByServer(this.resourceGroupName(), this.name());
         for (ServerUsageInner serverUsageInner : serverUsageInners) {
             serverMetrics.add(new ServerMetricImpl(serverUsageInner));
         }
@@ -207,17 +202,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases() {
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
-        PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
-            this
-                .manager()
-                .serviceClient()
-                .getRestorableDroppedDatabases()
-                .listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners = this.manager()
+            .serviceClient()
+            .getRestorableDroppedDatabases()
+            .listByServer(this.resourceGroupName(), this.name());
         for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
-            sqlRestorableDroppedDatabases
-                .add(
-                    new SqlRestorableDroppedDatabaseImpl(
-                        this.resourceGroupName(), this.name(), restorableDroppedDatabaseInner, this.manager()));
+            sqlRestorableDroppedDatabases.add(new SqlRestorableDroppedDatabaseImpl(this.resourceGroupName(),
+                this.name(), restorableDroppedDatabaseInner, this.manager()));
         }
         return Collections.unmodifiableList(sqlRestorableDroppedDatabases);
     }
@@ -225,14 +216,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public PagedFlux<SqlRestorableDroppedDatabase> listRestorableDroppedDatabasesAsync() {
         final SqlServerImpl self = this;
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getRestorableDroppedDatabases()
-            .listByServerAsync(this.resourceGroupName(), this.name()),
-                restorableDroppedDatabaseInner ->
-                    new SqlRestorableDroppedDatabaseImpl(
-                        self.resourceGroupName(), self.name(), restorableDroppedDatabaseInner, self.manager()));
+        return PagedConverter.mapPage(
+            this.manager()
+                .serviceClient()
+                .getRestorableDroppedDatabases()
+                .listByServerAsync(this.resourceGroupName(), this.name()),
+            restorableDroppedDatabaseInner -> new SqlRestorableDroppedDatabaseImpl(self.resourceGroupName(),
+                self.name(), restorableDroppedDatabaseInner, self.manager()));
     }
 
     @Override
@@ -244,12 +234,10 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlFirewallRule enableAccessFromAzureServices() {
         SqlFirewallRule firewallRule = null;
         try {
-            firewallRule =
-                this
-                    .manager()
-                    .sqlServers()
-                    .firewallRules()
-                    .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
+            firewallRule = this.manager()
+                .sqlServers()
+                .firewallRules()
+                .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() != 404) {
                 throw logger.logExceptionAsError(e);
@@ -257,15 +245,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         }
 
         if (firewallRule == null) {
-            firewallRule =
-                this
-                    .manager()
-                    .sqlServers()
-                    .firewallRules()
-                    .define("AllowAllWindowsAzureIps")
-                    .withExistingSqlServer(this.resourceGroupName(), this.name())
-                    .withIpAddress("0.0.0.0")
-                    .create();
+            firewallRule = this.manager()
+                .sqlServers()
+                .firewallRules()
+                .define("AllowAllWindowsAzureIps")
+                .withExistingSqlServer(this.resourceGroupName(), this.name())
+                .withIpAddress("0.0.0.0")
+                .create();
         }
 
         return firewallRule;
@@ -280,12 +266,10 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public void removeAccessFromAzureServices() {
         SqlFirewallRule firewallRule = null;
         try {
-            firewallRule =
-                this
-                    .manager()
-                    .sqlServers()
-                    .firewallRules()
-                    .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
+            firewallRule = this.manager()
+                .sqlServers()
+                .firewallRules()
+                .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() != 404) {
                 throw logger.logExceptionAsError(e);
@@ -293,8 +277,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         }
 
         if (firewallRule == null) {
-            this
-                .manager()
+            this.manager()
                 .sqlServers()
                 .firewallRules()
                 .deleteBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
@@ -303,33 +286,25 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlActiveDirectoryAdministratorImpl setActiveDirectoryAdministrator(String userLogin, String objectId) {
-        ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-            new ServerAzureADAdministratorInner()
-                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+        ServerAzureADAdministratorInner serverAzureADAdministratorInner
+            = new ServerAzureADAdministratorInner().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                 .withLogin(userLogin)
                 .withSid(UUID.fromString(objectId))
                 .withTenantId(UUID.fromString(this.manager().tenantId()));
 
-        return new SqlActiveDirectoryAdministratorImpl(
-            this
-                .manager()
-                .serviceClient()
-                .getServerAzureADAdministrators()
-                .createOrUpdate(
-                    this.resourceGroupName(),
-                    this.name(),
-                    AdministratorName.ACTIVE_DIRECTORY,
-                    serverAzureADAdministratorInner));
+        return new SqlActiveDirectoryAdministratorImpl(this.manager()
+            .serviceClient()
+            .getServerAzureADAdministrators()
+            .createOrUpdate(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY,
+                serverAzureADAdministratorInner));
     }
 
     @Override
     public SqlActiveDirectoryAdministratorImpl getActiveDirectoryAdministrator() {
-        ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-            this
-                .manager()
-                .serviceClient()
-                .getServerAzureADAdministrators()
-                .get(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY);
+        ServerAzureADAdministratorInner serverAzureADAdministratorInner = this.manager()
+            .serviceClient()
+            .getServerAzureADAdministrators()
+            .get(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY);
 
         return serverAzureADAdministratorInner != null
             ? new SqlActiveDirectoryAdministratorImpl(serverAzureADAdministratorInner)
@@ -338,8 +313,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public void removeActiveDirectoryAdministrator() {
-        this
-            .manager()
+        this.manager()
             .serviceClient()
             .getServerAzureADAdministrators()
             .deleteAsync(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY)
@@ -349,8 +323,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
-        ServerAutomaticTuningInner serverAutomaticTuningInner =
-            this.manager().serviceClient().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
+        ServerAutomaticTuningInner serverAutomaticTuningInner
+            = this.manager().serviceClient().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
         return serverAutomaticTuningInner != null
             ? new SqlServerAutomaticTuningImpl(this, serverAutomaticTuningInner)
             : null;
@@ -391,29 +365,23 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServer.DefinitionStages.WithCreate withActiveDirectoryAdministrator(
-        final String userLogin, final String objectId) {
+    public SqlServer.DefinitionStages.WithCreate withActiveDirectoryAdministrator(final String userLogin,
+        final String objectId) {
         final SqlServerImpl self = this;
-        sqlADAdminCreator =
-            context -> {
-                ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-                    new ServerAzureADAdministratorInner()
-                        .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                        .withLogin(userLogin)
-                        .withSid(UUID.fromString(objectId))
-                        .withTenantId(UUID.fromString(self.manager().tenantId()));
+        sqlADAdminCreator = context -> {
+            ServerAzureADAdministratorInner serverAzureADAdministratorInner
+                = new ServerAzureADAdministratorInner().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                    .withLogin(userLogin)
+                    .withSid(UUID.fromString(objectId))
+                    .withTenantId(UUID.fromString(self.manager().tenantId()));
 
-                return self
-                    .manager()
-                    .serviceClient()
-                    .getServerAzureADAdministrators()
-                    .createOrUpdateAsync(
-                        self.resourceGroupName(),
-                        self.name(),
-                        AdministratorName.ACTIVE_DIRECTORY,
-                        serverAzureADAdministratorInner)
-                    .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
-            };
+            return self.manager()
+                .serviceClient()
+                .getServerAzureADAdministrators()
+                .createOrUpdateAsync(self.resourceGroupName(), self.name(), AdministratorName.ACTIVE_DIRECTORY,
+                    serverAzureADAdministratorInner)
+                .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
+        };
         return this;
     }
 
@@ -429,8 +397,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlVirtualNetworkRule.DefinitionStages.Blank<SqlServer.DefinitionStages.WithCreate> defineVirtualNetworkRule(
-        String virtualNetworkRuleName) {
+    public SqlVirtualNetworkRule.DefinitionStages.Blank<SqlServer.DefinitionStages.WithCreate>
+        defineVirtualNetworkRule(String virtualNetworkRuleName) {
         return this.sqlVirtualNetworkRules.defineInlineVirtualNetworkRule(virtualNetworkRuleName);
     }
 
@@ -486,8 +454,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyActionsDefinition
         serverSecurityAlertPolicies() {
         if (this.sqlServerSecurityAlertPolicyOperations == null) {
-            this.sqlServerSecurityAlertPolicyOperations =
-                new SqlServerSecurityAlertPolicyOperationsImpl(this, this.manager());
+            this.sqlServerSecurityAlertPolicyOperations
+                = new SqlServerSecurityAlertPolicyOperationsImpl(this, this.manager());
         }
         return this.sqlServerSecurityAlertPolicyOperations;
     }

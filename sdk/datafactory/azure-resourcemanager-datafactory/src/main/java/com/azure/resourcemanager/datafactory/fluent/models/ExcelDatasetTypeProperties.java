@@ -6,56 +6,53 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Excel dataset properties.
  */
 @Fluent
-public final class ExcelDatasetTypeProperties {
+public final class ExcelDatasetTypeProperties implements JsonSerializable<ExcelDatasetTypeProperties> {
     /*
      * The location of the excel storage.
      */
-    @JsonProperty(value = "location", required = true)
     private DatasetLocation location;
 
     /*
      * The sheet name of excel file. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sheetName")
     private Object sheetName;
 
     /*
      * The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
      */
-    @JsonProperty(value = "sheetIndex")
     private Object sheetIndex;
 
     /*
      * The partial data of one sheet. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "range")
     private Object range;
 
     /*
      * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
      * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
 
     /*
      * The data compression method used for the json dataset.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "nullValue")
     private Object nullValue;
 
     /**
@@ -229,4 +226,59 @@ public final class ExcelDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExcelDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeUntypedField("sheetName", this.sheetName);
+        jsonWriter.writeUntypedField("sheetIndex", this.sheetIndex);
+        jsonWriter.writeUntypedField("range", this.range);
+        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        jsonWriter.writeJsonField("compression", this.compression);
+        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExcelDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExcelDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExcelDatasetTypeProperties.
+     */
+    public static ExcelDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExcelDatasetTypeProperties deserializedExcelDatasetTypeProperties = new ExcelDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.location = DatasetLocation.fromJson(reader);
+                } else if ("sheetName".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.sheetName = reader.readUntyped();
+                } else if ("sheetIndex".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.sheetIndex = reader.readUntyped();
+                } else if ("range".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.range = reader.readUntyped();
+                } else if ("firstRowAsHeader".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.firstRowAsHeader = reader.readUntyped();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else if ("nullValue".equals(fieldName)) {
+                    deserializedExcelDatasetTypeProperties.nullValue = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExcelDatasetTypeProperties;
+        });
+    }
 }

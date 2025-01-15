@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elastic.fluent.models.MonitoringTagRulesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response of a list operation. */
+/**
+ * Response of a list operation.
+ */
 @Fluent
-public final class MonitoringTagRulesListResponse {
+public final class MonitoringTagRulesListResponse implements JsonSerializable<MonitoringTagRulesListResponse> {
     /*
      * Results of a list operation.
      */
-    @JsonProperty(value = "value")
     private List<MonitoringTagRulesInner> value;
 
     /*
      * Link to the next set of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MonitoringTagRulesListResponse class. */
+    /**
+     * Creates an instance of MonitoringTagRulesListResponse class.
+     */
     public MonitoringTagRulesListResponse() {
     }
 
     /**
      * Get the value property: Results of a list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<MonitoringTagRulesInner> value() {
@@ -39,7 +45,7 @@ public final class MonitoringTagRulesListResponse {
 
     /**
      * Set the value property: Results of a list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the MonitoringTagRulesListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class MonitoringTagRulesListResponse {
 
     /**
      * Get the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class MonitoringTagRulesListResponse {
 
     /**
      * Set the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MonitoringTagRulesListResponse object itself.
      */
@@ -70,12 +76,54 @@ public final class MonitoringTagRulesListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoringTagRulesListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoringTagRulesListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoringTagRulesListResponse.
+     */
+    public static MonitoringTagRulesListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoringTagRulesListResponse deserializedMonitoringTagRulesListResponse
+                = new MonitoringTagRulesListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MonitoringTagRulesInner> value
+                        = reader.readArray(reader1 -> MonitoringTagRulesInner.fromJson(reader1));
+                    deserializedMonitoringTagRulesListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMonitoringTagRulesListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoringTagRulesListResponse;
+        });
     }
 }

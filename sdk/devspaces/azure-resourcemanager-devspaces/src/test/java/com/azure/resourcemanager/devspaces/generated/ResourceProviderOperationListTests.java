@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"idgsybbe\",\"display\":{\"provider\":\"hoycm\",\"resource\":\"ao\",\"operation\":\"dxbmtqioq\",\"description\":\"ehtbm\"}}],\"nextLink\":\"p\"}")
-                .toObject(ResourceProviderOperationList.class);
+        ResourceProviderOperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"idgsybbe\",\"display\":{\"provider\":\"hoycm\",\"resource\":\"ao\",\"operation\":\"dxbmtqioq\",\"description\":\"ehtbm\"}}],\"nextLink\":\"p\"}")
+            .toObject(ResourceProviderOperationList.class);
         Assertions.assertEquals("idgsybbe", model.value().get(0).name());
         Assertions.assertEquals("hoycm", model.value().get(0).display().provider());
         Assertions.assertEquals("ao", model.value().get(0).display().resource());
@@ -28,19 +26,12 @@ public final class ResourceProviderOperationListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationList model =
-            new ResourceProviderOperationList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ResourceProviderOperationDefinitionInner()
-                                .withName("idgsybbe")
-                                .withDisplay(
-                                    new ResourceProviderOperationDisplay()
-                                        .withProvider("hoycm")
-                                        .withResource("ao")
-                                        .withOperation("dxbmtqioq")
-                                        .withDescription("ehtbm"))));
+        ResourceProviderOperationList model = new ResourceProviderOperationList()
+            .withValue(Arrays.asList(new ResourceProviderOperationDefinitionInner().withName("idgsybbe")
+                .withDisplay(new ResourceProviderOperationDisplay().withProvider("hoycm")
+                    .withResource("ao")
+                    .withOperation("dxbmtqioq")
+                    .withDescription("ehtbm"))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationList.class);
         Assertions.assertEquals("idgsybbe", model.value().get(0).name());
         Assertions.assertEquals("hoycm", model.value().get(0).display().provider());

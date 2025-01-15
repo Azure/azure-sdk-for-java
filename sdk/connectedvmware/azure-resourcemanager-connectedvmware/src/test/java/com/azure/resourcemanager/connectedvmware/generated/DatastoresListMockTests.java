@@ -6,59 +6,30 @@ package com.azure.resourcemanager.connectedvmware.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager;
 import com.azure.resourcemanager.connectedvmware.models.Datastore;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatastoresListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"uuid\":\"qagwwrxaomz\",\"vCenterId\":\"glrrczez\",\"moRefId\":\"hltnjadhqoawjq\",\"inventoryItemId\":\"ueayfbpcmsplb\",\"moName\":\"rueqthwm\",\"statuses\":[{\"type\":\"scbbxig\",\"status\":\"xiidloped\",\"reason\":\"dpyqyybxubmd\",\"message\":\"fcbqwremjela\",\"severity\":\"cigeleohdbvqvw\",\"lastUpdatedAt\":\"2021-10-08T05:02:22Z\"},{\"type\":\"pwbeonr\",\"status\":\"wzdqybxceakxcpts\",\"reason\":\"fyiaseqch\",\"message\":\"ttzrazisgyki\",\"severity\":\"mvanbwzo\",\"lastUpdatedAt\":\"2021-06-13T19:14:44Z\"}],\"customResourceName\":\"xxbsojklinhmd\",\"capacityGB\":5497286142790857324,\"freeSpaceGB\":7192084544319675802,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"xojpslsvjgp\",\"name\":\"ufiqwoyxqvapcohh\"},\"kind\":\"qpqojxcxzrzd\",\"location\":\"gdzbenr\",\"tags\":{\"dtjwfljhznamt\":\"awetzq\",\"jj\":\"atmzw\",\"vgbgatzuuvbxng\":\"cqtjzmi\"},\"id\":\"ebwgga\",\"name\":\"ttzlswvajqfutlx\",\"type\":\"oqza\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"uuid\":\"qagwwrxaomz\",\"vCenterId\":\"glrrczez\",\"moRefId\":\"hltnjadhqoawjq\",\"inventoryItemId\":\"ueayfbpcmsplb\",\"moName\":\"rueqthwm\",\"statuses\":[{\"type\":\"scbbxig\",\"status\":\"xiidloped\",\"reason\":\"dpyqyybxubmd\",\"message\":\"fcbqwremjela\",\"severity\":\"cigeleohdbvqvw\",\"lastUpdatedAt\":\"2021-10-08T05:02:22Z\"},{\"type\":\"pwbeonr\",\"status\":\"wzdqybxceakxcpts\",\"reason\":\"fyiaseqch\",\"message\":\"ttzrazisgyki\",\"severity\":\"mvanbwzo\",\"lastUpdatedAt\":\"2021-06-13T19:14:44Z\"}],\"customResourceName\":\"xxbsojklinhmd\",\"capacityGB\":5497286142790857324,\"freeSpaceGB\":7192084544319675802,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"xojpslsvjgp\",\"name\":\"ufiqwoyxqvapcohh\"},\"kind\":\"qpqojxcxzrzd\",\"location\":\"gdzbenr\",\"tags\":{\"dtjwfljhznamt\":\"awetzq\",\"jj\":\"atmzw\",\"vgbgatzuuvbxng\":\"cqtjzmi\"},\"id\":\"ebwgga\",\"name\":\"ttzlswvajqfutlx\",\"type\":\"oqza\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Datastore> response = manager.datastores().list(com.azure.core.util.Context.NONE);
 

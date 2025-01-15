@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The granularity of rows in the report. */
+/**
+ * The granularity of rows in the report.
+ */
 public final class ReportGranularityType extends ExpandableStringEnum<ReportGranularityType> {
-    /** Static value Daily for ReportGranularityType. */
+    /**
+     * Static value Daily for ReportGranularityType.
+     */
     public static final ReportGranularityType DAILY = fromString("Daily");
 
-    /** Static value Monthly for ReportGranularityType. */
+    /**
+     * Static value Monthly for ReportGranularityType.
+     */
     public static final ReportGranularityType MONTHLY = fromString("Monthly");
 
     /**
      * Creates a new instance of ReportGranularityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ReportGranularityType extends ExpandableStringEnum<ReportGran
 
     /**
      * Creates or finds a ReportGranularityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReportGranularityType.
      */
-    @JsonCreator
     public static ReportGranularityType fromString(String name) {
         return fromString(name, ReportGranularityType.class);
     }
 
     /**
      * Gets known ReportGranularityType values.
-     *
+     * 
      * @return known ReportGranularityType values.
      */
     public static Collection<ReportGranularityType> values() {

@@ -13,20 +13,18 @@ public final class RestResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"datayxxhwrlqom\",\"requestMethod\":\"datasyilpzzbrwnrzoz\",\"requestBody\":\"dataagysokl\",\"additionalHeaders\":{\"bvrrbnh\":\"datas\",\"bhujcydyl\":\"datal\",\"izsyq\":\"datamxvps\",\"llcbrva\":\"datag\"},\"paginationRules\":{\"jjrnogykugdlavsa\":\"datalkyhtrrqwfyybpt\",\"fkbzbfbxjblajy\":\"datagthkslgeu\",\"dj\":\"datadnbycsbtoisa\",\"zxgnywxu\":\"dataofsv\"}}")
+            "{\"relativeUrl\":\"datam\",\"requestMethod\":\"datakryxpi\",\"requestBody\":\"dataapeakfdmcedl\",\"additionalHeaders\":{\"yoddoqkanqtrkicw\":\"datax\",\"wwmu\":\"dataqyrgqmndk\",\"kitlwgebylpz\":\"datahvifqeqfsrna\"},\"paginationRules\":{\"nilnijhwcbr\":\"datadaqwj\",\"npkbvzpk\":\"datasypo\"}}")
             .toObject(RestResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDatasetTypeProperties model
-            = new RestResourceDatasetTypeProperties().withRelativeUrl("datayxxhwrlqom")
-                .withRequestMethod("datasyilpzzbrwnrzoz")
-                .withRequestBody("dataagysokl")
-                .withAdditionalHeaders(
-                    mapOf("bvrrbnh", "datas", "bhujcydyl", "datal", "izsyq", "datamxvps", "llcbrva", "datag"))
-                .withPaginationRules(mapOf("jjrnogykugdlavsa", "datalkyhtrrqwfyybpt", "fkbzbfbxjblajy", "datagthkslgeu",
-                    "dj", "datadnbycsbtoisa", "zxgnywxu", "dataofsv"));
+        RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties().withRelativeUrl("datam")
+            .withRequestMethod("datakryxpi")
+            .withRequestBody("dataapeakfdmcedl")
+            .withAdditionalHeaders(
+                mapOf("yoddoqkanqtrkicw", "datax", "wwmu", "dataqyrgqmndk", "kitlwgebylpz", "datahvifqeqfsrna"))
+            .withPaginationRules(mapOf("nilnijhwcbr", "datadaqwj", "npkbvzpk", "datasypo"));
         model = BinaryData.fromObject(model).toObject(RestResourceDatasetTypeProperties.class);
     }
 

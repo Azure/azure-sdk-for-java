@@ -143,7 +143,6 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

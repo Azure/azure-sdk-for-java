@@ -17,24 +17,36 @@ public final class PrivateLinkServiceConnectionState {
      * @param description the description of the connection.
      * @param actionsRequired the required action for the connection.
      */
-    public PrivateLinkServiceConnectionState(PrivateEndpointServiceConnectionStatus status,
-                                             String description, String actionsRequired) {
+    public PrivateLinkServiceConnectionState(PrivateEndpointServiceConnectionStatus status, String description,
+        String actionsRequired) {
         this.status = status;
         this.description = description;
         this.actionsRequired = actionsRequired;
     }
 
-    /** @return the status of the connection. */
+    /**
+     * Gets the status of the connection.
+     *
+     * @return the status of the connection.
+     */
     public PrivateEndpointServiceConnectionStatus status() {
         return this.status;
     }
 
-    /** @return the description of the connection. */
+    /**
+     * Gets the description of the connection.
+     *
+     * @return the description of the connection.
+     */
     public String description() {
         return this.description;
     }
 
-    /** @return the required action for the connection. */
+    /**
+     * Gets the required action for the connection.
+     *
+     * @return the required action for the connection.
+     */
     public String actionsRequired() {
         return this.actionsRequired;
     }

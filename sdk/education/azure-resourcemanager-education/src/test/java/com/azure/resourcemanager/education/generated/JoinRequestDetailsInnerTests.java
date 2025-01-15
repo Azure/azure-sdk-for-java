@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.JoinRequestDetailsInner;
 import com.azure.resourcemanager.education.models.JoinRequestStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JoinRequestDetailsInnerTests {
-    @Test
-    public void testDeserialize() {
-        JoinRequestDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"firstName\":\"rl\",\"lastName\":\"ugjzzdatqxhocdge\",\"email\":\"lgphu\",\"status\":\"Denied\"},\"id\":\"dvkaozw\",\"name\":\"i\",\"type\":\"tyhxhurokft\"}")
-                .toObject(JoinRequestDetailsInner.class);
-        Assertions.assertEquals("rl", model.firstName());
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.lastName());
-        Assertions.assertEquals("lgphu", model.email());
-        Assertions.assertEquals(JoinRequestStatus.DENIED, model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JoinRequestDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"firstName\":\"ksqrglssai\",\"lastName\":\"p\",\"email\":\"nzl\",\"status\":\"Pending\"},\"id\":\"ppeebvmgxsab\",\"name\":\"yqduujit\",\"type\":\"jczdzevndh\"}")
+            .toObject(JoinRequestDetailsInner.class);
+        Assertions.assertEquals("ksqrglssai", model.firstName());
+        Assertions.assertEquals("p", model.lastName());
+        Assertions.assertEquals("nzl", model.email());
+        Assertions.assertEquals(JoinRequestStatus.PENDING, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        JoinRequestDetailsInner model =
-            new JoinRequestDetailsInner()
-                .withFirstName("rl")
-                .withLastName("ugjzzdatqxhocdge")
-                .withEmail("lgphu")
-                .withStatus(JoinRequestStatus.DENIED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        JoinRequestDetailsInner model = new JoinRequestDetailsInner().withFirstName("ksqrglssai")
+            .withLastName("p")
+            .withEmail("nzl")
+            .withStatus(JoinRequestStatus.PENDING);
         model = BinaryData.fromObject(model).toObject(JoinRequestDetailsInner.class);
-        Assertions.assertEquals("rl", model.firstName());
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.lastName());
-        Assertions.assertEquals("lgphu", model.email());
-        Assertions.assertEquals(JoinRequestStatus.DENIED, model.status());
+        Assertions.assertEquals("ksqrglssai", model.firstName());
+        Assertions.assertEquals("p", model.lastName());
+        Assertions.assertEquals("nzl", model.email());
+        Assertions.assertEquals(JoinRequestStatus.PENDING, model.status());
     }
 }

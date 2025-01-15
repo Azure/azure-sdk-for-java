@@ -14,7 +14,8 @@ import java.util.List;
 /** The result of update workspace quota. */
 @Immutable
 public final class UpdateWorkspaceQuotasResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotasResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotasResultInner.class);
 
     /*
      * The list of workspace quota update result.

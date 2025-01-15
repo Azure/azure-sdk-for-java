@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeeringLocationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of peering locations. */
+/**
+ * The paginated list of peering locations.
+ */
 @Fluent
-public final class PeeringLocationListResult {
+public final class PeeringLocationListResult implements JsonSerializable<PeeringLocationListResult> {
     /*
      * The list of peering locations.
      */
-    @JsonProperty(value = "value")
     private List<PeeringLocationInner> value;
 
     /*
      * The link to fetch the next page of peering locations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeeringLocationListResult class. */
+    /**
+     * Creates an instance of PeeringLocationListResult class.
+     */
     public PeeringLocationListResult() {
     }
 
     /**
      * Get the value property: The list of peering locations.
-     *
+     * 
      * @return the value value.
      */
     public List<PeeringLocationInner> value() {
@@ -39,7 +45,7 @@ public final class PeeringLocationListResult {
 
     /**
      * Set the value property: The list of peering locations.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeeringLocationListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringLocationListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of peering locations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeeringLocationListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of peering locations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeeringLocationListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class PeeringLocationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringLocationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringLocationListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringLocationListResult.
+     */
+    public static PeeringLocationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringLocationListResult deserializedPeeringLocationListResult = new PeeringLocationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeeringLocationInner> value
+                        = reader.readArray(reader1 -> PeeringLocationInner.fromJson(reader1));
+                    deserializedPeeringLocationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeeringLocationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringLocationListResult;
+        });
     }
 }

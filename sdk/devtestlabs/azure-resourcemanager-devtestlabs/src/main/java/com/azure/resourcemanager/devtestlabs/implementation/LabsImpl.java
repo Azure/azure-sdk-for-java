@@ -36,35 +36,32 @@ public final class LabsImpl implements Labs {
 
     public PagedIterable<Lab> list() {
         PagedIterable<LabInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Lab> list(String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<LabInner> inner = this.serviceClient().list(expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Lab> listByResourceGroup(String resourceGroupName) {
         PagedIterable<LabInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Lab> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context) {
-        PagedIterable<LabInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
+    public PagedIterable<Lab> listByResourceGroup(String resourceGroupName, String expand, String filter, Integer top,
+        String orderby, Context context) {
+        PagedIterable<LabInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, expand, filter, top, orderby, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
     }
 
-    public Response<Lab> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context) {
-        Response<LabInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
+    public Response<Lab> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context) {
+        Response<LabInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -96,53 +93,42 @@ public final class LabsImpl implements Labs {
         this.serviceClient().claimAnyVm(resourceGroupName, name, context);
     }
 
-    public void createEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
+    public void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
         this.serviceClient().createEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter);
     }
 
-    public void createEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context) {
+    public void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context) {
         this.serviceClient().createEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, context);
     }
 
-    public void exportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters) {
+    public void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters) {
         this.serviceClient().exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters);
     }
 
-    public void exportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context) {
+    public void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context) {
         this.serviceClient().exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context);
     }
 
-    public Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context) {
-        Response<GenerateUploadUriResponseInner> inner =
-            this
-                .serviceClient()
-                .generateUploadUriWithResponse(resourceGroupName, name, generateUploadUriParameter, context);
+    public Response<GenerateUploadUriResponse> generateUploadUriWithResponse(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter, Context context) {
+        Response<GenerateUploadUriResponseInner> inner = this.serviceClient()
+            .generateUploadUriWithResponse(resourceGroupName, name, generateUploadUriParameter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GenerateUploadUriResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public GenerateUploadUriResponse generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter) {
-        GenerateUploadUriResponseInner inner =
-            this.serviceClient().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
+    public GenerateUploadUriResponse generateUploadUri(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter) {
+        GenerateUploadUriResponseInner inner
+            = this.serviceClient().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
         if (inner != null) {
             return new GenerateUploadUriResponseImpl(inner, this.manager());
         } else {
@@ -150,102 +136,79 @@ public final class LabsImpl implements Labs {
         }
     }
 
-    public void importVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
+    public void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
         this.serviceClient().importVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest);
     }
 
-    public void importVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context) {
+    public void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context) {
         this.serviceClient().importVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest, context);
     }
 
     public PagedIterable<LabVhd> listVhds(String resourceGroupName, String name) {
         PagedIterable<LabVhdInner> inner = this.serviceClient().listVhds(resourceGroupName, name);
-        return Utils.mapPage(inner, inner1 -> new LabVhdImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabVhdImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabVhd> listVhds(String resourceGroupName, String name, Context context) {
         PagedIterable<LabVhdInner> inner = this.serviceClient().listVhds(resourceGroupName, name, context);
-        return Utils.mapPage(inner, inner1 -> new LabVhdImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabVhdImpl(inner1, this.manager()));
     }
 
     public Lab getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "labs");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String localExpand = null;
         return this.getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE).getValue();
     }
 
     public Response<Lab> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "labs");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "labs");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         this.delete(resourceGroupName, name, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "labs");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         this.delete(resourceGroupName, name, context);
     }

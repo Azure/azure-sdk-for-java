@@ -10,11 +10,9 @@ import com.azure.resourcemanager.resourcemover.models.AffectedMoveResource;
 public final class AffectedMoveResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AffectedMoveResource model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ftyhxhurokf\",\"sourceId\":\"xolniwpwcukjfk\",\"moveResources\":[{\"id\":\"xklrypl\",\"sourceId\":\"kbasyypn\",\"moveResources\":[{\"id\":\"gcbacphejkot\",\"sourceId\":\"qgoulznd\",\"moveResources\":[{}]},{\"id\":\"yqkgfg\",\"sourceId\":\"madgakeqsrxyb\",\"moveResources\":[{},{},{},{}]},{\"id\":\"dqytbciqfouflmm\",\"sourceId\":\"zsm\",\"moveResources\":[{},{},{}]},{\"id\":\"lougpbkw\",\"sourceId\":\"utduqktapspwgcu\",\"moveResources\":[{},{},{},{}]}]},{\"id\":\"mkdo\",\"sourceId\":\"qw\",\"moveResources\":[{\"id\":\"gbbjfddgmbmbe\",\"sourceId\":\"pbhtqqrolfpfpsa\",\"moveResources\":[{},{}]},{\"id\":\"uxig\",\"sourceId\":\"jgzjaoyfhrtx\",\"moveResources\":[{}]},{\"id\":\"rkujy\",\"sourceId\":\"l\",\"moveResources\":[{},{},{}]}]}]}")
-                .toObject(AffectedMoveResource.class);
+        AffectedMoveResource model = BinaryData.fromString(
+            "{\"id\":\"ftyhxhurokf\",\"sourceId\":\"xolniwpwcukjfk\",\"moveResources\":[{\"id\":\"xklrypl\",\"sourceId\":\"kbasyypn\",\"moveResources\":[{\"id\":\"gcbacphejkot\",\"sourceId\":\"qgoulznd\",\"moveResources\":[{}]},{\"id\":\"yqkgfg\",\"sourceId\":\"madgakeqsrxyb\",\"moveResources\":[{},{},{},{}]},{\"id\":\"dqytbciqfouflmm\",\"sourceId\":\"zsm\",\"moveResources\":[{},{},{}]},{\"id\":\"lougpbkw\",\"sourceId\":\"utduqktapspwgcu\",\"moveResources\":[{},{},{},{}]}]},{\"id\":\"mkdo\",\"sourceId\":\"qw\",\"moveResources\":[{\"id\":\"gbbjfddgmbmbe\",\"sourceId\":\"pbhtqqrolfpfpsa\",\"moveResources\":[{},{}]},{\"id\":\"uxig\",\"sourceId\":\"jgzjaoyfhrtx\",\"moveResources\":[{}]},{\"id\":\"rkujy\",\"sourceId\":\"l\",\"moveResources\":[{},{},{}]}]}]}")
+            .toObject(AffectedMoveResource.class);
     }
 
     @org.junit.jupiter.api.Test

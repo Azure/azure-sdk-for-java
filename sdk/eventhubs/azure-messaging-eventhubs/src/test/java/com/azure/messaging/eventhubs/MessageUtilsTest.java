@@ -206,8 +206,8 @@ public class MessageUtilsTest {
         assertEquals(expected.getApplicationProperties().size(), applicationProperties.getValue().size());
 
         assertEquals(expected.getApplicationProperties().size(), applicationProperties.getValue().size());
-        expected.getApplicationProperties().forEach(
-            (key, value) -> assertEquals(value, applicationProperties.getValue().get(key)));
+        expected.getApplicationProperties()
+            .forEach((key, value) -> assertEquals(value, applicationProperties.getValue().get(key)));
     }
 
     private void assertDeliveryAnnotations(Message actual) {

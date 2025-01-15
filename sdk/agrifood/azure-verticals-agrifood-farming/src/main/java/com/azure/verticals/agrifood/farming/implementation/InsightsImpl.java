@@ -69,167 +69,86 @@ public final class InsightsImpl {
     @ServiceInterface(name = "FarmBeatsClientInsig")
     public interface InsightsService {
         @Put("/insights/cascade-delete/{jobId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createCascadeDeleteJob(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("partyId") String partyId,
-                @QueryParam("modelId") String modelId,
-                @QueryParam("resourceType") String resourceType,
-                @QueryParam("resourceId") String resourceId,
-                @QueryParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createCascadeDeleteJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("partyId") String partyId,
+            @QueryParam("modelId") String modelId, @QueryParam("resourceType") String resourceType,
+            @QueryParam("resourceId") String resourceId, @QueryParam("insightId") String insightId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/insights/cascade-delete/{jobId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCascadeDeleteJobDetails(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getCascadeDeleteJobDetails(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByPartyIdModelIdAndResource(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("partyId") String partyId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listByPartyIdModelIdAndResource(@HostParam("endpoint") String endpoint,
+            @PathParam("partyId") String partyId, @PathParam("modelId") String modelId,
+            @PathParam("resourceType") String resourceType, @PathParam("resourceId") String resourceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Patch(
-                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Patch("/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("partyId") String partyId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData insightData,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("partyId") String partyId, @PathParam("modelId") String modelId,
+            @PathParam("resourceType") String resourceType, @PathParam("resourceId") String resourceId,
+            @PathParam("insightId") String insightId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData insightData, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("partyId") String partyId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("partyId") String partyId,
+            @PathParam("modelId") String modelId, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceId") String resourceId, @PathParam("insightId") String insightId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Delete(
-                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Delete("/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("partyId") String partyId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("partyId") String partyId,
+            @PathParam("modelId") String modelId, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceId") String resourceId, @PathParam("insightId") String insightId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByPartyIdModelIdAndResourceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -268,29 +187,12 @@ public final class InsightsImpl {
      * @return schema of cascade delete job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
-            String jobId,
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(String jobId, String partyId,
+        String modelId, String resourceType, String resourceId, String insightId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createCascadeDeleteJob(
-                                this.client.getEndpoint(),
-                                jobId,
-                                partyId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.createCascadeDeleteJob(this.client.getEndpoint(), jobId, partyId, modelId, resourceType,
+                resourceId, insightId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -329,28 +231,17 @@ public final class InsightsImpl {
      * @return the {@link PollerFlux} for polling of schema of cascade delete job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
-            String jobId,
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () ->
-                        this.createCascadeDeleteJobWithResponseAsync(
-                                jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(String jobId, String partyId,
+        String modelId, String resourceType, String resourceId, String insightId, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, modelId, resourceType, resourceId,
+                insightId, requestOptions),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -389,17 +280,12 @@ public final class InsightsImpl {
      * @return the {@link SyncPoller} for polling of schema of cascade delete job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId,
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.beginCreateCascadeDeleteJobAsync(
-                        jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String modelId,
+        String resourceType, String resourceId, String insightId, RequestOptions requestOptions) {
+        return this
+            .beginCreateCascadeDeleteJobAsync(jobId, partyId, modelId, resourceType, resourceId, insightId,
+                requestOptions)
+            .getSyncPoller();
     }
 
     /**
@@ -434,18 +320,11 @@ public final class InsightsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponseAsync(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCascadeDeleteJobDetails(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getCascadeDeleteJobDetails(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -560,30 +439,15 @@ public final class InsightsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceSinglePageAsync(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceSinglePageAsync(String partyId,
+        String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByPartyIdModelIdAndResource(
-                                        this.client.getEndpoint(),
-                                        partyId,
-                                        modelId,
-                                        resourceType,
-                                        resourceId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByPartyIdModelIdAndResource(this.client.getEndpoint(), partyId, modelId,
+                resourceType, resourceId, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+                context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -663,18 +527,15 @@ public final class InsightsImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByPartyIdModelIdAndResourceAsync(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdModelIdAndResourceAsync(String partyId, String modelId,
+        String resourceType, String resourceId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedFlux<>(
-                () ->
-                        listByPartyIdModelIdAndResourceSinglePageAsync(
-                                partyId, modelId, resourceType, resourceId, requestOptions),
-                nextLink -> listByPartyIdModelIdAndResourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            () -> listByPartyIdModelIdAndResourceSinglePageAsync(partyId, modelId, resourceType, resourceId,
+                requestOptions),
+            nextLink -> listByPartyIdModelIdAndResourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -754,10 +615,10 @@ public final class InsightsImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(String partyId, String modelId,
+        String resourceType, String resourceId, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                listByPartyIdModelIdAndResourceAsync(partyId, modelId, resourceType, resourceId, requestOptions));
+            listByPartyIdModelIdAndResourceAsync(partyId, modelId, resourceType, resourceId, requestOptions));
     }
 
     /**
@@ -844,29 +705,13 @@ public final class InsightsImpl {
      * @return schema of insight resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String partyId, String modelId,
+        String resourceType, String resourceId, String insightId, BinaryData insightData,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                partyId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                insightData,
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.createOrUpdate(this.client.getEndpoint(), partyId, modelId, resourceType, resourceId,
+                insightId, this.client.getServiceVersion().getVersion(), insightData, accept, requestOptions, context));
     }
 
     /**
@@ -953,17 +798,10 @@ public final class InsightsImpl {
      * @return schema of insight resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(
-                        partyId, modelId, resourceType, resourceId, insightId, insightData, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, BinaryData insightData, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId, insightData,
+            requestOptions).block();
     }
 
     /**
@@ -1017,27 +855,11 @@ public final class InsightsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                partyId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), partyId, modelId, resourceType,
+            resourceId, insightId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1090,13 +912,8 @@ public final class InsightsImpl {
      * @return a specified insight resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightId, RequestOptions requestOptions) {
         return getWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId, requestOptions).block();
     }
 
@@ -1117,27 +934,11 @@ public final class InsightsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                partyId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), partyId, modelId, resourceType,
+            resourceId, insightId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1157,13 +958,8 @@ public final class InsightsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightId, RequestOptions requestOptions) {
         return deleteWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId, requestOptions).block();
     }
 
@@ -1214,22 +1010,14 @@ public final class InsightsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByPartyIdModelIdAndResourceNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByPartyIdModelIdAndResourceNext(nextLink, this.client.getEndpoint(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

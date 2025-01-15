@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Performance counters reporting settings. */
 @Fluent
 public final class PerformanceCountersSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceCountersSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PerformanceCountersSettings.class);
 
     /*
      * Azure Application Insights information for performance counters
@@ -53,10 +54,8 @@ public final class PerformanceCountersSettings {
      */
     public void validate() {
         if (appInsightsReference() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appInsightsReference in model PerformanceCountersSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appInsightsReference in model PerformanceCountersSettings"));
         } else {
             appInsightsReference().validate();
         }

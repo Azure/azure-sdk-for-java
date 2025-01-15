@@ -42,44 +42,51 @@ public final class AzureLargeStorageInstanceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureLargeStorageInstanceListResult model = new AzureLargeStorageInstanceListResult()
-            .withValue(Arrays.asList(
-                new AzureLargeStorageInstanceInner().withLocation("kyqduujit")
-                    .withTags(mapOf("rwpdappdsbdkvwrw", "zdzevndh", "eltmrldhugjzzdat", "feusnhut"))
-                    .withProperties(new AzureLargeStorageInstanceProperties()
-                        .withAzureLargeStorageInstanceUniqueIdentifier("qulngsntnbybkzgc")
-                        .withStorageProperties(new StorageProperties().withOfferingType("xxwr")
-                            .withStorageType("douskcqvkocrcjdk").withGeneration("nh")
-                            .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.HPE).withWorkloadType("biksq")
-                            .withStorageBillingProperties(new StorageBillingProperties()
-                                .withBillingMode("ssainqpjwnzll").withSku("mppeebvmgxs")))),
-                new AzureLargeStorageInstanceInner().withLocation("qkgfgibma")
-                    .withTags(mapOf("tbciqfouflmm", "keqsrxybzqqedq", "lougpbkw", "kzsmodm"))
-                    .withProperties(new AzureLargeStorageInstanceProperties()
-                        .withAzureLargeStorageInstanceUniqueIdentifier("ftyxolniw")
+        AzureLargeStorageInstanceListResult model = new AzureLargeStorageInstanceListResult().withValue(Arrays.asList(
+            new AzureLargeStorageInstanceInner().withLocation("kyqduujit")
+                .withTags(mapOf("rwpdappdsbdkvwrw", "zdzevndh", "eltmrldhugjzzdat", "feusnhut"))
+                .withProperties(new AzureLargeStorageInstanceProperties()
+                    .withAzureLargeStorageInstanceUniqueIdentifier("qulngsntnbybkzgc")
+                    .withStorageProperties(new StorageProperties().withOfferingType("xxwr")
+                        .withStorageType("douskcqvkocrcjdk")
+                        .withGeneration("nh")
+                        .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.HPE)
+                        .withWorkloadType("biksq")
+                        .withStorageBillingProperties(
+                            new StorageBillingProperties().withBillingMode("ssainqpjwnzll").withSku("mppeebvmgxs")))),
+            new AzureLargeStorageInstanceInner().withLocation("qkgfgibma")
+                .withTags(mapOf("tbciqfouflmm", "keqsrxybzqqedq", "lougpbkw", "kzsmodm"))
+                .withProperties(
+                    new AzureLargeStorageInstanceProperties().withAzureLargeStorageInstanceUniqueIdentifier("ftyxolniw")
                         .withStorageProperties(new StorageProperties().withOfferingType("jfkgiawxk")
-                            .withStorageType("ypl").withGeneration("kbasyypn")
+                            .withStorageType("ypl")
+                            .withGeneration("kbasyypn")
                             .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.SDFLEX)
-                            .withWorkloadType("gcbacphejkot").withStorageBillingProperties(
+                            .withWorkloadType("gcbacphejkot")
+                            .withStorageBillingProperties(
                                 new StorageBillingProperties().withBillingMode("gou").withSku("ndlik")))),
-                new AzureLargeStorageInstanceInner().withLocation("prbnwbxgjvtbv")
-                    .withTags(mapOf("jq", "szdnr", "uitnwuiz", "uhmuouqfprwzwbn"))
-                    .withProperties(new AzureLargeStorageInstanceProperties()
-                        .withAzureLargeStorageInstanceUniqueIdentifier("mdgbbjfdd")
+            new AzureLargeStorageInstanceInner().withLocation("prbnwbxgjvtbv")
+                .withTags(mapOf("jq", "szdnr", "uitnwuiz", "uhmuouqfprwzwbn"))
+                .withProperties(
+                    new AzureLargeStorageInstanceProperties().withAzureLargeStorageInstanceUniqueIdentifier("mdgbbjfdd")
                         .withStorageProperties(new StorageProperties().withOfferingType("ex")
-                            .withStorageType("bhtqqrolfpfpsa").withGeneration("bquxigjy")
+                            .withStorageType("bhtqqrolfpfpsa")
+                            .withGeneration("bquxigjy")
                             .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.SDFLEX)
-                            .withWorkloadType("aoyfhrtxilnerkuj").withStorageBillingProperties(
+                            .withWorkloadType("aoyfhrtxilnerkuj")
+                            .withStorageBillingProperties(
                                 new StorageBillingProperties().withBillingMode("l").withSku("uvfqawrlyxwj")))),
-                new AzureLargeStorageInstanceInner().withLocation("pyqr").withTags(mapOf("hc", "inpvswjdkirsoodq"))
-                    .withProperties(new AzureLargeStorageInstanceProperties()
-                        .withAzureLargeStorageInstanceUniqueIdentifier("fidfvzw")
-                        .withStorageProperties(new StorageProperties().withOfferingType("ymwisdkft")
-                            .withStorageType("xmnteiwaop").withGeneration("mijcmmxdcufufs")
-                            .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.HPE)
-                            .withWorkloadType("zidnsezcxtbzsgfy")
-                            .withStorageBillingProperties(new StorageBillingProperties()
-                                .withBillingMode("newmdwzjeiachbo").withSku("flnrosfqpteehzz"))))))
+            new AzureLargeStorageInstanceInner().withLocation("pyqr")
+                .withTags(mapOf("hc", "inpvswjdkirsoodq"))
+                .withProperties(new AzureLargeStorageInstanceProperties()
+                    .withAzureLargeStorageInstanceUniqueIdentifier("fidfvzw")
+                    .withStorageProperties(new StorageProperties().withOfferingType("ymwisdkft")
+                        .withStorageType("xmnteiwaop")
+                        .withGeneration("mijcmmxdcufufs")
+                        .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.HPE)
+                        .withWorkloadType("zidnsezcxtbzsgfy")
+                        .withStorageBillingProperties(new StorageBillingProperties().withBillingMode("newmdwzjeiachbo")
+                            .withSku("flnrosfqpteehzz"))))))
             .withNextLink("oifiyipjxsqwpgr");
         model = BinaryData.fromObject(model).toObject(AzureLargeStorageInstanceListResult.class);
         Assertions.assertEquals("kyqduujit", model.value().get(0).location());

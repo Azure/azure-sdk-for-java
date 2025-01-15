@@ -5,31 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Entity common property bag. */
+/**
+ * Entity common property bag.
+ */
 @Immutable
-public class EntityCommonProperties {
+public class EntityCommonProperties implements JsonSerializable<EntityCommonProperties> {
     /*
      * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
-    @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalData;
 
     /*
      * The graph item display name which is a short humanly readable description of the graph item instance. This
      * property is optional and might be system generated.
      */
-    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
+
+    /**
+     * Creates an instance of EntityCommonProperties class.
+     */
+    public EntityCommonProperties() {
+    }
 
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -37,9 +45,21 @@ public class EntityCommonProperties {
     }
 
     /**
+     * Set the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @param additionalData the additionalData value to set.
+     * @return the EntityCommonProperties object itself.
+     */
+    EntityCommonProperties withAdditionalData(Map<String, Object> additionalData) {
+        this.additionalData = additionalData;
+        return this;
+    }
+
+    /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -47,10 +67,60 @@ public class EntityCommonProperties {
     }
 
     /**
+     * Set the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the EntityCommonProperties object itself.
+     */
+    EntityCommonProperties withFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityCommonProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityCommonProperties.
+     */
+    public static EntityCommonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityCommonProperties deserializedEntityCommonProperties = new EntityCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedEntityCommonProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedEntityCommonProperties.friendlyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityCommonProperties;
+        });
     }
 }

@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"pp\",\"requiredMembers\":[\"svioxgqxgidjiijp\"],\"requiredZoneNames\":[\"knb\",\"z\"]},\"name\":\"aecujlaecwnnmnfw\",\"type\":\"lvkrnsodohpid\",\"etag\":\"yf\",\"id\":\"bhepxqtkynlizn\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"x\",\"requiredMembers\":[\"vodqnenq\",\"clnrctrpun\",\"bhoety\"],\"requiredZoneNames\":[\"cerhhzjhmxyns\"]},\"name\":\"dgvjwoxmlbxqwsec\",\"type\":\"woibqnuhrtiwnbq\",\"etag\":\"saolcebwditccu\",\"id\":\"lcmzghaolfupxh\"},{\"properties\":{\"groupId\":\"tknmp\",\"requiredMembers\":[\"cr\",\"xkvuzpso\",\"jctvu\",\"pjwwv\"],\"requiredZoneNames\":[\"jchizhicxlmym\"]},\"name\":\"uhqetmpqcxrwtyg\",\"type\":\"owrtniymaznmql\",\"etag\":\"tppagvfnryjqboy\",\"id\":\"zwqzvmftxkwicg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourcesWrapper response = manager.privateLinkResources()
-            .getWithResponse("cduwuintiib", "ounsydjcem", com.azure.core.util.Context.NONE)
+            .getWithResponse("btms", "nacgbwmqgyak", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bhepxqtkynlizn", response.value().get(0).id());
+        Assertions.assertEquals("lcmzghaolfupxh", response.value().get(0).id());
     }
 }

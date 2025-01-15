@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.DataLakeStoreAccoun
 public final class DataLakeStoreAccountPropertiesBasicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStoreAccountPropertiesBasic model =
-            BinaryData
-                .fromString(
-                    "{\"accountId\":\"c07fa123-1c61-41e1-a749-6c9124ac08e2\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-01-26T08:15:51Z\",\"lastModifiedTime\":\"2021-10-27T17:34:25Z\",\"endpoint\":\"wlokjyem\"}")
-                .toObject(DataLakeStoreAccountPropertiesBasic.class);
+        DataLakeStoreAccountPropertiesBasic model = BinaryData.fromString(
+            "{\"accountId\":\"bd6ff70e-2d47-40b9-8b06-6ecdd89f842c\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-01-26T08:15:51Z\",\"lastModifiedTime\":\"2021-10-27T17:34:25Z\",\"endpoint\":\"wlokjyem\"}")
+            .toObject(DataLakeStoreAccountPropertiesBasic.class);
     }
 
     @org.junit.jupiter.api.Test

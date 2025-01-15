@@ -5,60 +5,63 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The common properties of the export. */
+/**
+ * The common properties of the export.
+ */
 @Fluent
-public class CommonExportPropertiesInner {
+public class CommonExportPropertiesInner implements JsonSerializable<CommonExportPropertiesInner> {
     /*
      * The format of the export being delivered. Currently only 'Csv' is supported.
      */
-    @JsonProperty(value = "format")
     private FormatType format;
 
     /*
      * Has delivery information for the export.
      */
-    @JsonProperty(value = "deliveryInfo", required = true)
     private ExportDeliveryInfo deliveryInfo;
 
     /*
      * Has the definition for the export.
      */
-    @JsonProperty(value = "definition", required = true)
     private ExportDefinition definition;
 
     /*
      * If requested, has the most recent run history for the export.
      */
-    @JsonProperty(value = "runHistory")
     private ExportExecutionListResultInner runHistory;
 
     /*
-     * If set to true, exported data will be partitioned by size and placed in a blob directory together with a
-     * manifest file. Note: this option is currently available only for Microsoft Customer Agreement commerce scopes.
+     * If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest
+     * file. Note: this option is currently available only for Microsoft Customer Agreement commerce scopes.
      */
-    @JsonProperty(value = "partitionData")
     private Boolean partitionData;
 
     /*
      * If the export has an active schedule, provides an estimate of the next run time.
      */
-    @JsonProperty(value = "nextRunTimeEstimate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextRunTimeEstimate;
 
-    /** Creates an instance of CommonExportPropertiesInner class. */
+    /**
+     * Creates an instance of CommonExportPropertiesInner class.
+     */
     public CommonExportPropertiesInner() {
     }
 
     /**
      * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
+     * 
      * @return the format value.
      */
     public FormatType format() {
@@ -67,7 +70,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
+     * 
      * @param format the format value to set.
      * @return the CommonExportPropertiesInner object itself.
      */
@@ -78,7 +81,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Get the deliveryInfo property: Has delivery information for the export.
-     *
+     * 
      * @return the deliveryInfo value.
      */
     public ExportDeliveryInfo deliveryInfo() {
@@ -87,7 +90,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Set the deliveryInfo property: Has delivery information for the export.
-     *
+     * 
      * @param deliveryInfo the deliveryInfo value to set.
      * @return the CommonExportPropertiesInner object itself.
      */
@@ -98,7 +101,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Get the definition property: Has the definition for the export.
-     *
+     * 
      * @return the definition value.
      */
     public ExportDefinition definition() {
@@ -107,7 +110,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Set the definition property: Has the definition for the export.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the CommonExportPropertiesInner object itself.
      */
@@ -118,7 +121,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Get the runHistory property: If requested, has the most recent run history for the export.
-     *
+     * 
      * @return the runHistory value.
      */
     public ExportExecutionListResultInner runHistory() {
@@ -127,7 +130,7 @@ public class CommonExportPropertiesInner {
 
     /**
      * Set the runHistory property: If requested, has the most recent run history for the export.
-     *
+     * 
      * @param runHistory the runHistory value to set.
      * @return the CommonExportPropertiesInner object itself.
      */
@@ -140,7 +143,7 @@ public class CommonExportPropertiesInner {
      * Get the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
      * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
      * Agreement commerce scopes.
-     *
+     * 
      * @return the partitionData value.
      */
     public Boolean partitionData() {
@@ -151,7 +154,7 @@ public class CommonExportPropertiesInner {
      * Set the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
      * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
      * Agreement commerce scopes.
-     *
+     * 
      * @param partitionData the partitionData value to set.
      * @return the CommonExportPropertiesInner object itself.
      */
@@ -163,7 +166,7 @@ public class CommonExportPropertiesInner {
     /**
      * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
      * time.
-     *
+     * 
      * @return the nextRunTimeEstimate value.
      */
     public OffsetDateTime nextRunTimeEstimate() {
@@ -171,24 +174,34 @@ public class CommonExportPropertiesInner {
     }
 
     /**
+     * Set the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
+     * 
+     * @param nextRunTimeEstimate the nextRunTimeEstimate value to set.
+     * @return the CommonExportPropertiesInner object itself.
+     */
+    CommonExportPropertiesInner withNextRunTimeEstimate(OffsetDateTime nextRunTimeEstimate) {
+        this.nextRunTimeEstimate = nextRunTimeEstimate;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deliveryInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deliveryInfo in model CommonExportPropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deliveryInfo in model CommonExportPropertiesInner"));
         } else {
             deliveryInfo().validate();
         }
         if (definition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property definition in model CommonExportPropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property definition in model CommonExportPropertiesInner"));
         } else {
             definition().validate();
         }
@@ -198,4 +211,57 @@ public class CommonExportPropertiesInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommonExportPropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deliveryInfo", this.deliveryInfo);
+        jsonWriter.writeJsonField("definition", this.definition);
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeJsonField("runHistory", this.runHistory);
+        jsonWriter.writeBooleanField("partitionData", this.partitionData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonExportPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonExportPropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonExportPropertiesInner.
+     */
+    public static CommonExportPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonExportPropertiesInner deserializedCommonExportPropertiesInner = new CommonExportPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deliveryInfo".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.deliveryInfo = ExportDeliveryInfo.fromJson(reader);
+                } else if ("definition".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.definition = ExportDefinition.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.format = FormatType.fromString(reader.getString());
+                } else if ("runHistory".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.runHistory
+                        = ExportExecutionListResultInner.fromJson(reader);
+                } else if ("partitionData".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.partitionData = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nextRunTimeEstimate".equals(fieldName)) {
+                    deserializedCommonExportPropertiesInner.nextRunTimeEstimate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonExportPropertiesInner;
+        });
+    }
 }

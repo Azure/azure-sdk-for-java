@@ -22,16 +22,17 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
     static final int EXPECTED_DIMENSION_VALUES_COUNT = 3;
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2022-01-01T00:00:00Z");
     static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2022-03-22T00:00:00Z");
-    static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
+    static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {
+        {
             put("Dim1", "JPN");
             put("Dim2", "JP");
-        }};
+        }
+    };
 
     // Pre-configured test resource.
     protected static class ListEnrichmentStatusInput {
         static final ListEnrichmentStatusInput INSTANCE = new ListEnrichmentStatusInput();
-        final ListMetricEnrichmentStatusOptions options =
-            new ListMetricEnrichmentStatusOptions();
+        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions();
 
         final String metricId = METRIC_ID;
     }

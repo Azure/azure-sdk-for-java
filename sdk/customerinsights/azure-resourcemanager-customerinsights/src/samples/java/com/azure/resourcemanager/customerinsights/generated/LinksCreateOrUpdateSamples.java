@@ -12,19 +12,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Links CreateOrUpdate. */
+/**
+ * Samples for Links CreateOrUpdate.
+ */
 public final class LinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/LinksCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * LinksCreateOrUpdate.json
      */
     /**
      * Sample code: Links_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void linksCreateOrUpdate(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .links()
+        manager.links()
             .define("linkTest4806")
             .withExistingHub("TestHubRG", "sdkTestHub")
             .withSourceEntityType(EntityType.INTERACTION)
@@ -33,22 +36,16 @@ public final class LinksCreateOrUpdateSamples {
             .withTargetEntityTypeName("testProfile1446")
             .withDisplayName(mapOf("en-us", "Link DisplayName"))
             .withDescription(mapOf("en-us", "Link Description"))
-            .withMappings(
-                Arrays
-                    .asList(
-                        new TypePropertiesMapping()
-                            .withSourcePropertyName("testInteraction1949")
-                            .withTargetPropertyName("testProfile1446")
-                            .withLinkType(LinkTypes.UPDATE_ALWAYS)))
+            .withMappings(Arrays.asList(new TypePropertiesMapping().withSourcePropertyName("testInteraction1949")
+                .withTargetPropertyName("testProfile1446")
+                .withLinkType(LinkTypes.UPDATE_ALWAYS)))
             .withParticipantPropertyReferences(
-                Arrays
-                    .asList(
-                        new ParticipantPropertyReference()
-                            .withSourcePropertyName("testInteraction1949")
-                            .withTargetPropertyName("ProfileId")))
+                Arrays.asList(new ParticipantPropertyReference().withSourcePropertyName("testInteraction1949")
+                    .withTargetPropertyName("ProfileId")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

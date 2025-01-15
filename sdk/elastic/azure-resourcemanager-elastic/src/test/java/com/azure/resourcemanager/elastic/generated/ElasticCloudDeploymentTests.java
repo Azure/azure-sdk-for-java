@@ -10,11 +10,9 @@ import com.azure.resourcemanager.elastic.models.ElasticCloudDeployment;
 public final class ElasticCloudDeploymentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticCloudDeployment model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"wclxxwrl\",\"deploymentId\":\"ouskcqvkocrc\",\"azureSubscriptionId\":\"kwt\",\"elasticsearchRegion\":\"xbnjbiksq\",\"elasticsearchServiceUrl\":\"lssai\",\"kibanaServiceUrl\":\"p\",\"kibanaSsoUrl\":\"nzl\"}")
-                .toObject(ElasticCloudDeployment.class);
+        ElasticCloudDeployment model = BinaryData.fromString(
+            "{\"name\":\"sezcxtb\",\"deploymentId\":\"gfycc\",\"azureSubscriptionId\":\"ewmdw\",\"elasticsearchRegion\":\"eiachboosflnr\",\"elasticsearchServiceUrl\":\"fqpte\",\"kibanaServiceUrl\":\"zzvypyqrimzinp\",\"kibanaSsoUrl\":\"wjdk\"}")
+            .toObject(ElasticCloudDeployment.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -106,8 +106,8 @@ public class BufferRecycler {
      * @since 2.4
      */
     protected BufferRecycler(int bbCount, int cbCount) {
-        _byteBuffers = new AtomicReferenceArray<byte[]>(bbCount);
-        _charBuffers = new AtomicReferenceArray<char[]>(cbCount);
+        _byteBuffers = new AtomicReferenceArray<>(bbCount);
+        _charBuffers = new AtomicReferenceArray<>(cbCount);
     }
 
     /*

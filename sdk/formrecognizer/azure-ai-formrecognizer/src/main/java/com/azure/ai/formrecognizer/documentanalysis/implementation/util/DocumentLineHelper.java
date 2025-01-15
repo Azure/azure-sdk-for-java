@@ -33,8 +33,11 @@ public final class DocumentLineHelper {
      */
     public interface DocumentLineAccessor {
         void setContent(DocumentLine documentLine, String content);
+
         void setBoundingPolygon(DocumentLine documentLine, List<Point> boundingPolygon);
+
         void setSpans(DocumentLine documentLine, List<DocumentSpan> spans);
+
         void setPageWords(DocumentLine documentLine, List<DocumentWord> pageWords);
 
     }

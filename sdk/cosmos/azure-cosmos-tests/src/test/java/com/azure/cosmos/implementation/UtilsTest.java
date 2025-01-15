@@ -107,4 +107,13 @@ public class UtilsTest {
             return version;
         }
     }
+
+    @Test(groups = { "unit" })
+    public void allowUnquotedControlChars() {
+        assertThat(Utils.shouldAllowUnquotedControlChars()).isTrue();
+
+        System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "false");
+        assertThat(Utils.shouldAllowUnquotedControlChars()).isFalse();
+        System.clearProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS");
+    }
 }

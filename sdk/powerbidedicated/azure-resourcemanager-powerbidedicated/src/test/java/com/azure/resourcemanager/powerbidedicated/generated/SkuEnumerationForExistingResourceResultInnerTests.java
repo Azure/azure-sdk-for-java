@@ -15,49 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuEnumerationForExistingResourceResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuEnumerationForExistingResourceResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"umkdosvqwhbmd\",\"sku\":{\"name\":\"bjf\",\"tier\":\"PBIE_Azure\",\"capacity\":1359237516}},{\"resourceType\":\"bexppb\",\"sku\":{\"name\":\"q\",\"tier\":\"Premium\",\"capacity\":1825167031}},{\"resourceType\":\"fpsalgbqu\",\"sku\":{\"name\":\"gjyjgzjaoyfhrtxi\",\"tier\":\"PBIE_Azure\",\"capacity\":1275359394}}]}")
-                .toObject(SkuEnumerationForExistingResourceResultInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value().get(0).resourceType());
-        Assertions.assertEquals("bjf", model.value().get(0).sku().name());
+        SkuEnumerationForExistingResourceResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"hbmdgbbjfdd\",\"sku\":{\"name\":\"bmbexppbhtqqro\",\"tier\":\"PBIE_Azure\",\"capacity\":191482446}}]}")
+            .toObject(SkuEnumerationForExistingResourceResultInner.class);
+        Assertions.assertEquals("hbmdgbbjfdd", model.value().get(0).resourceType());
+        Assertions.assertEquals("bmbexppbhtqqro", model.value().get(0).sku().name());
         Assertions.assertEquals(CapacitySkuTier.PBIE_AZURE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1359237516, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(191482446, model.value().get(0).sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuEnumerationForExistingResourceResultInner model =
-            new SkuEnumerationForExistingResourceResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SkuDetailsForExistingResource()
-                                .withResourceType("umkdosvqwhbmd")
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("bjf")
-                                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                                        .withCapacity(1359237516)),
-                            new SkuDetailsForExistingResource()
-                                .withResourceType("bexppb")
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("q")
-                                        .withTier(CapacitySkuTier.PREMIUM)
-                                        .withCapacity(1825167031)),
-                            new SkuDetailsForExistingResource()
-                                .withResourceType("fpsalgbqu")
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("gjyjgzjaoyfhrtxi")
-                                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                                        .withCapacity(1275359394))));
+        SkuEnumerationForExistingResourceResultInner model = new SkuEnumerationForExistingResourceResultInner()
+            .withValue(Arrays.asList(new SkuDetailsForExistingResource().withResourceType("hbmdgbbjfdd")
+                .withSku(new CapacitySku().withName("bmbexppbhtqqro")
+                    .withTier(CapacitySkuTier.PBIE_AZURE)
+                    .withCapacity(191482446))));
         model = BinaryData.fromObject(model).toObject(SkuEnumerationForExistingResourceResultInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value().get(0).resourceType());
-        Assertions.assertEquals("bjf", model.value().get(0).sku().name());
+        Assertions.assertEquals("hbmdgbbjfdd", model.value().get(0).resourceType());
+        Assertions.assertEquals("bmbexppbhtqqro", model.value().get(0).sku().name());
         Assertions.assertEquals(CapacitySkuTier.PBIE_AZURE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1359237516, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(191482446, model.value().get(0).sku().capacity());
     }
 }

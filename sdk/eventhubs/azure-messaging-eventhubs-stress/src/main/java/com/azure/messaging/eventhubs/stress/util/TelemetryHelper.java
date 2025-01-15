@@ -8,7 +8,7 @@ import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -76,11 +76,10 @@ public class TelemetryHelper {
         this.tracer = OTEL.getTracer(scenarioName);
         this.meter = OTEL.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
-        this.runDuration = meter.histogramBuilder("test.run.duration")
-            .setUnit("s")
-            .build();
+        this.runDuration = meter.histogramBuilder("test.run.duration").setUnit("s").build();
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
+        this.canceledAttributes
+            = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
         this.closedPartitionCounter = meter.counterBuilder("partition_closed").build();
         this.initializedPartitionCounter = meter.counterBuilder("partition_initialized").build();
         this.errorCounter = meter.counterBuilder("test.run.errors").build();
@@ -96,31 +95,31 @@ public class TelemetryHelper {
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder()
-            .connectionString(applicationInsightsConnectionString)
-            .install(sdkBuilder);
+        AzureMonitorExporter.customize(sdkBuilder, applicationInsightsConnectionString);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
-                .addResourceCustomizer((resource, props) ->
-                        instanceId == null ? resource : resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), instanceId).build())
-                .addSamplerCustomizer((sampler, props) -> new Sampler() {
-                    @Override
-                    public SamplingResult shouldSample(Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
-                        if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
-                            return SamplingResult.recordAndSample();
-                        }
-                        return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+            .addResourceCustomizer((resource, props) -> instanceId == null
+                ? resource
+                : resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), instanceId).build())
+            .addSamplerCustomizer((sampler, props) -> new Sampler() {
+                @Override
+                public SamplingResult shouldSample(Context parentContext, String traceId, String name,
+                    SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                    if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
+                        return SamplingResult.recordAndSample();
                     }
+                    return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return sampler.getDescription();
-                    }
-                })
-                .setResultAsGlobal()
-                .build()
-                .getOpenTelemetrySdk();
+                @Override
+                public String getDescription() {
+                    return sampler.getDescription();
+                }
+            })
+            .setResultAsGlobal()
+            .build()
+            .getOpenTelemetrySdk();
         Classes.registerObservers(otel);
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
@@ -153,7 +152,9 @@ public class TelemetryHelper {
             oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
-            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
+            if (e.getMessage().contains("Timeout on blocking read")
+                || e instanceof InterruptedException
+                || e instanceof TimeoutException) {
                 trackCancellation(start, span);
             } else {
                 trackFailure(start, e, span, method, partitionId);
@@ -177,7 +178,8 @@ public class TelemetryHelper {
                 return runAsync.doOnError(e -> trackFailure(start, e, span, method, null))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current()))
+                    .contextWrite(reactor.util.context.Context
+                        .of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current()))
                     .onErrorResume(e -> Mono.empty());
             }
         });
@@ -189,9 +191,7 @@ public class TelemetryHelper {
     }
 
     private void trackCancellation(Instant start, Span span) {
-        logger.atWarning()
-            .addKeyValue("error.type", "cancelled")
-            .log("run ended");
+        logger.atWarning().addKeyValue("error.type", "cancelled").log("run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -227,7 +227,8 @@ public class TelemetryHelper {
         } catch (ClassNotFoundException e) {
             logger.atWarning()
                 .addKeyValue("class", EventHubClientBuilder.class.getName())
-                .log("Could not determine azure-eventhubs-messaging version, EventHubClientBuilder class is not found", e);
+                .log("Could not determine azure-eventhubs-messaging version, EventHubClientBuilder class is not found",
+                    e);
         }
 
         span.setAttribute(AttributeKey.longKey("durationSec"), options.getTestDuration().getSeconds());
@@ -236,6 +237,7 @@ public class TelemetryHelper {
         span.setAttribute(AttributeKey.stringKey("eventHubName"), options.getEventHubsEventHubName());
         span.setAttribute(AttributeKey.stringKey("consumerGroupName"), options.getEventHubsConsumerGroup());
         span.setAttribute(AttributeKey.longKey("messageSize"), options.getMessageSize());
+        span.setAttribute(AttributeKey.booleanKey("useV2"), options.useV2Stack());
         span.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         span.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         span.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
@@ -248,7 +250,6 @@ public class TelemetryHelper {
             .setAttribute(SAMPLE_IN_ATTRIBUTE, true)
             .startSpan();
     }
-
 
     public void recordError(String errorReason, String method, String partitionId) {
         recordError(errorReason, null, method, partitionId);

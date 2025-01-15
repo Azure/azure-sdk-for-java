@@ -12,7 +12,8 @@ import com.azure.resourcemanager.quota.models.QuotaAllocationRequestBase;
  */
 public final class GroupQuotaSubscriptionAllocationRequestCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/SubscriptionQuotaAllocationRequests/PutSubscriptionQuotaAllocationRequest-Compute.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/
+     * SubscriptionQuotaAllocationRequests/PutSubscriptionQuotaAllocationRequest-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocation_Put_Request_ForCompute.

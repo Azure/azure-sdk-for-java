@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AutoScaleVCores. */
+/**
+ * Resource collection API of AutoScaleVCores.
+ */
 public interface AutoScaleVCores {
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,14 +24,14 @@ public interface AutoScaleVCores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified auto scale v-core along with {@link Response}.
      */
-    Response<AutoScaleVCore> getByResourceGroupWithResponse(
-        String resourceGroupName, String vcoreName, Context context);
+    Response<AutoScaleVCore> getByResourceGroupWithResponse(String resourceGroupName, String vcoreName,
+        Context context);
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface AutoScaleVCores {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface AutoScaleVCores {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,9 +68,9 @@ public interface AutoScaleVCores {
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -78,9 +80,9 @@ public interface AutoScaleVCores {
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -91,7 +93,7 @@ public interface AutoScaleVCores {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of auto scale v-core resources as paginated response with {@link PagedIterable}.
@@ -100,7 +102,7 @@ public interface AutoScaleVCores {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,7 +113,7 @@ public interface AutoScaleVCores {
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +124,7 @@ public interface AutoScaleVCores {
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface AutoScaleVCores {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +146,7 @@ public interface AutoScaleVCores {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface AutoScaleVCores {
 
     /**
      * Begins definition for a new AutoScaleVCore resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AutoScaleVCore definition.
      */

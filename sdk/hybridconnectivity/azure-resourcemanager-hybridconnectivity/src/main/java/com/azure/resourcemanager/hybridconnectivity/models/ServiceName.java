@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of the service. */
+/**
+ * Name of the service.
+ */
 public final class ServiceName extends ExpandableStringEnum<ServiceName> {
-    /** Static value SSH for ServiceName. */
+    /**
+     * Static value SSH for ServiceName.
+     */
     public static final ServiceName SSH = fromString("SSH");
 
-    /** Static value WAC for ServiceName. */
+    /**
+     * Static value WAC for ServiceName.
+     */
     public static final ServiceName WAC = fromString("WAC");
 
     /**
      * Creates a new instance of ServiceName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ServiceName extends ExpandableStringEnum<ServiceName> {
 
     /**
      * Creates or finds a ServiceName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceName.
      */
-    @JsonCreator
     public static ServiceName fromString(String name) {
         return fromString(name, ServiceName.class);
     }
 
     /**
      * Gets known ServiceName values.
-     *
+     * 
      * @return known ServiceName values.
      */
     public static Collection<ServiceName> values() {

@@ -7,74 +7,76 @@ package com.azure.resourcemanager.billingbenefits.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for BillingBenefitsRP class. */
+/**
+ * The interface for BillingBenefitsRP class.
+ */
 public interface BillingBenefitsRP {
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the SavingsPlanOrderAliasClient object to access its operations.
-     *
+     * 
      * @return the SavingsPlanOrderAliasClient object.
      */
     SavingsPlanOrderAliasClient getSavingsPlanOrderAlias();
 
     /**
      * Gets the SavingsPlanOrdersClient object to access its operations.
-     *
+     * 
      * @return the SavingsPlanOrdersClient object.
      */
     SavingsPlanOrdersClient getSavingsPlanOrders();
 
     /**
      * Gets the SavingsPlansClient object to access its operations.
-     *
+     * 
      * @return the SavingsPlansClient object.
      */
     SavingsPlansClient getSavingsPlans();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the ReservationOrderAliasClient object to access its operations.
-     *
+     * 
      * @return the ReservationOrderAliasClient object.
      */
     ReservationOrderAliasClient getReservationOrderAlias();

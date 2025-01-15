@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Input directory for the job. */
 @Fluent
 public final class InputDirectory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputDirectory.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(InputDirectory.class);
 
     /*
      * The ID for the input directory. The job can use AZ_BATCHAI_INPUT_<id>
@@ -77,14 +78,12 @@ public final class InputDirectory {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model InputDirectory"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model InputDirectory"));
         }
         if (path() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model InputDirectory"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property path in model InputDirectory"));
         }
     }
 }

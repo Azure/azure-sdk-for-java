@@ -5,80 +5,75 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * UE Connection Info for 5G.
  */
 @Fluent
-public final class UeConnectionInfo5G {
+public final class UeConnectionInfo5G implements JsonSerializable<UeConnectionInfo5G> {
     /*
      * UE Location Info properties
      */
-    @JsonProperty(value = "locationInfo")
     private UeLocationInfo locationInfo;
 
     /*
      * Global RAN Node ID
      */
-    @JsonProperty(value = "globalRanNodeId", required = true)
     private GlobalRanNodeId globalRanNodeId;
 
     /*
      * Per-UE transport network layer association
      */
-    @JsonProperty(value = "perUeTnla")
     private String perUeTnla;
 
     /*
      * The AMF UE NGAP ID
      */
-    @JsonProperty(value = "amfUeNgapId", required = true)
     private long amfUeNgapId;
 
     /*
      * The RAN UE NGAP ID
      */
-    @JsonProperty(value = "ranUeNgapId", required = true)
     private int ranUeNgapId;
 
     /*
      * Last Visited TAI
      */
-    @JsonProperty(value = "lastVisitedTai")
     private String lastVisitedTai;
 
     /*
      * Allowed Network Slice Selection Assistance Information
      */
-    @JsonProperty(value = "allowedNssai")
     private List<Snssai> allowedNssai;
 
     /*
      * State of the UE.
      */
-    @JsonProperty(value = "ueState", required = true)
     private UeState ueState;
 
     /*
      * Radio connection establishment cause
      */
-    @JsonProperty(value = "rrcEstablishmentCause", required = true)
     private RrcEstablishmentCause rrcEstablishmentCause;
 
     /*
      * The UE's usage setting
      */
-    @JsonProperty(value = "ueUsageSetting")
     private UeUsageSetting ueUsageSetting;
 
     /*
      * The timestamp of last activity of UE (UTC).
      */
-    @JsonProperty(value = "lastActivityTime")
     private OffsetDateTime lastActivityTime;
 
     /**
@@ -338,4 +333,79 @@ public final class UeConnectionInfo5G {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeConnectionInfo5G.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("globalRanNodeId", this.globalRanNodeId);
+        jsonWriter.writeLongField("amfUeNgapId", this.amfUeNgapId);
+        jsonWriter.writeIntField("ranUeNgapId", this.ranUeNgapId);
+        jsonWriter.writeStringField("ueState", this.ueState == null ? null : this.ueState.toString());
+        jsonWriter.writeStringField("rrcEstablishmentCause",
+            this.rrcEstablishmentCause == null ? null : this.rrcEstablishmentCause.toString());
+        jsonWriter.writeJsonField("locationInfo", this.locationInfo);
+        jsonWriter.writeStringField("perUeTnla", this.perUeTnla);
+        jsonWriter.writeStringField("lastVisitedTai", this.lastVisitedTai);
+        jsonWriter.writeArrayField("allowedNssai", this.allowedNssai, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("ueUsageSetting",
+            this.ueUsageSetting == null ? null : this.ueUsageSetting.toString());
+        jsonWriter.writeStringField("lastActivityTime",
+            this.lastActivityTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActivityTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeConnectionInfo5G from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeConnectionInfo5G if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeConnectionInfo5G.
+     */
+    public static UeConnectionInfo5G fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeConnectionInfo5G deserializedUeConnectionInfo5G = new UeConnectionInfo5G();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("globalRanNodeId".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.globalRanNodeId = GlobalRanNodeId.fromJson(reader);
+                } else if ("amfUeNgapId".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.amfUeNgapId = reader.getLong();
+                } else if ("ranUeNgapId".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.ranUeNgapId = reader.getInt();
+                } else if ("ueState".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.ueState = UeState.fromString(reader.getString());
+                } else if ("rrcEstablishmentCause".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.rrcEstablishmentCause
+                        = RrcEstablishmentCause.fromString(reader.getString());
+                } else if ("locationInfo".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.locationInfo = UeLocationInfo.fromJson(reader);
+                } else if ("perUeTnla".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.perUeTnla = reader.getString();
+                } else if ("lastVisitedTai".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.lastVisitedTai = reader.getString();
+                } else if ("allowedNssai".equals(fieldName)) {
+                    List<Snssai> allowedNssai = reader.readArray(reader1 -> Snssai.fromJson(reader1));
+                    deserializedUeConnectionInfo5G.allowedNssai = allowedNssai;
+                } else if ("ueUsageSetting".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.ueUsageSetting = UeUsageSetting.fromString(reader.getString());
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedUeConnectionInfo5G.lastActivityTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeConnectionInfo5G;
+        });
+    }
 }

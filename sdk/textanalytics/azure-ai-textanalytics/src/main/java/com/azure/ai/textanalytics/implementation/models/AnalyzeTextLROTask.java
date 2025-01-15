@@ -18,13 +18,12 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    private AnalyzeTextLROTaskKind kind;
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.fromString("AnalyzeTextLROTask");
 
     /**
      * Creates an instance of AnalyzeTextLROTask class.
      */
     public AnalyzeTextLROTask() {
-        this.kind = AnalyzeTextLROTaskKind.fromString("AnalyzeTextLROTask");
     }
 
     /**

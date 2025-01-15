@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TagContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagContractProperties model =
-            BinaryData.fromString("{\"displayName\":\"ugmrmf\"}").toObject(TagContractProperties.class);
+        TagContractProperties model
+            = BinaryData.fromString("{\"displayName\":\"ugmrmf\"}").toObject(TagContractProperties.class);
         Assertions.assertEquals("ugmrmf", model.displayName());
     }
 

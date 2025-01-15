@@ -37,8 +37,9 @@ public final class NetworkFunctionDefinitionVersionListResultTests {
                 new NetworkFunctionDefinitionVersionInner().withLocation("brh")
                     .withTags(mapOf("ibahwflus", "sdqrhzoymibmrq", "piexpbtgiw", "dtmhrkwofyyvoqa", "nwashrtd", "wo",
                         "ulpiuj", "kcnqxwbpo"))
-                    .withProperties(new NetworkFunctionDefinitionVersionPropertiesFormat()
-                        .withDescription("xprglyatddc").withDeployParameters("bcuejrjxgci")),
+                    .withProperties(
+                        new NetworkFunctionDefinitionVersionPropertiesFormat().withDescription("xprglyatddc")
+                            .withDeployParameters("bcuejrjxgci")),
                 new NetworkFunctionDefinitionVersionInner().withLocation("o")
                     .withTags(mapOf("vvqfovljxyws", "cdyhbpkkpwdreqn", "yrs", "w"))
                     .withProperties(new NetworkFunctionDefinitionVersionPropertiesFormat().withDescription("vfbtkuwh")

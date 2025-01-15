@@ -6,39 +6,41 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.resourcemanager.securityinsights.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the display property: Properties of the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the origin property: The origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

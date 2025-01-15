@@ -24,8 +24,8 @@ public interface GitHubConnectorStatsOperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubConnectorStatsListResponseInner> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    Response<GitHubConnectorStatsListResponseInner> getWithResponse(String resourceGroupName,
+        String gitHubConnectorName, Context context);
 
     /**
      * Returns the summary of the GitHub Connector Stats.

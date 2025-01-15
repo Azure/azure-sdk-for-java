@@ -26,22 +26,28 @@ import com.azure.resourcemanager.databox.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.databox.models.MitigateJobRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DataBoxManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,27 +58,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxManagementCli")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/mitigate")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/mitigate")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> mitigate(
-            @HostParam("$host") String endpoint,
-            @PathParam("jobName") String jobName,
+        Mono<Response<Void>> mitigate(@HostParam("$host") String endpoint, @PathParam("jobName") String jobName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") MitigateJobRequest mitigateJobRequest,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MitigateJobRequest mitigateJobRequest, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,22 +82,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> mitigateWithResponseAsync(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
+    private Mono<Response<Void>> mitigateWithResponseAsync(String jobName, String resourceGroupName,
+        MitigateJobRequest mitigateJobRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -111,25 +108,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .mitigate(
-                            this.client.getEndpoint(),
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mitigateJobRequest,
-                            accept,
-                            context))
+                context -> service.mitigate(this.client.getEndpoint(), jobName, this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), mitigateJobRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @param context The context to associate with this operation.
@@ -139,22 +127,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> mitigateWithResponseAsync(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
+    private Mono<Response<Void>> mitigateWithResponseAsync(String jobName, String resourceGroupName,
+        MitigateJobRequest mitigateJobRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,23 +152,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .mitigate(
-                this.client.getEndpoint(),
-                jobName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mitigateJobRequest,
-                accept,
-                context);
+        return service.mitigate(this.client.getEndpoint(), jobName, this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mitigateJobRequest, accept, context);
     }
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,9 +176,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @param context The context to associate with this operation.
@@ -212,16 +188,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
+    public Response<Void> mitigateWithResponse(String jobName, String resourceGroupName,
+        MitigateJobRequest mitigateJobRequest, Context context) {
         return mitigateWithResponseAsync(jobName, resourceGroupName, mitigateJobRequest, context).block();
     }
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -51,7 +51,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
     /**
      * Creates a basic authentication credential.
      *
-     * @param username basic auth user name
+     * @param username basic auth username
      * @param password basic auth password
      */
     public BasicAuthenticationCredential(String username, String password) {
@@ -59,11 +59,13 @@ public class BasicAuthenticationCredential implements TokenCredential {
         this.encodedCredential = Base64Util.encodeToString(credential.getBytes(StandardCharsets.UTF_8));
     }
 
-    /**
-     * @throws RuntimeException If the UTF-8 encoding isn't supported.
-     */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.fromCallable(() -> new AccessToken(encodedCredential, OffsetDateTime.MAX));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        return new AccessToken(encodedCredential, OffsetDateTime.MAX);
     }
 }

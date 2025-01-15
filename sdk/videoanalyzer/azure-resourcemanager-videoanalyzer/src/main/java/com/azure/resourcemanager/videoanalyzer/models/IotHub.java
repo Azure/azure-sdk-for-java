@@ -89,9 +89,8 @@ public final class IotHub {
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model IotHub"));
         }
         if (identity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property identity in model IotHub"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identity in model IotHub"));
         } else {
             identity().validate();
         }

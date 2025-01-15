@@ -49,14 +49,14 @@ public final class BastionHostInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of BastionHostInner class.
@@ -143,16 +143,6 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -160,6 +150,16 @@ public final class BastionHostInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -464,6 +464,29 @@ public final class BastionHostInner extends Resource {
             this.innerProperties = new BastionHostPropertiesFormat();
         }
         this.innerProperties().withEnableSessionRecording(enableSessionRecording);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @return the enablePrivateOnlyBastion value.
+     */
+    public Boolean enablePrivateOnlyBastion() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateOnlyBastion();
+    }
+
+    /**
+     * Set the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @param enablePrivateOnlyBastion the enablePrivateOnlyBastion value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnablePrivateOnlyBastion(Boolean enablePrivateOnlyBastion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateOnlyBastion(enablePrivateOnlyBastion);
         return this;
     }
 

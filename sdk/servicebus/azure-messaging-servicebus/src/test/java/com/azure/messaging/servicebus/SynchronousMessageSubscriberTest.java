@@ -91,7 +91,8 @@ public class SynchronousMessageSubscriberTest {
         when(deleteModeAsyncClient.getReceiverOptions()).thenReturn(deleteModeOptions);
         when(deleteModeOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.RECEIVE_AND_DELETE);
 
-        deleteModeSyncSubscriber = new SynchronousMessageSubscriber(deleteModeAsyncClient, work1, false, operationTimeout);
+        deleteModeSyncSubscriber
+            = new SynchronousMessageSubscriber(deleteModeAsyncClient, work1, false, operationTimeout);
     }
 
     @AfterEach

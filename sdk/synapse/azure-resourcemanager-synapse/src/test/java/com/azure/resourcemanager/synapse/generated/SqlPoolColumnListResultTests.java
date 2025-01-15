@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.SqlPoolColumnListResult;
 public final class SqlPoolColumnListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolColumnListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"columnType\":\"date\",\"isComputed\":false},\"id\":\"rmbzo\",\"name\":\"okixrjqcir\",\"type\":\"zpfrla\"},{\"properties\":{\"columnType\":\"bit\",\"isComputed\":false},\"id\":\"oiindfpwpjy\",\"name\":\"wbtlhflsjcdh\",\"type\":\"zfjvfbgofe\"},{\"properties\":{\"columnType\":\"image\",\"isComputed\":true},\"id\":\"mqhldvrii\",\"name\":\"ojnal\",\"type\":\"hfkvtvsexsowuel\"}],\"nextLink\":\"hhahhxvrhmzkwpjg\"}")
-                .toObject(SqlPoolColumnListResult.class);
+        SqlPoolColumnListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"columnType\":\"uniqueidentifier\",\"isComputed\":true},\"id\":\"lnzonzlrpiqywn\",\"name\":\"vjtszcofize\",\"type\":\"tdhgbjkvrelj\"}],\"nextLink\":\"murvzm\"}")
+            .toObject(SqlPoolColumnListResult.class);
     }
 
     @org.junit.jupiter.api.Test

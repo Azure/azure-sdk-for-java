@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The azure resource reference which is used for deployment.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "idType",
-    defaultImpl = DeploymentResourceIdReference.class)
-@JsonTypeName("DeploymentResourceIdReference")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Secret", value = SecretDeploymentResourceReference.class),
-    @JsonSubTypes.Type(name = "Open", value = OpenDeploymentResourceReference.class) })
 @Immutable
-public class DeploymentResourceIdReference {
+public class DeploymentResourceIdReference implements JsonSerializable<DeploymentResourceIdReference> {
+    /*
+     * The resource reference arm id type.
+     */
+    private IdType idType = IdType.fromString("DeploymentResourceIdReference");
+
     /**
      * Creates an instance of DeploymentResourceIdReference class.
      */
     public DeploymentResourceIdReference() {
+    }
+
+    /**
+     * Get the idType property: The resource reference arm id type.
+     * 
+     * @return the idType value.
+     */
+    public IdType idType() {
+        return this.idType;
     }
 
     /**
@@ -35,5 +42,69 @@ public class DeploymentResourceIdReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("idType", this.idType == null ? null : this.idType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentResourceIdReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentResourceIdReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentResourceIdReference.
+     */
+    public static DeploymentResourceIdReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("idType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Secret".equals(discriminatorValue)) {
+                    return SecretDeploymentResourceReference.fromJson(readerToUse.reset());
+                } else if ("Open".equals(discriminatorValue)) {
+                    return OpenDeploymentResourceReference.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DeploymentResourceIdReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentResourceIdReference deserializedDeploymentResourceIdReference
+                = new DeploymentResourceIdReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("idType".equals(fieldName)) {
+                    deserializedDeploymentResourceIdReference.idType = IdType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentResourceIdReference;
+        });
     }
 }

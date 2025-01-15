@@ -19,32 +19,35 @@ public final class InformixTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformixTableDataset model = BinaryData.fromString(
-            "{\"type\":\"InformixTable\",\"typeProperties\":{\"tableName\":\"databzgottaksadzighm\"},\"description\":\"b\",\"structure\":\"datavucfvvraab\",\"schema\":\"datardeewl\",\"linkedServiceName\":{\"referenceName\":\"uxpcbwkdwj\",\"parameters\":{\"roo\":\"datazni\",\"taspmcrei\":\"datam\",\"hminuwqxungrobgw\":\"datauftrni\"}},\"parameters\":{\"geerclbl\":{\"type\":\"Object\",\"defaultValue\":\"datawdylwxmvzjowz\"},\"yeurjwmv\":{\"type\":\"Float\",\"defaultValue\":\"datapwac\"}},\"annotations\":[\"datavdifkiikg\",\"dataruccwmecbtxsytr\",\"dataexe\",\"datawmrqjyw\"],\"folder\":{\"name\":\"vycfjncindi\"},\"\":{\"riarsbcl\":\"datakajwj\"}}")
+            "{\"type\":\"InformixTable\",\"typeProperties\":{\"tableName\":\"datazizyxdu\"},\"description\":\"nqzbrq\",\"structure\":\"datak\",\"schema\":\"datackviyjucamns\",\"linkedServiceName\":{\"referenceName\":\"qoitwhmucjiu\",\"parameters\":{\"elyqdvpqfbxg\":\"datayvehyk\"}},\"parameters\":{\"yw\":{\"type\":\"Array\",\"defaultValue\":\"datasdmtxqlefnoh\"},\"ey\":{\"type\":\"String\",\"defaultValue\":\"datapkyll\"},\"vcneqswxhqhgk\":{\"type\":\"Int\",\"defaultValue\":\"datapwdmsfwtwrsv\"},\"ncpmyh\":{\"type\":\"Array\",\"defaultValue\":\"datazvulqevv\"}},\"annotations\":[\"datadmvghcmi\",\"datamlwkfefbcyj\",\"datatalqee\",\"dataudfyimooaez\"],\"folder\":{\"name\":\"ms\"},\"\":{\"zbaeeek\":\"datahlqwbywa\"}}")
             .toObject(InformixTableDataset.class);
-        Assertions.assertEquals("b", model.description());
-        Assertions.assertEquals("uxpcbwkdwj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("geerclbl").type());
-        Assertions.assertEquals("vycfjncindi", model.folder().name());
+        Assertions.assertEquals("nqzbrq", model.description());
+        Assertions.assertEquals("qoitwhmucjiu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yw").type());
+        Assertions.assertEquals("ms", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixTableDataset model = new InformixTableDataset().withDescription("b")
-            .withStructure("datavucfvvraab")
-            .withSchema("datardeewl")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("uxpcbwkdwj")
-                .withParameters(mapOf("roo", "datazni", "taspmcrei", "datam", "hminuwqxungrobgw", "datauftrni")))
-            .withParameters(mapOf("geerclbl",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawdylwxmvzjowz"),
-                "yeurjwmv", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapwac")))
-            .withAnnotations(Arrays.asList("datavdifkiikg", "dataruccwmecbtxsytr", "dataexe", "datawmrqjyw"))
-            .withFolder(new DatasetFolder().withName("vycfjncindi"))
-            .withTableName("databzgottaksadzighm");
+        InformixTableDataset model = new InformixTableDataset().withDescription("nqzbrq")
+            .withStructure("datak")
+            .withSchema("datackviyjucamns")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qoitwhmucjiu")
+                .withParameters(mapOf("elyqdvpqfbxg", "datayvehyk")))
+            .withParameters(mapOf("yw",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datasdmtxqlefnoh"), "ey",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datapkyll"),
+                "vcneqswxhqhgk",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datapwdmsfwtwrsv"), "ncpmyh",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datazvulqevv")))
+            .withAnnotations(Arrays.asList("datadmvghcmi", "datamlwkfefbcyj", "datatalqee", "dataudfyimooaez"))
+            .withFolder(new DatasetFolder().withName("ms"))
+            .withTableName("datazizyxdu");
         model = BinaryData.fromObject(model).toObject(InformixTableDataset.class);
-        Assertions.assertEquals("b", model.description());
-        Assertions.assertEquals("uxpcbwkdwj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("geerclbl").type());
-        Assertions.assertEquals("vycfjncindi", model.folder().name());
+        Assertions.assertEquals("nqzbrq", model.description());
+        Assertions.assertEquals("qoitwhmucjiu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yw").type());
+        Assertions.assertEquals("ms", model.folder().name());
     }
 
     // Use "Map.of" if available

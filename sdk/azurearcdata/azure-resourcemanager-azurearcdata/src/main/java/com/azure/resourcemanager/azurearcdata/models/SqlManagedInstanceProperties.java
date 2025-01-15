@@ -5,86 +5,85 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties of sqlManagedInstance. */
+/**
+ * Properties of sqlManagedInstance.
+ */
 @Fluent
-public final class SqlManagedInstanceProperties {
+public final class SqlManagedInstanceProperties implements JsonSerializable<SqlManagedInstanceProperties> {
     /*
      * null
      */
-    @JsonProperty(value = "dataControllerId")
     private String dataControllerId;
 
     /*
      * The instance admin user
      */
-    @JsonProperty(value = "admin")
     private String admin;
 
     /*
      * The instance start time
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The instance end time
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The raw kubernetes information
      */
-    @JsonProperty(value = "k8sRaw")
     private SqlManagedInstanceK8SRaw k8SRaw;
 
     /*
      * Username and password for basic authentication.
      */
-    @JsonProperty(value = "basicLoginInformation")
     private BasicLoginInformation basicLoginInformation;
 
     /*
      * Last uploaded date from Kubernetes cluster. Defaults to current date time
      */
-    @JsonProperty(value = "lastUploadedDate")
     private OffsetDateTime lastUploadedDate;
 
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The license type to apply for this managed instance.
      */
-    @JsonProperty(value = "licenseType")
     private ArcSqlManagedInstanceLicenseType licenseType;
 
     /*
      * If a CustomLocation is provided, this contains the ARM id of the connected cluster the custom location belongs
      * to.
      */
-    @JsonProperty(value = "clusterId")
     private String clusterId;
 
     /*
      * If a CustomLocation is provided, this contains the ARM id of the extension the custom location belongs to.
      */
-    @JsonProperty(value = "extensionId")
     private String extensionId;
 
-    /** Creates an instance of SqlManagedInstanceProperties class. */
+    /**
+     * Creates an instance of SqlManagedInstanceProperties class.
+     */
     public SqlManagedInstanceProperties() {
     }
 
     /**
      * Get the dataControllerId property: null.
-     *
+     * 
      * @return the dataControllerId value.
      */
     public String dataControllerId() {
@@ -93,7 +92,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the dataControllerId property: null.
-     *
+     * 
      * @param dataControllerId the dataControllerId value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -104,7 +103,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the admin property: The instance admin user.
-     *
+     * 
      * @return the admin value.
      */
     public String admin() {
@@ -113,7 +112,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the admin property: The instance admin user.
-     *
+     * 
      * @param admin the admin value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -124,7 +123,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the startTime property: The instance start time.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -133,7 +132,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the startTime property: The instance start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -144,7 +143,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the endTime property: The instance end time.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -153,7 +152,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the endTime property: The instance end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -164,7 +163,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the k8SRaw property: The raw kubernetes information.
-     *
+     * 
      * @return the k8SRaw value.
      */
     public SqlManagedInstanceK8SRaw k8SRaw() {
@@ -173,7 +172,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the k8SRaw property: The raw kubernetes information.
-     *
+     * 
      * @param k8SRaw the k8SRaw value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -184,7 +183,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the basicLoginInformation property: Username and password for basic authentication.
-     *
+     * 
      * @return the basicLoginInformation value.
      */
     public BasicLoginInformation basicLoginInformation() {
@@ -193,7 +192,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the basicLoginInformation property: Username and password for basic authentication.
-     *
+     * 
      * @param basicLoginInformation the basicLoginInformation value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -204,7 +203,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the lastUploadedDate property: Last uploaded date from Kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @return the lastUploadedDate value.
      */
     public OffsetDateTime lastUploadedDate() {
@@ -213,7 +212,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the lastUploadedDate property: Last uploaded date from Kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @param lastUploadedDate the lastUploadedDate value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -224,7 +223,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -233,7 +232,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Get the licenseType property: The license type to apply for this managed instance.
-     *
+     * 
      * @return the licenseType value.
      */
     public ArcSqlManagedInstanceLicenseType licenseType() {
@@ -242,7 +241,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Set the licenseType property: The license type to apply for this managed instance.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -254,7 +253,7 @@ public final class SqlManagedInstanceProperties {
     /**
      * Get the clusterId property: If a CustomLocation is provided, this contains the ARM id of the connected cluster
      * the custom location belongs to.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -264,7 +263,7 @@ public final class SqlManagedInstanceProperties {
     /**
      * Set the clusterId property: If a CustomLocation is provided, this contains the ARM id of the connected cluster
      * the custom location belongs to.
-     *
+     * 
      * @param clusterId the clusterId value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -276,7 +275,7 @@ public final class SqlManagedInstanceProperties {
     /**
      * Get the extensionId property: If a CustomLocation is provided, this contains the ARM id of the extension the
      * custom location belongs to.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -286,7 +285,7 @@ public final class SqlManagedInstanceProperties {
     /**
      * Set the extensionId property: If a CustomLocation is provided, this contains the ARM id of the extension the
      * custom location belongs to.
-     *
+     * 
      * @param extensionId the extensionId value to set.
      * @return the SqlManagedInstanceProperties object itself.
      */
@@ -297,7 +296,7 @@ public final class SqlManagedInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -307,5 +306,76 @@ public final class SqlManagedInstanceProperties {
         if (basicLoginInformation() != null) {
             basicLoginInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataControllerId", this.dataControllerId);
+        jsonWriter.writeStringField("admin", this.admin);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeJsonField("k8sRaw", this.k8SRaw);
+        jsonWriter.writeJsonField("basicLoginInformation", this.basicLoginInformation);
+        jsonWriter.writeStringField("lastUploadedDate",
+            this.lastUploadedDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUploadedDate));
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("clusterId", this.clusterId);
+        jsonWriter.writeStringField("extensionId", this.extensionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlManagedInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlManagedInstanceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlManagedInstanceProperties.
+     */
+    public static SqlManagedInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlManagedInstanceProperties deserializedSqlManagedInstanceProperties = new SqlManagedInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataControllerId".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.dataControllerId = reader.getString();
+                } else if ("admin".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.admin = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.endTime = reader.getString();
+                } else if ("k8sRaw".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.k8SRaw = SqlManagedInstanceK8SRaw.fromJson(reader);
+                } else if ("basicLoginInformation".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.basicLoginInformation
+                        = BasicLoginInformation.fromJson(reader);
+                } else if ("lastUploadedDate".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.lastUploadedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.provisioningState = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.licenseType
+                        = ArcSqlManagedInstanceLicenseType.fromString(reader.getString());
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.clusterId = reader.getString();
+                } else if ("extensionId".equals(fieldName)) {
+                    deserializedSqlManagedInstanceProperties.extensionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlManagedInstanceProperties;
+        });
     }
 }

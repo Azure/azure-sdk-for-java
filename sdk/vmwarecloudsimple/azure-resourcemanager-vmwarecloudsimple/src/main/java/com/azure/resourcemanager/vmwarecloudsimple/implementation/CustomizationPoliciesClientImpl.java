@@ -30,23 +30,28 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPo
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPoliciesListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomizationPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomizationPoliciesClient.
+ */
 public final class CustomizationPoliciesClientImpl implements CustomizationPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomizationPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final VMwareCloudSimpleImpl client;
 
     /**
      * Initializes an instance of CustomizationPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomizationPoliciesClientImpl(VMwareCloudSimpleImpl client) {
-        this.service =
-            RestProxy
-                .create(CustomizationPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CustomizationPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,78 +62,59 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleCus")
     public interface CustomizationPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
-                + "/{pcName}/customizationPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomizationPoliciesListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("regionId") String regionId,
-            @PathParam("pcName") String pcName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CustomizationPoliciesListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("regionId") String regionId,
+            @PathParam("pcName") String pcName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies/{customizationPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CustomizationPolicyInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("regionId") String regionId, @PathParam("pcName") String pcName,
+            @PathParam("customizationPolicyName") String customizationPolicyName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
-                + "/{pcName}/customizationPolicies/{customizationPolicyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomizationPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("regionId") String regionId,
-            @PathParam("pcName") String pcName,
-            @PathParam("customizationPolicyName") String customizationPolicyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomizationPoliciesListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(
-        String regionId, String pcName, String filter) {
+    private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(String regionId, String pcName,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -138,60 +124,39 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            regionId,
-                            pcName,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<CustomizationPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), regionId,
+                pcName, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<CustomizationPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(
-        String regionId, String pcName, String filter, Context context) {
+    private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(String regionId, String pcName,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -202,35 +167,21 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                regionId,
-                pcName,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), regionId, pcName,
+                this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,15 +189,15 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomizationPolicyInner> listAsync(String regionId, String pcName, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(regionId, pcName, filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(regionId, pcName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,19 +208,19 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomizationPolicyInner> listAsync(String regionId, String pcName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(regionId, pcName, filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(regionId, pcName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,18 +228,17 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @return list of customization polices response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomizationPolicyInner> listAsync(
-        String regionId, String pcName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(regionId, pcName, filter, context),
+    private PagedFlux<CustomizationPolicyInner> listAsync(String regionId, String pcName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(regionId, pcName, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,13 +254,13 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -318,39 +268,35 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @return list of customization polices response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomizationPolicyInner> list(
-        String regionId, String pcName, String filter, Context context) {
+    public PagedIterable<CustomizationPolicyInner> list(String regionId, String pcName, String filter,
+        Context context) {
         return new PagedIterable<>(listAsync(regionId, pcName, filter, context));
     }
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the virtual machine customization policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(
-        String regionId, String pcName, String customizationPolicyName) {
+    private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(String regionId, String pcName,
+        String customizationPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -359,32 +305,21 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
             return Mono.error(new IllegalArgumentException("Parameter pcName is required and cannot be null."));
         }
         if (customizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customizationPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            regionId,
-                            pcName,
-                            customizationPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), regionId, pcName, customizationPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
@@ -392,23 +327,19 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the virtual machine customization policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(
-        String regionId, String pcName, String customizationPolicyName, Context context) {
+    private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(String regionId, String pcName,
+        String customizationPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -417,29 +348,20 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
             return Mono.error(new IllegalArgumentException("Parameter pcName is required and cannot be null."));
         }
         if (customizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customizationPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                regionId,
-                pcName,
-                customizationPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            regionId, pcName, customizationPolicyName, accept, context);
     }
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
@@ -456,9 +378,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
@@ -469,16 +391,16 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @return the virtual machine customization policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomizationPolicyInner> getWithResponse(
-        String regionId, String pcName, String customizationPolicyName, Context context) {
+    public Response<CustomizationPolicyInner> getWithResponse(String regionId, String pcName,
+        String customizationPolicyName, Context context) {
         return getWithResponseAsync(regionId, pcName, customizationPolicyName, context).block();
     }
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
@@ -494,14 +416,13 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -509,37 +430,26 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomizationPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CustomizationPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -547,23 +457,13 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+/**
+ * Provides the classes necessary to create an HTTP client using OkHttp.
+ */
 module io.clientcore.http.okhttp3 {
     requires transitive io.clientcore.core;
 
@@ -10,8 +13,7 @@ module io.clientcore.http.okhttp3 {
 
     exports io.clientcore.http.okhttp3;
 
-    provides io.clientcore.core.http.client.HttpClientProvider
-        with io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+    provides io.clientcore.core.http.client.HttpClientProvider with io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }

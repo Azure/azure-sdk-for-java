@@ -52,8 +52,7 @@ public final class FormTable {
      * @param cells the list of cells contained in the table.
      * @param pageNumber the 1-based page number in the input document.
      */
-    public FormTable(final int rowCount, final int columnCount, final List<FormTableCell> cells,
-        final int pageNumber) {
+    public FormTable(final int rowCount, final int columnCount, final List<FormTableCell> cells, final int pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.cells = cells == null ? null : Collections.unmodifiableList(cells);

@@ -15,6 +15,15 @@ public final class BlobTypes extends ExpandableStringEnum<BlobTypes> {
     public static final BlobTypes SNAPSHOT = fromString("snapshot");
 
     /**
+     * Creates a new instance of BlobTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobTypes() {
+    }
+
+    /**
      * Creates or finds a BlobType from its string representation.
      *
      * @param name a name to look for
@@ -24,7 +33,11 @@ public final class BlobTypes extends ExpandableStringEnum<BlobTypes> {
         return fromString(name, BlobTypes.class);
     }
 
-    /** @return known BlobType values */
+    /**
+     * Gets known BlobType values.
+     *
+     * @return known BlobType values
+     */
     public static Collection<BlobTypes> values() {
         return values(BlobTypes.class);
     }

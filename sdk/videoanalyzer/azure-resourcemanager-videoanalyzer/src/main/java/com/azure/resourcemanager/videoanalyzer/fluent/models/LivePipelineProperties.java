@@ -171,10 +171,8 @@ public final class LivePipelineProperties {
      */
     public void validate() {
         if (topologyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property topologyName in model LivePipelineProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property topologyName in model LivePipelineProperties"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

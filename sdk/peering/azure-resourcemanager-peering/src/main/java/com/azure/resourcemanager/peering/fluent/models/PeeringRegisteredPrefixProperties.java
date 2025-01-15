@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that define a registered prefix. */
+/**
+ * The properties that define a registered prefix.
+ */
 @Fluent
-public final class PeeringRegisteredPrefixProperties {
+public final class PeeringRegisteredPrefixProperties implements JsonSerializable<PeeringRegisteredPrefixProperties> {
     /*
      * The customer's prefix from which traffic originates.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
      * The prefix validation state.
      */
-    @JsonProperty(value = "prefixValidationState", access = JsonProperty.Access.WRITE_ONLY)
     private PrefixValidationState prefixValidationState;
 
     /*
      * The peering service prefix key that is to be shared with the customer.
      */
-    @JsonProperty(value = "peeringServicePrefixKey", access = JsonProperty.Access.WRITE_ONLY)
     private String peeringServicePrefixKey;
 
     /*
      * The error message associated with the validation state, if any.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of PeeringRegisteredPrefixProperties class. */
+    /**
+     * Creates an instance of PeeringRegisteredPrefixProperties class.
+     */
     public PeeringRegisteredPrefixProperties() {
     }
 
     /**
      * Get the prefix property: The customer's prefix from which traffic originates.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -57,7 +60,7 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Set the prefix property: The customer's prefix from which traffic originates.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the PeeringRegisteredPrefixProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Get the prefixValidationState property: The prefix validation state.
-     *
+     * 
      * @return the prefixValidationState value.
      */
     public PrefixValidationState prefixValidationState() {
@@ -77,7 +80,7 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Get the peeringServicePrefixKey property: The peering service prefix key that is to be shared with the customer.
-     *
+     * 
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
@@ -86,7 +89,7 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Get the errorMessage property: The error message associated with the validation state, if any.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -95,7 +98,7 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -104,9 +107,56 @@ public final class PeeringRegisteredPrefixProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("prefix", this.prefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringRegisteredPrefixProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringRegisteredPrefixProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringRegisteredPrefixProperties.
+     */
+    public static PeeringRegisteredPrefixProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringRegisteredPrefixProperties deserializedPeeringRegisteredPrefixProperties
+                = new PeeringRegisteredPrefixProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixProperties.prefix = reader.getString();
+                } else if ("prefixValidationState".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixProperties.prefixValidationState
+                        = PrefixValidationState.fromString(reader.getString());
+                } else if ("peeringServicePrefixKey".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixProperties.peeringServicePrefixKey = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixProperties.errorMessage = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringRegisteredPrefixProperties;
+        });
     }
 }

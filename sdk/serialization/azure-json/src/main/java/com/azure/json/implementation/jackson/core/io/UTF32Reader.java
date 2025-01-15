@@ -138,7 +138,7 @@ public class UTF32Reader extends Reader {
         // 02-Jun-2017, tatu: Must ensure we don't try to read past buffer end:
         final int lastValidInputStart = (_length - 4);
 
-        main_loop: while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
+        while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
             int ptr = _ptr;
             int hi, lo;
 
@@ -165,7 +165,7 @@ public class UTF32Reader extends Reader {
                 // Room for second part?
                 if (outPtr >= outEnd) { // nope
                     _surrogate = (char) ch;
-                    break main_loop;
+                    break;
                 }
             }
             cbuf[outPtr++] = (char) lo;
@@ -271,7 +271,7 @@ public class UTF32Reader extends Reader {
         }
     }
 
-    private void reportBounds(char[] cbuf, int start, int len) throws IOException {
+    private void reportBounds(char[] cbuf, int start, int len) {
         throw new ArrayIndexOutOfBoundsException(String.format("read(buf,%d,%d), cbuf[%d]", start, len, cbuf.length));
     }
 

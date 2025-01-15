@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU availability. */
+/**
+ * SKU availability.
+ */
 @Fluent
-public final class SkuAvailability {
+public final class SkuAvailability implements JsonSerializable<SkuAvailability> {
     /*
      * The Kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The Type of the resource.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The SKU of Cognitive Services account.
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
     /*
      * Indicates the given SKU is available or not.
      */
-    @JsonProperty(value = "skuAvailable")
     private Boolean skuAvailable;
 
     /*
      * Reason why the SKU is not available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Additional error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of SkuAvailability class. */
+    /**
+     * Creates an instance of SkuAvailability class.
+     */
     public SkuAvailability() {
     }
 
     /**
      * Get the kind property: The Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -61,7 +63,7 @@ public final class SkuAvailability {
 
     /**
      * Set the kind property: The Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the SkuAvailability object itself.
      */
@@ -72,7 +74,7 @@ public final class SkuAvailability {
 
     /**
      * Get the type property: The Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +83,7 @@ public final class SkuAvailability {
 
     /**
      * Set the type property: The Type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the SkuAvailability object itself.
      */
@@ -92,7 +94,7 @@ public final class SkuAvailability {
 
     /**
      * Get the skuName property: The SKU of Cognitive Services account.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -101,7 +103,7 @@ public final class SkuAvailability {
 
     /**
      * Set the skuName property: The SKU of Cognitive Services account.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the SkuAvailability object itself.
      */
@@ -112,7 +114,7 @@ public final class SkuAvailability {
 
     /**
      * Get the skuAvailable property: Indicates the given SKU is available or not.
-     *
+     * 
      * @return the skuAvailable value.
      */
     public Boolean skuAvailable() {
@@ -121,7 +123,7 @@ public final class SkuAvailability {
 
     /**
      * Set the skuAvailable property: Indicates the given SKU is available or not.
-     *
+     * 
      * @param skuAvailable the skuAvailable value to set.
      * @return the SkuAvailability object itself.
      */
@@ -132,7 +134,7 @@ public final class SkuAvailability {
 
     /**
      * Get the reason property: Reason why the SKU is not available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -141,7 +143,7 @@ public final class SkuAvailability {
 
     /**
      * Set the reason property: Reason why the SKU is not available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the SkuAvailability object itself.
      */
@@ -152,7 +154,7 @@ public final class SkuAvailability {
 
     /**
      * Get the message property: Additional error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -161,7 +163,7 @@ public final class SkuAvailability {
 
     /**
      * Set the message property: Additional error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the SkuAvailability object itself.
      */
@@ -172,9 +174,60 @@ public final class SkuAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeBooleanField("skuAvailable", this.skuAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuAvailability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuAvailability.
+     */
+    public static SkuAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuAvailability deserializedSkuAvailability = new SkuAvailability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedSkuAvailability.kind = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSkuAvailability.type = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedSkuAvailability.skuName = reader.getString();
+                } else if ("skuAvailable".equals(fieldName)) {
+                    deserializedSkuAvailability.skuAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedSkuAvailability.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedSkuAvailability.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuAvailability;
+        });
     }
 }

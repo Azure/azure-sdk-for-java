@@ -47,21 +47,17 @@ public abstract class SqlChildrenOperationsImpl<FluentModelT>
     @Override
     public FluentModelT getById(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<FluentModelT> getByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -82,21 +78,17 @@ public abstract class SqlChildrenOperationsImpl<FluentModelT>
     @Override
     public void deleteById(String id) {
         Objects.requireNonNull(id);
-        this
-            .deleteBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        this.deleteBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .deleteBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.deleteBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The OS type of the custom image (i.e. Windows, Linux). */
+/**
+ * The OS type of the custom image (i.e. Windows, Linux).
+ */
 public final class CustomImageOsType extends ExpandableStringEnum<CustomImageOsType> {
-    /** Static value Windows for CustomImageOsType. */
+    /**
+     * Static value Windows for CustomImageOsType.
+     */
     public static final CustomImageOsType WINDOWS = fromString("Windows");
 
-    /** Static value Linux for CustomImageOsType. */
+    /**
+     * Static value Linux for CustomImageOsType.
+     */
     public static final CustomImageOsType LINUX = fromString("Linux");
 
-    /** Static value None for CustomImageOsType. */
+    /**
+     * Static value None for CustomImageOsType.
+     */
     public static final CustomImageOsType NONE = fromString("None");
 
     /**
      * Creates a new instance of CustomImageOsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class CustomImageOsType extends ExpandableStringEnum<CustomImageOsT
 
     /**
      * Creates or finds a CustomImageOsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomImageOsType.
      */
-    @JsonCreator
     public static CustomImageOsType fromString(String name) {
         return fromString(name, CustomImageOsType.class);
     }
 
     /**
      * Gets known CustomImageOsType values.
-     *
+     * 
      * @return known CustomImageOsType values.
      */
     public static Collection<CustomImageOsType> values() {

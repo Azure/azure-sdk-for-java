@@ -13,38 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistrationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"objectId\":\"kyqxjvuujqgidokg\",\"cloudId\":\"jyoxgvclt\",\"billingModel\":\"sncghkjeszz\"},\"etag\":\"ijhtxf\",\"location\":\"gx\",\"tags\":{\"ec\":\"mxnehmp\"},\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}")
-                .toObject(RegistrationInner.class);
-        Assertions.assertEquals("gx", model.location());
-        Assertions.assertEquals("mxnehmp", model.tags().get("ec"));
-        Assertions.assertEquals("ijhtxf", model.etag());
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.objectId());
-        Assertions.assertEquals("jyoxgvclt", model.cloudId());
-        Assertions.assertEquals("sncghkjeszz", model.billingModel());
+        RegistrationInner model = BinaryData.fromString(
+            "{\"properties\":{\"objectId\":\"s\",\"cloudId\":\"pgn\",\"billingModel\":\"txhp\"},\"etag\":\"bzpfzab\",\"location\":\"lcuhxwtctyqiklb\",\"tags\":{\"svmkfssxquk\":\"plwzbhvgyugu\",\"mg\":\"fpl\"},\"id\":\"xnkjzkdesl\",\"name\":\"vlopwiyighx\",\"type\":\"kdwzbaiuebbaumny\"}")
+            .toObject(RegistrationInner.class);
+        Assertions.assertEquals("lcuhxwtctyqiklb", model.location());
+        Assertions.assertEquals("plwzbhvgyugu", model.tags().get("svmkfssxquk"));
+        Assertions.assertEquals("bzpfzab", model.etag());
+        Assertions.assertEquals("s", model.objectId());
+        Assertions.assertEquals("pgn", model.cloudId());
+        Assertions.assertEquals("txhp", model.billingModel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistrationInner model =
-            new RegistrationInner()
-                .withLocation("gx")
-                .withTags(mapOf("ec", "mxnehmp"))
-                .withEtag("ijhtxf")
-                .withObjectId("kyqxjvuujqgidokg")
-                .withCloudId("jyoxgvclt")
-                .withBillingModel("sncghkjeszz");
+        RegistrationInner model = new RegistrationInner().withLocation("lcuhxwtctyqiklb")
+            .withTags(mapOf("svmkfssxquk", "plwzbhvgyugu", "mg", "fpl"))
+            .withEtag("bzpfzab")
+            .withObjectId("s")
+            .withCloudId("pgn")
+            .withBillingModel("txhp");
         model = BinaryData.fromObject(model).toObject(RegistrationInner.class);
-        Assertions.assertEquals("gx", model.location());
-        Assertions.assertEquals("mxnehmp", model.tags().get("ec"));
-        Assertions.assertEquals("ijhtxf", model.etag());
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.objectId());
-        Assertions.assertEquals("jyoxgvclt", model.cloudId());
-        Assertions.assertEquals("sncghkjeszz", model.billingModel());
+        Assertions.assertEquals("lcuhxwtctyqiklb", model.location());
+        Assertions.assertEquals("plwzbhvgyugu", model.tags().get("svmkfssxquk"));
+        Assertions.assertEquals("bzpfzab", model.etag());
+        Assertions.assertEquals("s", model.objectId());
+        Assertions.assertEquals("pgn", model.cloudId());
+        Assertions.assertEquals("txhp", model.billingModel());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

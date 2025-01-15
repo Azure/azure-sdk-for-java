@@ -315,32 +315,33 @@ public final class TimeZoneClient {
         return this.asyncClient.convertWindowsTimezoneToIana(windowsTimezoneId, windowsTerritoryCode).block();
     }
 
-     /**
-     * __Windows to IANA Time Zone__
-     * <!-- src_embed com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
-     * <pre>
-     * client.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
-     *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
-     * <p>This API returns a corresponding IANA ID, given a valid Windows Time Zone ID. Multiple IANA IDs may be
-     * returned for a single Windows ID. It is possible to narrow these results by adding an optional territory
-     * parameter.
-     *
-     * @param context The context to associate with this operation.
-     * @param windowsTimezoneId The Windows time zone ID.
-     * @param windowsTerritoryCode Windows Time Zone territory code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Timezone Windows To IANA call.
-     */
+    /**
+    * __Windows to IANA Time Zone__
+    * <!-- src_embed com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
+    * <pre>
+    * client.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+    * </pre>
+    * <!-- end com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
+    *
+    * <p>**Applies to**: S0 and S1 pricing tiers.
+    *
+    * <p>This API returns a corresponding IANA ID, given a valid Windows Time Zone ID. Multiple IANA IDs may be
+    * returned for a single Windows ID. It is possible to narrow these results by adding an optional territory
+    * parameter.
+    *
+    * @param context The context to associate with this operation.
+    * @param windowsTimezoneId The Windows time zone ID.
+    * @param windowsTerritoryCode Windows Time Zone territory code.
+    * @throws IllegalArgumentException thrown if parameters fail the validation.
+    * @throws ErrorResponseException thrown if the request is rejected by server.
+    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+    * @return this object is returned from a successful Timezone Windows To IANA call.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<IanaId>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
         String windowsTerritoryCode, Context context) {
-        return this.asyncClient.convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode,
-            context).block();
+        return this.asyncClient
+            .convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, context)
+            .block();
     }
 }

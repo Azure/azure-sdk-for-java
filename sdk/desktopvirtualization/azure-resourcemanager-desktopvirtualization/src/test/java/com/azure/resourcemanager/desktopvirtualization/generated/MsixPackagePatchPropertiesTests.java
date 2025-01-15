@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MsixPackagePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MsixPackagePatchProperties model =
-            BinaryData
-                .fromString("{\"isActive\":false,\"isRegularRegistration\":false,\"displayName\":\"yjkqabqgzslesjcb\"}")
-                .toObject(MsixPackagePatchProperties.class);
+        MsixPackagePatchProperties model = BinaryData
+            .fromString("{\"isActive\":false,\"isRegularRegistration\":true,\"displayName\":\"dqkdlwwqfbu\"}")
+            .toObject(MsixPackagePatchProperties.class);
         Assertions.assertEquals(false, model.isActive());
-        Assertions.assertEquals(false, model.isRegularRegistration());
-        Assertions.assertEquals("yjkqabqgzslesjcb", model.displayName());
+        Assertions.assertEquals(true, model.isRegularRegistration());
+        Assertions.assertEquals("dqkdlwwqfbu", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsixPackagePatchProperties model =
-            new MsixPackagePatchProperties()
-                .withIsActive(false)
-                .withIsRegularRegistration(false)
-                .withDisplayName("yjkqabqgzslesjcb");
+        MsixPackagePatchProperties model = new MsixPackagePatchProperties().withIsActive(false)
+            .withIsRegularRegistration(true)
+            .withDisplayName("dqkdlwwqfbu");
         model = BinaryData.fromObject(model).toObject(MsixPackagePatchProperties.class);
         Assertions.assertEquals(false, model.isActive());
-        Assertions.assertEquals(false, model.isRegularRegistration());
-        Assertions.assertEquals("yjkqabqgzslesjcb", model.displayName());
+        Assertions.assertEquals(true, model.isRegularRegistration());
+        Assertions.assertEquals("dqkdlwwqfbu", model.displayName());
     }
 }

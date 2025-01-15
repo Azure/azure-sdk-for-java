@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolverContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolverContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"efxrdcoxnbk\",\"path\":\"anurnnqb\",\"description\":\"bpizxqltgr\"},\"id\":\"ogypxrxvbfihwu\",\"name\":\"vctafsrb\",\"type\":\"rblmli\"}")
-                .toObject(ResolverContractInner.class);
+        ResolverContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"efxrdcoxnbk\",\"path\":\"anurnnqb\",\"description\":\"bpizxqltgr\"},\"id\":\"ogypxrxvbfihwu\",\"name\":\"vctafsrb\",\"type\":\"rblmli\"}")
+            .toObject(ResolverContractInner.class);
         Assertions.assertEquals("efxrdcoxnbk", model.displayName());
         Assertions.assertEquals("anurnnqb", model.path());
         Assertions.assertEquals("bpizxqltgr", model.description());
@@ -23,11 +21,9 @@ public final class ResolverContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolverContractInner model =
-            new ResolverContractInner()
-                .withDisplayName("efxrdcoxnbk")
-                .withPath("anurnnqb")
-                .withDescription("bpizxqltgr");
+        ResolverContractInner model = new ResolverContractInner().withDisplayName("efxrdcoxnbk")
+            .withPath("anurnnqb")
+            .withDescription("bpizxqltgr");
         model = BinaryData.fromObject(model).toObject(ResolverContractInner.class);
         Assertions.assertEquals("efxrdcoxnbk", model.displayName());
         Assertions.assertEquals("anurnnqb", model.path());

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/**
+ * Indicates the type of bot service.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value sdk for Kind. */
+    /**
+     * Static value sdk for Kind.
+     */
     public static final Kind SDK = fromString("sdk");
 
-    /** Static value designer for Kind. */
+    /**
+     * Static value designer for Kind.
+     */
     public static final Kind DESIGNER = fromString("designer");
 
-    /** Static value bot for Kind. */
+    /**
+     * Static value bot for Kind.
+     */
     public static final Kind BOT = fromString("bot");
 
-    /** Static value function for Kind. */
+    /**
+     * Static value function for Kind.
+     */
     public static final Kind FUNCTION = fromString("function");
 
-    /** Static value azurebot for Kind. */
+    /**
+     * Static value azurebot for Kind.
+     */
     public static final Kind AZUREBOT = fromString("azurebot");
 
     /**
+     * Creates a new instance of Kind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Kind() {
+    }
+
+    /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
-    @JsonCreator
     public static Kind fromString(String name) {
         return fromString(name, Kind.class);
     }
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datamigration.fluent.models.NameAvailabilityRes
 public final class NameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityResponseInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"dnsezcxtbzs\"}")
+        NameAvailabilityResponseInner model
+            = BinaryData.fromString("{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"rokft\"}")
                 .toObject(NameAvailabilityResponseInner.class);
     }
 

@@ -65,22 +65,18 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
     private String peerAsnName;
 
     public PeerAsn create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerAsns()
-                .createOrUpdateWithResponse(peerAsnName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerAsns()
+            .createOrUpdateWithResponse(peerAsnName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeerAsn create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerAsns()
-                .createOrUpdateWithResponse(peerAsnName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerAsns()
+            .createOrUpdateWithResponse(peerAsnName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -95,40 +91,36 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
     }
 
     public PeerAsn apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerAsns()
-                .createOrUpdateWithResponse(peerAsnName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerAsns()
+            .createOrUpdateWithResponse(peerAsnName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeerAsn apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerAsns()
-                .createOrUpdateWithResponse(peerAsnName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerAsns()
+            .createOrUpdateWithResponse(peerAsnName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     PeerAsnImpl(PeerAsnInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.peerAsnName = Utils.getValueFromIdByName(innerObject.id(), "peerAsns");
+        this.peerAsnName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "peerAsns");
     }
 
     public PeerAsn refresh() {
-        this.innerObject =
-            serviceManager.serviceClient().getPeerAsns().getWithResponse(peerAsnName, Context.NONE).getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getPeerAsns().getWithResponse(peerAsnName, Context.NONE).getValue();
         return this;
     }
 
     public PeerAsn refresh(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getPeerAsns().getWithResponse(peerAsnName, context).getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getPeerAsns().getWithResponse(peerAsnName, context).getValue();
         return this;
     }
 

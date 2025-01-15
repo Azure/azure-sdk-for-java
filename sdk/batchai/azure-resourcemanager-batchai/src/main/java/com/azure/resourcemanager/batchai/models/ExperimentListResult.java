@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List operation. */
 @Immutable
 public final class ExperimentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExperimentListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExperimentListResult.class);
 
     /*
      * The collection of experiments.

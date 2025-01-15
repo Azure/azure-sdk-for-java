@@ -15,8 +15,7 @@ public final class SavingsPlanValidateResponseImpl implements SavingsPlanValidat
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    SavingsPlanValidateResponseImpl(
-        SavingsPlanValidateResponseInner innerObject,
+    SavingsPlanValidateResponseImpl(SavingsPlanValidateResponseInner innerObject,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

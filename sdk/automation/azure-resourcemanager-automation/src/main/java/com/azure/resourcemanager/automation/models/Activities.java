@@ -8,11 +8,29 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Activities. */
+/**
+ * Resource collection API of Activities.
+ */
 public interface Activities {
     /**
      * Retrieve the activity in the module identified by module name and activity name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param moduleName The name of module.
+     * @param activityName The name of activity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the activity along with {@link Response}.
+     */
+    Response<Activity> getWithResponse(String resourceGroupName, String automationAccountName, String moduleName,
+        String activityName, Context context);
+
+    /**
+     * Retrieve the activity in the module identified by module name and activity name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -25,28 +43,8 @@ public interface Activities {
     Activity get(String resourceGroupName, String automationAccountName, String moduleName, String activityName);
 
     /**
-     * Retrieve the activity in the module identified by module name and activity name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param moduleName The name of module.
-     * @param activityName The name of activity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the activity along with {@link Response}.
-     */
-    Response<Activity> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        String activityName,
-        Context context);
-
-    /**
      * Retrieve a list of activities in the module identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -59,7 +57,7 @@ public interface Activities {
 
     /**
      * Retrieve a list of activities in the module identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -69,6 +67,6 @@ public interface Activities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list activity operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Activity> listByModule(
-        String resourceGroupName, String automationAccountName, String moduleName, Context context);
+    PagedIterable<Activity> listByModule(String resourceGroupName, String automationAccountName, String moduleName,
+        Context context);
 }

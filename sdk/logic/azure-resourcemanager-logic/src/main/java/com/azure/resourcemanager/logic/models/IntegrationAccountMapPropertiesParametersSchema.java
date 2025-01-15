@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters schema of integration account map. */
+/**
+ * The parameters schema of integration account map.
+ */
 @Fluent
-public final class IntegrationAccountMapPropertiesParametersSchema {
+public final class IntegrationAccountMapPropertiesParametersSchema
+    implements JsonSerializable<IntegrationAccountMapPropertiesParametersSchema> {
     /*
      * The reference name.
      */
-    @JsonProperty(value = "ref")
     private String ref;
 
-    /** Creates an instance of IntegrationAccountMapPropertiesParametersSchema class. */
+    /**
+     * Creates an instance of IntegrationAccountMapPropertiesParametersSchema class.
+     */
     public IntegrationAccountMapPropertiesParametersSchema() {
     }
 
     /**
      * Get the ref property: The reference name.
-     *
+     * 
      * @return the ref value.
      */
     public String ref() {
@@ -31,7 +39,7 @@ public final class IntegrationAccountMapPropertiesParametersSchema {
 
     /**
      * Set the ref property: The reference name.
-     *
+     * 
      * @param ref the ref value to set.
      * @return the IntegrationAccountMapPropertiesParametersSchema object itself.
      */
@@ -42,9 +50,46 @@ public final class IntegrationAccountMapPropertiesParametersSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ref", this.ref);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountMapPropertiesParametersSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountMapPropertiesParametersSchema if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationAccountMapPropertiesParametersSchema.
+     */
+    public static IntegrationAccountMapPropertiesParametersSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountMapPropertiesParametersSchema deserializedIntegrationAccountMapPropertiesParametersSchema
+                = new IntegrationAccountMapPropertiesParametersSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ref".equals(fieldName)) {
+                    deserializedIntegrationAccountMapPropertiesParametersSchema.ref = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountMapPropertiesParametersSchema;
+        });
     }
 }

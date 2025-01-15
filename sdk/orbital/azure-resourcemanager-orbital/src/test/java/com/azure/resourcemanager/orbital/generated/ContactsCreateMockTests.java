@@ -6,78 +6,47 @@ package com.azure.resourcemanager.orbital.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.orbital.OrbitalManager;
 import com.azure.resourcemanager.orbital.models.Contact;
 import com.azure.resourcemanager.orbital.models.ContactsPropertiesContactProfile;
 import com.azure.resourcemanager.orbital.models.ContactsPropertiesProvisioningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContactsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"providerCancelled\",\"reservationStartTime\":\"2021-08-15T03:14:49Z\",\"reservationEndTime\":\"2021-03-19T20:32:18Z\",\"rxStartTime\":\"2021-09-25T01:08:15Z\",\"rxEndTime\":\"2021-11-19T19:11:53Z\",\"txStartTime\":\"2021-01-24T00:59:15Z\",\"txEndTime\":\"2021-01-08T01:19:04Z\",\"errorMessage\":\"gbmhrixkwmyi\",\"maximumElevationDegrees\":98.3043,\"startAzimuthDegrees\":75.6699,\"endAzimuthDegrees\":12.116205,\"groundStationName\":\"hbpnaixexccbd\",\"startElevationDegrees\":7.074279,\"endElevationDegrees\":59.16115,\"antennaConfiguration\":{\"destinationIp\":\"xdrrvqahqkghtp\",\"sourceIps\":[\"nhyjsv\",\"ycxzbfvoo\"]},\"contactProfile\":{\"id\":\"vrvmtgjqppyost\"}},\"id\":\"nzm\",\"name\":\"hgfipnsxkmcw\",\"type\":\"ekrrjr\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"cancelled\",\"reservationStartTime\":\"2021-07-26T04:46:18Z\",\"reservationEndTime\":\"2021-03-21T10:48:12Z\",\"rxStartTime\":\"2021-04-11T14:37:21Z\",\"rxEndTime\":\"2021-11-26T05:12:43Z\",\"txStartTime\":\"2021-02-11T01:14:35Z\",\"txEndTime\":\"2021-02-21T18:42:47Z\",\"errorMessage\":\"l\",\"maximumElevationDegrees\":69.63277,\"startAzimuthDegrees\":18.20975,\"endAzimuthDegrees\":37.51781,\"groundStationName\":\"ynduha\",\"startElevationDegrees\":28.043324,\"endElevationDegrees\":94.81316,\"antennaConfiguration\":{\"destinationIp\":\"umaq\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"bgycduiertgccym\"}},\"id\":\"olpsslqlf\",\"name\":\"mdnbbglzpswiy\",\"type\":\"mcwyhzdxssadb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Contact response = manager.contacts()
+            .define("htjsying")
+            .withExistingSpacecraft("wccsnjvcdwxlpqek", "tn")
+            .withReservationStartTime(OffsetDateTime.parse("2021-04-16T00:09:41Z"))
+            .withReservationEndTime(OffsetDateTime.parse("2021-08-15T22:02:46Z"))
+            .withGroundStationName("kj")
+            .withContactProfile(new ContactsPropertiesContactProfile().withId("tkkgllqwjy"))
+            .withProvisioningState(ContactsPropertiesProvisioningState.DELETING)
+            .create();
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Contact response =
-            manager
-                .contacts()
-                .define("bkrvrnsvshqj")
-                .withExistingSpacecraft("obl", "tkblmpewww")
-                .withReservationStartTime(OffsetDateTime.parse("2021-04-07T08:58:23Z"))
-                .withReservationEndTime(OffsetDateTime.parse("2021-02-20T00:19:02Z"))
-                .withGroundStationName("bpybsrfbjf")
-                .withContactProfile(new ContactsPropertiesContactProfile().withId("nfqqnvwp"))
-                .withProvisioningState(ContactsPropertiesProvisioningState.CANCELED)
-                .create();
-
-        Assertions
-            .assertEquals(ContactsPropertiesProvisioningState.fromString("Succeeded"), response.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T04:46:18Z"), response.reservationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T10:48:12Z"), response.reservationEndTime());
-        Assertions.assertEquals("ynduha", response.groundStationName());
-        Assertions.assertEquals("bgycduiertgccym", response.contactProfile().id());
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.fromString("Succeeded"),
+            response.provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T03:14:49Z"), response.reservationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T20:32:18Z"), response.reservationEndTime());
+        Assertions.assertEquals("hbpnaixexccbd", response.groundStationName());
+        Assertions.assertEquals("vrvmtgjqppyost", response.contactProfile().id());
     }
 }

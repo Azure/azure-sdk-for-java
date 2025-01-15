@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 public final class AbstractiveSummaryOperationDetailPropertiesHelper {
     private static AbstractiveSummaryOperationDetailAccessor accessor;
 
-    private AbstractiveSummaryOperationDetailPropertiesHelper() { }
+    private AbstractiveSummaryOperationDetailPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryOperationDetail}
@@ -21,9 +22,13 @@ public final class AbstractiveSummaryOperationDetailPropertiesHelper {
      */
     public interface AbstractiveSummaryOperationDetailAccessor {
         void setOperationId(AbstractiveSummaryOperationDetail operationDetail, String operationId);
+
         void setDisplayName(AbstractiveSummaryOperationDetail operationDetail, String name);
+
         void setCreatedAt(AbstractiveSummaryOperationDetail operationDetail, OffsetDateTime createdAt);
+
         void setExpiresAt(AbstractiveSummaryOperationDetail operationDetail, OffsetDateTime expiresAt);
+
         void setLastModifiedAt(AbstractiveSummaryOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
     }
 
@@ -32,8 +37,8 @@ public final class AbstractiveSummaryOperationDetailPropertiesHelper {
      *
      * @param abstractiveSummaryOperationDetailAccessor The accessor.
      */
-    public static void setAccessor(
-        final AbstractiveSummaryOperationDetailAccessor abstractiveSummaryOperationDetailAccessor) {
+    public static void
+        setAccessor(final AbstractiveSummaryOperationDetailAccessor abstractiveSummaryOperationDetailAccessor) {
         accessor = abstractiveSummaryOperationDetailAccessor;
     }
 
@@ -54,7 +59,7 @@ public final class AbstractiveSummaryOperationDetailPropertiesHelper {
     }
 
     public static void setLastModifiedAt(AbstractiveSummaryOperationDetail operationDetail,
-                                         OffsetDateTime lastModifiedAt) {
+        OffsetDateTime lastModifiedAt) {
         accessor.setLastModifiedAt(operationDetail, lastModifiedAt);
     }
 }

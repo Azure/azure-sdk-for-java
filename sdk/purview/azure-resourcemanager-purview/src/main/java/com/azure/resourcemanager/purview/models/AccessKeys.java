@@ -6,25 +6,27 @@ package com.azure.resourcemanager.purview.models;
 
 import com.azure.resourcemanager.purview.fluent.models.AccessKeysInner;
 
-/** An immutable client-side representation of AccessKeys. */
+/**
+ * An immutable client-side representation of AccessKeys.
+ */
 public interface AccessKeys {
     /**
      * Gets the atlasKafkaPrimaryEndpoint property: Gets or sets the primary connection string.
-     *
+     * 
      * @return the atlasKafkaPrimaryEndpoint value.
      */
     String atlasKafkaPrimaryEndpoint();
 
     /**
      * Gets the atlasKafkaSecondaryEndpoint property: Gets or sets the secondary connection string.
-     *
+     * 
      * @return the atlasKafkaSecondaryEndpoint value.
      */
     String atlasKafkaSecondaryEndpoint();
 
     /**
      * Gets the inner com.azure.resourcemanager.purview.fluent.models.AccessKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccessKeysInner innerModel();

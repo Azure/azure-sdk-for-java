@@ -80,25 +80,21 @@ public final class DelegatedControllerImpl
     }
 
     public DelegatedController create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DelegatedController create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .create(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .create(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    DelegatedControllerImpl(
-        String name, com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
+    DelegatedControllerImpl(String name,
+        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = new DelegatedControllerInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -110,51 +106,42 @@ public final class DelegatedControllerImpl
     }
 
     public DelegatedController apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DelegatedController apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    DelegatedControllerImpl(
-        DelegatedControllerInner innerObject,
+    DelegatedControllerImpl(DelegatedControllerInner innerObject,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "controller");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "controller");
     }
 
     public DelegatedController refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DelegatedController refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

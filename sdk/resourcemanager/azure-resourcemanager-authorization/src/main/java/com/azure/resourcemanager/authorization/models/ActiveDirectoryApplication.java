@@ -16,11 +16,13 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure AD application. */
 @Fluent
-public interface ActiveDirectoryApplication
-    extends ActiveDirectoryObject,
-        HasInnerModel<MicrosoftGraphApplicationInner>,
-        Updatable<ActiveDirectoryApplication.Update> {
-    /** @return the application ID */
+public interface ActiveDirectoryApplication extends ActiveDirectoryObject,
+    HasInnerModel<MicrosoftGraphApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
+    /**
+     * Gets the application ID.
+     *
+     * @return the application ID
+     */
     String applicationId();
 
     /**
@@ -31,23 +33,45 @@ public interface ActiveDirectoryApplication
     boolean availableToOtherTenants();
 
     /**
+     * Gets the application account type.
+     *
      * @return the application account type
      */
     ApplicationAccountType accountType();
 
-    /** @return a collection of URIs for the application */
+    /**
+     * Gets a collection of URIs for the application.
+     *
+     * @return a collection of URIs for the application
+     */
     Set<String> identifierUris();
 
-    /** @return a collection of reply URLs for the application */
+    /**
+     * Gets a collection of reply URLs for the application.
+     *
+     * @return a collection of reply URLs for the application
+     */
     Set<String> replyUrls();
 
-    /** @return the home page of the application */
+    /**
+     * Gets the home page of the application.
+     *
+     * @return the home page of the application
+     */
     URL signOnUrl();
 
-    /** @return the mapping of password credentials from their names */
+    /**
+     * Gets the mapping of password credentials from their names.
+     *
+     * @return the mapping of password credentials from their names
+     */
     Map<String, PasswordCredential> passwordCredentials();
 
-    /** @return the mapping of certificate credentials from their names */
+    /**
+     * Gets the mapping of certificate credentials from their names.
+     *
+     * @return the mapping of certificate credentials from their names
+     */
     Map<String, CertificateCredential> certificateCredentials();
 
     /**************************************************************
@@ -158,14 +182,8 @@ public interface ActiveDirectoryApplication
          * An application definition with sufficient inputs to create a new application in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<ActiveDirectoryApplication>,
-                WithSignOnUrl,
-                WithIdentifierUrl,
-                WithReplyUrl,
-                WithCredential,
-                WithAccountType,
-                WithMultiTenant {
+        interface WithCreate extends Creatable<ActiveDirectoryApplication>, WithSignOnUrl, WithIdentifierUrl,
+            WithReplyUrl, WithCredential, WithAccountType, WithMultiTenant {
         }
     }
 
@@ -228,8 +246,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.DefinitionStages.Blank<? extends Update>
-                defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<? extends Update> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -288,13 +305,8 @@ public interface ActiveDirectoryApplication
     }
 
     /** The template for an application update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ActiveDirectoryApplication>,
-            UpdateStages.WithSignOnUrl,
-            UpdateStages.WithIdentifierUrl,
-            UpdateStages.WithReplyUrl,
-            UpdateStages.WithCredential,
-            UpdateStages.WithAccountType,
-            UpdateStages.WithMultiTenant {
+    interface Update extends Appliable<ActiveDirectoryApplication>, UpdateStages.WithSignOnUrl,
+        UpdateStages.WithIdentifierUrl, UpdateStages.WithReplyUrl, UpdateStages.WithCredential,
+        UpdateStages.WithAccountType, UpdateStages.WithMultiTenant {
     }
 }

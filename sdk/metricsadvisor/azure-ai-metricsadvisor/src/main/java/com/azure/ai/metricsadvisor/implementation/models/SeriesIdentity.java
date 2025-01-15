@@ -48,6 +48,9 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

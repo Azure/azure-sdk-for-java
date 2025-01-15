@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ContainerRegistry model. */
 @Fluent
 public class ContainerRegistry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerRegistry.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerRegistry.class);
 
     /*
      * The address property.

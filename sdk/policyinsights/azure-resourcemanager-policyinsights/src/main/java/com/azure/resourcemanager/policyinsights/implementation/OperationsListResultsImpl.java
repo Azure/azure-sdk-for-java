@@ -15,8 +15,7 @@ public final class OperationsListResultsImpl implements OperationsListResults {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    OperationsListResultsImpl(
-        OperationsListResultsInner innerObject,
+    OperationsListResultsImpl(OperationsListResultsInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

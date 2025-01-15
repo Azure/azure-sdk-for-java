@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The URL to download the generated report. */
+/**
+ * The URL to download the generated report.
+ */
 @Fluent
-public final class DownloadUrlInner {
+public final class DownloadUrlInner implements JsonSerializable<DownloadUrlInner> {
     /*
      * The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
      */
-    @JsonProperty(value = "expiryTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiryTime;
 
     /*
      * The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
      */
-    @JsonProperty(value = "validTill")
     private OffsetDateTime validTill;
 
     /*
      * The URL to download the generated report.
      */
-    @JsonProperty(value = "downloadUrl")
     private String downloadUrl;
 
-    /** Creates an instance of DownloadUrlInner class. */
+    /**
+     * Creates an instance of DownloadUrlInner class.
+     */
     public DownloadUrlInner() {
     }
 
     /**
      * Get the expiryTime property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -46,7 +53,7 @@ public final class DownloadUrlInner {
     /**
      * Get the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the validTill value.
      */
     public OffsetDateTime validTill() {
@@ -56,7 +63,7 @@ public final class DownloadUrlInner {
     /**
      * Set the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @param validTill the validTill value to set.
      * @return the DownloadUrlInner object itself.
      */
@@ -67,7 +74,7 @@ public final class DownloadUrlInner {
 
     /**
      * Get the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @return the downloadUrl value.
      */
     public String downloadUrl() {
@@ -76,7 +83,7 @@ public final class DownloadUrlInner {
 
     /**
      * Set the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @param downloadUrl the downloadUrl value to set.
      * @return the DownloadUrlInner object itself.
      */
@@ -87,9 +94,53 @@ public final class DownloadUrlInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validTill",
+            this.validTill == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validTill));
+        jsonWriter.writeStringField("downloadUrl", this.downloadUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DownloadUrlInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DownloadUrlInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DownloadUrlInner.
+     */
+    public static DownloadUrlInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DownloadUrlInner deserializedDownloadUrlInner = new DownloadUrlInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expiryTime".equals(fieldName)) {
+                    deserializedDownloadUrlInner.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("validTill".equals(fieldName)) {
+                    deserializedDownloadUrlInner.validTill = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("downloadUrl".equals(fieldName)) {
+                    deserializedDownloadUrlInner.downloadUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDownloadUrlInner;
+        });
     }
 }

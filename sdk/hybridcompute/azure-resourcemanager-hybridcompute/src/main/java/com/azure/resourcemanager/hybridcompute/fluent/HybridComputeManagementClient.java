@@ -61,6 +61,13 @@ public interface HybridComputeManagementClient {
     MachinesClient getMachines();
 
     /**
+     * Gets the LicenseProfilesClient object to access its operations.
+     * 
+     * @return the LicenseProfilesClient object.
+     */
+    LicenseProfilesClient getLicenseProfiles();
+
+    /**
      * Gets the MachineExtensionsClient object to access its operations.
      * 
      * @return the MachineExtensionsClient object.

@@ -14,7 +14,8 @@ import java.util.List;
 /** Paginated list of Machine Learning service objects wrapped in ARM resource envelope. */
 @Immutable
 public final class PaginatedServiceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaginatedServiceList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PaginatedServiceList.class);
 
     /*
      * An array of Machine Learning compute objects wrapped in ARM resource

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
      * @param name a name to look for.
      * @return the corresponding EvictionPolicy.
      */
-    @JsonCreator
     public static EvictionPolicy fromString(String name) {
         return fromString(name, EvictionPolicy.class);
     }

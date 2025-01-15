@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Volume response properties.
  */
 @Fluent
-public final class VolumeUpdateProperties {
+public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpdateProperties> {
     /*
      * Volume size.
      */
-    @JsonProperty(value = "sizeGiB")
     private Long sizeGiB;
 
     /*
      * Parent resource information.
      */
-    @JsonProperty(value = "managedBy")
     private ManagedByInfo managedBy;
 
     /**
@@ -80,5 +82,44 @@ public final class VolumeUpdateProperties {
         if (managedBy() != null) {
             managedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("sizeGiB", this.sizeGiB);
+        jsonWriter.writeJsonField("managedBy", this.managedBy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeUpdateProperties.
+     */
+    public static VolumeUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeUpdateProperties deserializedVolumeUpdateProperties = new VolumeUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeGiB".equals(fieldName)) {
+                    deserializedVolumeUpdateProperties.sizeGiB = reader.getNullable(JsonReader::getLong);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedVolumeUpdateProperties.managedBy = ManagedByInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeUpdateProperties;
+        });
     }
 }

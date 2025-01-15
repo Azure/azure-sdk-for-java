@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** BitLocker recovery key or password to the specified drive. */
+/**
+ * BitLocker recovery key or password to the specified drive.
+ */
 @Fluent
-public final class DriveBitLockerKeyInner {
+public final class DriveBitLockerKeyInner implements JsonSerializable<DriveBitLockerKeyInner> {
     /*
      * BitLocker recovery key or password
      */
-    @JsonProperty(value = "bitLockerKey")
     private String bitLockerKey;
 
     /*
      * Drive ID
      */
-    @JsonProperty(value = "driveId")
     private String driveId;
 
-    /** Creates an instance of DriveBitLockerKeyInner class. */
+    /**
+     * Creates an instance of DriveBitLockerKeyInner class.
+     */
     public DriveBitLockerKeyInner() {
     }
 
     /**
      * Get the bitLockerKey property: BitLocker recovery key or password.
-     *
+     * 
      * @return the bitLockerKey value.
      */
     public String bitLockerKey() {
@@ -37,7 +43,7 @@ public final class DriveBitLockerKeyInner {
 
     /**
      * Set the bitLockerKey property: BitLocker recovery key or password.
-     *
+     * 
      * @param bitLockerKey the bitLockerKey value to set.
      * @return the DriveBitLockerKeyInner object itself.
      */
@@ -48,7 +54,7 @@ public final class DriveBitLockerKeyInner {
 
     /**
      * Get the driveId property: Drive ID.
-     *
+     * 
      * @return the driveId value.
      */
     public String driveId() {
@@ -57,7 +63,7 @@ public final class DriveBitLockerKeyInner {
 
     /**
      * Set the driveId property: Drive ID.
-     *
+     * 
      * @param driveId the driveId value to set.
      * @return the DriveBitLockerKeyInner object itself.
      */
@@ -68,9 +74,48 @@ public final class DriveBitLockerKeyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("bitLockerKey", this.bitLockerKey);
+        jsonWriter.writeStringField("driveId", this.driveId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DriveBitLockerKeyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DriveBitLockerKeyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DriveBitLockerKeyInner.
+     */
+    public static DriveBitLockerKeyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DriveBitLockerKeyInner deserializedDriveBitLockerKeyInner = new DriveBitLockerKeyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bitLockerKey".equals(fieldName)) {
+                    deserializedDriveBitLockerKeyInner.bitLockerKey = reader.getString();
+                } else if ("driveId".equals(fieldName)) {
+                    deserializedDriveBitLockerKeyInner.driveId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDriveBitLockerKeyInner;
+        });
     }
 }

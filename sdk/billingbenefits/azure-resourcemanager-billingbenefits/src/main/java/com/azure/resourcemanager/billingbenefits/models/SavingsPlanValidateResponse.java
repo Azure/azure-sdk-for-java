@@ -7,25 +7,27 @@ package com.azure.resourcemanager.billingbenefits.models;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanValidateResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of SavingsPlanValidateResponse. */
+/**
+ * An immutable client-side representation of SavingsPlanValidateResponse.
+ */
 public interface SavingsPlanValidateResponse {
     /**
      * Gets the benefits property: The benefits property.
-     *
+     * 
      * @return the benefits value.
      */
     List<SavingsPlanValidResponseProperty> benefits();
 
     /**
      * Gets the nextLink property: Url to get the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanValidateResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     SavingsPlanValidateResponseInner innerModel();

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.storagepool.models.ResourceSkuRestrictionInfo;
 public final class ResourceSkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuRestrictionInfo model =
-            BinaryData
-                .fromString(
-                    "{\"locations\":[\"eyeam\",\"p\",\"agalpbuxwgipwhon\",\"wkgshwa\"],\"zones\":[\"xzbinjeputt\",\"rywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"]}")
+        ResourceSkuRestrictionInfo model
+            = BinaryData.fromString("{\"locations\":[\"sx\"],\"zones\":[\"i\",\"ykvceoveil\",\"vnotyfjfcnj\",\"k\"]}")
                 .toObject(ResourceSkuRestrictionInfo.class);
     }
 

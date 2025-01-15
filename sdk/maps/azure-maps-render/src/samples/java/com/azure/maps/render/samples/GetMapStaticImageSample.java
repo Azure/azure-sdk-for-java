@@ -12,7 +12,6 @@ import com.azure.core.models.GeoBoundingBox;
 import com.azure.maps.render.MapsRenderAsyncClient;
 import com.azure.maps.render.MapsRenderClient;
 import com.azure.maps.render.MapsRenderClientBuilder;
-import com.azure.maps.render.models.MapImageStyle;
 import com.azure.maps.render.models.MapStaticImageOptions;
 import com.azure.maps.render.models.RasterTileFormat;
 import com.azure.maps.render.models.StaticMapLayer;
@@ -41,8 +40,7 @@ public class GetMapStaticImageSample {
         new StaticMapLayer();
         new RasterTileFormat();
         MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC)
-            .setMapImageStyle(MapImageStyle.MAIN).setZoom(2)
-            .setBoundingBox(bbox).setRasterTileFormat(RasterTileFormat.PNG);
+            .setBoundingBox(bbox);
         client.getMapStaticImage(mapStaticImageOptions).toStream();
         // END: com.azure.maps.render.sync.get_map_static_image
 
@@ -68,8 +66,8 @@ public class GetMapStaticImageSample {
         new StaticMapLayer();
         new RasterTileFormat();
         MapStaticImageOptions mapStaticImageOptions2 = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC)
-            .setMapImageStyle(MapImageStyle.MAIN).setZoom(2)
-            .setBoundingBox(bbox2).setRasterTileFormat(RasterTileFormat.PNG);
+            .setZoom(2)
+            .setBoundingBox(bbox2);
         asyncClient.getMapStaticImage(mapStaticImageOptions2).block().toStream();
         // END: com.azure.maps.render.async.get_map_static_image
     }

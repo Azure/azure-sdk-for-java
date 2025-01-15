@@ -54,17 +54,20 @@ public class RetryTests {
         retryCount.set(0);
         StepVerifier.create(monoError400.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 400)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 400)
             .verify();
         Assertions.assertEquals(0, retryCount.get());
 
         // 404 but not expected error code, no retry
-        Mono<String> monoError404WrongErrorCode = Mono.error(new ManagementException("error", mockedResponse404, new ManagementError("WrongErrorCode", "")));
+        Mono<String> monoError404WrongErrorCode = Mono
+            .error(new ManagementException("error", mockedResponse404, new ManagementError("WrongErrorCode", "")));
 
         retryCount.set(0);
         StepVerifier.create(monoError404WrongErrorCode.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
             .verify();
         Assertions.assertEquals(0, retryCount.get());
 
@@ -74,7 +77,8 @@ public class RetryTests {
         retryCount.set(0);
         StepVerifier.create(monoError404.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
             .verify();
         Assertions.assertEquals(3, retryCount.get());
 

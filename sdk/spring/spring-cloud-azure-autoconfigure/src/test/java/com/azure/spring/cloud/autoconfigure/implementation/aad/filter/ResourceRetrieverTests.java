@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ResourceRetrieverTests {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(
-                AzureGlobalPropertiesAutoConfiguration.class,
-                AadAuthenticationFilterAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AadAuthenticationFilterAutoConfiguration.class,
+            HttpMessageConvertersAutoConfiguration.class,
+            RestTemplateAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
             "spring.cloud.azure.active-directory.enabled=true",

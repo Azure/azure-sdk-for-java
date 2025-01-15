@@ -39,8 +39,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusesClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,22 +51,16 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface OperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/privateEndpointConnections/{name}/operationStatuses/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/privateEndpointConnections/{name}/operationStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("name") String name,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("name") String name, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -83,19 +77,15 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String name, String operationId) {
+    private Mono<Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner>>
+        getWithResponseAsync(String resourceGroupName, String accountName, String name, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,19 +102,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            name,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, name, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -146,16 +125,12 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     private Mono<Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String name, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -172,17 +147,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                name,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            name, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -198,8 +164,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return private endpoint connection operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> getAsync(
-        String resourceGroupName, String accountName, String name, String operationId) {
+    private Mono<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> getAsync(String resourceGroupName,
+        String accountName, String name, String operationId) {
         return getWithResponseAsync(resourceGroupName, accountName, name, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -217,8 +183,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return private endpoint connection operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoAnalyzerPrivateEndpointConnectionOperationStatusInner get(
-        String resourceGroupName, String accountName, String name, String operationId) {
+    public VideoAnalyzerPrivateEndpointConnectionOperationStatusInner get(String resourceGroupName, String accountName,
+        String name, String operationId) {
         return getAsync(resourceGroupName, accountName, name, operationId).block();
     }
 

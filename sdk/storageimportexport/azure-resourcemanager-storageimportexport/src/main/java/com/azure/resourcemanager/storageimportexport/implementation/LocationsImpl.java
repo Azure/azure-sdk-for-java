@@ -21,8 +21,7 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient,
+    public LocationsImpl(LocationsClient innerClient,
         com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,21 +29,18 @@ public final class LocationsImpl implements Locations {
 
     public PagedIterable<Location> list() {
         PagedIterable<LocationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Location> list(Context context) {
         PagedIterable<LocationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
     public Response<Location> getWithResponse(String locationName, Context context) {
         Response<LocationInner> inner = this.serviceClient().getWithResponse(locationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LocationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

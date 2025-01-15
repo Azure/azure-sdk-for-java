@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Set the server/instance-level settings for SQL Server. */
+/**
+ * Set the server/instance-level settings for SQL Server.
+ */
 @Fluent
-public final class SqlInstanceSettings {
+public final class SqlInstanceSettings implements JsonSerializable<SqlInstanceSettings> {
     /*
      * SQL Server Collation.
      */
-    @JsonProperty(value = "collation")
     private String collation;
 
     /*
      * SQL Server MAXDOP.
      */
-    @JsonProperty(value = "maxDop")
     private Integer maxDop;
 
     /*
      * SQL Server Optimize for Adhoc workloads.
      */
-    @JsonProperty(value = "isOptimizeForAdHocWorkloadsEnabled")
     private Boolean isOptimizeForAdHocWorkloadsEnabled;
 
     /*
      * SQL Server minimum memory.
      */
-    @JsonProperty(value = "minServerMemoryMB")
     private Integer minServerMemoryMB;
 
     /*
      * SQL Server maximum memory.
      */
-    @JsonProperty(value = "maxServerMemoryMB")
     private Integer maxServerMemoryMB;
 
     /*
      * SQL Server LPIM.
      */
-    @JsonProperty(value = "isLpimEnabled")
     private Boolean isLpimEnabled;
 
     /*
      * SQL Server IFI.
      */
-    @JsonProperty(value = "isIfiEnabled")
     private Boolean isIfiEnabled;
 
-    /** Creates an instance of SqlInstanceSettings class. */
+    /**
+     * Creates an instance of SqlInstanceSettings class.
+     */
     public SqlInstanceSettings() {
     }
 
     /**
      * Get the collation property: SQL Server Collation.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -67,7 +68,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the collation property: SQL Server Collation.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -78,7 +79,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the maxDop property: SQL Server MAXDOP.
-     *
+     * 
      * @return the maxDop value.
      */
     public Integer maxDop() {
@@ -87,7 +88,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the maxDop property: SQL Server MAXDOP.
-     *
+     * 
      * @param maxDop the maxDop value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -98,7 +99,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the isOptimizeForAdHocWorkloadsEnabled property: SQL Server Optimize for Adhoc workloads.
-     *
+     * 
      * @return the isOptimizeForAdHocWorkloadsEnabled value.
      */
     public Boolean isOptimizeForAdHocWorkloadsEnabled() {
@@ -107,7 +108,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the isOptimizeForAdHocWorkloadsEnabled property: SQL Server Optimize for Adhoc workloads.
-     *
+     * 
      * @param isOptimizeForAdHocWorkloadsEnabled the isOptimizeForAdHocWorkloadsEnabled value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -118,7 +119,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the minServerMemoryMB property: SQL Server minimum memory.
-     *
+     * 
      * @return the minServerMemoryMB value.
      */
     public Integer minServerMemoryMB() {
@@ -127,7 +128,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the minServerMemoryMB property: SQL Server minimum memory.
-     *
+     * 
      * @param minServerMemoryMB the minServerMemoryMB value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -138,7 +139,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the maxServerMemoryMB property: SQL Server maximum memory.
-     *
+     * 
      * @return the maxServerMemoryMB value.
      */
     public Integer maxServerMemoryMB() {
@@ -147,7 +148,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the maxServerMemoryMB property: SQL Server maximum memory.
-     *
+     * 
      * @param maxServerMemoryMB the maxServerMemoryMB value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -158,7 +159,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the isLpimEnabled property: SQL Server LPIM.
-     *
+     * 
      * @return the isLpimEnabled value.
      */
     public Boolean isLpimEnabled() {
@@ -167,7 +168,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the isLpimEnabled property: SQL Server LPIM.
-     *
+     * 
      * @param isLpimEnabled the isLpimEnabled value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -178,7 +179,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Get the isIfiEnabled property: SQL Server IFI.
-     *
+     * 
      * @return the isIfiEnabled value.
      */
     public Boolean isIfiEnabled() {
@@ -187,7 +188,7 @@ public final class SqlInstanceSettings {
 
     /**
      * Set the isIfiEnabled property: SQL Server IFI.
-     *
+     * 
      * @param isIfiEnabled the isIfiEnabled value to set.
      * @return the SqlInstanceSettings object itself.
      */
@@ -198,9 +199,64 @@ public final class SqlInstanceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("collation", this.collation);
+        jsonWriter.writeNumberField("maxDop", this.maxDop);
+        jsonWriter.writeBooleanField("isOptimizeForAdHocWorkloadsEnabled", this.isOptimizeForAdHocWorkloadsEnabled);
+        jsonWriter.writeNumberField("minServerMemoryMB", this.minServerMemoryMB);
+        jsonWriter.writeNumberField("maxServerMemoryMB", this.maxServerMemoryMB);
+        jsonWriter.writeBooleanField("isLpimEnabled", this.isLpimEnabled);
+        jsonWriter.writeBooleanField("isIfiEnabled", this.isIfiEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlInstanceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlInstanceSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlInstanceSettings.
+     */
+    public static SqlInstanceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlInstanceSettings deserializedSqlInstanceSettings = new SqlInstanceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collation".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.collation = reader.getString();
+                } else if ("maxDop".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.maxDop = reader.getNullable(JsonReader::getInt);
+                } else if ("isOptimizeForAdHocWorkloadsEnabled".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.isOptimizeForAdHocWorkloadsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minServerMemoryMB".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.minServerMemoryMB = reader.getNullable(JsonReader::getInt);
+                } else if ("maxServerMemoryMB".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.maxServerMemoryMB = reader.getNullable(JsonReader::getInt);
+                } else if ("isLpimEnabled".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.isLpimEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isIfiEnabled".equals(fieldName)) {
+                    deserializedSqlInstanceSettings.isIfiEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlInstanceSettings;
+        });
     }
 }

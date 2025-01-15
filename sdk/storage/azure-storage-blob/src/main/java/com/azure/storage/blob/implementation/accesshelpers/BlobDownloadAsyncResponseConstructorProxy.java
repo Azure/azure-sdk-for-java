@@ -19,7 +19,8 @@ import java.util.function.BiFunction;
 public final class BlobDownloadAsyncResponseConstructorProxy {
     private static BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor accessor;
 
-    private BlobDownloadAsyncResponseConstructorProxy() { }
+    private BlobDownloadAsyncResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor}
@@ -42,7 +43,8 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      *
      * @param accessor The accessor.
      */
-    public static void setAccessor(final BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor accessor) {
+    public static void setAccessor(
+        final BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor accessor) {
         BlobDownloadAsyncResponseConstructorProxy.accessor = accessor;
     }
 
@@ -59,9 +61,8 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
         // application accesses BlobDownloadAsyncResponse which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new BlobDownloadAsyncResponse(
-                new HttpRequest(HttpMethod.GET, "http://microsoft.com"),
-                200, new HttpHeaders(), null, null);
+            new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
+                new HttpHeaders(), null, null);
         }
 
         assert accessor != null;

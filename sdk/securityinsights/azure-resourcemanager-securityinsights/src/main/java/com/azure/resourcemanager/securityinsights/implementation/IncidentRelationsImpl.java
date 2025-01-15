@@ -21,8 +21,7 @@ public final class IncidentRelationsImpl implements IncidentRelations {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public IncidentRelationsImpl(
-        IncidentRelationsClient innerClient,
+    public IncidentRelationsImpl(IncidentRelationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,26 @@ public final class IncidentRelationsImpl implements IncidentRelations {
 
     public PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String incidentId) {
         PagedIterable<RelationInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, incidentId);
-        return Utils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Relation> list(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context) {
-        PagedIterable<RelationInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, workspaceName, incidentId, filter, orderby, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
+    public PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String incidentId,
+        String filter, String orderby, Integer top, String skipToken, Context context) {
+        PagedIterable<RelationInner> inner = this.serviceClient()
+            .list(resourceGroupName, workspaceName, incidentId, filter, orderby, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
+    }
+
+    public Response<Relation> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String relationName, Context context) {
+        Response<RelationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RelationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Relation get(String resourceGroupName, String workspaceName, String incidentId, String relationName) {
@@ -58,68 +60,111 @@ public final class IncidentRelationsImpl implements IncidentRelations {
         }
     }
 
-    public Response<Relation> getWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String relationName, Context context) {
-        Response<RelationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RelationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Relation createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String relationName,
-        RelationInner relation) {
-        RelationInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, incidentId, relationName, relation);
-        if (inner != null) {
-            return new RelationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Relation> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String relationName,
-        RelationInner relation,
-        Context context) {
-        Response<RelationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, incidentId, relationName, relation, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RelationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String relationName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String incidentId, String relationName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, incidentId, relationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String relationName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
+    public Relation getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        if (workspaceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+        }
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
+        if (incidentId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+        }
+        String relationName = ResourceManagerUtils.getValueFromIdByName(id, "relations");
+        if (relationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relations'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, workspaceName, incidentId, relationName, Context.NONE)
+            .getValue();
+    }
+
+    public Response<Relation> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        if (workspaceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+        }
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
+        if (incidentId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+        }
+        String relationName = ResourceManagerUtils.getValueFromIdByName(id, "relations");
+        if (relationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relations'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        if (workspaceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+        }
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
+        if (incidentId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+        }
+        String relationName = ResourceManagerUtils.getValueFromIdByName(id, "relations");
+        if (relationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relations'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, workspaceName, incidentId, relationName, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
+        if (workspaceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+        }
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
+        if (incidentId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+        }
+        String relationName = ResourceManagerUtils.getValueFromIdByName(id, "relations");
+        if (relationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relations'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, workspaceName, incidentId, relationName, context);
     }
 
     private IncidentRelationsClient serviceClient() {
@@ -128,5 +173,9 @@ public final class IncidentRelationsImpl implements IncidentRelations {
 
     private com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager() {
         return this.serviceManager;
+    }
+
+    public RelationImpl define(String name) {
+        return new RelationImpl(name, this.manager());
     }
 }

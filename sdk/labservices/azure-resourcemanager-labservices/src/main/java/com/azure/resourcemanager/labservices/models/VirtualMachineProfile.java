@@ -5,70 +5,74 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** The base virtual machine configuration for a lab. */
+/**
+ * The base virtual machine configuration for a lab.
+ */
 @Fluent
-public final class VirtualMachineProfile {
+public final class VirtualMachineProfile implements JsonSerializable<VirtualMachineProfile> {
     /*
      * Indicates what lab virtual machines are created from.
      */
-    @JsonProperty(value = "createOption", required = true)
     private CreateOption createOption;
 
     /*
      * The image configuration for lab virtual machines.
      */
-    @JsonProperty(value = "imageReference", required = true)
     private ImageReference imageReference;
 
     /*
      * The OS type of the image
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * The SKU for the lab. Defines the type of virtual machines used in the lab.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Additional VM capabilities.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private VirtualMachineAdditionalCapabilities additionalCapabilities;
 
     /*
      * The initial quota alloted to each lab user. Must be a time span between 0 and 9999 hours.
      */
-    @JsonProperty(value = "usageQuota", required = true)
     private Duration usageQuota;
 
     /*
      * Enabling this option will use the same password for all user VMs.
      */
-    @JsonProperty(value = "useSharedPassword")
     private EnableState useSharedPassword;
 
     /*
      * Credentials for the admin user on the VM.
      */
-    @JsonProperty(value = "adminUser", required = true)
     private Credentials adminUser;
 
     /*
      * Credentials for the non-admin user on the VM, if one exists.
      */
-    @JsonProperty(value = "nonAdminUser")
     private Credentials nonAdminUser;
 
     /**
+     * Creates an instance of VirtualMachineProfile class.
+     */
+    public VirtualMachineProfile() {
+    }
+
+    /**
      * Get the createOption property: Indicates what lab virtual machines are created from.
-     *
+     * 
      * @return the createOption value.
      */
     public CreateOption createOption() {
@@ -77,7 +81,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the createOption property: Indicates what lab virtual machines are created from.
-     *
+     * 
      * @param createOption the createOption value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -88,7 +92,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the imageReference property: The image configuration for lab virtual machines.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -97,7 +101,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the imageReference property: The image configuration for lab virtual machines.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -108,7 +112,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the osType property: The OS type of the image.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -117,7 +121,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the sku property: The SKU for the lab. Defines the type of virtual machines used in the lab.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -126,7 +130,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the sku property: The SKU for the lab. Defines the type of virtual machines used in the lab.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -137,7 +141,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the additionalCapabilities property: Additional VM capabilities.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public VirtualMachineAdditionalCapabilities additionalCapabilities() {
@@ -146,12 +150,12 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the additionalCapabilities property: Additional VM capabilities.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineProfile object itself.
      */
-    public VirtualMachineProfile withAdditionalCapabilities(
-        VirtualMachineAdditionalCapabilities additionalCapabilities) {
+    public VirtualMachineProfile
+        withAdditionalCapabilities(VirtualMachineAdditionalCapabilities additionalCapabilities) {
         this.additionalCapabilities = additionalCapabilities;
         return this;
     }
@@ -159,7 +163,7 @@ public final class VirtualMachineProfile {
     /**
      * Get the usageQuota property: The initial quota alloted to each lab user. Must be a time span between 0 and 9999
      * hours.
-     *
+     * 
      * @return the usageQuota value.
      */
     public Duration usageQuota() {
@@ -169,7 +173,7 @@ public final class VirtualMachineProfile {
     /**
      * Set the usageQuota property: The initial quota alloted to each lab user. Must be a time span between 0 and 9999
      * hours.
-     *
+     * 
      * @param usageQuota the usageQuota value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -180,7 +184,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the useSharedPassword property: Enabling this option will use the same password for all user VMs.
-     *
+     * 
      * @return the useSharedPassword value.
      */
     public EnableState useSharedPassword() {
@@ -189,7 +193,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the useSharedPassword property: Enabling this option will use the same password for all user VMs.
-     *
+     * 
      * @param useSharedPassword the useSharedPassword value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -200,7 +204,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the adminUser property: Credentials for the admin user on the VM.
-     *
+     * 
      * @return the adminUser value.
      */
     public Credentials adminUser() {
@@ -209,7 +213,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the adminUser property: Credentials for the admin user on the VM.
-     *
+     * 
      * @param adminUser the adminUser value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -220,7 +224,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Get the nonAdminUser property: Credentials for the non-admin user on the VM, if one exists.
-     *
+     * 
      * @return the nonAdminUser value.
      */
     public Credentials nonAdminUser() {
@@ -229,7 +233,7 @@ public final class VirtualMachineProfile {
 
     /**
      * Set the nonAdminUser property: Credentials for the non-admin user on the VM, if one exists.
-     *
+     * 
      * @param nonAdminUser the nonAdminUser value to set.
      * @return the VirtualMachineProfile object itself.
      */
@@ -240,28 +244,25 @@ public final class VirtualMachineProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property createOption in model VirtualMachineProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property createOption in model VirtualMachineProfile"));
         }
         if (imageReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageReference in model VirtualMachineProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property imageReference in model VirtualMachineProfile"));
         } else {
             imageReference().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model VirtualMachineProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model VirtualMachineProfile"));
         } else {
             sku().validate();
         }
@@ -269,14 +270,13 @@ public final class VirtualMachineProfile {
             additionalCapabilities().validate();
         }
         if (usageQuota() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property usageQuota in model VirtualMachineProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property usageQuota in model VirtualMachineProfile"));
         }
         if (adminUser() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property adminUser in model VirtualMachineProfile"));
         } else {
             adminUser().validate();
@@ -287,4 +287,67 @@ public final class VirtualMachineProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("usageQuota", CoreUtils.durationToStringWithDays(this.usageQuota));
+        jsonWriter.writeJsonField("adminUser", this.adminUser);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeStringField("useSharedPassword",
+            this.useSharedPassword == null ? null : this.useSharedPassword.toString());
+        jsonWriter.writeJsonField("nonAdminUser", this.nonAdminUser);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineProfile.
+     */
+    public static VirtualMachineProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineProfile deserializedVirtualMachineProfile = new VirtualMachineProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createOption".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.createOption = CreateOption.fromString(reader.getString());
+                } else if ("imageReference".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.imageReference = ImageReference.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.sku = Sku.fromJson(reader);
+                } else if ("usageQuota".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.usageQuota
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("adminUser".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.adminUser = Credentials.fromJson(reader);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.osType = OsType.fromString(reader.getString());
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.additionalCapabilities
+                        = VirtualMachineAdditionalCapabilities.fromJson(reader);
+                } else if ("useSharedPassword".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.useSharedPassword = EnableState.fromString(reader.getString());
+                } else if ("nonAdminUser".equals(fieldName)) {
+                    deserializedVirtualMachineProfile.nonAdminUser = Credentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineProfile;
+        });
+    }
 }

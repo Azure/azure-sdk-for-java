@@ -5,9 +5,15 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -17,50 +23,38 @@ import java.util.List;
  * operation (if the AllocationState is Steady).
  */
 @Fluent
-public final class ResizeOperationStatus {
+public final class ResizeOperationStatus implements JsonSerializable<ResizeOperationStatus> {
     /*
      * The desired number of dedicated compute nodes in the pool.
      */
-    @JsonProperty(value = "targetDedicatedNodes")
     private Integer targetDedicatedNodes;
 
     /*
      * The desired number of Spot/low-priority compute nodes in the pool.
      */
-    @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
 
     /*
-     * The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool.
-     * 
      * The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the
      * Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
      * Request).
      */
-    @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
-     * Determines what to do with a node and its running task(s) after it has been selected for deallocation.
-     * 
      * The default value is requeue.
      */
-    @JsonProperty(value = "nodeDeallocationOption")
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 
     /*
      * The time when this resize operation was started.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
-     * Details of any errors encountered while performing the last resize on the pool.
-     * 
      * This property is set only if an error occurred during the last pool resize, and only when the pool
      * allocationState is Steady.
      */
-    @JsonProperty(value = "errors")
     private List<ResizeError> errors;
 
     /**
@@ -110,12 +104,9 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Get the resizeTimeout property: The timeout for allocation of compute nodes to the pool or removal of compute
-     * nodes from the pool.
-     * 
-     * The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the
-     * Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request).
+     * Get the resizeTimeout property: The default value is 15 minutes. The minimum value is 5 minutes. If you specify a
+     * value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP
+     * status code is 400 (Bad Request).
      * 
      * @return the resizeTimeout value.
      */
@@ -124,12 +115,9 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Set the resizeTimeout property: The timeout for allocation of compute nodes to the pool or removal of compute
-     * nodes from the pool.
-     * 
-     * The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the
-     * Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request).
+     * Set the resizeTimeout property: The default value is 15 minutes. The minimum value is 5 minutes. If you specify a
+     * value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP
+     * status code is 400 (Bad Request).
      * 
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the ResizeOperationStatus object itself.
@@ -140,10 +128,7 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Get the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation.
-     * 
-     * The default value is requeue.
+     * Get the nodeDeallocationOption property: The default value is requeue.
      * 
      * @return the nodeDeallocationOption value.
      */
@@ -152,10 +137,7 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Set the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation.
-     * 
-     * The default value is requeue.
+     * Set the nodeDeallocationOption property: The default value is requeue.
      * 
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the ResizeOperationStatus object itself.
@@ -186,10 +168,8 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Get the errors property: Details of any errors encountered while performing the last resize on the pool.
-     * 
-     * This property is set only if an error occurred during the last pool resize, and only when the pool
-     * allocationState is Steady.
+     * Get the errors property: This property is set only if an error occurred during the last pool resize, and only
+     * when the pool allocationState is Steady.
      * 
      * @return the errors value.
      */
@@ -198,10 +178,8 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Set the errors property: Details of any errors encountered while performing the last resize on the pool.
-     * 
-     * This property is set only if an error occurred during the last pool resize, and only when the pool
-     * allocationState is Steady.
+     * Set the errors property: This property is set only if an error occurred during the last pool resize, and only
+     * when the pool allocationState is Steady.
      * 
      * @param errors the errors value to set.
      * @return the ResizeOperationStatus object itself.
@@ -220,5 +198,62 @@ public final class ResizeOperationStatus {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("targetDedicatedNodes", this.targetDedicatedNodes);
+        jsonWriter.writeNumberField("targetLowPriorityNodes", this.targetLowPriorityNodes);
+        jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
+        jsonWriter.writeStringField("nodeDeallocationOption",
+            this.nodeDeallocationOption == null ? null : this.nodeDeallocationOption.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResizeOperationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResizeOperationStatus if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResizeOperationStatus.
+     */
+    public static ResizeOperationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResizeOperationStatus deserializedResizeOperationStatus = new ResizeOperationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetDedicatedNodes".equals(fieldName)) {
+                    deserializedResizeOperationStatus.targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("targetLowPriorityNodes".equals(fieldName)) {
+                    deserializedResizeOperationStatus.targetLowPriorityNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("resizeTimeout".equals(fieldName)) {
+                    deserializedResizeOperationStatus.resizeTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("nodeDeallocationOption".equals(fieldName)) {
+                    deserializedResizeOperationStatus.nodeDeallocationOption
+                        = ComputeNodeDeallocationOption.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedResizeOperationStatus.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errors".equals(fieldName)) {
+                    List<ResizeError> errors = reader.readArray(reader1 -> ResizeError.fromJson(reader1));
+                    deserializedResizeOperationStatus.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResizeOperationStatus;
+        });
     }
 }

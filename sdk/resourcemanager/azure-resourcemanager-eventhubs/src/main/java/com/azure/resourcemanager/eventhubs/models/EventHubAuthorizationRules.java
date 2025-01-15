@@ -16,11 +16,8 @@ import reactor.core.publisher.Mono;
  * Entry point to manage event hub authorization rules.
  */
 @Fluent
-public interface EventHubAuthorizationRules extends
-    SupportsCreating<EventHubAuthorizationRule.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<EventHubAuthorizationRule>,
-    HasManager<EventHubsManager> {
+public interface EventHubAuthorizationRules extends SupportsCreating<EventHubAuthorizationRule.DefinitionStages.Blank>,
+    SupportsDeletingById, SupportsGettingById<EventHubAuthorizationRule>, HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules of an event hub in a namespace under a resource group.
      *
@@ -29,8 +26,9 @@ public interface EventHubAuthorizationRules extends
      * @param eventHubName event hub name
      * @return list of authorization rules
      */
-    PagedIterable<EventHubAuthorizationRule> listByEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName);
+    PagedIterable<EventHubAuthorizationRule> listByEventHub(String resourceGroupName, String namespaceName,
+        String eventHubName);
+
     /**
      * Lists the authorization rules of an event hub in a namespace under a resource group.
      *
@@ -39,8 +37,9 @@ public interface EventHubAuthorizationRules extends
      * @param eventHubName event hub name
      * @return observable that emits the authorization rules
      */
-    PagedFlux<EventHubAuthorizationRule> listByEventHubAsync(
-        String resourceGroupName, String namespaceName, String eventHubName);
+    PagedFlux<EventHubAuthorizationRule> listByEventHubAsync(String resourceGroupName, String namespaceName,
+        String eventHubName);
+
     /**
      * Gets an authorization rule of an event hub in a namespace in a resource group.
      *
@@ -50,8 +49,9 @@ public interface EventHubAuthorizationRules extends
      * @param name authorization rule name
      * @return observable that emits the authorization rule
      */
-    Mono<EventHubAuthorizationRule> getByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<EventHubAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName, String eventHubName,
+        String name);
+
     /**
      * Gets an authorization rule of an event hub in a namespace under a resource group.
      *
@@ -61,8 +61,8 @@ public interface EventHubAuthorizationRules extends
      * @param name authorization rule name
      * @return the authorization rule
      */
-    EventHubAuthorizationRule getByName(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    EventHubAuthorizationRule getByName(String resourceGroupName, String namespaceName, String eventHubName,
+        String name);
 
     /**
      * Deletes an authorization rule of an event hub in a namespace under a resource group.
@@ -73,8 +73,7 @@ public interface EventHubAuthorizationRules extends
      * @param name authorization rule name
      * @return the completable representing the task
      */
-    Mono<Void> deleteByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name);
 
     /**
      * Deletes an authorization rule of an event hub in a namespace under a resource group.

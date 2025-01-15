@@ -14,46 +14,91 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicList model =
-            BinaryData
-                .fromString(
-                    "{\"operationId\":\"cnhz\",\"builtInOperation\":\"ot\",\"itemsPath\":\"zcfyjzptwrl\",\"itemValuePath\":\"apqinf\",\"itemTitlePath\":\"pyglqdhmrjzral\",\"parameters\":{\"xj\":{\"operationId\":\"byypsjoqcjenky\",\"valuePath\":\"qzvs\",\"parameters\":{}}}}")
-                .toObject(SwaggerCustomDynamicList.class);
-        Assertions.assertEquals("cnhz", model.operationId());
-        Assertions.assertEquals("ot", model.builtInOperation());
-        Assertions.assertEquals("zcfyjzptwrl", model.itemsPath());
-        Assertions.assertEquals("apqinf", model.itemValuePath());
-        Assertions.assertEquals("pyglqdhmrjzral", model.itemTitlePath());
-        Assertions.assertEquals("byypsjoqcjenky", model.parameters().get("xj").operationId());
-        Assertions.assertEquals("qzvs", model.parameters().get("xj").valuePath());
+        SwaggerCustomDynamicList model = BinaryData.fromString(
+            "{\"operationId\":\"zqz\",\"builtInOperation\":\"dipnhbsvrlr\",\"itemsPath\":\"xmnoa\",\"itemValuePath\":\"yadyfnxtlln\",\"itemTitlePath\":\"mdgsvaekuovwi\",\"parameters\":{\"bfzaaiihyl\":{\"operationId\":\"pr\",\"valuePath\":\"dbe\",\"parameters\":{\"kniqoqyrcpsjea\":{\"operationId\":\"fszmxpos\",\"valuePath\":\"sc\",\"parameters\":{\"ldkpdleesljujps\":{},\"bxggknm\":{}}},\"fpggi\":{\"operationId\":\"djcsbk\",\"valuePath\":\"luchbfrta\",\"parameters\":{\"ddyqdxpnzpuk\":{}}},\"dmiupddl\":{\"operationId\":\"syufexivhjyxa\",\"valuePath\":\"tkqofr\",\"parameters\":{\"cqjenz\":{},\"oxazywijbvq\":{},\"eyjoz\":{},\"dwflxdwliitaiel\":{}}},\"mbedvvmrtnmg\":{\"operationId\":\"jiudcoktsgcyp\",\"valuePath\":\"m\",\"parameters\":{\"kgrebecxuuze\":{},\"kluukxejamychwwr\":{},\"vtjxkttx\":{}}}}},\"rnzlzzmygoutq\":{\"operationId\":\"zhlbpmplethek\",\"valuePath\":\"namtvooaace\",\"parameters\":{\"fqznvahpxdgyho\":{\"operationId\":\"svjctytytyrvt\",\"valuePath\":\"vzywimmmmgbynv\",\"parameters\":{\"dtv\":{}}},\"bmnxpmoadjoo\":{\"operationId\":\"cpt\",\"valuePath\":\"xfwwvmygcfaztoi\",\"parameters\":{\"jri\":{},\"camgjyt\":{},\"kttit\":{}}}}},\"cgdk\":{\"operationId\":\"puoyc\",\"valuePath\":\"ptxqxp\",\"parameters\":{\"a\":{\"operationId\":\"pwj\",\"valuePath\":\"jvskpbuo\",\"parameters\":{\"ukztcuvwwfgjj\":{}}},\"gidgwscosmhgza\":{\"operationId\":\"cepp\",\"valuePath\":\"ilyxpqxnlifhjym\",\"parameters\":{\"liivyatyzwybgay\":{},\"jphozymcypdbuoqn\":{},\"tlz\":{}}}}}}}")
+            .toObject(SwaggerCustomDynamicList.class);
+        Assertions.assertEquals("zqz", model.operationId());
+        Assertions.assertEquals("dipnhbsvrlr", model.builtInOperation());
+        Assertions.assertEquals("xmnoa", model.itemsPath());
+        Assertions.assertEquals("yadyfnxtlln", model.itemValuePath());
+        Assertions.assertEquals("mdgsvaekuovwi", model.itemTitlePath());
+        Assertions.assertEquals("pr", model.parameters().get("bfzaaiihyl").operationId());
+        Assertions.assertEquals("dbe", model.parameters().get("bfzaaiihyl").valuePath());
+        Assertions.assertEquals("fszmxpos",
+            model.parameters().get("bfzaaiihyl").parameters().get("kniqoqyrcpsjea").operationId());
+        Assertions.assertEquals("sc",
+            model.parameters().get("bfzaaiihyl").parameters().get("kniqoqyrcpsjea").valuePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicList model =
-            new SwaggerCustomDynamicList()
-                .withOperationId("cnhz")
-                .withBuiltInOperation("ot")
-                .withItemsPath("zcfyjzptwrl")
-                .withItemValuePath("apqinf")
-                .withItemTitlePath("pyglqdhmrjzral")
-                .withParameters(
-                    mapOf(
-                        "xj",
-                        new SwaggerCustomDynamicProperties()
-                            .withOperationId("byypsjoqcjenky")
-                            .withValuePath("qzvs")
-                            .withParameters(mapOf())));
+        SwaggerCustomDynamicList model = new SwaggerCustomDynamicList().withOperationId("zqz")
+            .withBuiltInOperation("dipnhbsvrlr")
+            .withItemsPath("xmnoa")
+            .withItemValuePath("yadyfnxtlln")
+            .withItemTitlePath("mdgsvaekuovwi")
+            .withParameters(mapOf("bfzaaiihyl", new SwaggerCustomDynamicProperties().withOperationId("pr")
+                .withValuePath("dbe")
+                .withParameters(mapOf("kniqoqyrcpsjea",
+                    new SwaggerCustomDynamicProperties().withOperationId("fszmxpos")
+                        .withValuePath("sc")
+                        .withParameters(mapOf("ldkpdleesljujps", new SwaggerCustomDynamicProperties(), "bxggknm",
+                            new SwaggerCustomDynamicProperties())),
+                    "fpggi",
+                    new SwaggerCustomDynamicProperties().withOperationId("djcsbk")
+                        .withValuePath("luchbfrta")
+                        .withParameters(mapOf("ddyqdxpnzpuk", new SwaggerCustomDynamicProperties())),
+                    "dmiupddl",
+                    new SwaggerCustomDynamicProperties().withOperationId("syufexivhjyxa")
+                        .withValuePath("tkqofr")
+                        .withParameters(mapOf("cqjenz", new SwaggerCustomDynamicProperties(), "oxazywijbvq",
+                            new SwaggerCustomDynamicProperties(), "eyjoz", new SwaggerCustomDynamicProperties(),
+                            "dwflxdwliitaiel", new SwaggerCustomDynamicProperties())),
+                    "mbedvvmrtnmg",
+                    new SwaggerCustomDynamicProperties().withOperationId("jiudcoktsgcyp")
+                        .withValuePath("m")
+                        .withParameters(mapOf("kgrebecxuuze", new SwaggerCustomDynamicProperties(), "kluukxejamychwwr",
+                            new SwaggerCustomDynamicProperties(), "vtjxkttx", new SwaggerCustomDynamicProperties())))),
+                "rnzlzzmygoutq",
+                new SwaggerCustomDynamicProperties().withOperationId("zhlbpmplethek")
+                    .withValuePath("namtvooaace")
+                    .withParameters(mapOf("fqznvahpxdgyho",
+                        new SwaggerCustomDynamicProperties().withOperationId("svjctytytyrvt")
+                            .withValuePath("vzywimmmmgbynv")
+                            .withParameters(mapOf("dtv", new SwaggerCustomDynamicProperties())),
+                        "bmnxpmoadjoo",
+                        new SwaggerCustomDynamicProperties().withOperationId("cpt")
+                            .withValuePath("xfwwvmygcfaztoi")
+                            .withParameters(mapOf("jri", new SwaggerCustomDynamicProperties(), "camgjyt",
+                                new SwaggerCustomDynamicProperties(), "kttit", new SwaggerCustomDynamicProperties())))),
+                "cgdk",
+                new SwaggerCustomDynamicProperties().withOperationId("puoyc")
+                    .withValuePath("ptxqxp")
+                    .withParameters(mapOf("a",
+                        new SwaggerCustomDynamicProperties().withOperationId("pwj")
+                            .withValuePath("jvskpbuo")
+                            .withParameters(mapOf("ukztcuvwwfgjj", new SwaggerCustomDynamicProperties())),
+                        "gidgwscosmhgza",
+                        new SwaggerCustomDynamicProperties().withOperationId("cepp")
+                            .withValuePath("ilyxpqxnlifhjym")
+                            .withParameters(mapOf("liivyatyzwybgay", new SwaggerCustomDynamicProperties(),
+                                "jphozymcypdbuoqn", new SwaggerCustomDynamicProperties(), "tlz",
+                                new SwaggerCustomDynamicProperties()))))));
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicList.class);
-        Assertions.assertEquals("cnhz", model.operationId());
-        Assertions.assertEquals("ot", model.builtInOperation());
-        Assertions.assertEquals("zcfyjzptwrl", model.itemsPath());
-        Assertions.assertEquals("apqinf", model.itemValuePath());
-        Assertions.assertEquals("pyglqdhmrjzral", model.itemTitlePath());
-        Assertions.assertEquals("byypsjoqcjenky", model.parameters().get("xj").operationId());
-        Assertions.assertEquals("qzvs", model.parameters().get("xj").valuePath());
+        Assertions.assertEquals("zqz", model.operationId());
+        Assertions.assertEquals("dipnhbsvrlr", model.builtInOperation());
+        Assertions.assertEquals("xmnoa", model.itemsPath());
+        Assertions.assertEquals("yadyfnxtlln", model.itemValuePath());
+        Assertions.assertEquals("mdgsvaekuovwi", model.itemTitlePath());
+        Assertions.assertEquals("pr", model.parameters().get("bfzaaiihyl").operationId());
+        Assertions.assertEquals("dbe", model.parameters().get("bfzaaiihyl").valuePath());
+        Assertions.assertEquals("fszmxpos",
+            model.parameters().get("bfzaaiihyl").parameters().get("kniqoqyrcpsjea").operationId());
+        Assertions.assertEquals("sc",
+            model.parameters().get("bfzaaiihyl").parameters().get("kniqoqyrcpsjea").valuePath());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

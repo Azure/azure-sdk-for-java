@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ComparisonOperator extends ExpandableStringEnum<ComparisonOpe
      * @param name a name to look for.
      * @return the corresponding ComparisonOperator.
      */
-    @JsonCreator
     public static ComparisonOperator fromString(String name) {
         return fromString(name, ComparisonOperator.class);
     }

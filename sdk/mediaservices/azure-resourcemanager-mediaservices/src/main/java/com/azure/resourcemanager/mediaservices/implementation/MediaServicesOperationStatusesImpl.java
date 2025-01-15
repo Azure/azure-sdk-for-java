@@ -20,22 +20,18 @@ public final class MediaServicesOperationStatusesImpl implements MediaServicesOp
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public MediaServicesOperationStatusesImpl(
-        MediaServicesOperationStatusesClient innerClient,
+    public MediaServicesOperationStatusesImpl(MediaServicesOperationStatusesClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<MediaServiceOperationStatus> getWithResponse(
-        String locationName, String operationId, Context context) {
-        Response<MediaServiceOperationStatusInner> inner =
-            this.serviceClient().getWithResponse(locationName, operationId, context);
+    public Response<MediaServiceOperationStatus> getWithResponse(String locationName, String operationId,
+        Context context) {
+        Response<MediaServiceOperationStatusInner> inner
+            = this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MediaServiceOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

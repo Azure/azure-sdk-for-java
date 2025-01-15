@@ -28,8 +28,7 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public OnlineEndpointsImpl(
-        OnlineEndpointsClient innerClient,
+    public OnlineEndpointsImpl(OnlineEndpointsClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -37,35 +36,15 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
 
     public PagedIterable<OnlineEndpoint> list(String resourceGroupName, String workspaceName) {
         PagedIterable<OnlineEndpointInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineEndpoint> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        Integer count,
-        EndpointComputeType computeType,
-        String skip,
-        String tags,
-        String properties,
-        OrderString orderBy,
-        Context context) {
-        PagedIterable<OnlineEndpointInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    resourceGroupName,
-                    workspaceName,
-                    name,
-                    count,
-                    computeType,
-                    skip,
-                    tags,
-                    properties,
-                    orderBy,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
+    public PagedIterable<OnlineEndpoint> list(String resourceGroupName, String workspaceName, String name,
+        Integer count, EndpointComputeType computeType, String skip, String tags, String properties,
+        OrderString orderBy, Context context) {
+        PagedIterable<OnlineEndpointInner> inner = this.serviceClient()
+            .list(resourceGroupName, workspaceName, name, count, computeType, skip, tags, properties, orderBy, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName) {
@@ -76,15 +55,12 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, context);
     }
 
-    public Response<OnlineEndpoint> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        Response<OnlineEndpointInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, endpointName, context);
+    public Response<OnlineEndpoint> getWithResponse(String resourceGroupName, String workspaceName, String endpointName,
+        Context context) {
+        Response<OnlineEndpointInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, endpointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OnlineEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -100,15 +76,12 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         }
     }
 
-    public Response<EndpointAuthKeys> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        Response<EndpointAuthKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, endpointName, context);
+    public Response<EndpointAuthKeys> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, Context context) {
+        Response<EndpointAuthKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, endpointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EndpointAuthKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -124,29 +97,22 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         }
     }
 
-    public void regenerateKeys(
-        String resourceGroupName, String workspaceName, String endpointName, RegenerateEndpointKeysRequest body) {
+    public void regenerateKeys(String resourceGroupName, String workspaceName, String endpointName,
+        RegenerateEndpointKeysRequest body) {
         this.serviceClient().regenerateKeys(resourceGroupName, workspaceName, endpointName, body);
     }
 
-    public void regenerateKeys(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        RegenerateEndpointKeysRequest body,
-        Context context) {
+    public void regenerateKeys(String resourceGroupName, String workspaceName, String endpointName,
+        RegenerateEndpointKeysRequest body, Context context) {
         this.serviceClient().regenerateKeys(resourceGroupName, workspaceName, endpointName, body, context);
     }
 
-    public Response<EndpointAuthToken> getTokenWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        Response<EndpointAuthTokenInner> inner =
-            this.serviceClient().getTokenWithResponse(resourceGroupName, workspaceName, endpointName, context);
+    public Response<EndpointAuthToken> getTokenWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, Context context) {
+        Response<EndpointAuthTokenInner> inner
+            = this.serviceClient().getTokenWithResponse(resourceGroupName, workspaceName, endpointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EndpointAuthTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -163,109 +129,77 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
     }
 
     public OnlineEndpoint getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "onlineEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "onlineEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
     }
 
     public Response<OnlineEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "onlineEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "onlineEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, endpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "onlineEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "onlineEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, endpointName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "onlineEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "onlineEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onlineEndpoints'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, endpointName, context);
     }

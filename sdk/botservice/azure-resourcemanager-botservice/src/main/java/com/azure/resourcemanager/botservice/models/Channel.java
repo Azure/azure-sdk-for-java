@@ -5,56 +5,55 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Channel definition. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "channelName",
-    defaultImpl = Channel.class)
-@JsonTypeName("Channel")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AlexaChannel", value = AlexaChannel.class),
-    @JsonSubTypes.Type(name = "FacebookChannel", value = FacebookChannel.class),
-    @JsonSubTypes.Type(name = "EmailChannel", value = EmailChannel.class),
-    @JsonSubTypes.Type(name = "MsTeamsChannel", value = MsTeamsChannel.class),
-    @JsonSubTypes.Type(name = "SkypeChannel", value = SkypeChannel.class),
-    @JsonSubTypes.Type(name = "KikChannel", value = KikChannel.class),
-    @JsonSubTypes.Type(name = "WebChatChannel", value = WebChatChannel.class),
-    @JsonSubTypes.Type(name = "DirectLineChannel", value = DirectLineChannel.class),
-    @JsonSubTypes.Type(name = "TelegramChannel", value = TelegramChannel.class),
-    @JsonSubTypes.Type(name = "SmsChannel", value = SmsChannel.class),
-    @JsonSubTypes.Type(name = "SlackChannel", value = SlackChannel.class),
-    @JsonSubTypes.Type(name = "LineChannel", value = LineChannel.class),
-    @JsonSubTypes.Type(name = "DirectLineSpeechChannel", value = DirectLineSpeechChannel.class)
-})
+/**
+ * Channel definition.
+ */
 @Fluent
-public class Channel {
+public class Channel implements JsonSerializable<Channel> {
+    /*
+     * The channel name
+     */
+    private String channelName = "Channel";
+
     /*
      * Entity Tag of the resource
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Specifies the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
+     * Creates an instance of Channel class.
+     */
+    public Channel() {
+    }
+
+    /**
+     * Get the channelName property: The channel name.
+     * 
+     * @return the channelName value.
+     */
+    public String channelName() {
+        return this.channelName;
+    }
+
+    /**
      * Get the etag property: Entity Tag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -63,7 +62,7 @@ public class Channel {
 
     /**
      * Set the etag property: Entity Tag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the Channel object itself.
      */
@@ -74,7 +73,7 @@ public class Channel {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -82,8 +81,19 @@ public class Channel {
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the Channel object itself.
+     */
+    Channel withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the location property: Specifies the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -92,7 +102,7 @@ public class Channel {
 
     /**
      * Set the location property: Specifies the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the Channel object itself.
      */
@@ -103,9 +113,114 @@ public class Channel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelName", this.channelName);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Channel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Channel if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Channel.
+     */
+    public static Channel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("channelName".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AlexaChannel".equals(discriminatorValue)) {
+                    return AlexaChannel.fromJson(readerToUse.reset());
+                } else if ("FacebookChannel".equals(discriminatorValue)) {
+                    return FacebookChannel.fromJson(readerToUse.reset());
+                } else if ("EmailChannel".equals(discriminatorValue)) {
+                    return EmailChannel.fromJson(readerToUse.reset());
+                } else if ("OutlookChannel".equals(discriminatorValue)) {
+                    return OutlookChannel.fromJson(readerToUse.reset());
+                } else if ("MsTeamsChannel".equals(discriminatorValue)) {
+                    return MsTeamsChannel.fromJson(readerToUse.reset());
+                } else if ("SkypeChannel".equals(discriminatorValue)) {
+                    return SkypeChannel.fromJson(readerToUse.reset());
+                } else if ("KikChannel".equals(discriminatorValue)) {
+                    return KikChannel.fromJson(readerToUse.reset());
+                } else if ("WebChatChannel".equals(discriminatorValue)) {
+                    return WebChatChannel.fromJson(readerToUse.reset());
+                } else if ("DirectLineChannel".equals(discriminatorValue)) {
+                    return DirectLineChannel.fromJson(readerToUse.reset());
+                } else if ("TelegramChannel".equals(discriminatorValue)) {
+                    return TelegramChannel.fromJson(readerToUse.reset());
+                } else if ("SmsChannel".equals(discriminatorValue)) {
+                    return SmsChannel.fromJson(readerToUse.reset());
+                } else if ("SlackChannel".equals(discriminatorValue)) {
+                    return SlackChannel.fromJson(readerToUse.reset());
+                } else if ("LineChannel".equals(discriminatorValue)) {
+                    return LineChannel.fromJson(readerToUse.reset());
+                } else if ("DirectLineSpeechChannel".equals(discriminatorValue)) {
+                    return DirectLineSpeechChannel.fromJson(readerToUse.reset());
+                } else if ("Omnichannel".equals(discriminatorValue)) {
+                    return Omnichannel.fromJson(readerToUse.reset());
+                } else if ("TelephonyChannel".equals(discriminatorValue)) {
+                    return TelephonyChannel.fromJson(readerToUse.reset());
+                } else if ("AcsChatChannel".equals(discriminatorValue)) {
+                    return AcsChatChannel.fromJson(readerToUse.reset());
+                } else if ("SearchAssistant".equals(discriminatorValue)) {
+                    return SearchAssistant.fromJson(readerToUse.reset());
+                } else if ("M365Extensions".equals(discriminatorValue)) {
+                    return M365Extensions.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Channel fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Channel deserializedChannel = new Channel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("channelName".equals(fieldName)) {
+                    deserializedChannel.channelName = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedChannel.etag = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedChannel.provisioningState = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedChannel.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannel;
+        });
     }
 }

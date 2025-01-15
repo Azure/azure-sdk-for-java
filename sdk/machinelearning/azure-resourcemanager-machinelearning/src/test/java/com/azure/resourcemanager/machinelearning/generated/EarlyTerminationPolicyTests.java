@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EarlyTerminationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EarlyTerminationPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1491450827,\"evaluationInterval\":935954000}")
-                .toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1491450827, model.delayEvaluation());
-        Assertions.assertEquals(935954000, model.evaluationInterval());
+        EarlyTerminationPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"EarlyTerminationPolicy\",\"evaluationInterval\":1134110366,\"delayEvaluation\":1352080232}")
+            .toObject(EarlyTerminationPolicy.class);
+        Assertions.assertEquals(1134110366, model.evaluationInterval());
+        Assertions.assertEquals(1352080232, model.delayEvaluation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EarlyTerminationPolicy model =
-            new EarlyTerminationPolicy().withDelayEvaluation(1491450827).withEvaluationInterval(935954000);
+        EarlyTerminationPolicy model
+            = new EarlyTerminationPolicy().withEvaluationInterval(1134110366).withDelayEvaluation(1352080232);
         model = BinaryData.fromObject(model).toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1491450827, model.delayEvaluation());
-        Assertions.assertEquals(935954000, model.evaluationInterval());
+        Assertions.assertEquals(1134110366, model.evaluationInterval());
+        Assertions.assertEquals(1352080232, model.delayEvaluation());
     }
 }

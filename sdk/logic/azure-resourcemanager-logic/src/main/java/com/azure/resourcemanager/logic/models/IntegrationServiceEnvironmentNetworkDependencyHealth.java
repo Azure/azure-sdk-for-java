@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration service environment subnet network health. */
+/**
+ * The integration service environment subnet network health.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
+public final class IntegrationServiceEnvironmentNetworkDependencyHealth
+    implements JsonSerializable<IntegrationServiceEnvironmentNetworkDependencyHealth> {
     /*
      * The error if any occurred during the operation.
      */
-    @JsonProperty(value = "error")
     private ExtendedErrorInfo error;
 
     /*
      * The network dependency health state.
      */
-    @JsonProperty(value = "state")
     private IntegrationServiceEnvironmentNetworkDependencyHealthState state;
 
-    /** Creates an instance of IntegrationServiceEnvironmentNetworkDependencyHealth class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentNetworkDependencyHealth class.
+     */
     public IntegrationServiceEnvironmentNetworkDependencyHealth() {
     }
 
     /**
      * Get the error property: The error if any occurred during the operation.
-     *
+     * 
      * @return the error value.
      */
     public ExtendedErrorInfo error() {
@@ -37,7 +44,7 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
 
     /**
      * Set the error property: The error if any occurred during the operation.
-     *
+     * 
      * @param error the error value to set.
      * @return the IntegrationServiceEnvironmentNetworkDependencyHealth object itself.
      */
@@ -48,7 +55,7 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
 
     /**
      * Get the state property: The network dependency health state.
-     *
+     * 
      * @return the state value.
      */
     public IntegrationServiceEnvironmentNetworkDependencyHealthState state() {
@@ -57,24 +64,67 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
 
     /**
      * Set the state property: The network dependency health state.
-     *
+     * 
      * @param state the state value to set.
      * @return the IntegrationServiceEnvironmentNetworkDependencyHealth object itself.
      */
-    public IntegrationServiceEnvironmentNetworkDependencyHealth withState(
-        IntegrationServiceEnvironmentNetworkDependencyHealthState state) {
+    public IntegrationServiceEnvironmentNetworkDependencyHealth
+        withState(IntegrationServiceEnvironmentNetworkDependencyHealthState state) {
         this.state = state;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentNetworkDependencyHealth from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentNetworkDependencyHealth if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentNetworkDependencyHealth.
+     */
+    public static IntegrationServiceEnvironmentNetworkDependencyHealth fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentNetworkDependencyHealth deserializedIntegrationServiceEnvironmentNetworkDependencyHealth
+                = new IntegrationServiceEnvironmentNetworkDependencyHealth();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentNetworkDependencyHealth.error
+                        = ExtendedErrorInfo.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentNetworkDependencyHealth.state
+                        = IntegrationServiceEnvironmentNetworkDependencyHealthState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentNetworkDependencyHealth;
+        });
     }
 }

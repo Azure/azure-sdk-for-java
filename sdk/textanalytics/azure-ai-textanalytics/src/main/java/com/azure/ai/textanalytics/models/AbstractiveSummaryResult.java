@@ -16,20 +16,20 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        AbstractiveSummaryResultPropertiesHelper.setAccessor(
-                new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
-                    @Override
-                    public void setWarnings(AbstractiveSummaryResult documentResult,
-                                            IterableStream<TextAnalyticsWarning> warnings) {
-                        documentResult.setWarnings(warnings);
-                    }
+        AbstractiveSummaryResultPropertiesHelper
+            .setAccessor(new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
+                @Override
+                public void setWarnings(AbstractiveSummaryResult documentResult,
+                    IterableStream<TextAnalyticsWarning> warnings) {
+                    documentResult.setWarnings(warnings);
+                }
 
-                    @Override
-                    public void setSummaries(AbstractiveSummaryResult documentResult,
-                                             IterableStream<AbstractiveSummary> summaries) {
-                        documentResult.setSummaries(summaries);
-                    }
-                });
+                @Override
+                public void setSummaries(AbstractiveSummaryResult documentResult,
+                    IterableStream<AbstractiveSummary> summaries) {
+                    documentResult.setSummaries(summaries);
+                }
+            });
     }
 
     /**
@@ -39,7 +39,8 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 

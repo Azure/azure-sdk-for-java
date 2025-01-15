@@ -77,30 +77,25 @@ public final class DscNodeConfigurationImpl
 
     private DscNodeConfigurationCreateOrUpdateParameters updateParameters;
 
-    public DscNodeConfigurationImpl withExistingAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public DscNodeConfigurationImpl withExistingAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.automationAccountName = automationAccountName;
         return this;
     }
 
     public DscNodeConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, automationAccountName, nodeConfigurationName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .createOrUpdate(resourceGroupName, automationAccountName, nodeConfigurationName, createParameters,
+                Context.NONE);
         return this;
     }
 
     public DscNodeConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, automationAccountName, nodeConfigurationName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .createOrUpdate(resourceGroupName, automationAccountName, nodeConfigurationName, createParameters, context);
         return this;
     }
 
@@ -117,51 +112,42 @@ public final class DscNodeConfigurationImpl
     }
 
     public DscNodeConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, automationAccountName, nodeConfigurationName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .createOrUpdate(resourceGroupName, automationAccountName, nodeConfigurationName, updateParameters,
+                Context.NONE);
         return this;
     }
 
     public DscNodeConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, automationAccountName, nodeConfigurationName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .createOrUpdate(resourceGroupName, automationAccountName, nodeConfigurationName, updateParameters, context);
         return this;
     }
 
-    DscNodeConfigurationImpl(
-        DscNodeConfigurationInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    DscNodeConfigurationImpl(DscNodeConfigurationInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.nodeConfigurationName = Utils.getValueFromIdByName(innerObject.id(), "nodeConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.nodeConfigurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nodeConfigurations");
     }
 
     public DscNodeConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DscNodeConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscNodeConfigurations()
-                .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscNodeConfigurations()
+            .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context)
+            .getValue();
         return this;
     }
 

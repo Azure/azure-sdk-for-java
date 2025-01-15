@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"jzyflu\",\"display\":{\"provider\":\"hmofc\",\"resource\":\"smy\",\"operation\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\"}}],\"nextLink\":\"cryuan\"}")
-                .toObject(OperationList.class);
+        OperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"jzyflu\",\"display\":{\"provider\":\"hmofc\",\"resource\":\"smy\",\"operation\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\"}}],\"nextLink\":\"cryuan\"}")
+            .toObject(OperationList.class);
         Assertions.assertEquals("cryuan", model.nextLink());
     }
 

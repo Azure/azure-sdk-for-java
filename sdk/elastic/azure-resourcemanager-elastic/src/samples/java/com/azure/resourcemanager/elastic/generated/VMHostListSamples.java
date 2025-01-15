@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-/** Samples for VMHost List. */
+/**
+ * Samples for VMHost List.
+ */
 public final class VMHostListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/VMHost_List.json
+     * x-ms-original-file:
+     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/VMHost_List.json
      */
     /**
      * Sample code: VMHost_List.
-     *
+     * 
      * @param manager Entry point to ElasticManager.
      */
     public static void vMHostList(com.azure.resourcemanager.elastic.ElasticManager manager) {

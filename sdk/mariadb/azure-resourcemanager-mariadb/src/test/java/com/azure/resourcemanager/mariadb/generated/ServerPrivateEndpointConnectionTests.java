@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.ServerPrivateEndpointConnection;
 public final class ServerPrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerPrivateEndpointConnection model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"jspodmailzyde\",\"properties\":{\"privateEndpoint\":{\"id\":\"yahux\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mqnjaqw\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Dropping\"}}")
-                .toObject(ServerPrivateEndpointConnection.class);
+        ServerPrivateEndpointConnection model = BinaryData.fromString(
+            "{\"id\":\"xaolth\",\"properties\":{\"privateEndpoint\":{\"id\":\"qjbpfzfsin\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"f\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Ready\"}}")
+            .toObject(ServerPrivateEndpointConnection.class);
     }
 
     @org.junit.jupiter.api.Test

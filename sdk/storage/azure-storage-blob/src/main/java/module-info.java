@@ -13,22 +13,15 @@ module com.azure.storage.blob {
     exports com.azure.storage.blob.specialized;
 
     // Blob batch needs to interact with the generated layer but shouldn't replicate it.
-    exports com.azure.storage.blob.implementation to
-        com.azure.storage.blob.cryptography,
-        com.azure.storage.blob.batch,
-        com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
+    exports com.azure.storage.blob.implementation
+        to com.azure.storage.blob.cryptography, com.azure.storage.blob.batch, com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
 
-    exports com.azure.storage.blob.implementation.models to
-        com.azure.storage.blob.batch,
-        com.azure.storage.blob.cryptography;
+    exports com.azure.storage.blob.implementation.models
+        to com.azure.storage.blob.batch, com.azure.storage.blob.cryptography;
 
-    exports com.azure.storage.blob.implementation.util to
-        com.azure.storage.blob.cryptography,
-        com.azure.storage.file.datalake,
-        com.azure.storage.blob.changefeed,
-        com.azure.core,
-        com.azure.storage.blob.batch,
-        com.azure.storage.blob.nio;
+    exports com.azure.storage.blob.implementation.util
+        to com.azure.storage.blob.cryptography, com.azure.storage.file.datalake, com.azure.storage.blob.changefeed,
+        com.azure.core, com.azure.storage.blob.batch, com.azure.storage.blob.nio;
 
     opens com.azure.storage.blob.models to com.azure.core;
     opens com.azure.storage.blob.implementation to com.azure.core;

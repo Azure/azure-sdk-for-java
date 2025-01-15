@@ -36,7 +36,7 @@ import java.util.function.Consumer;
 
 /**
  * This class provides helper methods for blob query functions.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class BlobQueryReader {
@@ -61,7 +61,7 @@ public class BlobQueryReader {
 
     /**
      * Avro parses a query reactive stream.
-     *
+     * <p>
      * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
      * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
      * either be a result data record, an end record, a progress record or an error record.
@@ -69,7 +69,8 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        return new AvroReaderFactory().getAvroReader(avro).read()
+        return new AvroReaderFactory().getAvroReader(avro)
+            .read()
             .map(AvroObject::getObject)
             .concatMap(this::parseRecord);
     }
@@ -90,15 +91,19 @@ public class BlobQueryReader {
         switch (recordSchema.toString()) {
             case "resultData":
                 return parseResultData(record);
+
             case "end":
                 return parseEnd(record);
+
             case "progress":
                 return parseProgress(record);
+
             case "error":
                 return parseError(record);
+
             default:
-                return Mono.error(new IllegalStateException(String.format("Unknown record type %s "
-                    + "while parsing query response. ", recordSchema.toString())));
+                return Mono.error(new IllegalStateException(String
+                    .format("Unknown record type %s " + "while parsing query response. ", recordSchema.toString())));
         }
     }
 
@@ -114,8 +119,8 @@ public class BlobQueryReader {
             AvroSchema.checkType("data", data, List.class);
             return Mono.just(ByteBuffer.wrap(AvroSchema.getBytes((List<?>) data)));
         } else {
-            return Mono.error(new IllegalArgumentException("Failed to parse result data record from "
-                + "query response stream."));
+            return Mono.error(
+                new IllegalArgumentException("Failed to parse result data record from " + "query response stream."));
         }
     }
 
@@ -132,8 +137,8 @@ public class BlobQueryReader {
                 AvroSchema.checkType("totalBytes", totalBytes, Long.class);
                 progressConsumer.accept(new BlobQueryProgress((long) totalBytes, (long) totalBytes));
             } else {
-                return Mono.error(new IllegalArgumentException("Failed to parse end record from query "
-                    + "response stream."));
+                return Mono
+                    .error(new IllegalArgumentException("Failed to parse end record from query " + "response stream."));
             }
         }
         return Mono.empty();
@@ -154,8 +159,8 @@ public class BlobQueryReader {
                 AvroSchema.checkType("totalBytes", totalBytes, Long.class);
                 progressConsumer.accept(new BlobQueryProgress((long) bytesScanned, (long) totalBytes));
             } else {
-                return Mono.error(new IllegalArgumentException("Failed to parse progress record from "
-                    + "query response stream."));
+                return Mono.error(
+                    new IllegalArgumentException("Failed to parse progress record from " + "query response stream."));
             }
         }
         return Mono.empty();
@@ -178,8 +183,8 @@ public class BlobQueryReader {
             AvroSchema.checkType("description", description, String.class);
             AvroSchema.checkType("position", position, Long.class);
 
-            BlobQueryError error = new BlobQueryError((Boolean) fatal, (String) name,
-                (String) description, (Long) position);
+            BlobQueryError error
+                = new BlobQueryError((Boolean) fatal, (String) name, (String) description, (Long) position);
 
             if (errorConsumer != null) {
                 errorConsumer.accept(error);
@@ -188,8 +193,8 @@ public class BlobQueryReader {
                     + System.lineSeparator() + error.toString()));
             }
         } else {
-            return Mono.error(new IllegalArgumentException("Failed to parse error record from "
-                + "query response stream."));
+            return Mono
+                .error(new IllegalArgumentException("Failed to parse error record from " + "query response stream."));
         }
         return Mono.empty();
     }
@@ -222,24 +227,23 @@ public class BlobQueryReader {
         if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
             generatedFormat.setType(QueryFormatType.DELIMITED);
-            generatedFormat.setDelimitedTextConfiguration(transformDelimited(
-                (BlobQueryDelimitedSerialization) userSerialization));
+            generatedFormat
+                .setDelimitedTextConfiguration(transformDelimited((BlobQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
             generatedFormat.setType(QueryFormatType.JSON);
-            generatedFormat.setJsonTextConfiguration(transformJson(
-                (BlobQueryJsonSerialization) userSerialization));
+            generatedFormat.setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryParquetSerialization) {
 
             generatedFormat.setType(QueryFormatType.PARQUET);
-            generatedFormat.setParquetTextConfiguration(transformParquet(
-                (BlobQueryParquetSerialization) userSerialization));
+            generatedFormat
+                .setParquetTextConfiguration(transformParquet((BlobQueryParquetSerialization) userSerialization));
 
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Please see values of valid input serialization in the documentation "
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Please see values of valid input serialization in the documentation "
                     + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
         return new QuerySerialization().setFormat(generatedFormat);
@@ -261,24 +265,22 @@ public class BlobQueryReader {
         if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
             generatedFormat.setType(QueryFormatType.DELIMITED);
-            generatedFormat.setDelimitedTextConfiguration(transformDelimited(
-                (BlobQueryDelimitedSerialization) userSerialization));
+            generatedFormat
+                .setDelimitedTextConfiguration(transformDelimited((BlobQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
             generatedFormat.setType(QueryFormatType.JSON);
-            generatedFormat.setJsonTextConfiguration(transformJson(
-                (BlobQueryJsonSerialization) userSerialization));
+            generatedFormat.setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryArrowSerialization) {
 
             generatedFormat.setType(QueryFormatType.ARROW);
-            generatedFormat.setArrowConfiguration(transformArrow(
-                (BlobQueryArrowSerialization) userSerialization));
+            generatedFormat.setArrowConfiguration(transformArrow((BlobQueryArrowSerialization) userSerialization));
 
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Please see values of valid output serialization in the documentation "
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Please see values of valid output serialization in the documentation "
                     + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
         return new QuerySerialization().setFormat(generatedFormat);
@@ -290,8 +292,8 @@ public class BlobQueryReader {
      * @param delimitedSerialization {@link BlobQueryDelimitedSerialization}
      * @return {@link DelimitedTextConfiguration}
      */
-    private static DelimitedTextConfiguration transformDelimited(
-        BlobQueryDelimitedSerialization delimitedSerialization) {
+    private static DelimitedTextConfiguration
+        transformDelimited(BlobQueryDelimitedSerialization delimitedSerialization) {
         if (delimitedSerialization == null) {
             return null;
         }
@@ -313,8 +315,7 @@ public class BlobQueryReader {
         if (jsonSerialization == null) {
             return null;
         }
-        return new JsonTextConfiguration()
-            .setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
+        return new JsonTextConfiguration().setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
     }
 
     /**
@@ -342,19 +343,17 @@ public class BlobQueryReader {
         if (arrowSerialization == null) {
             return null;
         }
-        List<ArrowField> schema = arrowSerialization.getSchema() == null ? null
-            : new ArrayList<>(arrowSerialization.getSchema().size());
+        List<ArrowField> schema
+            = arrowSerialization.getSchema() == null ? null : new ArrayList<>(arrowSerialization.getSchema().size());
         if (schema != null) {
             for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
                 if (field == null) {
                     schema.add(null);
                 } else {
-                    schema.add(new ArrowField()
-                        .setName(field.getName())
+                    schema.add(new ArrowField().setName(field.getName())
                         .setPrecision(field.getPrecision())
                         .setScale(field.getScale())
-                        .setType(field.getType().toString())
-                    );
+                        .setType(field.getType().toString()));
                 }
             }
         }

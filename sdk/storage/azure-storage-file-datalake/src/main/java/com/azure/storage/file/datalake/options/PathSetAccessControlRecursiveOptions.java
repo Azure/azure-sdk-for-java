@@ -25,6 +25,7 @@ public class PathSetAccessControlRecursiveOptions {
     /**
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
+     * @throws NullPointerException If {@code accessControlList} is null.
      */
     public PathSetAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
         StorageImplUtils.assertNotNull("accessControllList", accessControlList);
@@ -71,7 +72,7 @@ public class PathSetAccessControlRecursiveOptions {
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
      * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
-     *      * also halt if an error is hit and {@code continueOnFailure} is false.
+     * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @return The maximum number of batches.
      */
@@ -84,7 +85,7 @@ public class PathSetAccessControlRecursiveOptions {
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
      * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
-     *      * also halt if an error is hit and {@code continueOnFailure} is false.
+     * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @param maxBatches The maximum number of batches.
      * @return The updated object.
@@ -111,8 +112,8 @@ public class PathSetAccessControlRecursiveOptions {
      * @param progressHandler The progress handler.
      * @return The updated object.
      */
-    public PathSetAccessControlRecursiveOptions setProgressHandler(
-        Consumer<Response<AccessControlChanges>> progressHandler) {
+    public PathSetAccessControlRecursiveOptions
+        setProgressHandler(Consumer<Response<AccessControlChanges>> progressHandler) {
         this.progressHandler = progressHandler;
         return this;
     }

@@ -5,41 +5,47 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** The properties of the feedback queue for cloud-to-device messages. */
+/**
+ * The properties of the feedback queue for cloud-to-device messages.
+ */
 @Fluent
-public final class FeedbackProperties {
+public final class FeedbackProperties implements JsonSerializable<FeedbackProperties> {
     /*
      * The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      */
-    @JsonProperty(value = "lockDurationAsIso8601")
     private Duration lockDurationAsIso8601;
 
     /*
      * The period of time for which a message is available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      */
-    @JsonProperty(value = "ttlAsIso8601")
     private Duration ttlAsIso8601;
 
     /*
      * The number of times the IoT hub attempts to deliver a message on the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      */
-    @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
-    /** Creates an instance of FeedbackProperties class. */
+    /**
+     * Creates an instance of FeedbackProperties class.
+     */
     public FeedbackProperties() {
     }
 
     /**
      * Get the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the lockDurationAsIso8601 value.
      */
     public Duration lockDurationAsIso8601() {
@@ -49,7 +55,7 @@ public final class FeedbackProperties {
     /**
      * Set the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param lockDurationAsIso8601 the lockDurationAsIso8601 value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -62,7 +68,7 @@ public final class FeedbackProperties {
      * Get the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
      * expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the ttlAsIso8601 value.
      */
     public Duration ttlAsIso8601() {
@@ -73,7 +79,7 @@ public final class FeedbackProperties {
      * Set the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
      * expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param ttlAsIso8601 the ttlAsIso8601 value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -85,7 +91,7 @@ public final class FeedbackProperties {
     /**
      * Get the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message on the feedback
      * queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -95,7 +101,7 @@ public final class FeedbackProperties {
     /**
      * Set the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message on the feedback
      * queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -106,9 +112,54 @@ public final class FeedbackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lockDurationAsIso8601",
+            CoreUtils.durationToStringWithDays(this.lockDurationAsIso8601));
+        jsonWriter.writeStringField("ttlAsIso8601", CoreUtils.durationToStringWithDays(this.ttlAsIso8601));
+        jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeedbackProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeedbackProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeedbackProperties.
+     */
+    public static FeedbackProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeedbackProperties deserializedFeedbackProperties = new FeedbackProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lockDurationAsIso8601".equals(fieldName)) {
+                    deserializedFeedbackProperties.lockDurationAsIso8601
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("ttlAsIso8601".equals(fieldName)) {
+                    deserializedFeedbackProperties.ttlAsIso8601
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("maxDeliveryCount".equals(fieldName)) {
+                    deserializedFeedbackProperties.maxDeliveryCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeedbackProperties;
+        });
     }
 }

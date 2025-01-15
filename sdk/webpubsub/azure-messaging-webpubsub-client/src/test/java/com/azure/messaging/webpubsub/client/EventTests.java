@@ -32,8 +32,8 @@ public class EventTests extends TestBase {
 
             // send with explicit ackId
             long ackId = new Random().nextLong() & Long.MAX_VALUE;
-            result = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataFormat.TEXT, new SendEventOptions()
-                .setAckId(ackId));
+            result
+                = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataFormat.TEXT, new SendEventOptions().setAckId(ackId));
             Assertions.assertEquals(ackId, result.getAckId());
         } finally {
             client.stop();

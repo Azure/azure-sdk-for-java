@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for updating the properties of a Batch Job.
  */
 public class UpdateBatchJobOptions extends BatchUpdateOptions {
-
+    /**
+     * Creates an instance of {@link UpdateBatchJobOptions}.
+     */
+    public UpdateBatchJobOptions() {
+    }
 }

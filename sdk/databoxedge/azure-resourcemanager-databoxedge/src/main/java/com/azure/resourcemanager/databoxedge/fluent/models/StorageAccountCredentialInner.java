@@ -6,28 +6,49 @@ package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AccountType;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.SslStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The storage account credential. */
+/**
+ * The storage account credential.
+ */
 @Fluent
 public final class StorageAccountCredentialInner extends ArmBaseModel {
     /*
      * The storage account credential properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private StorageAccountCredentialProperties innerProperties = new StorageAccountCredentialProperties();
 
-    /** Creates an instance of StorageAccountCredentialInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StorageAccountCredentialInner class.
+     */
     public StorageAccountCredentialInner() {
     }
 
     /**
      * Get the innerProperties property: The storage account credential properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageAccountCredentialProperties innerProperties() {
@@ -35,8 +56,38 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the alias property: Alias for the storage account.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -45,7 +96,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the alias property: Alias for the storage account.
-     *
+     * 
      * @param alias the alias value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -59,7 +110,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the username property: Username for the storage account.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -68,7 +119,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the username property: Username for the storage account.
-     *
+     * 
      * @param username the username value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -82,7 +133,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the accountKey property: Encrypted storage key.
-     *
+     * 
      * @return the accountKey value.
      */
     public AsymmetricEncryptedSecret accountKey() {
@@ -91,7 +142,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the accountKey property: Encrypted storage key.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -106,7 +157,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
     /**
      * Get the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -116,7 +167,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
     /**
      * Set the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -130,7 +181,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @return the sslStatus value.
      */
     public SslStatus sslStatus() {
@@ -139,7 +190,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @param sslStatus the sslStatus value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -153,7 +204,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @return the blobDomainName value.
      */
     public String blobDomainName() {
@@ -162,7 +213,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @param blobDomainName the blobDomainName value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -176,7 +227,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @return the accountType value.
      */
     public AccountType accountType() {
@@ -185,7 +236,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @param accountType the accountType value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -199,7 +250,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Get the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -208,7 +259,7 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Set the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
@@ -222,21 +273,64 @@ public final class StorageAccountCredentialInner extends ArmBaseModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model StorageAccountCredentialInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model StorageAccountCredentialInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCredentialInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountCredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountCredentialInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountCredentialInner.
+     */
+    public static StorageAccountCredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountCredentialInner deserializedStorageAccountCredentialInner
+                = new StorageAccountCredentialInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.innerProperties
+                        = StorageAccountCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountCredentialInner;
+        });
+    }
 }

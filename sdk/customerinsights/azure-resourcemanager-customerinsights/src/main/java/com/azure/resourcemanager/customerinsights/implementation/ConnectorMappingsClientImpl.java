@@ -33,22 +33,28 @@ import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorMapping
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConnectorMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectorMappingsClient.
+ */
 public final class ConnectorMappingsClientImpl implements ConnectorMappingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConnectorMappingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ConnectorMappingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConnectorMappingsClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ConnectorMappingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ConnectorMappingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,87 +65,58 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
     public interface ConnectorMappingsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectorName") String connectorName,
-            @PathParam("mappingName") String mappingName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectorName") String connectorName, @PathParam("mappingName") String mappingName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ConnectorMappingResourceFormatInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorMappingResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectorName") String connectorName,
-            @PathParam("mappingName") String mappingName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectorMappingResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectorName") String connectorName, @PathParam("mappingName") String mappingName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/connectors/{connectorName}/mappings/{mappingName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectorName") String connectorName,
-            @PathParam("mappingName") String mappingName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectorName") String connectorName, @PathParam("mappingName") String mappingName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/connectors/{connectorName}/mappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/connectors/{connectorName}/mappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorMappingListResult>> listByConnector(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectorName") String connectorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectorMappingListResult>> listByConnector(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectorName") String connectorName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConnectorMappingListResult>> listByConnectorNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -148,21 +125,16 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the connector mapping resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
+        String resourceGroupName, String hubName, String connectorName, String mappingName,
         ConnectorMappingResourceFormatInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,10 +150,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -190,26 +160,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectorName,
-                            mappingName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName,
+                connectorName, mappingName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -219,22 +178,16 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the connector mapping resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters,
-        Context context) {
+        String resourceGroupName, String hubName, String connectorName, String mappingName,
+        ConnectorMappingResourceFormatInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,10 +203,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -262,23 +213,13 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectorName,
-                mappingName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, connectorName, mappingName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -290,19 +231,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the connector mapping resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectorMappingResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters) {
+    private Mono<ConnectorMappingResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, ConnectorMappingResourceFormatInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -315,21 +252,16 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the connector mapping resource format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters,
+    public Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(String resourceGroupName,
+        String hubName, String connectorName, String mappingName, ConnectorMappingResourceFormatInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, hubName, connectorName, mappingName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, parameters,
+            context).block();
     }
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -341,20 +273,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the connector mapping resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectorMappingResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, hubName, connectorName, mappingName, parameters, Context.NONE)
-            .getValue();
+    public ConnectorMappingResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, ConnectorMappingResourceFormatInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, hubName, connectorName, mappingName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -362,17 +289,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a connector mapping in the connector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String connectorName, String mappingName) {
+    private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String connectorName, String mappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -388,32 +313,19 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectorName,
-                            mappingName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName, connectorName,
+                mappingName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -422,17 +334,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a connector mapping in the connector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+    private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String connectorName, String mappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -448,29 +358,18 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectorName,
-                mappingName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, connectorName, mappingName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -481,15 +380,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return a connector mapping in the connector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectorMappingResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String connectorName, String mappingName) {
+    private Mono<ConnectorMappingResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String connectorName, String mappingName) {
         return getWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -501,14 +400,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return a connector mapping in the connector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorMappingResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+    public Response<ConnectorMappingResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, Context context) {
         return getWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
     }
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -519,14 +418,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return a connector mapping in the connector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectorMappingResourceFormatInner get(
-        String resourceGroupName, String hubName, String connectorName, String mappingName) {
+    public ConnectorMappingResourceFormatInner get(String resourceGroupName, String hubName, String connectorName,
+        String mappingName) {
         return getWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE).getValue();
     }
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -537,13 +436,11 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String connectorName, String mappingName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hubName, String connectorName,
+        String mappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -559,30 +456,18 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectorName,
-                            mappingName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hubName, connectorName,
+                mappingName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -594,13 +479,11 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hubName, String connectorName,
+        String mappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -616,27 +499,17 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectorName,
-                mappingName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, hubName, connectorName, mappingName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -654,7 +527,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -666,14 +539,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String connectorName,
+        String mappingName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
     }
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -689,7 +562,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -697,16 +570,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connector mappings in the specified connector along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorSinglePageAsync(
-        String resourceGroupName, String hubName, String connectorName) {
+    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>>
+        listByConnectorSinglePageAsync(String resourceGroupName, String hubName, String connectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -719,40 +590,21 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByConnector(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectorName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ConnectorMappingResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByConnector(this.client.getEndpoint(), resourceGroupName, hubName,
+                connectorName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ConnectorMappingResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -761,16 +613,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connector mappings in the specified connector along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorSinglePageAsync(
         String resourceGroupName, String hubName, String connectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -783,37 +633,21 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByConnector(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectorName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByConnector(this.client.getEndpoint(), resourceGroupName, hubName, connectorName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -823,16 +657,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(
-        String resourceGroupName, String hubName, String connectorName) {
-        return new PagedFlux<>(
-            () -> listByConnectorSinglePageAsync(resourceGroupName, hubName, connectorName),
+    private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(String resourceGroupName,
+        String hubName, String connectorName) {
+        return new PagedFlux<>(() -> listByConnectorSinglePageAsync(resourceGroupName, hubName, connectorName),
             nextLink -> listByConnectorNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -843,16 +676,15 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(
-        String resourceGroupName, String hubName, String connectorName, Context context) {
-        return new PagedFlux<>(
-            () -> listByConnectorSinglePageAsync(resourceGroupName, hubName, connectorName, context),
+    private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(String resourceGroupName,
+        String hubName, String connectorName, Context context) {
+        return new PagedFlux<>(() -> listByConnectorSinglePageAsync(resourceGroupName, hubName, connectorName, context),
             nextLink -> listByConnectorNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -862,14 +694,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
-        String resourceGroupName, String hubName, String connectorName) {
+    public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(String resourceGroupName, String hubName,
+        String connectorName) {
         return new PagedIterable<>(listByConnectorAsync(resourceGroupName, hubName, connectorName));
     }
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -880,85 +712,64 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
-        String resourceGroupName, String hubName, String connectorName, Context context) {
+    public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(String resourceGroupName, String hubName,
+        String connectorName, Context context) {
         return new PagedIterable<>(listByConnectorAsync(resourceGroupName, hubName, connectorName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list connector mapping operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>>
+        listByConnectorNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByConnectorNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConnectorMappingResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConnectorMappingResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list connector mapping operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByConnectorNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByConnectorNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

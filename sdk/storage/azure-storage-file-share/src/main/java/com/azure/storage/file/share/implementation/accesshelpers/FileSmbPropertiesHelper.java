@@ -13,8 +13,8 @@ public final class FileSmbPropertiesHelper {
 
     private static FileSmbPropertiesAccessor accessor;
 
-    private FileSmbPropertiesHelper() { }
-
+    private FileSmbPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link FileSmbProperties} instance.

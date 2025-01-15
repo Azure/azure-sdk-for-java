@@ -26,26 +26,26 @@ public final class StorageTaskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskInner model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"8aaefed7-cba7-49f8-8856-2de977305379\",\"tenantId\":\"6953987e-3032-4673-aed1-5c06f5e452d1\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"hab\":{\"principalId\":\"635bd5b4-27bb-40e3-ac72-46c4e2a8eab5\",\"clientId\":\"f148e713-f24b-4da3-bfc0-274a7d69ba59\"}}},\"properties\":{\"taskVersion\":4747702920878176636,\"enabled\":true,\"description\":\"wczbys\",\"action\":{\"if\":{\"condition\":\"npqxuh\",\"operations\":[{\"name\":\"UndeleteBlob\",\"parameters\":{\"tfwvukxgaudc\":\"iwbybrkxvdumjg\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"kryhtnapczwlokj\":\"j\",\"jnchgej\":\"emkkvnipjox\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTier\",\"parameters\":{\"o\":\"zyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"DeleteBlob\",\"parameters\":{\"jdpvwryo\":\"w\",\"hbcryffdfdosyge\":\"psoacctazakljl\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTags\",\"parameters\":{\"vdphlxaolthqtr\":\"msbzjhcrz\",\"gvfcj\":\"qjbpfzfsin\",\"xjtfelluwfzit\":\"wzo\",\"qfpjk\":\"np\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaEnd\",\"creationTimeInUtc\":\"2021-11-04T07:17:51Z\"},\"location\":\"fxxypininmayhuy\",\"tags\":{\"inuvamiheogn\":\"podepoo\",\"usivye\":\"rxzxtheo\"},\"id\":\"cciqihnhungbwjz\",\"name\":\"nfygxgispemvtz\",\"type\":\"kufubljo\"}")
+            "{\"identity\":{\"principalId\":\"41508ce2-c4d1-4dc2-823b-d050dc7baf7e\",\"tenantId\":\"21625193-87cd-4d14-b165-a4f739f50c56\",\"type\":\"None\",\"userAssignedIdentities\":{\"qhabifpikxwcz\":{\"principalId\":\"733bc799-807e-4678-bec2-d909647fb274\",\"clientId\":\"09b627db-3a70-4045-8b0d-dd94866b0b71\"}}},\"properties\":{\"taskVersion\":3372129920897146496,\"enabled\":false,\"description\":\"pqxu\",\"action\":{\"if\":{\"condition\":\"ivyqniwbybrkxvd\",\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"kkvnipjox\":\"jye\",\"podmailzydehojwy\":\"jnchgej\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"sprozvcput\":\"qnjaqwix\",\"fdatsc\":\"gjvw\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"Deleting\",\"creationTimeInUtc\":\"2021-02-16T21:00:55Z\"},\"location\":\"uvm\",\"tags\":{\"iodjp\":\"zkrwfn\",\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
             .toObject(StorageTaskInner.class);
-        Assertions.assertEquals("fxxypininmayhuy", model.location());
-        Assertions.assertEquals("podepoo", model.tags().get("inuvamiheogn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(true, model.properties().enabled());
-        Assertions.assertEquals("wczbys", model.properties().description());
-        Assertions.assertEquals("npqxuh", model.properties().action().ifProperty().condition());
-        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB,
+        Assertions.assertEquals("uvm", model.location());
+        Assertions.assertEquals("zkrwfn", model.tags().get("iodjp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertEquals("pqxu", model.properties().description());
+        Assertions.assertEquals("ivyqniwbybrkxvd", model.properties().action().ifProperty().condition());
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
             model.properties().action().ifProperty().operations().get(0).name());
-        Assertions.assertEquals("iwbybrkxvdumjg",
-            model.properties().action().ifProperty().operations().get(0).parameters().get("tfwvukxgaudc"));
+        Assertions.assertEquals("tfwvukxgaudc",
+            model.properties().action().ifProperty().operations().get(0).parameters().get("snhsjcnyejhkryh"));
         Assertions.assertEquals(OnSuccess.CONTINUE,
             model.properties().action().ifProperty().operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK,
             model.properties().action().ifProperty().operations().get(0).onFailure());
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY,
             model.properties().action().elseProperty().operations().get(0).name());
-        Assertions.assertEquals("j",
-            model.properties().action().elseProperty().operations().get(0).parameters().get("kryhtnapczwlokj"));
+        Assertions.assertEquals("jye",
+            model.properties().action().elseProperty().operations().get(0).parameters().get("kkvnipjox"));
         Assertions.assertEquals(OnSuccess.CONTINUE,
             model.properties().action().elseProperty().operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK,
@@ -55,53 +55,55 @@ public final class StorageTaskInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageTaskInner model
-            = new StorageTaskInner().withLocation("fxxypininmayhuy")
-                .withTags(
-                    mapOf("inuvamiheogn", "podepoo", "usivye", "rxzxtheo"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
-                            mapOf("hab", new UserAssignedIdentity())))
-                .withProperties(new StorageTaskProperties().withEnabled(true).withDescription("wczbys")
-                    .withAction(new StorageTaskAction()
-                        .withIfProperty(new IfCondition().withCondition("npqxuh").withOperations(
-                            Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
-                                .withParameters(mapOf("tfwvukxgaudc", "iwbybrkxvdumjg"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
-                        .withElseProperty(new ElseCondition().withOperations(Arrays.asList(
-                            new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
-                                .withParameters(mapOf("kryhtnapczwlokj", "j", "jnchgej", "emkkvnipjox"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
-                            new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
-                                .withParameters(mapOf("o", "zyde", "wixjsprozvcp", "wyahuxinpmqnja", "atscmd",
-                                    "tegjvwmf", "zkrwfn", "pjhulsuuvmkj"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
-                            new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
-                                .withParameters(mapOf("jdpvwryo", "w", "hbcryffdfdosyge", "psoacctazakljl"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
-                            new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
-                                .withParameters(mapOf("vdphlxaolthqtr", "msbzjhcrz", "gvfcj", "qjbpfzfsin",
-                                    "xjtfelluwfzit", "wzo", "qfpjk", "np"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))));
+            = new StorageTaskInner().withLocation("uvm")
+                .withTags(mapOf("iodjp", "zkrwfn", "ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl",
+                    "rzevdphlxaol", "paojakhmsbzjh"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("qhabifpikxwcz", new UserAssignedIdentity())))
+                .withProperties(
+                    new StorageTaskProperties().withEnabled(false)
+                        .withDescription("pqxu")
+                        .withAction(new StorageTaskAction()
+                            .withIfProperty(new IfCondition().withCondition("ivyqniwbybrkxvd")
+                                .withOperations(Arrays.asList(
+                                    new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
+                                        .withParameters(mapOf("snhsjcnyejhkryh", "tfwvukxgaudc"))
+                                        .withOnSuccess(OnSuccess.CONTINUE)
+                                        .withOnFailure(OnFailure.BREAK))))
+                            .withElseProperty(
+                                new ElseCondition()
+                                    .withOperations(
+                                        Arrays.asList(
+                                            new StorageTaskOperation()
+                                                .withName(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY)
+                                                .withParameters(
+                                                    mapOf("kkvnipjox", "jye", "podmailzydehojwy", "jnchgej"))
+                                                .withOnSuccess(OnSuccess.CONTINUE)
+                                                .withOnFailure(OnFailure.BREAK),
+                                            new StorageTaskOperation()
+                                                .withName(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY)
+                                                .withParameters(mapOf("sprozvcput", "qnjaqwix", "fdatsc", "gjvw"))
+                                                .withOnSuccess(OnSuccess.CONTINUE)
+                                                .withOnFailure(OnFailure.BREAK))))));
         model = BinaryData.fromObject(model).toObject(StorageTaskInner.class);
-        Assertions.assertEquals("fxxypininmayhuy", model.location());
-        Assertions.assertEquals("podepoo", model.tags().get("inuvamiheogn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(true, model.properties().enabled());
-        Assertions.assertEquals("wczbys", model.properties().description());
-        Assertions.assertEquals("npqxuh", model.properties().action().ifProperty().condition());
-        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB,
+        Assertions.assertEquals("uvm", model.location());
+        Assertions.assertEquals("zkrwfn", model.tags().get("iodjp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertEquals("pqxu", model.properties().description());
+        Assertions.assertEquals("ivyqniwbybrkxvd", model.properties().action().ifProperty().condition());
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
             model.properties().action().ifProperty().operations().get(0).name());
-        Assertions.assertEquals("iwbybrkxvdumjg",
-            model.properties().action().ifProperty().operations().get(0).parameters().get("tfwvukxgaudc"));
+        Assertions.assertEquals("tfwvukxgaudc",
+            model.properties().action().ifProperty().operations().get(0).parameters().get("snhsjcnyejhkryh"));
         Assertions.assertEquals(OnSuccess.CONTINUE,
             model.properties().action().ifProperty().operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK,
             model.properties().action().ifProperty().operations().get(0).onFailure());
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY,
             model.properties().action().elseProperty().operations().get(0).name());
-        Assertions.assertEquals("j",
-            model.properties().action().elseProperty().operations().get(0).parameters().get("kryhtnapczwlokj"));
+        Assertions.assertEquals("jye",
+            model.properties().action().elseProperty().operations().get(0).parameters().get("kkvnipjox"));
         Assertions.assertEquals(OnSuccess.CONTINUE,
             model.properties().action().elseProperty().operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK,

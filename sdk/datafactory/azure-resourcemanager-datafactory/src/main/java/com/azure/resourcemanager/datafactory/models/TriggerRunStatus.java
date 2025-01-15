@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
      * @param name a name to look for.
      * @return the corresponding TriggerRunStatus.
      */
-    @JsonCreator
     public static TriggerRunStatus fromString(String name) {
         return fromString(name, TriggerRunStatus.class);
     }

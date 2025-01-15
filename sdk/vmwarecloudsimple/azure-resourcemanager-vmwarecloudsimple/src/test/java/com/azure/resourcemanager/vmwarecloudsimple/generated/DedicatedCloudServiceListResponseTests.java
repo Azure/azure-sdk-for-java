@@ -15,36 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCloudServiceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCloudServiceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"znorcj\",\"value\":[{\"properties\":{\"gatewaySubnet\":\"byxqabn\",\"isAccountOnboarded\":\"notOnBoarded\",\"nodes\":1668091107,\"serviceURL\":\"shurzafbljjgpbto\"},\"location\":\"c\",\"tags\":{\"qajzyulpkudjkr\":\"ljavbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}]}")
-                .toObject(DedicatedCloudServiceListResponse.class);
-        Assertions.assertEquals("znorcj", model.nextLink());
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("ljavbqid", model.value().get(0).tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("byxqabn", model.value().get(0).gatewaySubnet());
+        DedicatedCloudServiceListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"cynpwlbjnp\",\"value\":[{\"properties\":{\"gatewaySubnet\":\"tadehxnltyfsopp\",\"isAccountOnboarded\":\"onBoarding\",\"nodes\":1230833613,\"serviceURL\":\"zwdejbavor\"},\"location\":\"zdmohctbqvu\",\"tags\":{\"ujjugwdkcglh\":\"dndnvow\"},\"id\":\"lazjdyggdtjixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"},{\"properties\":{\"gatewaySubnet\":\"c\",\"isAccountOnboarded\":\"onBoarding\",\"nodes\":1906498488,\"serviceURL\":\"aamdect\"},\"location\":\"hfiqscjeypvhe\",\"tags\":{\"kqsleyyvxy\":\"gqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\"},\"id\":\"a\",\"name\":\"oaeupfhyhltrpmo\",\"type\":\"jmcmatuokthfu\"}]}")
+            .toObject(DedicatedCloudServiceListResponse.class);
+        Assertions.assertEquals("cynpwlbjnp", model.nextLink());
+        Assertions.assertEquals("zdmohctbqvu", model.value().get(0).location());
+        Assertions.assertEquals("dndnvow", model.value().get(0).tags().get("ujjugwdkcglh"));
+        Assertions.assertEquals("tadehxnltyfsopp", model.value().get(0).gatewaySubnet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCloudServiceListResponse model =
-            new DedicatedCloudServiceListResponse()
-                .withNextLink("znorcj")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DedicatedCloudServiceInner()
-                                .withLocation("c")
-                                .withTags(mapOf("qajzyulpkudjkr", "ljavbqid"))
-                                .withGatewaySubnet("byxqabn")));
+        DedicatedCloudServiceListResponse model = new DedicatedCloudServiceListResponse().withNextLink("cynpwlbjnp")
+            .withValue(Arrays.asList(
+                new DedicatedCloudServiceInner().withLocation("zdmohctbqvu")
+                    .withTags(mapOf("ujjugwdkcglh", "dndnvow"))
+                    .withGatewaySubnet("tadehxnltyfsopp"),
+                new DedicatedCloudServiceInner().withLocation("hfiqscjeypvhe")
+                    .withTags(mapOf("kqsleyyvxy", "gqhcjrefovg", "cr", "jpkcattpng", "ajvnysounqe", "czsqpjhvm"))
+                    .withGatewaySubnet("c")));
         model = BinaryData.fromObject(model).toObject(DedicatedCloudServiceListResponse.class);
-        Assertions.assertEquals("znorcj", model.nextLink());
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("ljavbqid", model.value().get(0).tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("byxqabn", model.value().get(0).gatewaySubnet());
+        Assertions.assertEquals("cynpwlbjnp", model.nextLink());
+        Assertions.assertEquals("zdmohctbqvu", model.value().get(0).location());
+        Assertions.assertEquals("dndnvow", model.value().get(0).tags().get("ujjugwdkcglh"));
+        Assertions.assertEquals("tadehxnltyfsopp", model.value().get(0).gatewaySubnet());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

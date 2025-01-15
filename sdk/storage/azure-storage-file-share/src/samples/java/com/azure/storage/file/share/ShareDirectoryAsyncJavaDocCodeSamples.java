@@ -157,8 +157,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         shareDirectoryAsyncClient.createWithResponse(options)
                 .subscribe(response ->
                     System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
-                    error -> System.err.print(error.toString())
-        );
+                    error -> System.err.print(error.toString()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions
     }
 

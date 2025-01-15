@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -76,6 +77,9 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,8 +107,8 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
                 reader.nextToken();
 
                 if ("activeSince".equals(fieldName)) {
-                    deserializedMetricSeriesQueryOptions.activeSince
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricSeriesQueryOptions.activeSince = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dimensionFilter".equals(fieldName)) {
                     Map<String, List<String>> dimensionFilter
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));

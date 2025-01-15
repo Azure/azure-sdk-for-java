@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner;
@@ -14,17 +12,12 @@ import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSourc
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
-import com.azure.resourcemanager.streamanalytics.models.Identity;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
 import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
-import com.azure.resourcemanager.streamanalytics.models.RefreshConfiguration;
 import com.azure.resourcemanager.streamanalytics.models.Sku;
 import com.azure.resourcemanager.streamanalytics.models.SkuName;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
 import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
-import com.azure.resourcemanager.streamanalytics.models.UpdatableUdfRefreshType;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,35 +28,7 @@ import java.util.Map;
 public final class StreamingJobsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * StreamingJob_Create_UserAssignedIdentity.json
-     */
-    /**
-     * Sample code: Create a streaming job shell (a streaming job with no inputs, outputs, transformation, or functions)
-     * with user assigned identity.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctionsWithUserAssignedIdentity(
-            com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) throws IOException {
-        manager.streamingJobs().define("sjName").withRegion("West US").withExistingResourceGroup("sjrg")
-            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
-                "fakeTokenPlaceholder"))
-            .withIdentity(new Identity().withType("UserAssigned").withUserAssignedIdentities(mapOf(
-                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
-                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}", Object.class,
-                    SerializerEncoding.JSON))))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(5).withEventsLateArrivalMaxDelayInSeconds(16).withDataLocale("en-US")
-            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO).withInputs(Arrays.asList())
-            .withOutputs(Arrays.asList()).withFunctions(Arrays.asList()).create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Create_JobShell.json
      */
     /**
@@ -74,19 +39,28 @@ public final class StreamingJobsCreateOrReplaceSamples {
      */
     public static void createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctions(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().define("sj59").withRegion("West US").withExistingResourceGroup("sjrg6936")
+        manager.streamingJobs()
+            .define("sj59")
+            .withRegion("West US")
+            .withExistingResourceGroup("sjrg6936")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(5).withEventsLateArrivalMaxDelayInSeconds(16).withDataLocale("en-US")
-            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO).withInputs(Arrays.asList())
-            .withOutputs(Arrays.asList()).withFunctions(Arrays.asList()).create();
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
+            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+            .withEventsOutOfOrderMaxDelayInSeconds(5)
+            .withEventsLateArrivalMaxDelayInSeconds(16)
+            .withDataLocale("en-US")
+            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
+            .withInputs(Arrays.asList())
+            .withOutputs(Arrays.asList())
+            .withFunctions(Arrays.asList())
+            .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Create_CompleteJob.json
      */
     /**
@@ -97,34 +71,42 @@ public final class StreamingJobsCreateOrReplaceSamples {
      */
     public static void createACompleteStreamingJobAStreamingJobWithATransformationAtLeast1InputAndAtLeast1Output(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().define("sj7804").withRegion("West US").withExistingResourceGroup("sjrg3276")
+        manager.streamingJobs()
+            .define("sj7804")
+            .withRegion("West US")
+            .withExistingResourceGroup("sjrg3276")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
-            .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(0).withEventsLateArrivalMaxDelayInSeconds(5).withDataLocale(
-                "en-US")
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
+            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+            .withEventsOutOfOrderMaxDelayInSeconds(0)
+            .withEventsLateArrivalMaxDelayInSeconds(5)
+            .withDataLocale("en-US")
             .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
-            .withInputs(Arrays.asList(new InputInner().withProperties(new StreamInputProperties()
-                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                .withDatasource(new BlobStreamInputDataSource()
-                    .withStorageAccounts(Arrays.asList(
-                        new StorageAccount().withAccountName("yourAccountName").withAccountKey("fakeTokenPlaceholder")))
-                    .withContainer("containerName").withPathPattern("")))
-                .withName("inputtest")))
-            .withTransformation(new TransformationInner().withName("transformationtest").withStreamingUnits(1)
+            .withInputs(
+                Arrays
+                    .asList(
+                        new InputInner()
+                            .withProperties(new StreamInputProperties()
+                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
+                                .withDatasource(new BlobStreamInputDataSource()
+                                    .withStorageAccounts(
+                                        Arrays.asList(new StorageAccount().withAccountName("yourAccountName")
+                                            .withAccountKey("fakeTokenPlaceholder")))
+                                    .withContainer("containerName")
+                                    .withPathPattern("")))
+                            .withName("inputtest")))
+            .withTransformation(new TransformationInner().withName("transformationtest")
+                .withStreamingUnits(1)
                 .withQuery("Select Id, Name from inputtest"))
-            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest").withDatasource(
-                new AzureSqlDatabaseOutputDataSource().withServer("serverName").withDatabase("databaseName")
-                    .withUser("<user>").withPassword("fakeTokenPlaceholder").withTable("tableName"))))
+            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest")
+                .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("serverName")
+                    .withDatabase("databaseName")
+                    .withUser("<user>")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withTable("tableName"))))
             .withFunctions(Arrays.asList())
-            .withExternals(new External()
-                .withStorageAccount(
-                    new StorageAccount().withAccountName("mystorageaccount").withAccountKey("fakeTokenPlaceholder"))
-                .withContainer("mycontainer").withPath("UserCustomCode.zip")
-                .withRefreshConfiguration(new RefreshConfiguration().withPathPattern("{date}\\\\{time}")
-                    .withDateFormat("yyyy-dd-MM").withTimeFormat("HH").withRefreshInterval("00:01:00")
-                    .withRefreshType(UpdatableUdfRefreshType.NONBLOCKING)))
             .create();
     }
 

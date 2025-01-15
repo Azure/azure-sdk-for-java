@@ -24,30 +24,24 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /** Implementation of VirtualMachineExtension. */
-class VirtualMachineExtensionImpl
-    extends ExternalChildResourceImpl<
-        VirtualMachineExtension, VirtualMachineExtensionInner, VirtualMachineImpl, VirtualMachine>
-    implements VirtualMachineExtension,
-        VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
-        VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,
-        VirtualMachineExtension.Update {
+class VirtualMachineExtensionImpl extends
+    ExternalChildResourceImpl<VirtualMachineExtension, VirtualMachineExtensionInner, VirtualMachineImpl, VirtualMachine>
+    implements VirtualMachineExtension, VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
+    VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>, VirtualMachineExtension.Update {
     private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionImpl.class);
     private final VirtualMachineExtensionsClient client;
     private Map<String, Object> publicSettings;
     private Map<String, Object> protectedSettings;
 
-    VirtualMachineExtensionImpl(
-        String name,
-        VirtualMachineImpl parent,
-        VirtualMachineExtensionInner inner,
+    VirtualMachineExtensionImpl(String name, VirtualMachineImpl parent, VirtualMachineExtensionInner inner,
         VirtualMachineExtensionsClient client) {
         super(name, parent, inner);
         this.client = client;
         initializeSettings();
     }
 
-    protected static VirtualMachineExtensionImpl newVirtualMachineExtension(
-        String name, VirtualMachineImpl parent, VirtualMachineExtensionsClient client) {
+    protected static VirtualMachineExtensionImpl newVirtualMachineExtension(String name, VirtualMachineImpl parent,
+        VirtualMachineExtensionsClient client) {
         VirtualMachineExtensionInner inner = new VirtualMachineExtensionInner();
         inner.withLocation(parent.regionName());
         VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl(name, parent, inner, client);
@@ -87,8 +81,8 @@ class VirtualMachineExtensionImpl
     @Override
     public String publicSettingsAsJsonString() {
         try {
-            return ((ComputeManagementClientImpl) parent().manager().serviceClient())
-                .getSerializerAdapter().serialize(this.publicSettings, SerializerEncoding.JSON);
+            return ((ComputeManagementClientImpl) parent().manager().serviceClient()).getSerializerAdapter()
+                .serialize(this.publicSettings, SerializerEncoding.JSON);
         } catch (IOException e) {
             logger.atWarning().log("Serialization failed for publicSettings.", e);
             return null;
@@ -102,8 +96,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync() {
-        return this
-            .client
+        return this.client
             .getWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
             .flatMap(inner -> Mono.justOrEmpty(inner.getValue().instanceView()));
     }
@@ -136,8 +129,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl withImage(VirtualMachineExtensionImage image) {
-        this
-            .innerModel()
+        this.innerModel()
             .withPublisher(image.publisherName())
             .withTypePropertiesType(image.typeName())
             .withTypeHandlerVersion(image.versionName());
@@ -232,16 +224,14 @@ class VirtualMachineExtensionImpl
     @Override
     public Mono<VirtualMachineExtension> createResourceAsync() {
         final VirtualMachineExtensionImpl self = this;
-        return this
-            .client
-            .createOrUpdateAsync(
-                this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
-            .map(
-                inner -> {
-                    self.setInner(inner);
-                    self.initializeSettings();
-                    return self;
-                });
+        return this.client
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                this.innerModel())
+            .map(inner -> {
+                self.setInner(inner);
+                self.initializeSettings();
+                return self;
+            });
     }
 
     @Override
@@ -250,35 +240,30 @@ class VirtualMachineExtensionImpl
         this.nullifySettingsIfEmpty();
         if (this.isReference()) {
             String extensionName = ResourceUtils.nameFromResourceId(this.innerModel().id());
-            return this
-                .client
-                .getAsync(this.parent().resourceGroupName(), this.parent().name(), extensionName)
-                .flatMap(
-                    resource -> {
-                        innerModel()
-                            .withPublisher(resource.publisher())
-                            .withTypePropertiesType(resource.typePropertiesType())
-                            .withTypeHandlerVersion(resource.typeHandlerVersion());
-                        if (innerModel().autoUpgradeMinorVersion() == null) {
-                            innerModel().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
+            return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), extensionName)
+                .flatMap(resource -> {
+                    innerModel().withPublisher(resource.publisher())
+                        .withTypePropertiesType(resource.typePropertiesType())
+                        .withTypeHandlerVersion(resource.typeHandlerVersion());
+                    if (innerModel().autoUpgradeMinorVersion() == null) {
+                        innerModel().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
+                    }
+                    LinkedHashMap<String, Object> publicSettings = (LinkedHashMap<String, Object>) resource.settings();
+                    if (publicSettings != null && publicSettings.size() > 0) {
+                        LinkedHashMap<String, Object> innerPublicSettings
+                            = (LinkedHashMap<String, Object>) innerModel().settings();
+                        if (innerPublicSettings == null) {
+                            innerModel().withSettings(new LinkedHashMap<String, Object>());
+                            innerPublicSettings = (LinkedHashMap<String, Object>) innerModel().settings();
                         }
-                        LinkedHashMap<String, Object> publicSettings =
-                            (LinkedHashMap<String, Object>) resource.settings();
-                        if (publicSettings != null && publicSettings.size() > 0) {
-                            LinkedHashMap<String, Object> innerPublicSettings =
-                                (LinkedHashMap<String, Object>) innerModel().settings();
-                            if (innerPublicSettings == null) {
-                                innerModel().withSettings(new LinkedHashMap<String, Object>());
-                                innerPublicSettings = (LinkedHashMap<String, Object>) innerModel().settings();
-                            }
-                            for (Map.Entry<String, Object> entry : publicSettings.entrySet()) {
-                                if (!innerPublicSettings.containsKey(entry.getKey())) {
-                                    innerPublicSettings.put(entry.getKey(), entry.getValue());
-                                }
+                        for (Map.Entry<String, Object> entry : publicSettings.entrySet()) {
+                            if (!innerPublicSettings.containsKey(entry.getKey())) {
+                                innerPublicSettings.put(entry.getKey(), entry.getValue());
                             }
                         }
-                        return createResourceAsync();
-                    });
+                    }
+                    return createResourceAsync();
+                });
         } else {
             return this.createResourceAsync();
         }
@@ -337,7 +322,9 @@ class VirtualMachineExtensionImpl
         } else if (settings instanceof Map) {
             return (Map<String, Object>) settings;
         } else {
-            logger.atWarning().log("[VirtualMachineExtensionImpl] unrecognized setting type: {}, value: {}", settings.getClass(), settings);
+            logger.atWarning()
+                .log("[VirtualMachineExtensionImpl] unrecognized setting type: {}, value: {}", settings.getClass(),
+                    settings);
             return new LinkedHashMap<>();
         }
     }

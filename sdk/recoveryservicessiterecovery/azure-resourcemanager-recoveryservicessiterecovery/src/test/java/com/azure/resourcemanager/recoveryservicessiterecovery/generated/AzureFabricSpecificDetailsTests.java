@@ -71,70 +71,80 @@ public final class AzureFabricSpecificDetailsTests {
                             new A2AExtendedLocationDetails()
                                 .withPrimaryExtendedLocation(
                                     new ExtendedLocation().withName("y").withType(ExtendedLocationType.EDGE_ZONE))
-                                .withRecoveryExtendedLocation(new ExtendedLocation().withName("srwvaexhdctrce")
+                                .withRecoveryExtendedLocation(new ExtendedLocation()
+                                    .withName("srwvaexhdctrce")
                                     .withType(ExtendedLocationType.EDGE_ZONE)),
                             new A2AExtendedLocationDetails()
                                 .withPrimaryExtendedLocation(new ExtendedLocation().withName("brupobehdmljza")
                                     .withType(ExtendedLocationType.EDGE_ZONE))
-                                .withRecoveryExtendedLocation(new ExtendedLocation().withName("me")
+                                .withRecoveryExtendedLocation(new ExtendedLocation()
+                                    .withName("me")
                                     .withType(ExtendedLocationType.EDGE_ZONE))))
-                .withLocationDetails(
-                    Arrays.asList(
-                        new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("bn")
-                            .withInitialRecoveryZone("phepifexleqirc")
-                            .withInitialPrimaryExtendedLocation(
-                                new ExtendedLocation().withName("cly").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialRecoveryExtendedLocation(
-                                new ExtendedLocation().withName("x").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialPrimaryFabricLocation("jlvczu").withInitialRecoveryFabricLocation("ac")
-                            .withPrimaryZone("nettepdjxqeskoy").withRecoveryZone("iylpck")
-                            .withPrimaryExtendedLocation(
-                                new ExtendedLocation().withName("wsedvesk").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withRecoveryExtendedLocation(new ExtendedLocation().withName("gqphrgfnzhctmjts")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withPrimaryFabricLocation("bcbcpz").withRecoveryFabricLocation("pzeqacdldtz"),
-                        new A2AFabricSpecificLocationDetails()
-                            .withInitialPrimaryZone("ypefcpczshnuqnda").withInitialRecoveryZone("upfkhuytuszxhmtv")
-                            .withInitialPrimaryExtendedLocation(
-                                new ExtendedLocation().withName("egw").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialRecoveryExtendedLocation(
-                                new ExtendedLocation().withName("kvzwydw").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialPrimaryFabricLocation("aokgkskjivbsshaj").withInitialRecoveryFabricLocation("u")
-                            .withPrimaryZone("eexpgeumi").withRecoveryZone("wuit")
-                            .withPrimaryExtendedLocation(new ExtendedLocation().withName("exyionofninbd")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withRecoveryExtendedLocation(new ExtendedLocation().withName(
-                                "xcwqqrsmpc").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withPrimaryFabricLocation("rtugavbzbcyks").withRecoveryFabricLocation("mf"),
-                        new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("dr")
-                            .withInitialRecoveryZone("fcmkr")
-                            .withInitialPrimaryExtendedLocation(new ExtendedLocation().withName("sjcwjjxsgmbawvif")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialRecoveryExtendedLocation(
-                                new ExtendedLocation().withName("eci").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialPrimaryFabricLocation("cjxwkloozrvtxvcm")
-                            .withInitialRecoveryFabricLocation("unlcpxxv").withPrimaryZone("yeyng")
-                            .withRecoveryZone(
-                                "vrquv")
-                            .withPrimaryExtendedLocation(new ExtendedLocation().withName("gglpmcrdcuelj")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withRecoveryExtendedLocation(new ExtendedLocation().withName("hxmfqryarvsxzqb")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withPrimaryFabricLocation("jkayspthzo").withRecoveryFabricLocation("btl"),
-                        new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("tgblioskkfmk")
-                            .withInitialRecoveryZone("djxyxgbkkqvjcteo")
-                            .withInitialPrimaryExtendedLocation(
-                                new ExtendedLocation().withName("l").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialRecoveryExtendedLocation(new ExtendedLocation().withName("skkzpxvjnzdpvo")
-                                .withType(ExtendedLocationType.EDGE_ZONE))
-                            .withInitialPrimaryFabricLocation("hpcnabxzfsn")
-                            .withInitialRecoveryFabricLocation("ytexvzilmhivzk").withPrimaryZone("wncknr")
-                            .withRecoveryZone("ajlskzptj")
-                            .withPrimaryExtendedLocation(
-                                new ExtendedLocation().withName("lwe").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withRecoveryExtendedLocation(
-                                new ExtendedLocation().withName("rthxqlehmcg").withType(ExtendedLocationType.EDGE_ZONE))
-                            .withPrimaryFabricLocation("inue").withRecoveryFabricLocation("kamvfe")));
+                .withLocationDetails(Arrays.asList(
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("bn")
+                        .withInitialRecoveryZone("phepifexleqirc")
+                        .withInitialPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("cly").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("x").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("jlvczu")
+                        .withInitialRecoveryFabricLocation("ac")
+                        .withPrimaryZone("nettepdjxqeskoy")
+                        .withRecoveryZone("iylpck")
+                        .withPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("wsedvesk").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(new ExtendedLocation().withName("gqphrgfnzhctmjts")
+                            .withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("bcbcpz")
+                        .withRecoveryFabricLocation("pzeqacdldtz"),
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("ypefcpczshnuqnda")
+                        .withInitialRecoveryZone("upfkhuytuszxhmtv")
+                        .withInitialPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("egw").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("kvzwydw").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("aokgkskjivbsshaj")
+                        .withInitialRecoveryFabricLocation("u")
+                        .withPrimaryZone("eexpgeumi")
+                        .withRecoveryZone("wuit")
+                        .withPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("exyionofninbd").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("xcwqqrsmpc").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("rtugavbzbcyks")
+                        .withRecoveryFabricLocation("mf"),
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("dr")
+                        .withInitialRecoveryZone("fcmkr")
+                        .withInitialPrimaryExtendedLocation(new ExtendedLocation().withName("sjcwjjxsgmbawvif")
+                            .withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("eci").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("cjxwkloozrvtxvcm")
+                        .withInitialRecoveryFabricLocation("unlcpxxv")
+                        .withPrimaryZone("yeyng")
+                        .withRecoveryZone("vrquv")
+                        .withPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("gglpmcrdcuelj").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("hxmfqryarvsxzqb").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("jkayspthzo")
+                        .withRecoveryFabricLocation("btl"),
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("tgblioskkfmk")
+                        .withInitialRecoveryZone("djxyxgbkkqvjcteo")
+                        .withInitialPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("l").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("skkzpxvjnzdpvo").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("hpcnabxzfsn")
+                        .withInitialRecoveryFabricLocation("ytexvzilmhivzk")
+                        .withPrimaryZone("wncknr")
+                        .withRecoveryZone("ajlskzptj")
+                        .withPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("lwe").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("rthxqlehmcg").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("inue")
+                        .withRecoveryFabricLocation("kamvfe")));
         model = BinaryData.fromObject(model).toObject(AzureFabricSpecificDetails.class);
         Assertions.assertEquals("rrlkmdskjhhx", model.location());
         Assertions.assertEquals("jfoxcxscvslxl", model.containerIds().get(0));

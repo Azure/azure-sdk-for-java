@@ -15,21 +15,21 @@ public final class HttpDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"datahcxyvehy\",\"requestMethod\":\"dataelyqdvpqfbxg\",\"requestBody\":\"dataudusdmtxqlefnohe\",\"additionalHeaders\":\"datavfopkyl\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datayenjpwdmsfw\",\"deserializer\":\"datarsvevcneqswxhqh\",\"\":{\"yhtxgdmvghcm\":\"datatbzvulqevvjncp\",\"efb\":\"dataxmlwk\",\"fyim\":\"datayjrtalqeebu\"}},\"compression\":{\"type\":\"dataaezktomsgoihlqw\",\"level\":\"datawaazbaeeek\",\"\":{\"wnoljdkx\":\"datavnabfbbt\"}}}")
+            "{\"relativeUrl\":\"datao\",\"requestMethod\":\"dataxxxffgmcuanszee\",\"requestBody\":\"datagcgcsapvbcq\",\"additionalHeaders\":\"datausekijhm\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datank\",\"deserializer\":\"datavpyr\",\"\":{\"j\":\"datarlfqm\",\"vurkmjufavvln\":\"datawynbfvvc\"}},\"compression\":{\"type\":\"datasotmynklnmrz\",\"level\":\"datatvrkkfcwxizkstx\",\"\":{\"vriuvnfazxtvs\":\"datakeipxutc\",\"kqtjwrv\":\"datayyaeiivj\",\"qetxtdqiuspguzlj\":\"datawojoqf\"}}}")
             .toObject(HttpDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpDatasetTypeProperties model = new HttpDatasetTypeProperties().withRelativeUrl("datahcxyvehy")
-            .withRequestMethod("dataelyqdvpqfbxg")
-            .withRequestBody("dataudusdmtxqlefnohe")
-            .withAdditionalHeaders("datavfopkyl")
-            .withFormat(new DatasetStorageFormat().withSerializer("datayenjpwdmsfw")
-                .withDeserializer("datarsvevcneqswxhqh")
+        HttpDatasetTypeProperties model = new HttpDatasetTypeProperties().withRelativeUrl("datao")
+            .withRequestMethod("dataxxxffgmcuanszee")
+            .withRequestBody("datagcgcsapvbcq")
+            .withAdditionalHeaders("datausekijhm")
+            .withFormat(new DatasetStorageFormat().withSerializer("datank")
+                .withDeserializer("datavpyr")
                 .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withCompression(new DatasetCompression().withType("dataaezktomsgoihlqw")
-                .withLevel("datawaazbaeeek")
+            .withCompression(new DatasetCompression().withType("datasotmynklnmrz")
+                .withLevel("datatvrkkfcwxizkstx")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(HttpDatasetTypeProperties.class);
     }

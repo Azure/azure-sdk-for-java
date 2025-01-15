@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Either the credential through {@link #credential(WebPubSubClientCredential)},
  * or the client access URL through {@link #clientAccessUrl(String)}.
  */
-@ServiceClientBuilder(serviceClients = {WebPubSubClient.class})
+@ServiceClientBuilder(serviceClients = { WebPubSubClient.class })
 public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubClientBuilder.class);
@@ -227,17 +227,16 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
         // credential
         Supplier<String> clientAccessUrlSuplier;
         if (credential != null && clientAccessUrl != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Both credential and clientAccessUrl have been set. "
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Both credential and clientAccessUrl have been set. "
                     + "Set null to one of them to clear that option."));
         } else if (credential != null) {
             clientAccessUrlSuplier = credential.getClientAccessUrlSupplier();
         } else if (clientAccessUrl != null) {
             clientAccessUrlSuplier = () -> clientAccessUrl;
         } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Credentials have not been set. "
-                    + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Credentials have not been set. "
+                + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
         }
 
         // user-agent
@@ -247,9 +246,7 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion,
             configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
-        return new WebPubSubAsyncClient(
-            webSocketClient, clientAccessUrlSuplier, webPubSubProtocol,
-            applicationId, userAgent,
-            retryStrategy, autoReconnect, autoRestoreGroup);
+        return new WebPubSubAsyncClient(webSocketClient, clientAccessUrlSuplier, webPubSubProtocol, applicationId,
+            userAgent, retryStrategy, autoReconnect, autoRestoreGroup);
     }
 }

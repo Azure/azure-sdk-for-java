@@ -6,53 +6,51 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Image Object Detection. Object detection is used to identify objects in an image and locate each object with a
  * bounding box e.g. locate all dogs and cats in an image and draw a bounding box around each.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("ImageObjectDetection")
 @Fluent
 public final class ImageObjectDetection extends AutoMLVertical {
     /*
+     * [Required] Task type for AutoMLJob.
+     */
+    private TaskType taskType = TaskType.IMAGE_OBJECT_DETECTION;
+
+    /*
      * Primary metric to optimize for this task.
      */
-    @JsonProperty(value = "primaryMetric")
     private ObjectDetectionPrimaryMetrics primaryMetric;
 
     /*
      * Settings used for training the model.
      */
-    @JsonProperty(value = "modelSettings")
     private ImageModelSettingsObjectDetection modelSettings;
 
     /*
      * Search space for sampling different combinations of models and their hyperparameters.
      */
-    @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsObjectDetection> searchSpace;
 
     /*
      * [Required] Limit settings for the AutoML job.
      */
-    @JsonProperty(value = "limitSettings", required = true)
     private ImageLimitSettings limitSettings;
 
     /*
      * Model sweeping and hyperparameter sweeping related settings.
      */
-    @JsonProperty(value = "sweepSettings")
     private ImageSweepSettings sweepSettings;
 
     /*
      * Validation data inputs.
      */
-    @JsonProperty(value = "validationData")
     private MLTableJobInput validationData;
 
     /*
@@ -60,16 +58,27 @@ public final class ImageObjectDetection extends AutoMLVertical {
      * Values between (0.0 , 1.0)
      * Applied when validation dataset is not provided.
      */
-    @JsonProperty(value = "validationDataSize")
     private Double validationDataSize;
 
-    /** Creates an instance of ImageObjectDetection class. */
+    /**
+     * Creates an instance of ImageObjectDetection class.
+     */
     public ImageObjectDetection() {
     }
 
     /**
+     * Get the taskType property: [Required] Task type for AutoMLJob.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public TaskType taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the primaryMetric property: Primary metric to optimize for this task.
-     *
+     * 
      * @return the primaryMetric value.
      */
     public ObjectDetectionPrimaryMetrics primaryMetric() {
@@ -78,7 +87,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the primaryMetric property: Primary metric to optimize for this task.
-     *
+     * 
      * @param primaryMetric the primaryMetric value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -89,7 +98,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Get the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @return the modelSettings value.
      */
     public ImageModelSettingsObjectDetection modelSettings() {
@@ -98,7 +107,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @param modelSettings the modelSettings value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -110,7 +119,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
     /**
      * Get the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @return the searchSpace value.
      */
     public List<ImageModelDistributionSettingsObjectDetection> searchSpace() {
@@ -120,7 +129,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
     /**
      * Set the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @param searchSpace the searchSpace value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -131,7 +140,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Get the limitSettings property: [Required] Limit settings for the AutoML job.
-     *
+     * 
      * @return the limitSettings value.
      */
     public ImageLimitSettings limitSettings() {
@@ -140,7 +149,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the limitSettings property: [Required] Limit settings for the AutoML job.
-     *
+     * 
      * @param limitSettings the limitSettings value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -151,7 +160,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Get the sweepSettings property: Model sweeping and hyperparameter sweeping related settings.
-     *
+     * 
      * @return the sweepSettings value.
      */
     public ImageSweepSettings sweepSettings() {
@@ -160,7 +169,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the sweepSettings property: Model sweeping and hyperparameter sweeping related settings.
-     *
+     * 
      * @param sweepSettings the sweepSettings value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -171,7 +180,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Get the validationData property: Validation data inputs.
-     *
+     * 
      * @return the validationData value.
      */
     public MLTableJobInput validationData() {
@@ -180,7 +189,7 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the validationData property: Validation data inputs.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -191,8 +200,10 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
      * @return the validationDataSize value.
      */
     public Double validationDataSize() {
@@ -201,8 +212,10 @@ public final class ImageObjectDetection extends AutoMLVertical {
 
     /**
      * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
      * @param validationDataSize the validationDataSize value to set.
      * @return the ImageObjectDetection object itself.
      */
@@ -211,21 +224,18 @@ public final class ImageObjectDetection extends AutoMLVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetection withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ImageObjectDetection withTargetColumnName(String targetColumnName) {
-        super.withTargetColumnName(targetColumnName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetection withTrainingData(MLTableJobInput trainingData) {
         super.withTrainingData(trainingData);
@@ -233,8 +243,17 @@ public final class ImageObjectDetection extends AutoMLVertical {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageObjectDetection withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -247,10 +266,9 @@ public final class ImageObjectDetection extends AutoMLVertical {
             searchSpace().forEach(e -> e.validate());
         }
         if (limitSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property limitSettings in model ImageObjectDetection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property limitSettings in model ImageObjectDetection"));
         } else {
             limitSettings().validate();
         }
@@ -263,4 +281,74 @@ public final class ImageObjectDetection extends AutoMLVertical {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageObjectDetection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trainingData", trainingData());
+        jsonWriter.writeStringField("logVerbosity", logVerbosity() == null ? null : logVerbosity().toString());
+        jsonWriter.writeStringField("targetColumnName", targetColumnName());
+        jsonWriter.writeJsonField("limitSettings", this.limitSettings);
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeStringField("primaryMetric", this.primaryMetric == null ? null : this.primaryMetric.toString());
+        jsonWriter.writeJsonField("modelSettings", this.modelSettings);
+        jsonWriter.writeArrayField("searchSpace", this.searchSpace, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sweepSettings", this.sweepSettings);
+        jsonWriter.writeJsonField("validationData", this.validationData);
+        jsonWriter.writeNumberField("validationDataSize", this.validationDataSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageObjectDetection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageObjectDetection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageObjectDetection.
+     */
+    public static ImageObjectDetection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageObjectDetection deserializedImageObjectDetection = new ImageObjectDetection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trainingData".equals(fieldName)) {
+                    deserializedImageObjectDetection.withTrainingData(MLTableJobInput.fromJson(reader));
+                } else if ("logVerbosity".equals(fieldName)) {
+                    deserializedImageObjectDetection.withLogVerbosity(LogVerbosity.fromString(reader.getString()));
+                } else if ("targetColumnName".equals(fieldName)) {
+                    deserializedImageObjectDetection.withTargetColumnName(reader.getString());
+                } else if ("limitSettings".equals(fieldName)) {
+                    deserializedImageObjectDetection.limitSettings = ImageLimitSettings.fromJson(reader);
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedImageObjectDetection.taskType = TaskType.fromString(reader.getString());
+                } else if ("primaryMetric".equals(fieldName)) {
+                    deserializedImageObjectDetection.primaryMetric
+                        = ObjectDetectionPrimaryMetrics.fromString(reader.getString());
+                } else if ("modelSettings".equals(fieldName)) {
+                    deserializedImageObjectDetection.modelSettings = ImageModelSettingsObjectDetection.fromJson(reader);
+                } else if ("searchSpace".equals(fieldName)) {
+                    List<ImageModelDistributionSettingsObjectDetection> searchSpace
+                        = reader.readArray(reader1 -> ImageModelDistributionSettingsObjectDetection.fromJson(reader1));
+                    deserializedImageObjectDetection.searchSpace = searchSpace;
+                } else if ("sweepSettings".equals(fieldName)) {
+                    deserializedImageObjectDetection.sweepSettings = ImageSweepSettings.fromJson(reader);
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedImageObjectDetection.validationData = MLTableJobInput.fromJson(reader);
+                } else if ("validationDataSize".equals(fieldName)) {
+                    deserializedImageObjectDetection.validationDataSize = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageObjectDetection;
+        });
+    }
 }

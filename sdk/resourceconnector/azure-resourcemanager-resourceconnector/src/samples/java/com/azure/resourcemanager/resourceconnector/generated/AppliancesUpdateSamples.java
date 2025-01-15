@@ -8,22 +8,24 @@ import com.azure.resourcemanager.resourceconnector.models.Appliance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Appliances Update. */
+/**
+ * Samples for Appliances Update.
+ */
 public final class AppliancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesPatch.json
+     * x-ms-original-file:
+     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
+     * AppliancesPatch.json
      */
     /**
      * Sample code: Update Appliance.
-     *
+     * 
      * @param manager Entry point to ResourceConnectorManager.
      */
     public static void updateAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
-        Appliance resource =
-            manager
-                .appliances()
-                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
-                .getValue();
+        Appliance resource = manager.appliances()
+            .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 

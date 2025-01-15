@@ -10,8 +10,6 @@ extends:
       - name: azure-resourcemanager-batch
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerbatch
-    Clouds: 'Public'
-    UseFederatedAuth: true
     # Batch account has regional quota limit on test subscription. Only run tests on Windows to avoid exceeding.
     MatrixFilters:
       - pool=.*(win).*

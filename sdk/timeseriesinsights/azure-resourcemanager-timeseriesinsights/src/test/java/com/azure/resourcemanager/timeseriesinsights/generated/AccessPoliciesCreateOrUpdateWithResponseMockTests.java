@@ -6,74 +6,43 @@ package com.azure.resourcemanager.timeseriesinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyResource;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyRole;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"principalObjectId\":\"gsfraoyzkoow\",\"description\":\"mnguxawqaldsyu\",\"roles\":[\"Contributor\",\"Reader\",\"Reader\",\"Reader\"]},\"id\":\"fobwy\",\"name\":\"nkbykutwpfhp\",\"type\":\"gmhrskdsnfdsdoak\"}";
 
-        String responseStr =
-            "{\"properties\":{\"principalObjectId\":\"ueedndrdvs\",\"description\":\"wq\",\"roles\":[\"Contributor\"]},\"id\":\"ealmfmtdaaygdvwv\",\"name\":\"piohgwxrtfu\",\"type\":\"xepxgyqagvrvmn\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AccessPolicyResource response = manager.accessPolicies()
+            .define("oxciqopidoamcio")
+            .withExistingEnvironment("i", "ybxarzgszu")
+            .withPrincipalObjectId("khazxkhnzbonlwn")
+            .withDescription("egokdwbwhkszzcmr")
+            .withRoles(Arrays.asList(AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.READER,
+                AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.READER))
+            .create();
 
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccessPolicyResource response =
-            manager
-                .accessPolicies()
-                .define("zikywgg")
-                .withExistingEnvironment("hnvpamqgxq", "u")
-                .withPrincipalObjectId("allatmelwuipic")
-                .withDescription("zkzivgvvcnay")
-                .withRoles(
-                    Arrays.asList(AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.READER))
-                .create();
-
-        Assertions.assertEquals("ueedndrdvs", response.principalObjectId());
-        Assertions.assertEquals("wq", response.description());
+        Assertions.assertEquals("gsfraoyzkoow", response.principalObjectId());
+        Assertions.assertEquals("mnguxawqaldsyu", response.description());
         Assertions.assertEquals(AccessPolicyRole.CONTRIBUTOR, response.roles().get(0));
     }
 }

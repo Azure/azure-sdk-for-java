@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -17,18 +16,24 @@ import java.util.Collection;
  * redaction.
  */
 public final class FaceRedactorMode extends ExpandableStringEnum<FaceRedactorMode> {
-    /** Static value Analyze for FaceRedactorMode. */
+    /**
+     * Static value Analyze for FaceRedactorMode.
+     */
     public static final FaceRedactorMode ANALYZE = fromString("Analyze");
 
-    /** Static value Redact for FaceRedactorMode. */
+    /**
+     * Static value Redact for FaceRedactorMode.
+     */
     public static final FaceRedactorMode REDACT = fromString("Redact");
 
-    /** Static value Combined for FaceRedactorMode. */
+    /**
+     * Static value Combined for FaceRedactorMode.
+     */
     public static final FaceRedactorMode COMBINED = fromString("Combined");
 
     /**
      * Creates a new instance of FaceRedactorMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +42,17 @@ public final class FaceRedactorMode extends ExpandableStringEnum<FaceRedactorMod
 
     /**
      * Creates or finds a FaceRedactorMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FaceRedactorMode.
      */
-    @JsonCreator
     public static FaceRedactorMode fromString(String name) {
         return fromString(name, FaceRedactorMode.class);
     }
 
     /**
      * Gets known FaceRedactorMode values.
-     *
+     * 
      * @return known FaceRedactorMode values.
      */
     public static Collection<FaceRedactorMode> values() {

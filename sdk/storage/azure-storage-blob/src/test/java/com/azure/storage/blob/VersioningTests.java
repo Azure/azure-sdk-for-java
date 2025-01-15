@@ -26,7 +26,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,14 +65,14 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void createBlockBlobWithVersion() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
-        BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), true);
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV2
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
     @Test
@@ -83,7 +82,7 @@ public class VersioningTests extends BlobTestBase {
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
     @Test
@@ -93,9 +92,10 @@ public class VersioningTests extends BlobTestBase {
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void downloadBlobByVersion() {
         ByteArrayInputStream inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8));
@@ -162,13 +162,12 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());
         BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true);
 
-        BlobSasPermission permission = new BlobSasPermission()
-            .setDeleteVersionPermission(true);
+        BlobSasPermission permission = new BlobSasPermission().setDeleteVersionPermission(true);
         String sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
             .generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission));
 
-        BlobClient sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(),
-            sasToken);
+        BlobClient sasClient
+            = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken);
 
         sasClient.delete();
 
@@ -183,13 +182,12 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());
         BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true);
 
-        BlobSasPermission permission = new BlobSasPermission()
-            .setDeleteVersionPermission(true);
-        String sasToken = blobContainerClient.generateSas(
-            new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission));
+        BlobSasPermission permission = new BlobSasPermission().setDeleteVersionPermission(true);
+        String sasToken = blobContainerClient
+            .generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission));
 
-        BlobClient sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(),
-            sasToken);
+        BlobClient sasClient
+            = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken);
 
         sasClient.delete();
 
@@ -204,14 +202,13 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());
         BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true);
 
-        AccountSasPermission permission = new AccountSasPermission()
-            .setDeleteVersionPermission(true);
-        String sasToken = versionedBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
-            testResourceNamer.now().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
-            new AccountSasResourceType().setObject(true)));
+        AccountSasPermission permission = new AccountSasPermission().setDeleteVersionPermission(true);
+        String sasToken = versionedBlobServiceClient
+            .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permission,
+                new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setObject(true)));
 
-        BlobClient sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(),
-            sasToken);
+        BlobClient sasClient
+            = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken);
 
         sasClient.delete();
 
@@ -224,8 +221,8 @@ public class VersioningTests extends BlobTestBase {
         String key = "key";
         String valV2 = "val2";
         String valV3 = "val3";
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         Response<Void> responseV2 = blobClient.getBlockBlobClient()
             .setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
         Response<Void> responseV3 = blobClient.getBlockBlobClient()
@@ -245,15 +242,15 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void listBlobsWithVersion() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
-        BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), true);
-        BlockBlobItem blobItemV3 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), true);
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV2
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
+        BlockBlobItem blobItemV3
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
-        PagedIterable<BlobItem> blobs = blobContainerClient.listBlobs(
-            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null);
+        PagedIterable<BlobItem> blobs = blobContainerClient
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null);
 
         Iterator<BlobItem> iterator = blobs.stream().iterator();
         assertEquals(3, blobs.stream().count());
@@ -272,11 +269,11 @@ public class VersioningTests extends BlobTestBase {
     public void listBlobsWithoutVersion() {
         blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        BlockBlobItem blobItemV3 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), true);
+        BlockBlobItem blobItemV3
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
-        PagedIterable<BlobItem> blobs = blobContainerClient.listBlobs(
-            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null);
+        PagedIterable<BlobItem> blobs = blobContainerClient
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null);
 
         assertEquals(1, blobs.stream().count());
         assertEquals(blobItemV3.getVersionId(), blobs.stream().iterator().next().getVersionId());
@@ -284,13 +281,13 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void beginCopyBlobsWithVersion() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
         sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
-            blobClient.beginCopy(sourceBlob.getBlobUrl(), null));
+        SyncPoller<BlobCopyInfo, Void> poller
+            = setPlaybackSyncPollerPollInterval(blobClient.beginCopy(sourceBlob.getBlobUrl(), null));
         BlobCopyInfo copyInfo = poller.waitForCompletion().getValue();
 
         assertNotNull(copyInfo.getVersionId());
@@ -299,15 +296,15 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void copyFromUrlBlobsWithVersion() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
         sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        Response<String> response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
-            null, null, null, null, null, Context.NONE);
+        Response<String> response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas, null, null,
+            null, null, null, Context.NONE);
         String versionIdAfterCopy = response.getHeaders().getValue(X_MS_VERSION_ID);
 
         assertNotNull(versionIdAfterCopy);
@@ -323,8 +320,8 @@ public class VersioningTests extends BlobTestBase {
 
         blobClient.getVersionClient(blobItemV1.getVersionId()).setAccessTier(AccessTier.COOL);
 
-        assertEquals(AccessTier.COOL, blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties()
-            .getAccessTier());
+        assertEquals(AccessTier.COOL,
+            blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties().getAccessTier());
         assertNotEquals(AccessTier.COOL, blobClient.getProperties().getAccessTier());
     }
 
@@ -334,16 +331,16 @@ public class VersioningTests extends BlobTestBase {
         blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());
         String fakeVersion = "2020-04-17T20:37:16.5129130Z";
 
-        assertThrows(BlobStorageException.class, () ->
-                blobClient.getVersionClient(fakeVersion).setAccessTier(AccessTier.COOL));
+        assertThrows(BlobStorageException.class,
+            () -> blobClient.getVersionClient(fakeVersion).setAccessTier(AccessTier.COOL));
     }
 
     @Test
     public void blobPropertiesShouldContainVersionInformation() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
-        BlockBlobItem blobItemV2 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), true);
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV2
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
         BlobProperties propertiesV1 = blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties();
         BlobProperties propertiesV2 = blobClient.getVersionClient(blobItemV2.getVersionId()).getProperties();
@@ -370,11 +367,12 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void snapshotCreatesNewVersion() {
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV1
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null,
-            null, Context.NONE).getHeaders().getValue(X_MS_VERSION_ID);
+        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null, null, Context.NONE)
+            .getHeaders()
+            .getValue(X_MS_VERSION_ID);
 
         assertNotNull(versionIdAfterSnapshot);
         assertNotEquals(blobItemV1.getVersionId(), versionIdAfterSnapshot);
@@ -382,8 +380,8 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void versionedBlobURLContainsVersion() {
-        BlockBlobItem blobItem = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        BlockBlobItem blobItem
+            = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         String blobUrl = blobClient.getVersionClient(blobItem.getVersionId()).getBlobUrl();
 

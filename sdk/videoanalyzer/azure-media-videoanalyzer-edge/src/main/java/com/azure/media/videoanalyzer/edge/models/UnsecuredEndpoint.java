@@ -5,33 +5,100 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Unsecured endpoint describes an endpoint that the pipeline can connect to over clear transport (no encryption in
  * transit).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.UnsecuredEndpoint")
 @Fluent
 public final class UnsecuredEndpoint extends EndpointBase {
+    /*
+     * Type discriminator for the derived types.
+     */
+    private String type = "#Microsoft.VideoAnalyzer.UnsecuredEndpoint";
+
     /**
      * Creates an instance of UnsecuredEndpoint class.
-     *
+     * 
      * @param url the url value to set.
      */
-    @JsonCreator
-    public UnsecuredEndpoint(@JsonProperty(value = "url", required = true) String url) {
+    public UnsecuredEndpoint(String url) {
         super(url);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UnsecuredEndpoint setCredentials(CredentialsBase credentials) {
         super.setCredentials(credentials);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", getUrl());
+        jsonWriter.writeJsonField("credentials", getCredentials());
+        jsonWriter.writeStringField("@type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnsecuredEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnsecuredEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UnsecuredEndpoint.
+     */
+    public static UnsecuredEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean urlFound = false;
+            String url = null;
+            CredentialsBase credentials = null;
+            String type = "#Microsoft.VideoAnalyzer.UnsecuredEndpoint";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                    urlFound = true;
+                } else if ("credentials".equals(fieldName)) {
+                    credentials = CredentialsBase.fromJson(reader);
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (urlFound) {
+                UnsecuredEndpoint deserializedUnsecuredEndpoint = new UnsecuredEndpoint(url);
+                deserializedUnsecuredEndpoint.setCredentials(credentials);
+                deserializedUnsecuredEndpoint.type = type;
+
+                return deserializedUnsecuredEndpoint;
+            }
+            throw new IllegalStateException("Missing required property: url");
+        });
     }
 }

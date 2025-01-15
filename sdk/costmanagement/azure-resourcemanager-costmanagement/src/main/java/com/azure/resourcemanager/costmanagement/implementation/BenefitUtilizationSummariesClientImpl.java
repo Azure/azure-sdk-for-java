@@ -31,24 +31,28 @@ import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummari
 import com.azure.resourcemanager.costmanagement.models.GrainParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient.
+ */
 public final class BenefitUtilizationSummariesClientImpl implements BenefitUtilizationSummariesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BenefitUtilizationSummariesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of BenefitUtilizationSummariesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BenefitUtilizationSummariesClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    BenefitUtilizationSummariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BenefitUtilizationSummariesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,126 +63,99 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface BenefitUtilizationSummariesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingAccountId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("billingAccountId") String billingAccountId,
-            @QueryParam("grainParameter") GrainParameter grainParameter,
-            @QueryParam("filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("grainParameter") GrainParameter grainParameter, @QueryParam("filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingProfileId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("billingAccountId") String billingAccountId,
             @PathParam("billingProfileId") String billingProfileId,
-            @QueryParam("grainParameter") GrainParameter grainParameter,
-            @QueryParam("filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("grainParameter") GrainParameter grainParameter, @QueryParam("filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanOrder(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("grainParameter") GrainParameter grainParameter,
-            @PathParam("savingsPlanOrderId") String savingsPlanOrderId,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("grainParameter") GrainParameter grainParameter,
+            @PathParam("savingsPlanOrderId") String savingsPlanOrderId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
+        Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
             @QueryParam("grainParameter") GrainParameter grainParameter,
             @PathParam("savingsPlanOrderId") String savingsPlanOrderId,
-            @PathParam("savingsPlanId") String savingsPlanId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("savingsPlanId") String savingsPlanId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingAccountIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingProfileIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanOrderNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingAccountIdSinglePageAsync(
-        String billingAccountId, GrainParameter grainParameter, String filter) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listByBillingAccountIdSinglePageAsync(String billingAccountId, GrainParameter grainParameter, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -186,33 +163,17 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByBillingAccountId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            billingAccountId,
-                            grainParameter,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByBillingAccountId(this.client.getEndpoint(),
+                this.client.getApiVersion(), billingAccountId, grainParameter, filter, accept, context))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -220,17 +181,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingAccountIdSinglePageAsync(
         String billingAccountId, GrainParameter grainParameter, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -239,29 +198,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBillingAccountId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                billingAccountId,
-                grainParameter,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBillingAccountId(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountId,
+                grainParameter, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -271,17 +217,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingAccountIdAsync(
-        String billingAccountId, GrainParameter grainParameter, String filter) {
-        return new PagedFlux<>(
-            () -> listByBillingAccountIdSinglePageAsync(billingAccountId, grainParameter, filter),
+    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingAccountIdAsync(String billingAccountId,
+        GrainParameter grainParameter, String filter) {
+        return new PagedFlux<>(() -> listByBillingAccountIdSinglePageAsync(billingAccountId, grainParameter, filter),
             nextLink -> listByBillingAccountIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,15 +237,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     private PagedFlux<BenefitUtilizationSummaryInner> listByBillingAccountIdAsync(String billingAccountId) {
         final GrainParameter grainParameter = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByBillingAccountIdSinglePageAsync(billingAccountId, grainParameter, filter),
+        return new PagedFlux<>(() -> listByBillingAccountIdSinglePageAsync(billingAccountId, grainParameter, filter),
             nextLink -> listByBillingAccountIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -311,8 +255,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingAccountIdAsync(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingAccountIdAsync(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByBillingAccountIdSinglePageAsync(billingAccountId, grainParameter, filter, context),
             nextLink -> listByBillingAccountIdNextSinglePageAsync(nextLink, context));
@@ -321,7 +265,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +282,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -349,14 +293,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context) {
         return new PagedIterable<>(listByBillingAccountIdAsync(billingAccountId, grainParameter, filter, context));
     }
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -364,17 +308,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdSinglePageAsync(
         String billingAccountId, String billingProfileId, GrainParameter grainParameter, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -387,32 +329,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByBillingProfileId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            billingAccountId,
-                            billingProfileId,
-                            grainParameter,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByBillingProfileId(this.client.getEndpoint(), this.client.getApiVersion(),
+                    billingAccountId, billingProfileId, grainParameter, filter, accept, context))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -421,21 +347,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdSinglePageAsync(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
+        String billingAccountId, String billingProfileId, GrainParameter grainParameter, String filter,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -448,29 +369,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBillingProfileId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                billingAccountId,
-                billingProfileId,
-                grainParameter,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBillingProfileId(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountId,
+                billingProfileId, grainParameter, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -481,8 +388,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(
-        String billingAccountId, String billingProfileId, GrainParameter grainParameter, String filter) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(String billingAccountId,
+        String billingProfileId, GrainParameter grainParameter, String filter) {
         return new PagedFlux<>(
             () -> listByBillingProfileIdSinglePageAsync(billingAccountId, billingProfileId, grainParameter, filter),
             nextLink -> listByBillingProfileIdNextSinglePageAsync(nextLink));
@@ -490,7 +397,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -499,8 +406,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(
-        String billingAccountId, String billingProfileId) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(String billingAccountId,
+        String billingProfileId) {
         final GrainParameter grainParameter = null;
         final String filter = null;
         return new PagedFlux<>(
@@ -510,7 +417,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -522,22 +429,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByBillingProfileIdSinglePageAsync(
-                    billingAccountId, billingProfileId, grainParameter, filter, context),
-            nextLink -> listByBillingProfileIdNextSinglePageAsync(nextLink, context));
+    private PagedFlux<BenefitUtilizationSummaryInner> listByBillingProfileIdAsync(String billingAccountId,
+        String billingProfileId, GrainParameter grainParameter, String filter, Context context) {
+        return new PagedFlux<>(() -> listByBillingProfileIdSinglePageAsync(billingAccountId, billingProfileId,
+            grainParameter, filter, context), nextLink -> listByBillingProfileIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,8 +446,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(
-        String billingAccountId, String billingProfileId) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
+        String billingProfileId) {
         final GrainParameter grainParameter = null;
         final String filter = null;
         return new PagedIterable<>(
@@ -556,7 +456,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -568,36 +468,30 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
+        String billingProfileId, GrainParameter grainParameter, String filter, Context context) {
         return new PagedIterable<>(
             listByBillingProfileIdAsync(billingAccountId, billingProfileId, grainParameter, filter, context));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanOrderSinglePageAsync(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listBySavingsPlanOrderSinglePageAsync(String savingsPlanOrderId, String filter, GrainParameter grainParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (savingsPlanOrderId == null) {
             return Mono
@@ -605,32 +499,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySavingsPlanOrder(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            grainParameter,
-                            savingsPlanOrderId,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySavingsPlanOrder(this.client.getEndpoint(),
+                this.client.getApiVersion(), filter, grainParameter, savingsPlanOrderId, accept, context))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -638,17 +516,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanOrderSinglePageAsync(
         String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (savingsPlanOrderId == null) {
             return Mono
@@ -657,28 +533,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySavingsPlanOrder(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                grainParameter,
-                savingsPlanOrderId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySavingsPlanOrder(this.client.getEndpoint(), this.client.getApiVersion(), filter, grainParameter,
+                savingsPlanOrderId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -688,16 +551,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanOrderAsync(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter) {
-        return new PagedFlux<>(
-            () -> listBySavingsPlanOrderSinglePageAsync(savingsPlanOrderId, filter, grainParameter),
+    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanOrderAsync(String savingsPlanOrderId,
+        String filter, GrainParameter grainParameter) {
+        return new PagedFlux<>(() -> listBySavingsPlanOrderSinglePageAsync(savingsPlanOrderId, filter, grainParameter),
             nextLink -> listBySavingsPlanOrderNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,14 +570,13 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanOrderAsync(String savingsPlanOrderId) {
         final String filter = null;
         final GrainParameter grainParameter = null;
-        return new PagedFlux<>(
-            () -> listBySavingsPlanOrderSinglePageAsync(savingsPlanOrderId, filter, grainParameter),
+        return new PagedFlux<>(() -> listBySavingsPlanOrderSinglePageAsync(savingsPlanOrderId, filter, grainParameter),
             nextLink -> listBySavingsPlanOrderNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -726,8 +587,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanOrderAsync(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanOrderAsync(String savingsPlanOrderId,
+        String filter, GrainParameter grainParameter, Context context) {
         return new PagedFlux<>(
             () -> listBySavingsPlanOrderSinglePageAsync(savingsPlanOrderId, filter, grainParameter, context),
             nextLink -> listBySavingsPlanOrderNextSinglePageAsync(nextLink, context));
@@ -735,7 +596,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -751,7 +612,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -762,14 +623,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(String savingsPlanOrderId,
+        String filter, GrainParameter grainParameter, Context context) {
         return new PagedIterable<>(listBySavingsPlanOrderAsync(savingsPlanOrderId, filter, grainParameter, context));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -777,17 +638,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdSinglePageAsync(
         String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (savingsPlanOrderId == null) {
             return Mono
@@ -798,33 +657,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySavingsPlanId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            grainParameter,
-                            savingsPlanOrderId,
-                            savingsPlanId,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySavingsPlanId(this.client.getEndpoint(), this.client.getApiVersion(),
+                filter, grainParameter, savingsPlanOrderId, savingsPlanId, accept, context))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -833,21 +675,16 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdSinglePageAsync(
-        String savingsPlanOrderId,
-        String savingsPlanId,
-        String filter,
-        GrainParameter grainParameter,
+        String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (savingsPlanOrderId == null) {
             return Mono
@@ -859,29 +696,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySavingsPlanId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                grainParameter,
-                savingsPlanOrderId,
-                savingsPlanId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySavingsPlanId(this.client.getEndpoint(), this.client.getApiVersion(), filter, grainParameter,
+                savingsPlanOrderId, savingsPlanId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -892,8 +715,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(
-        String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(String savingsPlanOrderId,
+        String savingsPlanId, String filter, GrainParameter grainParameter) {
         return new PagedFlux<>(
             () -> listBySavingsPlanIdSinglePageAsync(savingsPlanOrderId, savingsPlanId, filter, grainParameter),
             nextLink -> listBySavingsPlanIdNextSinglePageAsync(nextLink));
@@ -901,7 +724,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,8 +733,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(
-        String savingsPlanOrderId, String savingsPlanId) {
+    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(String savingsPlanOrderId,
+        String savingsPlanId) {
         final String filter = null;
         final GrainParameter grainParameter = null;
         return new PagedFlux<>(
@@ -921,7 +744,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -933,21 +756,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(
-        String savingsPlanOrderId,
-        String savingsPlanId,
-        String filter,
-        GrainParameter grainParameter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listBySavingsPlanIdSinglePageAsync(savingsPlanOrderId, savingsPlanId, filter, grainParameter, context),
-            nextLink -> listBySavingsPlanIdNextSinglePageAsync(nextLink, context));
+    private PagedFlux<BenefitUtilizationSummaryInner> listBySavingsPlanIdAsync(String savingsPlanOrderId,
+        String savingsPlanId, String filter, GrainParameter grainParameter, Context context) {
+        return new PagedFlux<>(() -> listBySavingsPlanIdSinglePageAsync(savingsPlanOrderId, savingsPlanId, filter,
+            grainParameter, context), nextLink -> listBySavingsPlanIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,8 +773,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(
-        String savingsPlanOrderId, String savingsPlanId) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(String savingsPlanOrderId,
+        String savingsPlanId) {
         final String filter = null;
         final GrainParameter grainParameter = null;
         return new PagedIterable<>(listBySavingsPlanIdAsync(savingsPlanOrderId, savingsPlanId, filter, grainParameter));
@@ -965,7 +782,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -977,325 +794,237 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(
-        String savingsPlanOrderId,
-        String savingsPlanId,
-        String filter,
-        GrainParameter grainParameter,
-        Context context) {
+    public PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(String savingsPlanOrderId,
+        String savingsPlanId, String filter, GrainParameter grainParameter, Context context) {
         return new PagedIterable<>(
             listBySavingsPlanIdAsync(savingsPlanOrderId, savingsPlanId, filter, grainParameter, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingAccountIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listByBillingAccountIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByBillingAccountIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingAccountIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listByBillingAccountIdNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBillingAccountIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBillingAccountIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listByBillingProfileIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByBillingProfileIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listByBillingProfileIdNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBillingProfileIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBillingProfileIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanOrderNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listBySavingsPlanOrderNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySavingsPlanOrderNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanOrderNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listBySavingsPlanOrderNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySavingsPlanOrderNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySavingsPlanOrderNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
+        listBySavingsPlanIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySavingsPlanIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitUtilizationSummaryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BenefitUtilizationSummaryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySavingsPlanIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySavingsPlanIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

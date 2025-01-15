@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class OutputPathAssetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutputPathAssetReference model =
-            BinaryData
-                .fromString("{\"referenceType\":\"OutputPath\",\"jobId\":\"h\",\"path\":\"mexznlwkb\"}")
-                .toObject(OutputPathAssetReference.class);
-        Assertions.assertEquals("h", model.jobId());
-        Assertions.assertEquals("mexznlwkb", model.path());
+        OutputPathAssetReference model = BinaryData
+            .fromString("{\"referenceType\":\"OutputPath\",\"path\":\"mxq\",\"jobId\":\"vznjqswshesgcsqo\"}")
+            .toObject(OutputPathAssetReference.class);
+        Assertions.assertEquals("mxq", model.path());
+        Assertions.assertEquals("vznjqswshesgcsqo", model.jobId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutputPathAssetReference model = new OutputPathAssetReference().withJobId("h").withPath("mexznlwkb");
+        OutputPathAssetReference model = new OutputPathAssetReference().withPath("mxq").withJobId("vznjqswshesgcsqo");
         model = BinaryData.fromObject(model).toObject(OutputPathAssetReference.class);
-        Assertions.assertEquals("h", model.jobId());
-        Assertions.assertEquals("mexznlwkb", model.path());
+        Assertions.assertEquals("mxq", model.path());
+        Assertions.assertEquals("vznjqswshesgcsqo", model.jobId());
     }
 }

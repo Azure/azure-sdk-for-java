@@ -10,10 +10,6 @@ module com.azure.resourcemanager.azurearcdata {
     exports com.azure.resourcemanager.azurearcdata.fluent.models;
     exports com.azure.resourcemanager.azurearcdata.models;
 
-    opens com.azure.resourcemanager.azurearcdata.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.azurearcdata.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.azurearcdata.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.azurearcdata.models to com.azure.core;
 }

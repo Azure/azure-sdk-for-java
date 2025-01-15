@@ -20,35 +20,40 @@ import java.util.Map;
  * An immutable client-side representation of an Azure policy.
  */
 @Fluent
-public interface PolicyDefinition extends
-        HasName,
-        HasId,
-        Indexable,
-        Refreshable<PolicyDefinition>,
-        Updatable<PolicyDefinition.Update>,
-        HasInnerModel<PolicyDefinitionInner> {
+public interface PolicyDefinition extends HasName, HasId, Indexable, Refreshable<PolicyDefinition>,
+    Updatable<PolicyDefinition.Update>, HasInnerModel<PolicyDefinitionInner> {
 
     /**
+     * Gets the type of the policy definition.
+     *
      * @return the type of the policy definition
      */
     PolicyType policyType();
 
     /**
+     * Gets display name of the policy definition.
+     *
      * @return the policy definition display name
      */
     String displayName();
 
     /**
+     * Gets the policy definition description.
+     *
      * @return the policy definition description
      */
     String description();
 
     /**
+     * Gets the policy rule.
+     *
      * @return the policy rule
      */
     Object policyRule();
 
     /**
+     * Gets the parameters of the policy definition.
+     *
      * @return the parameters of the policy definition
      */
     Map<String, ParameterDefinitionsValue> parameters();
@@ -71,9 +76,7 @@ public interface PolicyDefinition extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
 
     /**
@@ -205,14 +208,9 @@ public interface PolicyDefinition extends
          * policy in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                Creatable<PolicyDefinition>,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithPolicyType,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithMode,
-                DefinitionStages.WithMetadata {
+        interface WithCreate extends Creatable<PolicyDefinition>, DefinitionStages.WithDescription,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithPolicyType, DefinitionStages.WithParameters,
+            DefinitionStages.WithMode, DefinitionStages.WithMetadata {
         }
     }
 
@@ -306,13 +304,7 @@ public interface PolicyDefinition extends
     /**
      * The template for a policy update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-            Appliable<PolicyDefinition>,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithPolicyRule,
-            UpdateStages.WithPolicyType,
-            UpdateStages.WithMode,
-            UpdateStages.WithMetadata {
+    interface Update extends Appliable<PolicyDefinition>, UpdateStages.WithDescription, UpdateStages.WithDisplayName,
+        UpdateStages.WithPolicyRule, UpdateStages.WithPolicyType, UpdateStages.WithMode, UpdateStages.WithMetadata {
     }
 }

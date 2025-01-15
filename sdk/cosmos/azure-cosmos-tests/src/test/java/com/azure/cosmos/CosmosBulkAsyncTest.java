@@ -289,8 +289,8 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
+            .getImpl(bulkExecutionOptions)
             .setTargetedMicroBatchRetryRate(
-                bulkExecutionOptions,
                 0.25,
                 0.5);
 

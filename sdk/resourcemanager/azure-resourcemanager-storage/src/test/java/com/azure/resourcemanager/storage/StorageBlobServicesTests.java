@@ -36,23 +36,19 @@ public class StorageBlobServicesTests extends StorageManagementTest {
     public void canCreateBlobServices() {
         String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService =
-            blobServices
-                .define("blobServicesTest")
-                .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
-                .withDeleteRetentionPolicyEnabled(5)
-                .withContainerDeleteRetentionPolicyEnabled(10)
-                .withBlobVersioningEnabled()
-                .create();
+        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+            .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
+            .withDeleteRetentionPolicyEnabled(5)
+            .withContainerDeleteRetentionPolicyEnabled(10)
+            .withBlobVersioningEnabled()
+            .create();
 
         Assertions.assertTrue(blobService.deleteRetentionPolicy().enabled());
         Assertions.assertEquals(5, blobService.deleteRetentionPolicy().days().intValue());
@@ -65,23 +61,19 @@ public class StorageBlobServicesTests extends StorageManagementTest {
     public void canUpdateBlobServices() {
         String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService =
-            blobServices
-                .define("blobServicesTest")
-                .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
-                .withDeleteRetentionPolicyEnabled(5)
-                .withContainerDeleteRetentionPolicyEnabled(10)
-                .withBlobVersioningEnabled()
-                .create();
+        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+            .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
+            .withDeleteRetentionPolicyEnabled(5)
+            .withContainerDeleteRetentionPolicyEnabled(10)
+            .withBlobVersioningEnabled()
+            .create();
 
         Assertions.assertTrue(blobService.isBlobVersioningEnabled());
         Assertions.assertTrue(blobService.containerDeleteRetentionPolicy().enabled());
@@ -101,23 +93,19 @@ public class StorageBlobServicesTests extends StorageManagementTest {
     public void canSpecifyLATTrackingPolicy() {
         String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
 
         // can create with LAT policy enabled
-        BlobServiceProperties blobService =
-            blobServices
-                .define("blobServicesTest")
-                .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
-                .withLastAccessTimeTrackingPolicyEnabled()
-                .create();
+        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+            .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
+            .withLastAccessTimeTrackingPolicyEnabled()
+            .create();
 
         Assertions.assertFalse(ResourceManagerUtils.toPrimitiveBoolean(blobService.isBlobVersioningEnabled()));
         Assertions.assertTrue(blobService.isLastAccessTimeTrackingPolicyEnabled());
@@ -129,9 +117,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
         blobService.refresh();
 
         // can update with LAT policy disabled
-        blobService.update()
-            .withLastAccessTimeTrackingPolicyDisabled()
-            .apply();
+        blobService.update().withLastAccessTimeTrackingPolicyDisabled().apply();
         Assertions.assertFalse(blobService.isLastAccessTimeTrackingPolicyEnabled());
 
         blobService.refresh();

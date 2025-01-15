@@ -6,36 +6,40 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Route Policy Statement properties. */
+/**
+ * Route Policy Statement properties.
+ */
 @Fluent
 public final class RoutePolicyStatementProperties extends AnnotationResource {
     /*
      * Sequence to insert to/delete from existing route.
      */
-    @JsonProperty(value = "sequenceNumber", required = true)
     private long sequenceNumber;
 
     /*
      * Route policy condition properties.
      */
-    @JsonProperty(value = "condition", required = true)
     private StatementConditionProperties condition;
 
     /*
      * Route policy action properties.
      */
-    @JsonProperty(value = "action", required = true)
     private StatementActionProperties action;
 
-    /** Creates an instance of RoutePolicyStatementProperties class. */
+    /**
+     * Creates an instance of RoutePolicyStatementProperties class.
+     */
     public RoutePolicyStatementProperties() {
     }
 
     /**
      * Get the sequenceNumber property: Sequence to insert to/delete from existing route.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public long sequenceNumber() {
@@ -44,7 +48,7 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Set the sequenceNumber property: Sequence to insert to/delete from existing route.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the RoutePolicyStatementProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Get the condition property: Route policy condition properties.
-     *
+     * 
      * @return the condition value.
      */
     public StatementConditionProperties condition() {
@@ -64,7 +68,7 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Set the condition property: Route policy condition properties.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoutePolicyStatementProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Get the action property: Route policy action properties.
-     *
+     * 
      * @return the action value.
      */
     public StatementActionProperties action() {
@@ -84,7 +88,7 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Set the action property: Route policy action properties.
-     *
+     * 
      * @param action the action value to set.
      * @return the RoutePolicyStatementProperties object itself.
      */
@@ -93,7 +97,9 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutePolicyStatementProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -102,29 +108,74 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property condition in model RoutePolicyStatementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property condition in model RoutePolicyStatementProperties"));
         } else {
             condition().validate();
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model RoutePolicyStatementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model RoutePolicyStatementProperties"));
         } else {
             action().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutePolicyStatementProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeLongField("sequenceNumber", this.sequenceNumber);
+        jsonWriter.writeJsonField("condition", this.condition);
+        jsonWriter.writeJsonField("action", this.action);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutePolicyStatementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutePolicyStatementProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoutePolicyStatementProperties.
+     */
+    public static RoutePolicyStatementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutePolicyStatementProperties deserializedRoutePolicyStatementProperties
+                = new RoutePolicyStatementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedRoutePolicyStatementProperties.withAnnotation(reader.getString());
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedRoutePolicyStatementProperties.sequenceNumber = reader.getLong();
+                } else if ("condition".equals(fieldName)) {
+                    deserializedRoutePolicyStatementProperties.condition
+                        = StatementConditionProperties.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    deserializedRoutePolicyStatementProperties.action = StatementActionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutePolicyStatementProperties;
+        });
+    }
 }

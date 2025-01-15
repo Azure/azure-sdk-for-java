@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GitHubOAuthResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitHubOAuthResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"username\":\"ikxwc\"},\"id\":\"yscnpqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"}")
-                .toObject(GitHubOAuthResponseInner.class);
+        GitHubOAuthResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"username\":\"ikxwc\"},\"id\":\"yscnpqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"}")
+            .toObject(GitHubOAuthResponseInner.class);
         Assertions.assertEquals("ikxwc", model.username());
     }
 

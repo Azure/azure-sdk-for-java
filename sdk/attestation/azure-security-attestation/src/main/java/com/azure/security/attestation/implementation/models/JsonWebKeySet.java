@@ -71,6 +71,9 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

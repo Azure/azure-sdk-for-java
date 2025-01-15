@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
      * @param name a name to look for.
      * @return the corresponding PolicyType.
      */
-    @JsonCreator
     public static PolicyType fromString(String name) {
         return fromString(name, PolicyType.class);
     }

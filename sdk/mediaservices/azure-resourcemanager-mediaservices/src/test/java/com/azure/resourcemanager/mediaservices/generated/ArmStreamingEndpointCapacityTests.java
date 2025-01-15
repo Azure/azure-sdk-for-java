@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmStreamingEndpointCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmStreamingEndpointCapacity model =
-            BinaryData
-                .fromString("{\"scaleType\":\"vh\",\"default\":55110922,\"minimum\":1149174942,\"maximum\":751350709}")
-                .toObject(ArmStreamingEndpointCapacity.class);
-        Assertions.assertEquals(55110922, model.defaultProperty());
-        Assertions.assertEquals(1149174942, model.minimum());
-        Assertions.assertEquals(751350709, model.maximum());
+        ArmStreamingEndpointCapacity model = BinaryData
+            .fromString(
+                "{\"scaleType\":\"qyikvy\",\"default\":1053518025,\"minimum\":239621224,\"maximum\":2048419194}")
+            .toObject(ArmStreamingEndpointCapacity.class);
+        Assertions.assertEquals(1053518025, model.defaultProperty());
+        Assertions.assertEquals(239621224, model.minimum());
+        Assertions.assertEquals(2048419194, model.maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmStreamingEndpointCapacity model =
-            new ArmStreamingEndpointCapacity()
-                .withDefaultProperty(55110922)
-                .withMinimum(1149174942)
-                .withMaximum(751350709);
+        ArmStreamingEndpointCapacity model = new ArmStreamingEndpointCapacity().withDefaultProperty(1053518025)
+            .withMinimum(239621224)
+            .withMaximum(2048419194);
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointCapacity.class);
-        Assertions.assertEquals(55110922, model.defaultProperty());
-        Assertions.assertEquals(1149174942, model.minimum());
-        Assertions.assertEquals(751350709, model.maximum());
+        Assertions.assertEquals(1053518025, model.defaultProperty());
+        Assertions.assertEquals(239621224, model.minimum());
+        Assertions.assertEquals(2048419194, model.maximum());
     }
 }

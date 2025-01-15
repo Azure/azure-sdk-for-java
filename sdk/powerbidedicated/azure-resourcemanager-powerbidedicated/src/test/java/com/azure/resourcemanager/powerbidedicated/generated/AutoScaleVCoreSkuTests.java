@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCoreSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreSku model =
-            BinaryData
-                .fromString("{\"name\":\"watkpnpulexxb\",\"tier\":\"AutoScale\",\"capacity\":1309614398}")
+        AutoScaleVCoreSku model
+            = BinaryData.fromString("{\"name\":\"sjttgzfbish\",\"tier\":\"AutoScale\",\"capacity\":1409405599}")
                 .toObject(AutoScaleVCoreSku.class);
-        Assertions.assertEquals("watkpnpulexxb", model.name());
+        Assertions.assertEquals("sjttgzfbish", model.name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.tier());
-        Assertions.assertEquals(1309614398, model.capacity());
+        Assertions.assertEquals(1409405599, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreSku model =
-            new AutoScaleVCoreSku()
-                .withName("watkpnpulexxb")
-                .withTier(VCoreSkuTier.AUTO_SCALE)
-                .withCapacity(1309614398);
+        AutoScaleVCoreSku model = new AutoScaleVCoreSku().withName("sjttgzfbish")
+            .withTier(VCoreSkuTier.AUTO_SCALE)
+            .withCapacity(1409405599);
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreSku.class);
-        Assertions.assertEquals("watkpnpulexxb", model.name());
+        Assertions.assertEquals("sjttgzfbish", model.name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.tier());
-        Assertions.assertEquals(1309614398, model.capacity());
+        Assertions.assertEquals(1409405599, model.capacity());
     }
 }

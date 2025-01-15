@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Banner type of emerging issue. */
+/**
+ * Banner type of emerging issue.
+ */
 @Fluent
-public final class StatusBanner {
+public final class StatusBanner implements JsonSerializable<StatusBanner> {
     /*
      * The banner title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The details of banner.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The cloud type of this banner.
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /*
      * The last time modified on this banner.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
-    /** Creates an instance of StatusBanner class. */
+    /**
+     * Creates an instance of StatusBanner class.
+     */
     public StatusBanner() {
     }
 
     /**
      * Get the title property: The banner title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -50,7 +56,7 @@ public final class StatusBanner {
 
     /**
      * Set the title property: The banner title.
-     *
+     * 
      * @param title the title value to set.
      * @return the StatusBanner object itself.
      */
@@ -61,7 +67,7 @@ public final class StatusBanner {
 
     /**
      * Get the message property: The details of banner.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -70,7 +76,7 @@ public final class StatusBanner {
 
     /**
      * Set the message property: The details of banner.
-     *
+     * 
      * @param message the message value to set.
      * @return the StatusBanner object itself.
      */
@@ -81,7 +87,7 @@ public final class StatusBanner {
 
     /**
      * Get the cloud property: The cloud type of this banner.
-     *
+     * 
      * @return the cloud value.
      */
     public String cloud() {
@@ -90,7 +96,7 @@ public final class StatusBanner {
 
     /**
      * Set the cloud property: The cloud type of this banner.
-     *
+     * 
      * @param cloud the cloud value to set.
      * @return the StatusBanner object itself.
      */
@@ -101,7 +107,7 @@ public final class StatusBanner {
 
     /**
      * Get the lastModifiedTime property: The last time modified on this banner.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -110,7 +116,7 @@ public final class StatusBanner {
 
     /**
      * Set the lastModifiedTime property: The last time modified on this banner.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the StatusBanner object itself.
      */
@@ -121,9 +127,58 @@ public final class StatusBanner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("cloud", this.cloud);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusBanner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusBanner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusBanner.
+     */
+    public static StatusBanner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusBanner deserializedStatusBanner = new StatusBanner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedStatusBanner.title = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedStatusBanner.message = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedStatusBanner.cloud = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedStatusBanner.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusBanner;
+        });
     }
 }

@@ -9,8 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.OperationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.OperationValueInner;
-import com.azure.resourcemanager.hybridcompute.models.Operations;
 import com.azure.resourcemanager.hybridcompute.models.OperationValue;
+import com.azure.resourcemanager.hybridcompute.models.Operations;
 
 public final class OperationsImpl implements Operations {
     private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);

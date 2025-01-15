@@ -12,7 +12,8 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class SupportTicketsNoSubscriptionCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: Checks whether name is available for SupportTicket resource.

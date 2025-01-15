@@ -5,28 +5,36 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cluster available upgrade properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "upgradeType",
-    defaultImpl = ClusterAvailableUpgradeProperties.class)
-@JsonTypeName("ClusterAvailableUpgradeProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AKSPatchUpgrade", value = ClusterAvailableUpgradeAksPatchUpgradeProperties.class),
-    @JsonSubTypes.Type(name = "HotfixUpgrade", value = ClusterAvailableUpgradeHotfixUpgradeProperties.class) })
 @Immutable
-public class ClusterAvailableUpgradeProperties {
+public class ClusterAvailableUpgradeProperties implements JsonSerializable<ClusterAvailableUpgradeProperties> {
+    /*
+     * Type of upgrade.
+     */
+    private ClusterAvailableUpgradeType upgradeType
+        = ClusterAvailableUpgradeType.fromString("ClusterAvailableUpgradeProperties");
+
     /**
      * Creates an instance of ClusterAvailableUpgradeProperties class.
      */
     public ClusterAvailableUpgradeProperties() {
+    }
+
+    /**
+     * Get the upgradeType property: Type of upgrade.
+     * 
+     * @return the upgradeType value.
+     */
+    public ClusterAvailableUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
@@ -35,5 +43,74 @@ public class ClusterAvailableUpgradeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterAvailableUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterAvailableUpgradeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterAvailableUpgradeProperties.
+     */
+    public static ClusterAvailableUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("upgradeType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AKSPatchUpgrade".equals(discriminatorValue)) {
+                    return ClusterAvailableUpgradeAksPatchUpgradeProperties.fromJson(readerToUse.reset());
+                } else if ("ClusterAvailableInPlaceUpgradeProperties".equals(discriminatorValue)) {
+                    return ClusterAvailableInPlaceUpgradeProperties.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("HotfixUpgrade".equals(discriminatorValue)) {
+                    return ClusterAvailableUpgradeHotfixUpgradeProperties.fromJson(readerToUse.reset());
+                } else if ("PatchVersionUpgrade".equals(discriminatorValue)) {
+                    return ClusterAvailableUpgradePatchVersionUpgradeProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ClusterAvailableUpgradeProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterAvailableUpgradeProperties deserializedClusterAvailableUpgradeProperties
+                = new ClusterAvailableUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterAvailableUpgradeProperties.upgradeType
+                        = ClusterAvailableUpgradeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterAvailableUpgradeProperties;
+        });
     }
 }

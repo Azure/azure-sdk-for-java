@@ -5,44 +5,50 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the alert rule. */
+/**
+ * The kind of the alert rule.
+ */
 public final class AlertRuleKind extends ExpandableStringEnum<AlertRuleKind> {
-    /** Static value Scheduled for AlertRuleKind. */
+    /**
+     * Static value Scheduled for AlertRuleKind.
+     */
     public static final AlertRuleKind SCHEDULED = fromString("Scheduled");
 
-    /** Static value MicrosoftSecurityIncidentCreation for AlertRuleKind. */
-    public static final AlertRuleKind MICROSOFT_SECURITY_INCIDENT_CREATION =
-        fromString("MicrosoftSecurityIncidentCreation");
+    /**
+     * Static value MicrosoftSecurityIncidentCreation for AlertRuleKind.
+     */
+    public static final AlertRuleKind MICROSOFT_SECURITY_INCIDENT_CREATION
+        = fromString("MicrosoftSecurityIncidentCreation");
 
-    /** Static value Fusion for AlertRuleKind. */
+    /**
+     * Static value Fusion for AlertRuleKind.
+     */
     public static final AlertRuleKind FUSION = fromString("Fusion");
 
-    /** Static value MLBehaviorAnalytics for AlertRuleKind. */
-    public static final AlertRuleKind MLBEHAVIOR_ANALYTICS = fromString("MLBehaviorAnalytics");
-
-    /** Static value ThreatIntelligence for AlertRuleKind. */
-    public static final AlertRuleKind THREAT_INTELLIGENCE = fromString("ThreatIntelligence");
-
-    /** Static value NRT for AlertRuleKind. */
-    public static final AlertRuleKind NRT = fromString("NRT");
+    /**
+     * Creates a new instance of AlertRuleKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertRuleKind() {
+    }
 
     /**
      * Creates or finds a AlertRuleKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertRuleKind.
      */
-    @JsonCreator
     public static AlertRuleKind fromString(String name) {
         return fromString(name, AlertRuleKind.class);
     }
 
     /**
      * Gets known AlertRuleKind values.
-     *
+     * 
      * @return known AlertRuleKind values.
      */
     public static Collection<AlertRuleKind> values() {

@@ -15,8 +15,8 @@ public final class RecommendationActionImpl implements RecommendationAction {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    RecommendationActionImpl(
-        RecommendationActionInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    RecommendationActionImpl(RecommendationActionInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

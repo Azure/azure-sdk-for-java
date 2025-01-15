@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.dynatrace.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.PlanData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response for getting all the linkable environments. */
+/**
+ * Response for getting all the linkable environments.
+ */
 @Fluent
-public final class LinkableEnvironmentResponseInner {
+public final class LinkableEnvironmentResponseInner implements JsonSerializable<LinkableEnvironmentResponseInner> {
     /*
      * environment id for which user is an admin
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * Name of the environment
      */
-    @JsonProperty(value = "environmentName")
     private String environmentName;
 
     /*
      * Billing plan information.
      */
-    @JsonProperty(value = "planData")
     private PlanData planData;
 
-    /** Creates an instance of LinkableEnvironmentResponseInner class. */
+    /**
+     * Creates an instance of LinkableEnvironmentResponseInner class.
+     */
     public LinkableEnvironmentResponseInner() {
     }
 
     /**
      * Get the environmentId property: environment id for which user is an admin.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -44,7 +49,7 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Set the environmentId property: environment id for which user is an admin.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the LinkableEnvironmentResponseInner object itself.
      */
@@ -55,7 +60,7 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Get the environmentName property: Name of the environment.
-     *
+     * 
      * @return the environmentName value.
      */
     public String environmentName() {
@@ -64,7 +69,7 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Set the environmentName property: Name of the environment.
-     *
+     * 
      * @param environmentName the environmentName value to set.
      * @return the LinkableEnvironmentResponseInner object itself.
      */
@@ -75,7 +80,7 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Get the planData property: Billing plan information.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -84,7 +89,7 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Set the planData property: Billing plan information.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the LinkableEnvironmentResponseInner object itself.
      */
@@ -95,12 +100,55 @@ public final class LinkableEnvironmentResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (planData() != null) {
             planData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeStringField("environmentName", this.environmentName);
+        jsonWriter.writeJsonField("planData", this.planData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkableEnvironmentResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkableEnvironmentResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkableEnvironmentResponseInner.
+     */
+    public static LinkableEnvironmentResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkableEnvironmentResponseInner deserializedLinkableEnvironmentResponseInner
+                = new LinkableEnvironmentResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentId".equals(fieldName)) {
+                    deserializedLinkableEnvironmentResponseInner.environmentId = reader.getString();
+                } else if ("environmentName".equals(fieldName)) {
+                    deserializedLinkableEnvironmentResponseInner.environmentName = reader.getString();
+                } else if ("planData".equals(fieldName)) {
+                    deserializedLinkableEnvironmentResponseInner.planData = PlanData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkableEnvironmentResponseInner;
+        });
     }
 }

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.fluent.models.IpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The ip configurations for the private link service. */
+/**
+ * The ip configurations for the private link service.
+ */
 @Fluent
-public final class IpConfiguration {
+public final class IpConfiguration implements JsonSerializable<IpConfiguration> {
     /*
      * The private link IP configuration id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of private link IP configuration.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the private link IP configuration.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The private link ip configuration properties.
      */
-    @JsonProperty(value = "properties")
     private IpConfigurationProperties innerProperties;
 
-    /** Creates an instance of IpConfiguration class. */
+    /**
+     * Creates an instance of IpConfiguration class.
+     */
     public IpConfiguration() {
     }
 
     /**
      * Get the id property: The private link IP configuration id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +55,7 @@ public final class IpConfiguration {
 
     /**
      * Get the name property: The name of private link IP configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class IpConfiguration {
 
     /**
      * Set the name property: The name of private link IP configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpConfiguration object itself.
      */
@@ -71,7 +75,7 @@ public final class IpConfiguration {
 
     /**
      * Get the type property: The type of the private link IP configuration.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +84,7 @@ public final class IpConfiguration {
 
     /**
      * Get the innerProperties property: The private link ip configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpConfigurationProperties innerProperties() {
@@ -90,7 +94,7 @@ public final class IpConfiguration {
     /**
      * Get the provisioningState property: The private link configuration provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateLinkConfigurationProvisioningState provisioningState() {
@@ -99,7 +103,7 @@ public final class IpConfiguration {
 
     /**
      * Get the primary property: Indicates whether this IP configuration is primary for the corresponding NIC.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -108,7 +112,7 @@ public final class IpConfiguration {
 
     /**
      * Set the primary property: Indicates whether this IP configuration is primary for the corresponding NIC.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the IpConfiguration object itself.
      */
@@ -122,7 +126,7 @@ public final class IpConfiguration {
 
     /**
      * Get the privateIpAddress property: The IP address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -131,7 +135,7 @@ public final class IpConfiguration {
 
     /**
      * Set the privateIpAddress property: The IP address.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the IpConfiguration object itself.
      */
@@ -145,7 +149,7 @@ public final class IpConfiguration {
 
     /**
      * Get the privateIpAllocationMethod property: The method that private IP address is allocated.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public PrivateIpAllocationMethod privateIpAllocationMethod() {
@@ -154,7 +158,7 @@ public final class IpConfiguration {
 
     /**
      * Set the privateIpAllocationMethod property: The method that private IP address is allocated.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the IpConfiguration object itself.
      */
@@ -168,7 +172,7 @@ public final class IpConfiguration {
 
     /**
      * Get the subnet property: The subnet resource id.
-     *
+     * 
      * @return the subnet value.
      */
     public ResourceId subnet() {
@@ -177,7 +181,7 @@ public final class IpConfiguration {
 
     /**
      * Set the subnet property: The subnet resource id.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the IpConfiguration object itself.
      */
@@ -191,14 +195,13 @@ public final class IpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model IpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model IpConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -206,4 +209,48 @@ public final class IpConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpConfiguration.
+     */
+    public static IpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpConfiguration deserializedIpConfiguration = new IpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIpConfiguration.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedIpConfiguration.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIpConfiguration.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIpConfiguration.innerProperties = IpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpConfiguration;
+        });
+    }
 }

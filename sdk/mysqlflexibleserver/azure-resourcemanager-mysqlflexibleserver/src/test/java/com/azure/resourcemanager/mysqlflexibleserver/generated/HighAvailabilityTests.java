@@ -13,19 +13,18 @@ public final class HighAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HighAvailability model = BinaryData
-            .fromString(
-                "{\"mode\":\"ZoneRedundant\",\"state\":\"CreatingStandby\",\"standbyAvailabilityZone\":\"nzscxa\"}")
+            .fromString("{\"mode\":\"ZoneRedundant\",\"state\":\"NotEnabled\",\"standbyAvailabilityZone\":\"cryuan\"}")
             .toObject(HighAvailability.class);
         Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
-        Assertions.assertEquals("nzscxa", model.standbyAvailabilityZone());
+        Assertions.assertEquals("cryuan", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HighAvailability model = new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT)
-            .withStandbyAvailabilityZone("nzscxa");
+            .withStandbyAvailabilityZone("cryuan");
         model = BinaryData.fromObject(model).toObject(HighAvailability.class);
         Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
-        Assertions.assertEquals("nzscxa", model.standbyAvailabilityZone());
+        Assertions.assertEquals("cryuan", model.standbyAvailabilityZone());
     }
 }

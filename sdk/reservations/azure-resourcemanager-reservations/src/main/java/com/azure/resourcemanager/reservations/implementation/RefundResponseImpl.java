@@ -13,8 +13,8 @@ public final class RefundResponseImpl implements RefundResponse {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    RefundResponseImpl(
-        RefundResponseInner innerObject, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    RefundResponseImpl(RefundResponseInner innerObject,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

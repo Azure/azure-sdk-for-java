@@ -14,8 +14,8 @@ import java.util.Set;
  */
 public class AvroConstants {
     public static final int SYNC_MARKER_SIZE = 16;
-    public static final List<Byte> MAGIC_BYTES = Collections.unmodifiableList(
-        Arrays.asList((byte) 'O', (byte) 'b', (byte) 'j', (byte) 1));
+    public static final List<Byte> MAGIC_BYTES
+        = Collections.unmodifiableList(Arrays.asList((byte) 'O', (byte) 'b', (byte) 'j', (byte) 1));
     public static final String CODEC_KEY = "avro.codec";
     public static final String SCHEMA_KEY = "avro.schema";
     public static final String NULL_CODEC = "null";
@@ -44,7 +44,7 @@ public class AvroConstants {
         public static final String MAP = "map";
         public static final String UNION = "union";
 
-        public static final Set<String> PRIMITIVE_TYPES = Collections.unmodifiableSet(new HashSet<>(
-            Arrays.asList(NULL, BOOLEAN, STRING, BYTES, INT, LONG, FLOAT, DOUBLE)));
+        public static final Set<String> PRIMITIVE_TYPES = Collections
+            .unmodifiableSet(new HashSet<>(Arrays.asList(NULL, BOOLEAN, STRING, BYTES, INT, LONG, FLOAT, DOUBLE)));
     }
 }

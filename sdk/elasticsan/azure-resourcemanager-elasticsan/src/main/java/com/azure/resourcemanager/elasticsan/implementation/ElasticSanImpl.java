@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
@@ -103,7 +104,8 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -111,6 +113,10 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public PublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    public AutoScaleProperties autoScaleProperties() {
+        return this.innerModel().autoScaleProperties();
     }
 
     public Region region() {
@@ -145,14 +151,16 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan create() {
-        this.innerObject = serviceManager.serviceClient().getElasticSans().create(resourceGroupName, elasticSanName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .create(resourceGroupName, elasticSanName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ElasticSan create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getElasticSans().create(resourceGroupName, elasticSanName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .create(resourceGroupName, elasticSanName, this.innerModel(), context);
         return this;
     }
 
@@ -168,14 +176,16 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan apply() {
-        this.innerObject = serviceManager.serviceClient().getElasticSans().update(resourceGroupName, elasticSanName,
-            updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .update(resourceGroupName, elasticSanName, updateParameters, Context.NONE);
         return this;
     }
 
     public ElasticSan apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getElasticSans().update(resourceGroupName, elasticSanName,
-            updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .update(resourceGroupName, elasticSanName, updateParameters, context);
         return this;
     }
 
@@ -187,14 +197,18 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
     }
 
     public ElasticSan refresh() {
-        this.innerObject = serviceManager.serviceClient().getElasticSans()
-            .getByResourceGroupWithResponse(resourceGroupName, elasticSanName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .getByResourceGroupWithResponse(resourceGroupName, elasticSanName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ElasticSan refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getElasticSans()
-            .getByResourceGroupWithResponse(resourceGroupName, elasticSanName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getElasticSans()
+            .getByResourceGroupWithResponse(resourceGroupName, elasticSanName, context)
+            .getValue();
         return this;
     }
 
@@ -244,6 +258,16 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
             return this;
         } else {
             this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withAutoScaleProperties(AutoScaleProperties autoScaleProperties) {
+        if (isInCreateMode()) {
+            this.innerModel().withAutoScaleProperties(autoScaleProperties);
+            return this;
+        } else {
+            this.updateParameters.withAutoScaleProperties(autoScaleProperties);
             return this;
         }
     }

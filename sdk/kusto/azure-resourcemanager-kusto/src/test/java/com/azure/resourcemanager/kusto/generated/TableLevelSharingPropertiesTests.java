@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TableLevelSharingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TableLevelSharingProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tablesToInclude\":[\"wwzjuqkhrsajiwku\",\"foskghsauuimj\"],\"tablesToExclude\":[\"ied\",\"ugidyjrr\",\"byao\",\"v\"],\"externalTablesToInclude\":[\"sonpclhocohs\",\"kevle\",\"gz\"],\"externalTablesToExclude\":[\"hfmvfaxkffe\"],\"materializedViewsToInclude\":[\"hl\"],\"materializedViewsToExclude\":[\"zy\"],\"functionsToInclude\":[\"xmzsbbzogg\",\"grxwbu\",\"vjxxjnsp\",\"dptkoenkouk\"],\"functionsToExclude\":[\"dwtiukbldngkp\",\"cipazyxoegukgjnp\",\"ucgygevqz\"]}")
-                .toObject(TableLevelSharingProperties.class);
+        TableLevelSharingProperties model = BinaryData.fromString(
+            "{\"tablesToInclude\":[\"wwzjuqkhrsajiwku\",\"foskghsauuimj\"],\"tablesToExclude\":[\"ied\",\"ugidyjrr\",\"byao\",\"v\"],\"externalTablesToInclude\":[\"sonpclhocohs\",\"kevle\",\"gz\"],\"externalTablesToExclude\":[\"hfmvfaxkffe\"],\"materializedViewsToInclude\":[\"hl\"],\"materializedViewsToExclude\":[\"zy\"],\"functionsToInclude\":[\"xmzsbbzogg\",\"grxwbu\",\"vjxxjnsp\",\"dptkoenkouk\"],\"functionsToExclude\":[\"dwtiukbldngkp\",\"cipazyxoegukgjnp\",\"ucgygevqz\"]}")
+            .toObject(TableLevelSharingProperties.class);
         Assertions.assertEquals("wwzjuqkhrsajiwku", model.tablesToInclude().get(0));
         Assertions.assertEquals("ied", model.tablesToExclude().get(0));
         Assertions.assertEquals("sonpclhocohs", model.externalTablesToInclude().get(0));
@@ -29,9 +27,8 @@ public final class TableLevelSharingPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableLevelSharingProperties model =
-            new TableLevelSharingProperties()
-                .withTablesToInclude(Arrays.asList("wwzjuqkhrsajiwku", "foskghsauuimj"))
+        TableLevelSharingProperties model
+            = new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("wwzjuqkhrsajiwku", "foskghsauuimj"))
                 .withTablesToExclude(Arrays.asList("ied", "ugidyjrr", "byao", "v"))
                 .withExternalTablesToInclude(Arrays.asList("sonpclhocohs", "kevle", "gz"))
                 .withExternalTablesToExclude(Arrays.asList("hfmvfaxkffe"))

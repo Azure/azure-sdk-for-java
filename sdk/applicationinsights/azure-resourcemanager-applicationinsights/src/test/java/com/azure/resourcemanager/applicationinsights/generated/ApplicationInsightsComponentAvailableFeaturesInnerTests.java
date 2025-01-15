@@ -10,17 +10,15 @@ import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationIn
 public final class ApplicationInsightsComponentAvailableFeaturesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentAvailableFeaturesInner model =
-            BinaryData
-                .fromString(
-                    "{\"Result\":[{\"FeatureName\":\"vkaozwyiftyhxhur\",\"MeterId\":\"ftyxolniw\",\"MeterRateFrequency\":\"cukjf\",\"ResouceId\":\"iawxklry\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"asy\",\"Description\":\"nddhsgcbacph\",\"Value\":\"koty\",\"Unit\":\"gou\",\"MeterId\":\"ndlik\",\"MeterRateFrequency\":\"qkgfgibma\"},{\"Name\":\"akeqs\",\"Description\":\"yb\",\"Value\":\"qedqytbciqfoufl\",\"Unit\":\"nkzsmodmglou\",\"MeterId\":\"b\",\"MeterRateFrequency\":\"tmut\"}],\"Title\":\"qktapspwgcuert\",\"IsMainFeature\":false,\"SupportedAddonFeatures\":\"o\"}]}")
-                .toObject(ApplicationInsightsComponentAvailableFeaturesInner.class);
+        ApplicationInsightsComponentAvailableFeaturesInner model = BinaryData.fromString(
+            "{\"Result\":[{\"FeatureName\":\"pwcukjfkgiawxk\",\"MeterId\":\"ypl\",\"MeterRateFrequency\":\"kbasyypn\",\"ResouceId\":\"hsgcbacphejkot\",\"IsHidden\":false,\"Capabilities\":[{\"Name\":\"l\",\"Description\":\"dlikwyqkgfgibma\",\"Value\":\"akeqs\",\"Unit\":\"yb\",\"MeterId\":\"qedqytbciqfoufl\",\"MeterRateFrequency\":\"nkzsmodmglou\"},{\"Name\":\"b\",\"Description\":\"tmut\",\"Value\":\"qktapspwgcuert\",\"Unit\":\"kdosvqw\",\"MeterId\":\"mdgbbjfdd\",\"MeterRateFrequency\":\"bmbexppbhtqqro\"},{\"Name\":\"p\",\"Description\":\"s\",\"Value\":\"gbquxigj\",\"Unit\":\"gzjaoyfhrtxilne\",\"MeterId\":\"ujysvle\",\"MeterRateFrequency\":\"vfqawrlyxwjkcpr\"}],\"Title\":\"wbxgjvt\",\"IsMainFeature\":false,\"SupportedAddonFeatures\":\"sszdnru\"},{\"FeatureName\":\"guhmuouqfpr\",\"MeterId\":\"wbnguitnwui\",\"MeterRateFrequency\":\"a\",\"ResouceId\":\"ufizuckyf\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"fvzwdzuhty\",\"Description\":\"isdkfthwxmnteiw\",\"Value\":\"pvkmijcmmxdcuf\",\"Unit\":\"srp\",\"MeterId\":\"zidnsezcxtbzsgfy\",\"MeterRateFrequency\":\"sne\"}],\"Title\":\"dwzjeiach\",\"IsMainFeature\":false,\"SupportedAddonFeatures\":\"flnrosfqpteehzz\"}]}")
+            .toObject(ApplicationInsightsComponentAvailableFeaturesInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentAvailableFeaturesInner model =
-            new ApplicationInsightsComponentAvailableFeaturesInner();
+        ApplicationInsightsComponentAvailableFeaturesInner model
+            = new ApplicationInsightsComponentAvailableFeaturesInner();
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentAvailableFeaturesInner.class);
     }
 }

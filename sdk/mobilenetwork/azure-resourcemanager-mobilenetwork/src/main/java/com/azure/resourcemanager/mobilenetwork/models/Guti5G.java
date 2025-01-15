@@ -6,29 +6,32 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * 5G GUTI.
  */
 @Fluent
-public final class Guti5G {
+public final class Guti5G implements JsonSerializable<Guti5G> {
     /*
-     * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+     * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as
+     * defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the
+     * values 999-99 and 999-999 can be used on internal private networks.
      */
-    @JsonProperty(value = "plmn", required = true)
     private PlmnId plmn;
 
     /*
      * AMF identifier
      */
-    @JsonProperty(value = "amfId", required = true)
     private AmfId amfId;
 
     /*
      * 5G Temporary Mobile Subscriber Identity
      */
-    @JsonProperty(value = "fivegTmsi", required = true)
     private int fivegTmsi;
 
     /**
@@ -120,4 +123,47 @@ public final class Guti5G {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Guti5G.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("plmn", this.plmn);
+        jsonWriter.writeJsonField("amfId", this.amfId);
+        jsonWriter.writeIntField("fivegTmsi", this.fivegTmsi);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Guti5G from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Guti5G if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Guti5G.
+     */
+    public static Guti5G fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Guti5G deserializedGuti5G = new Guti5G();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("plmn".equals(fieldName)) {
+                    deserializedGuti5G.plmn = PlmnId.fromJson(reader);
+                } else if ("amfId".equals(fieldName)) {
+                    deserializedGuti5G.amfId = AmfId.fromJson(reader);
+                } else if ("fivegTmsi".equals(fieldName)) {
+                    deserializedGuti5G.fivegTmsi = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuti5G;
+        });
+    }
 }

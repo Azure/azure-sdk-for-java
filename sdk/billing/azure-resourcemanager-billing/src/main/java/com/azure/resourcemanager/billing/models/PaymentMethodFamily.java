@@ -5,26 +5,55 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The family of payment method. */
+/**
+ * Payment on Account type.
+ */
 public final class PaymentMethodFamily extends ExpandableStringEnum<PaymentMethodFamily> {
-    /** Static value Credits for PaymentMethodFamily. */
-    public static final PaymentMethodFamily CREDITS = fromString("Credits");
+    /**
+     * Static value Other for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily OTHER = fromString("Other");
 
-    /** Static value CheckWire for PaymentMethodFamily. */
-    public static final PaymentMethodFamily CHECK_WIRE = fromString("CheckWire");
-
-    /** Static value CreditCard for PaymentMethodFamily. */
-    public static final PaymentMethodFamily CREDIT_CARD = fromString("CreditCard");
-
-    /** Static value None for PaymentMethodFamily. */
+    /**
+     * Static value None for PaymentMethodFamily.
+     */
     public static final PaymentMethodFamily NONE = fromString("None");
 
     /**
+     * Static value CreditCard for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily CREDIT_CARD = fromString("CreditCard");
+
+    /**
+     * Static value Credits for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily CREDITS = fromString("Credits");
+
+    /**
+     * Static value CheckWire for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily CHECK_WIRE = fromString("CheckWire");
+
+    /**
+     * Static value EWallet for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily EWALLET = fromString("EWallet");
+
+    /**
+     * Static value TaskOrder for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily TASK_ORDER = fromString("TaskOrder");
+
+    /**
+     * Static value DirectDebit for PaymentMethodFamily.
+     */
+    public static final PaymentMethodFamily DIRECT_DEBIT = fromString("DirectDebit");
+
+    /**
      * Creates a new instance of PaymentMethodFamily value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +62,17 @@ public final class PaymentMethodFamily extends ExpandableStringEnum<PaymentMetho
 
     /**
      * Creates or finds a PaymentMethodFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PaymentMethodFamily.
      */
-    @JsonCreator
     public static PaymentMethodFamily fromString(String name) {
         return fromString(name, PaymentMethodFamily.class);
     }
 
     /**
      * Gets known PaymentMethodFamily values.
-     *
+     * 
      * @return known PaymentMethodFamily values.
      */
     public static Collection<PaymentMethodFamily> values() {

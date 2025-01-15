@@ -31,22 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExchangesClient.
+ */
 public final class ExchangesClientImpl implements ExchangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExchangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ExchangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExchangesClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(ExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,23 +63,20 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiE")
     public interface ExchangesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/exchange")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExchangeRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExchangeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -83,10 +86,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(ExchangeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -102,9 +103,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,10 +116,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(ExchangeRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -133,9 +132,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -146,21 +145,16 @@ public final class ExchangesClientImpl implements ExchangesClient {
     private PollerFlux<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
         beginPostAsync(ExchangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body);
-        return this
-            .client
-            .<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExchangeOperationResultResponseInner.class,
-                ExchangeOperationResultResponseInner.class,
-                this.client.getContext());
+        return this.client.<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExchangeOperationResultResponseInner.class,
+            ExchangeOperationResultResponseInner.class, this.client.getContext());
     }
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,21 +167,16 @@ public final class ExchangesClientImpl implements ExchangesClient {
         beginPostAsync(ExchangeRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body, context);
-        return this
-            .client
-            .<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExchangeOperationResultResponseInner.class,
-                ExchangeOperationResultResponseInner.class,
-                context);
+        return this.client.<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExchangeOperationResultResponseInner.class,
+            ExchangeOperationResultResponseInner.class, context);
     }
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,16 +184,16 @@ public final class ExchangesClientImpl implements ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body) {
+    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body) {
         return this.beginPostAsync(body).getSyncPoller();
     }
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,16 +202,16 @@ public final class ExchangesClientImpl implements ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body, Context context) {
+    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body, Context context) {
         return this.beginPostAsync(body, context).getSyncPoller();
     }
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -236,9 +225,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,9 +242,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,9 +258,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

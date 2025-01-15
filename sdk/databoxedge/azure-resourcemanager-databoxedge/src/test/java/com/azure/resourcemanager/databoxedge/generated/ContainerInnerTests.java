@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"containerStatus\":\"Unknown\",\"dataFormat\":\"PageBlob\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"uel\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-04-04T13:11:17Z\",\"errorManifestFile\":\"dyhtozfikdowwquu\",\"lastJob\":\"zx\"},\"createdDateTime\":\"2021-01-19T00:58:57Z\"},\"id\":\"ithhqzon\",\"name\":\"sg\",\"type\":\"b\"}")
-                .toObject(ContainerInner.class);
+        ContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"containerStatus\":\"Offline\",\"dataFormat\":\"PageBlob\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"rwlqu\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-04-01T07:49:28Z\",\"errorManifestFile\":\"qkacewii\",\"lastJob\":\"pubjibw\"},\"createdDateTime\":\"2021-02-08T13:33:20Z\"},\"id\":\"tohqkvpuvksgp\",\"name\":\"saknynfsyn\",\"type\":\"jphuopxodlqi\"}")
+            .toObject(ContainerInner.class);
         Assertions.assertEquals(AzureContainerDataFormat.PAGE_BLOB, model.dataFormat());
     }
 

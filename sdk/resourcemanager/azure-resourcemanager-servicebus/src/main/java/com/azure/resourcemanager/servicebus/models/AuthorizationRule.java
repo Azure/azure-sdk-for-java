@@ -18,22 +18,27 @@ import java.util.List;
  * @param <RuleT> the specific rule type
  */
 @Fluent
-public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-    IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>,
-    Refreshable<RuleT> {
+public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
+    extends IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>, Refreshable<RuleT> {
 
     /**
+     * Gets the rights associated with the rule.
+     *
      * @return rights associated with the rule
      */
     List<AccessRights> rights();
 
     /**
+     * Gets a representation of the deferred computation.
+     *
      * @return a representation of the deferred computation of this call,
      * returning the primary, secondary keys and the connection strings
      */
     Mono<AuthorizationKeys> getKeysAsync();
 
     /**
+     * Gets the primary, secondary keys and connection strings.
+     *
      * @return the primary, secondary keys and connection strings
      */
     AuthorizationKeys getKeys();
@@ -84,6 +89,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithListen<T> {
             /**
+             * Enables listening.
+             *
              * @return the next stage of the definition
              */
             T withListeningEnabled();
@@ -96,6 +103,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithSend<T> {
             /**
+             * Enables sending.
+             *
              * @return the next stage of the definition
              */
             T withSendingEnabled();
@@ -108,6 +117,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithManage<T> {
             /**
+             * Enables management.
+             *
              * @return the next stage of the definition
              */
             T withManagementEnabled();
@@ -142,6 +153,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithListen<T> {
             /**
+             * Enables the listening.
+             *
              * @return the next stage of the update
              */
             T withListeningEnabled();
@@ -154,6 +167,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithSend<T> {
             /**
+             * Enables sending.
+             *
              * @return the next stage of the update
              */
             T withSendingEnabled();
@@ -166,6 +181,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
          */
         interface WithManage<T> {
             /**
+             * Enables management.
+             *
              * @return the next stage of the update
              */
             T withManagementEnabled();

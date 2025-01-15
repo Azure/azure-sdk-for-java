@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-
 /**
  * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
  * single AMQP message when sent to the Azure Service Bus service.
@@ -34,8 +33,8 @@ public final class ServiceBusMessageBatch {
     private final ServiceBusTracer tracer;
     private final boolean isV2;
 
-    ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
-        MessageSerializer serializer) {
+    ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider,
+        ServiceBusTracer tracer, MessageSerializer serializer) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
@@ -98,10 +97,10 @@ public final class ServiceBusMessageBatch {
         try {
             size = getSize(serviceBusMessage, serviceBusMessageList.isEmpty());
         } catch (BufferOverflowException exception) {
-            final RuntimeException ex = new ServiceBusException(
-                    new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                        String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
+            final RuntimeException ex = new ServiceBusException(new AmqpException(false,
+                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
+                    "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+                contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
 
             throw LOGGER.logExceptionAsWarning(ex);
         }

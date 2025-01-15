@@ -9,11 +9,8 @@ import com.azure.resourcemanager.network.fluent.models.RouteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /** Implementation of Route. */
-class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable>
-    implements Route,
-        Route.Definition<RouteTable.DefinitionStages.WithCreate>,
-        Route.UpdateDefinition<RouteTable.Update>,
-        Route.Update {
+class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable> implements Route,
+    Route.Definition<RouteTable.DefinitionStages.WithCreate>, Route.UpdateDefinition<RouteTable.Update>, Route.Update {
 
     RouteImpl(RouteInner inner, RouteTableImpl parent) {
         super(inner, parent);

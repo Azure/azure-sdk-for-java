@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowFolder model = BinaryData.fromString("{\"name\":\"nmfpp\"}").toObject(DataFlowFolder.class);
-        Assertions.assertEquals("nmfpp", model.name());
+        DataFlowFolder model = BinaryData.fromString("{\"name\":\"txjcsheafidlt\"}").toObject(DataFlowFolder.class);
+        Assertions.assertEquals("txjcsheafidlt", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowFolder model = new DataFlowFolder().withName("nmfpp");
+        DataFlowFolder model = new DataFlowFolder().withName("txjcsheafidlt");
         model = BinaryData.fromObject(model).toObject(DataFlowFolder.class);
-        Assertions.assertEquals("nmfpp", model.name());
+        Assertions.assertEquals("txjcsheafidlt", model.name());
     }
 }

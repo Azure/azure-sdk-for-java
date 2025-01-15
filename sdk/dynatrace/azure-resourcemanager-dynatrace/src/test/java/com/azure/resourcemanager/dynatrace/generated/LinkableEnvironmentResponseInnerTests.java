@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkableEnvironmentResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkableEnvironmentResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"environmentId\":\"u\",\"environmentName\":\"thfuiuaodsfcpkvx\",\"planData\":{\"usageType\":\"uozmyzydagfua\",\"billingCycle\":\"ezyiuokktwhrdxw\",\"planDetails\":\"wqsmbsur\",\"effectiveDate\":\"2021-08-23T03:52:49Z\"}}")
-                .toObject(LinkableEnvironmentResponseInner.class);
+        LinkableEnvironmentResponseInner model = BinaryData.fromString(
+            "{\"environmentId\":\"u\",\"environmentName\":\"thfuiuaodsfcpkvx\",\"planData\":{\"usageType\":\"uozmyzydagfua\",\"billingCycle\":\"ezyiuokktwhrdxw\",\"planDetails\":\"wqsmbsur\",\"effectiveDate\":\"2021-08-23T03:52:49Z\"}}")
+            .toObject(LinkableEnvironmentResponseInner.class);
         Assertions.assertEquals("u", model.environmentId());
         Assertions.assertEquals("thfuiuaodsfcpkvx", model.environmentName());
         Assertions.assertEquals("uozmyzydagfua", model.planData().usageType());
@@ -28,16 +26,12 @@ public final class LinkableEnvironmentResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkableEnvironmentResponseInner model =
-            new LinkableEnvironmentResponseInner()
-                .withEnvironmentId("u")
-                .withEnvironmentName("thfuiuaodsfcpkvx")
-                .withPlanData(
-                    new PlanData()
-                        .withUsageType("uozmyzydagfua")
-                        .withBillingCycle("ezyiuokktwhrdxw")
-                        .withPlanDetails("wqsmbsur")
-                        .withEffectiveDate(OffsetDateTime.parse("2021-08-23T03:52:49Z")));
+        LinkableEnvironmentResponseInner model = new LinkableEnvironmentResponseInner().withEnvironmentId("u")
+            .withEnvironmentName("thfuiuaodsfcpkvx")
+            .withPlanData(new PlanData().withUsageType("uozmyzydagfua")
+                .withBillingCycle("ezyiuokktwhrdxw")
+                .withPlanDetails("wqsmbsur")
+                .withEffectiveDate(OffsetDateTime.parse("2021-08-23T03:52:49Z")));
         model = BinaryData.fromObject(model).toObject(LinkableEnvironmentResponseInner.class);
         Assertions.assertEquals("u", model.environmentId());
         Assertions.assertEquals("thfuiuaodsfcpkvx", model.environmentName());

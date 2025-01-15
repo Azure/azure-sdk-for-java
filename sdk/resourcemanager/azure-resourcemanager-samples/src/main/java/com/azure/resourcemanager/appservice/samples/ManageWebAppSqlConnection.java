@@ -36,29 +36,29 @@ public final class ManageWebAppSqlConnection {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
-        final String suffix         = ".azurewebsites.net";
-        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String appUrl         = appName + suffix;
-        final String sqlServerName  = Utils.randomResourceName(azureResourceManager, "jsdkserver", 20);
-        final String sqlDbName      = Utils.randomResourceName(azureResourceManager, "jsdkdb", 20);
-        final String admin          = "jsdkadmin";
-        final String password       = Utils.password();
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String suffix = ".azurewebsites.net";
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String appUrl = appName + suffix;
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "jsdkserver", 20);
+        final String sqlDbName = Utils.randomResourceName(azureResourceManager, "jsdkdb", 20);
+        final String admin = "jsdkadmin";
+        final String password = Utils.password();
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
-
 
             //============================================================
             // Create a sql server
 
             System.out.println("Creating SQL server " + sqlServerName + "...");
 
-            SqlServer server = azureResourceManager.sqlServers().define(sqlServerName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withAdministratorLogin(admin)
-                    .withAdministratorPassword(password)
-                    .create();
+            SqlServer server = azureResourceManager.sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin(admin)
+                .withAdministratorPassword(password)
+                .create();
 
             System.out.println("Created SQL server " + server.name());
 
@@ -76,20 +76,21 @@ public final class ManageWebAppSqlConnection {
 
             System.out.println("Creating web app " + appName + "...");
 
-            WebApp app = azureResourceManager.webApps().define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withPhpVersion(PhpVersion.PHP5_6)
-                    .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
-                        .withBranch("master")
-                        .attach()
-                    .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
-                    .withAppSetting("ProjectNami.DBName", db.name())
-                    .withAppSetting("ProjectNami.DBUser", admin)
-                    .withAppSetting("ProjectNami.DBPass", password)
-                    .create();
+            WebApp app = azureResourceManager.webApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withPhpVersion(PhpVersion.PHP5_6)
+                .defineSourceControl()
+                .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
+                .withBranch("master")
+                .attach()
+                .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
+                .withAppSetting("ProjectNami.DBName", db.name())
+                .withAppSetting("ProjectNami.DBUser", admin)
+                .withAppSetting("ProjectNami.DBPass", password)
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
@@ -109,7 +110,8 @@ public final class ManageWebAppSqlConnection {
             Utils.print(server);
 
             System.out.println("Your WordPress app is ready.");
-            System.out.println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
+            System.out
+                .println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
             System.in.read();
 
             return true;
@@ -125,6 +127,7 @@ public final class ManageWebAppSqlConnection {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -140,8 +143,7 @@ public final class ManageWebAppSqlConnection {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

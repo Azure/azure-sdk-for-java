@@ -5,36 +5,31 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dynamic Executor Allocation Properties. */
+/**
+ * Dynamic Executor Allocation Properties.
+ */
 @Fluent
-public final class DynamicExecutorAllocation {
+public final class DynamicExecutorAllocation implements JsonSerializable<DynamicExecutorAllocation> {
     /*
      * Indicates whether Dynamic Executor Allocation is enabled or not.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /*
-     * The minimum number of executors alloted
+    /**
+     * Creates an instance of DynamicExecutorAllocation class.
      */
-    @JsonProperty(value = "minExecutors")
-    private Integer minExecutors;
-
-    /*
-     * The maximum number of executors alloted
-     */
-    @JsonProperty(value = "maxExecutors")
-    private Integer maxExecutors;
-
-    /** Creates an instance of DynamicExecutorAllocation class. */
     public DynamicExecutorAllocation() {
     }
 
     /**
      * Get the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,7 +38,7 @@ public final class DynamicExecutorAllocation {
 
     /**
      * Set the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DynamicExecutorAllocation object itself.
      */
@@ -53,50 +48,46 @@ public final class DynamicExecutorAllocation {
     }
 
     /**
-     * Get the minExecutors property: The minimum number of executors alloted.
-     *
-     * @return the minExecutors value.
-     */
-    public Integer minExecutors() {
-        return this.minExecutors;
-    }
-
-    /**
-     * Set the minExecutors property: The minimum number of executors alloted.
-     *
-     * @param minExecutors the minExecutors value to set.
-     * @return the DynamicExecutorAllocation object itself.
-     */
-    public DynamicExecutorAllocation withMinExecutors(Integer minExecutors) {
-        this.minExecutors = minExecutors;
-        return this;
-    }
-
-    /**
-     * Get the maxExecutors property: The maximum number of executors alloted.
-     *
-     * @return the maxExecutors value.
-     */
-    public Integer maxExecutors() {
-        return this.maxExecutors;
-    }
-
-    /**
-     * Set the maxExecutors property: The maximum number of executors alloted.
-     *
-     * @param maxExecutors the maxExecutors value to set.
-     * @return the DynamicExecutorAllocation object itself.
-     */
-    public DynamicExecutorAllocation withMaxExecutors(Integer maxExecutors) {
-        this.maxExecutors = maxExecutors;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicExecutorAllocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicExecutorAllocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DynamicExecutorAllocation.
+     */
+    public static DynamicExecutorAllocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicExecutorAllocation deserializedDynamicExecutorAllocation = new DynamicExecutorAllocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDynamicExecutorAllocation.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamicExecutorAllocation;
+        });
     }
 }

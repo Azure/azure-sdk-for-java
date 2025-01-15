@@ -32,8 +32,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections under video analyzer account along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get private endpoint connection under video analyzer account.
@@ -60,8 +60,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection under video analyzer account along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Delete private endpoint connection under video analyzer account.

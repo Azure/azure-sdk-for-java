@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -47,21 +47,19 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
 
         final String vmName1 = "myvm1";
         final String uname = "juser";
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName1)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName1)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .create();
 
         DiskVolumeEncryptionMonitor monitor1 = virtualMachine.diskEncryption().getMonitor();
         Assertions.assertNotNull(monitor1);
@@ -69,8 +67,8 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
         Assertions.assertNotNull(monitor1.dataDiskStatus());
         Assertions.assertEquals(EncryptionStatus.NOT_ENCRYPTED, monitor1.osDiskStatus());
         Assertions.assertEquals(EncryptionStatus.NOT_ENCRYPTED, monitor1.dataDiskStatus());
-        DiskVolumeEncryptionMonitor monitor2 =
-            virtualMachine.diskEncryption().enable(keyVaultId, aadClientId, aadSecret);
+        DiskVolumeEncryptionMonitor monitor2
+            = virtualMachine.diskEncryption().enable(keyVaultId, aadClientId, aadSecret);
         Assertions.assertNotNull(monitor2);
         Assertions.assertNotNull(monitor2.osDiskStatus());
         Assertions.assertNotNull(monitor2.dataDiskStatus());
@@ -80,7 +78,6 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
         monitor2.refresh();
         Assertions.assertNotEquals(EncryptionStatus.NOT_ENCRYPTED, monitor2.osDiskStatus());
     }
-
 
     @Test
     public void canEncryptVirtualMachine() {
@@ -103,7 +100,8 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
             .create();
 
         final String vaultName = generateRandomResourceName("vault", 20);
-        Vault vault = keyVaultManager.vaults().define(vaultName)
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withEmptyAccessPolicy()
@@ -118,9 +116,8 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
         Assertions.assertNotNull(monitor1.dataDiskStatus());
         Assertions.assertEquals(EncryptionStatus.NOT_ENCRYPTED, monitor1.osDiskStatus());
         Assertions.assertEquals(EncryptionStatus.NOT_ENCRYPTED, monitor1.dataDiskStatus());
-        DiskVolumeEncryptionMonitor monitor2 = virtualMachine
-            .diskEncryption()
-            .enable(new LinuxVMDiskEncryptionConfiguration(vaultId, vaultUri));
+        DiskVolumeEncryptionMonitor monitor2
+            = virtualMachine.diskEncryption().enable(new LinuxVMDiskEncryptionConfiguration(vaultId, vaultUri));
         Assertions.assertNotNull(monitor2);
         Assertions.assertNotNull(monitor2.osDiskStatus());
         Assertions.assertNotNull(monitor2.dataDiskStatus());

@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseProperties model =
-            BinaryData
-                .fromString("{\"charset\":\"jpgd\",\"collation\":\"ocjjxhvpmouexh\"}")
-                .toObject(DatabaseProperties.class);
-        Assertions.assertEquals("jpgd", model.charset());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.collation());
+        DatabaseProperties model = BinaryData.fromString("{\"charset\":\"lwhijcoejctbzaq\",\"collation\":\"sycbkbfk\"}")
+            .toObject(DatabaseProperties.class);
+        Assertions.assertEquals("lwhijcoejctbzaq", model.charset());
+        Assertions.assertEquals("sycbkbfk", model.collation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseProperties model = new DatabaseProperties().withCharset("jpgd").withCollation("ocjjxhvpmouexh");
+        DatabaseProperties model = new DatabaseProperties().withCharset("lwhijcoejctbzaq").withCollation("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(DatabaseProperties.class);
-        Assertions.assertEquals("jpgd", model.charset());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.collation());
+        Assertions.assertEquals("lwhijcoejctbzaq", model.charset());
+        Assertions.assertEquals("sycbkbfk", model.collation());
     }
 }

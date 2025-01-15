@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sasTtlAsIso8601\":\"PT189H2M8S\",\"connectionString\":\"ue\",\"containerName\":\"xibxujwbhqwalm\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"aepdkzjanc\"}}")
-                .toObject(StorageEndpointProperties.class);
+        StorageEndpointProperties model = BinaryData.fromString(
+            "{\"sasTtlAsIso8601\":\"PT189H2M8S\",\"connectionString\":\"ue\",\"containerName\":\"xibxujwbhqwalm\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"aepdkzjanc\"}}")
+            .toObject(StorageEndpointProperties.class);
         Assertions.assertEquals(Duration.parse("PT189H2M8S"), model.sasTtlAsIso8601());
         Assertions.assertEquals("ue", model.connectionString());
         Assertions.assertEquals("xibxujwbhqwalm", model.containerName());
@@ -28,9 +26,8 @@ public final class StorageEndpointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageEndpointProperties model =
-            new StorageEndpointProperties()
-                .withSasTtlAsIso8601(Duration.parse("PT189H2M8S"))
+        StorageEndpointProperties model
+            = new StorageEndpointProperties().withSasTtlAsIso8601(Duration.parse("PT189H2M8S"))
                 .withConnectionString("ue")
                 .withContainerName("xibxujwbhqwalm")
                 .withAuthenticationType(AuthenticationType.KEY_BASED)

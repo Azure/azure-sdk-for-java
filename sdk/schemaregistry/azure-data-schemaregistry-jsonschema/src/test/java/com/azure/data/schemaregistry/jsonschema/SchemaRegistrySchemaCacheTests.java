@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import org.junit.jupiter.api.AfterEach;
@@ -34,6 +35,8 @@ public class SchemaRegistrySchemaCacheTests {
 
     @Mock
     private SchemaRegistryAsyncClient client;
+    @Mock
+    private SchemaRegistryClient schemaRegistryClient;
 
     private AutoCloseable mocksCloseable;
 
@@ -53,18 +56,18 @@ public class SchemaRegistrySchemaCacheTests {
      * Tests that it fetches a schema.
      */
     @Test
-    public void getSchemaId() {
+    public void getSchemaAsyncIdDefinitionAsync() {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
@@ -74,30 +77,30 @@ public class SchemaRegistrySchemaCacheTests {
      * Tests that it fetches a schema but uses the cached version.  Also, checks it works for getSchema call.
      */
     @Test
-    public void getSchemaIdCachedVersion() {
+    public void getSchemaAsyncIdDefinitionAsyncCachedVersion() {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act & Assert
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
 
         // Fetch the second time. Should use cached version.
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
 
         // Should use the cached version we just fetched even though we're using id.
-        StepVerifier.create(cache.getSchema(SCHEMA_ID))
+        StepVerifier.create(cache.getSchemaDefinitionAsync(SCHEMA_ID))
             .expectNext(schemaString)
             .expectComplete()
             .verify(TIMEOUT);
@@ -113,18 +116,18 @@ public class SchemaRegistrySchemaCacheTests {
      * Verifies that an error is returned if no schema group is set.
      */
     @Test
-    public void getSchemaIdNoSchemaGroup() {
+    public void getSchemaIdNoSchemaAsyncGroupAsync() {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, null,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, null, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectError(IllegalStateException.class)
             .verify(TIMEOUT);
     }
@@ -133,18 +136,18 @@ public class SchemaRegistrySchemaCacheTests {
      * Verify that auto-register schemas is possible.
      */
     @Test
-    public void getSchemaIdAutoRegisterSchema() {
+    public void getSchemaIdAutoRegisterSchemaAsyncAsync() {
         // Arrange
         final boolean autoRegisterSchemas = true;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
@@ -155,30 +158,30 @@ public class SchemaRegistrySchemaCacheTests {
      * cached version.
      */
     @Test
-    public void getSchemaIdAutoRegisterSchemaCached() {
+    public void getSchemaIdAutoRegisterSchemaAsyncCachedAsync() {
         // Arrange
         final boolean autoRegisterSchemas = true;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
 
         // Fetch the second time. Should use cached version.
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
 
         // Verify that this also works for the other network call.
-        StepVerifier.create(cache.getSchema(SCHEMA_ID))
+        StepVerifier.create(cache.getSchemaDefinitionAsync(SCHEMA_ID))
             .expectNext(schemaString)
             .expectComplete()
             .verify(TIMEOUT);
@@ -197,25 +200,25 @@ public class SchemaRegistrySchemaCacheTests {
      * network call.
      */
     @Test
-    public void getSchema() {
+    public void getSchemaDefinitionAsync() {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
         final SchemaProperties registryProperties = new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(registryProperties));
 
         // Act
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
 
         // Fetch the second time. Should use cached version.
-        StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName, schemaString))
             .expectNext(SCHEMA_ID)
             .expectComplete()
             .verify(TIMEOUT);
@@ -234,8 +237,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         final String schemaName1 = "name1";
         final String schemaName2 = "name2";
@@ -271,26 +274,22 @@ public class SchemaRegistrySchemaCacheTests {
                 } else if (schemaName4.equals(schemaName)) {
                     schemaIdToReturn = schemaId4;
                 } else {
-                    return Mono.error(new IllegalArgumentException("Did not match any known names. Name:" + schemaName));
+                    return Mono
+                        .error(new IllegalArgumentException("Did not match any known names. Name:" + schemaName));
                 }
 
                 if (emittedSchemas.contains(schemaIdToReturn)) {
-                    return Mono.error(new IllegalStateException("Should not have to fetch schema again. Id:" + schemaIdToReturn));
+                    return Mono.error(
+                        new IllegalStateException("Should not have to fetch schema again. Id:" + schemaIdToReturn));
                 }
 
                 emittedSchemas.add(schemaIdToReturn);
                 return Mono.just(new SchemaProperties(schemaIdToReturn, format));
             });
 
-        StepVerifier.create(cache.getSchemaId(schemaName1, schema1))
-            .expectNext(schemaId1)
-            .verifyComplete();
-        StepVerifier.create(cache.getSchemaId(schemaName2, schema2))
-            .expectNext(schemaId2)
-            .verifyComplete();
-        StepVerifier.create(cache.getSchemaId(schemaName3, schema3))
-            .expectNext(schemaId3)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1)).expectNext(schemaId1).verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName2, schema2)).expectNext(schemaId2).verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName3, schema3)).expectNext(schemaId3).verifyComplete();
 
         // Should be at capacity now.
         assertEquals(capacity, cache.getSize());
@@ -299,14 +298,10 @@ public class SchemaRegistrySchemaCacheTests {
         assertEquals(expectedLength, cache.getTotalLength());
 
         // Get schema1 so it is no longer the eldest.
-        StepVerifier.create(cache.getSchemaId(schemaName1, schema1))
-            .expectNext(schemaId1)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1)).expectNext(schemaId1).verifyComplete();
 
         // Schema2 should be removed after this because it is the oldest.
-        StepVerifier.create(cache.getSchemaId(schemaName4, schema4))
-            .expectNext(schemaId4)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName4, schema4)).expectNext(schemaId4).verifyComplete();
 
         assertEquals(capacity, cache.getSize());
 

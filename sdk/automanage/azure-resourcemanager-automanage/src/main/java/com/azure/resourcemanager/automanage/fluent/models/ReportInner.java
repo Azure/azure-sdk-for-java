@@ -7,38 +7,71 @@ package com.azure.resourcemanager.automanage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.automanage.models.ReportResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.automanage.models.AssignmentReportProperties;
+import java.io.IOException;
 
-/** Definition of the report. */
+/**
+ * Definition of the report.
+ */
 @Fluent
 public final class ReportInner extends ProxyResource {
     /*
      * The properties for the report.
      */
-    @JsonProperty(value = "properties")
-    private AssignmentReportProperties innerProperties;
+    private AssignmentReportProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Get the innerProperties property: The properties for the report.
-     *
-     * @return the innerProperties value.
+    /*
+     * The type of the resource.
      */
-    private AssignmentReportProperties innerProperties() {
-        return this.innerProperties;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReportInner class.
+     */
+    public ReportInner() {
+    }
+
+    /**
+     * Get the properties property: The properties for the report.
+     * 
+     * @return the properties value.
+     */
+    public AssignmentReportProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The properties for the report.
+     * 
+     * @param properties the properties value to set.
+     * @return the ReportInner object itself.
+     */
+    public ReportInner withProperties(AssignmentReportProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -46,131 +79,88 @@ public final class ReportInner extends ProxyResource {
     }
 
     /**
-     * Get the startTime property: Start time of the configuration profile assignment processing.
-     *
-     * @return the startTime value.
-     */
-    public String startTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().startTime();
-    }
-
-    /**
-     * Set the startTime property: Start time of the configuration profile assignment processing.
-     *
-     * @param startTime the startTime value to set.
-     * @return the ReportInner object itself.
-     */
-    public ReportInner withStartTime(String startTime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssignmentReportProperties();
-        }
-        this.innerProperties().withStartTime(startTime);
-        return this;
-    }
-
-    /**
-     * Get the endTime property: End time of the configuration profile assignment processing.
-     *
-     * @return the endTime value.
-     */
-    public String endTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().endTime();
-    }
-
-    /**
-     * Set the endTime property: End time of the configuration profile assignment processing.
-     *
-     * @param endTime the endTime value to set.
-     * @return the ReportInner object itself.
-     */
-    public ReportInner withEndTime(String endTime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssignmentReportProperties();
-        }
-        this.innerProperties().withEndTime(endTime);
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedTime property: Last modified time of the configuration profile assignment processing.
-     *
-     * @return the lastModifiedTime value.
-     */
-    public String lastModifiedTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
-    }
-
-    /**
-     * Get the duration property: Duration of the configuration profile assignment processing.
-     *
-     * @return the duration value.
-     */
-    public String duration() {
-        return this.innerProperties() == null ? null : this.innerProperties().duration();
-    }
-
-    /**
-     * Get the type property: Type of the configuration profile assignment processing (Initial/Consistency).
-     *
+     * Get the type property: The type of the resource.
+     * 
      * @return the type value.
      */
-    public String typePropertiesType() {
-        return this.innerProperties() == null ? null : this.innerProperties().type();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the status property: The status of the configuration profile assignment.
-     *
-     * @return the status value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the configurationProfile property: The configurationProfile linked to the assignment.
-     *
-     * @return the configurationProfile value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String configurationProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().configurationProfile();
-    }
-
-    /**
-     * Get the resources property: List of resources processed by the configuration profile assignment.
-     *
-     * @return the resources value.
-     */
-    public List<ReportResource> resources() {
-        return this.innerProperties() == null ? null : this.innerProperties().resources();
-    }
-
-    /**
-     * Get the error property: Error message, if any, returned by the configuration profile assignment processing.
-     *
-     * @return the error value.
-     */
-    public ManagementError error() {
-        return this.innerProperties() == null ? null : this.innerProperties().error();
-    }
-
-    /**
-     * Get the reportFormatVersion property: Version of the report format.
-     *
-     * @return the reportFormatVersion value.
-     */
-    public String reportFormatVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().reportFormatVersion();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReportInner.
+     */
+    public static ReportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportInner deserializedReportInner = new ReportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReportInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReportInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReportInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReportInner.properties = AssignmentReportProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedReportInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportInner;
+        });
     }
 }

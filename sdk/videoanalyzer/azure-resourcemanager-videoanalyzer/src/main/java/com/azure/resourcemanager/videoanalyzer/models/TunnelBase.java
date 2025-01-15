@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "#Microsoft.VideoAnalyzer.SecureIotDeviceRemoteTunnel",
-        value = SecureIotDeviceRemoteTunnel.class)
-})
+        value = SecureIotDeviceRemoteTunnel.class) })
 @Immutable
 public class TunnelBase {
     /**

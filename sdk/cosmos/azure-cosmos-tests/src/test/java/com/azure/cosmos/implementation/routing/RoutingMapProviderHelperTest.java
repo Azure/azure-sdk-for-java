@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.routing;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.apache.commons.lang3.StringUtils;
@@ -87,6 +88,18 @@ public class RoutingMapProviderHelperTest {
             MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
             String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties) {
             return null;
+        }
+    }
+
+    private class MockIRoutingMapProviderWithNullRoutingMap extends MockIRoutingMapProvider {
+
+        public MockIRoutingMapProviderWithNullRoutingMap(List<PartitionKeyRange> ranges) {
+            super(ranges);
+        }
+
+        @Override
+        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties) {
+            return Mono.just(new Utils.ValueHolder<>(null));
         }
     }
 
@@ -212,5 +225,22 @@ public class RoutingMapProviderHelperTest {
         assertThat(overLappingRangeList).isNotNull();
         assertThat(2).isEqualTo(overLappingRangeList.size());
         assertThat("0,1").isEqualTo(overLappingRangeList.stream().map(func).collect(Collectors.joining(",")));
+    }
+
+    @Test(groups = {"unit"})
+    //  This test is to verify that the NPE has been fixed in RoutingMapProviderHelper.getOverlappingRanges
+    public void getOverlappingRangesWithoutOverlapping() {
+
+        Function<PartitionKeyRange, String> func = Resource::getId;
+
+        List<PartitionKeyRange> rangeList = Arrays.asList(new PartitionKeyRange("0", "", "FF"));
+
+        IRoutingMapProvider routingMapProviderMock = new MockIRoutingMapProviderWithNullRoutingMap(rangeList);
+
+        Mono<List<PartitionKeyRange>> overlappingRanges;
+        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
+            "coll1",
+            Arrays.asList(new Range<String>("", "FF", true, false)));
+        assertThat("").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
     }
 }

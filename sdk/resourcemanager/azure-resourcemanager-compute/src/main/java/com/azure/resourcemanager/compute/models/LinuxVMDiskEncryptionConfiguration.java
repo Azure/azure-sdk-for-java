@@ -29,10 +29,8 @@ public class LinuxVMDiskEncryptionConfiguration
      * @param aadClientId client ID of an AAD application which has permission to the KeyVault
      * @param aadSecret client secret corresponding to the client ID
      */
-    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
-                                              String vaultUri,
-                                              String aadClientId,
-                                              String aadSecret) {
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId, String vaultUri, String aadClientId,
+        String aadSecret) {
         super(keyVaultId, vaultUri, aadClientId, aadSecret, null);
     }
 
@@ -46,10 +44,8 @@ public class LinuxVMDiskEncryptionConfiguration
      * @param aadSecret client secret corresponding to the client ID
      * @param azureEnvironment Azure environment
      */
-    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
-                                              String aadClientId,
-                                              String aadSecret,
-                                              AzureEnvironment azureEnvironment) {
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret,
+        AzureEnvironment azureEnvironment) {
         super(keyVaultId, null, aadClientId, aadSecret, azureEnvironment);
     }
 

@@ -5,33 +5,37 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the user assigned identity that is contained within the UserAssignedIdentities dictionary on
  * ResourceIdentity.
  */
 @Immutable
-public final class UserAssignedResourceIdentity {
+public final class UserAssignedResourceIdentity implements JsonSerializable<UserAssignedResourceIdentity> {
     /*
      * The principal id of user assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id of user assigned identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of UserAssignedResourceIdentity class. */
+    /**
+     * Creates an instance of UserAssignedResourceIdentity class.
+     */
     public UserAssignedResourceIdentity() {
     }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -40,7 +44,7 @@ public final class UserAssignedResourceIdentity {
 
     /**
      * Get the tenantId property: The tenant id of user assigned identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -49,9 +53,46 @@ public final class UserAssignedResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedResourceIdentity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedResourceIdentity.
+     */
+    public static UserAssignedResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedResourceIdentity deserializedUserAssignedResourceIdentity = new UserAssignedResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedResourceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedUserAssignedResourceIdentity.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedResourceIdentity;
+        });
     }
 }

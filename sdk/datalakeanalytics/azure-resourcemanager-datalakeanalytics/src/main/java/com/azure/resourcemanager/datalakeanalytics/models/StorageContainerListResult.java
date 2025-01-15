@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageContainerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of blob containers associated with the storage account attached to the Data Lake Analytics account. */
+/**
+ * The list of blob containers associated with the storage account attached to the Data Lake Analytics account.
+ */
 @Immutable
-public final class StorageContainerListResult {
+public final class StorageContainerListResult implements JsonSerializable<StorageContainerListResult> {
     /*
      * The results of the list operation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageContainerInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StorageContainerListResult class. */
+    /**
+     * Creates an instance of StorageContainerListResult class.
+     */
     public StorageContainerListResult() {
     }
 
     /**
      * Get the value property: The results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageContainerInner> value() {
@@ -39,7 +45,7 @@ public final class StorageContainerListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class StorageContainerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageContainerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageContainerListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageContainerListResult.
+     */
+    public static StorageContainerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageContainerListResult deserializedStorageContainerListResult = new StorageContainerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StorageContainerInner> value
+                        = reader.readArray(reader1 -> StorageContainerInner.fromJson(reader1));
+                    deserializedStorageContainerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStorageContainerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageContainerListResult;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The granularity of rows in the forecast. */
+/**
+ * The granularity of rows in the forecast.
+ */
 public final class GranularityType extends ExpandableStringEnum<GranularityType> {
-    /** Static value Daily for GranularityType. */
+    /**
+     * Static value Daily for GranularityType.
+     */
     public static final GranularityType DAILY = fromString("Daily");
 
     /**
      * Creates a new instance of GranularityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class GranularityType extends ExpandableStringEnum<GranularityType>
 
     /**
      * Creates or finds a GranularityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GranularityType.
      */
-    @JsonCreator
     public static GranularityType fromString(String name) {
         return fromString(name, GranularityType.class);
     }
 
     /**
      * Gets known GranularityType values.
-     *
+     * 
      * @return known GranularityType values.
      */
     public static Collection<GranularityType> values() {

@@ -23,7 +23,9 @@ public final class AutomaticOSUpgradePolicyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomaticOSUpgradePolicy model = new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(true)
-            .withEnableAutomaticOSUpgrade(true).withUseRollingUpgradePolicy(true).withOsRollingUpgradeDeferral(false);
+            .withEnableAutomaticOSUpgrade(true)
+            .withUseRollingUpgradePolicy(true)
+            .withOsRollingUpgradeDeferral(false);
         model = BinaryData.fromObject(model).toObject(AutomaticOSUpgradePolicy.class);
         Assertions.assertEquals(true, model.disableAutomaticRollback());
         Assertions.assertEquals(true, model.enableAutomaticOSUpgrade());

@@ -5,34 +5,27 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters to Provision ILR API.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = IlrRequest.class, visible = true)
-@JsonTypeName("IlrRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFileShareProvisionILRRequest", value = AzureFileShareProvisionIlrRequest.class),
-    @JsonSubTypes.Type(name = "IaasVMILRRegistrationRequest", value = IaasVmilrRegistrationRequest.class) })
 @Immutable
-public class IlrRequest {
+public class IlrRequest implements JsonSerializable<IlrRequest> {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
-    private String objectType;
+    private String objectType = "IlrRequest";
 
     /**
      * Creates an instance of IlrRequest class.
      */
     public IlrRequest() {
-        this.objectType = "IlrRequest";
     }
 
     /**
@@ -51,5 +44,68 @@ public class IlrRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IlrRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IlrRequest if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the IlrRequest.
+     */
+    public static IlrRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureFileShareProvisionILRRequest".equals(discriminatorValue)) {
+                    return AzureFileShareProvisionIlrRequest.fromJson(readerToUse.reset());
+                } else if ("IaasVMILRRegistrationRequest".equals(discriminatorValue)) {
+                    return IaasVmilrRegistrationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static IlrRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IlrRequest deserializedIlrRequest = new IlrRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedIlrRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIlrRequest;
+        });
     }
 }

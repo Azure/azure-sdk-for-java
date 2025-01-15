@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. */
+/**
+ * The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
+ */
 public final class FilterMode extends ExpandableStringEnum<FilterMode> {
-    /** Static value Exclude for FilterMode. */
+    /**
+     * Static value Exclude for FilterMode.
+     */
     public static final FilterMode EXCLUDE = fromString("Exclude");
 
-    /** Static value Include for FilterMode. */
+    /**
+     * Static value Include for FilterMode.
+     */
     public static final FilterMode INCLUDE = fromString("Include");
 
-    /** Static value Recommend for FilterMode. */
+    /**
+     * Static value Recommend for FilterMode.
+     */
     public static final FilterMode RECOMMEND = fromString("Recommend");
 
-    /** Static value Default for FilterMode. */
+    /**
+     * Static value Default for FilterMode.
+     */
     public static final FilterMode DEFAULT = fromString("Default");
 
     /**
      * Creates a new instance of FilterMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class FilterMode extends ExpandableStringEnum<FilterMode> {
 
     /**
      * Creates or finds a FilterMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilterMode.
      */
-    @JsonCreator
     public static FilterMode fromString(String name) {
         return fromString(name, FilterMode.class);
     }
 
     /**
      * Gets known FilterMode values.
-     *
+     * 
      * @return known FilterMode values.
      */
     public static Collection<FilterMode> values() {

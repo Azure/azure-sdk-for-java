@@ -7,18 +7,20 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EnvironmentListResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of EnvironmentListResponse. */
+/**
+ * An immutable client-side representation of EnvironmentListResponse.
+ */
 public interface EnvironmentListResponse {
     /**
      * Gets the value property: Result of the List Environments operation.
-     *
+     * 
      * @return the value value.
      */
     List<EnvironmentResource> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.timeseriesinsights.fluent.models.EnvironmentListResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     EnvironmentListResponseInner innerModel();

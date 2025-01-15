@@ -6,30 +6,36 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The aggregation expression to be used in the report. */
+/**
+ * The aggregation expression to be used in the report.
+ */
 @Fluent
-public final class ReportConfigAggregation {
+public final class ReportConfigAggregation implements JsonSerializable<ReportConfigAggregation> {
     /*
      * The name of the column to aggregate.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The name of the aggregation function to use.
      */
-    @JsonProperty(value = "function", required = true)
     private FunctionType function;
 
-    /** Creates an instance of ReportConfigAggregation class. */
+    /**
+     * Creates an instance of ReportConfigAggregation class.
+     */
     public ReportConfigAggregation() {
     }
 
     /**
      * Get the name property: The name of the column to aggregate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class ReportConfigAggregation {
 
     /**
      * Set the name property: The name of the column to aggregate.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReportConfigAggregation object itself.
      */
@@ -49,7 +55,7 @@ public final class ReportConfigAggregation {
 
     /**
      * Get the function property: The name of the aggregation function to use.
-     *
+     * 
      * @return the function value.
      */
     public FunctionType function() {
@@ -58,7 +64,7 @@ public final class ReportConfigAggregation {
 
     /**
      * Set the function property: The name of the aggregation function to use.
-     *
+     * 
      * @param function the function value to set.
      * @return the ReportConfigAggregation object itself.
      */
@@ -69,22 +75,60 @@ public final class ReportConfigAggregation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ReportConfigAggregation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ReportConfigAggregation"));
         }
         if (function() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property function in model ReportConfigAggregation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property function in model ReportConfigAggregation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReportConfigAggregation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("function", this.function == null ? null : this.function.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportConfigAggregation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportConfigAggregation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReportConfigAggregation.
+     */
+    public static ReportConfigAggregation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportConfigAggregation deserializedReportConfigAggregation = new ReportConfigAggregation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReportConfigAggregation.name = reader.getString();
+                } else if ("function".equals(fieldName)) {
+                    deserializedReportConfigAggregation.function = FunctionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportConfigAggregation;
+        });
+    }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The swagger custom dynamic tree settings. */
+/**
+ * The swagger custom dynamic tree settings.
+ */
 @Fluent
-public final class SwaggerCustomDynamicTreeSettings {
+public final class SwaggerCustomDynamicTreeSettings implements JsonSerializable<SwaggerCustomDynamicTreeSettings> {
     /*
      * Indicates whether parent nodes can be selected.
      */
-    @JsonProperty(value = "CanSelectParentNodes")
     private Boolean canSelectParentNodes;
 
     /*
      * Indicates whether leaf nodes can be selected.
      */
-    @JsonProperty(value = "CanSelectLeafNodes")
     private Boolean canSelectLeafNodes;
 
-    /** Creates an instance of SwaggerCustomDynamicTreeSettings class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicTreeSettings class.
+     */
     public SwaggerCustomDynamicTreeSettings() {
     }
 
     /**
      * Get the canSelectParentNodes property: Indicates whether parent nodes can be selected.
-     *
+     * 
      * @return the canSelectParentNodes value.
      */
     public Boolean canSelectParentNodes() {
@@ -37,7 +43,7 @@ public final class SwaggerCustomDynamicTreeSettings {
 
     /**
      * Set the canSelectParentNodes property: Indicates whether parent nodes can be selected.
-     *
+     * 
      * @param canSelectParentNodes the canSelectParentNodes value to set.
      * @return the SwaggerCustomDynamicTreeSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class SwaggerCustomDynamicTreeSettings {
 
     /**
      * Get the canSelectLeafNodes property: Indicates whether leaf nodes can be selected.
-     *
+     * 
      * @return the canSelectLeafNodes value.
      */
     public Boolean canSelectLeafNodes() {
@@ -57,7 +63,7 @@ public final class SwaggerCustomDynamicTreeSettings {
 
     /**
      * Set the canSelectLeafNodes property: Indicates whether leaf nodes can be selected.
-     *
+     * 
      * @param canSelectLeafNodes the canSelectLeafNodes value to set.
      * @return the SwaggerCustomDynamicTreeSettings object itself.
      */
@@ -68,9 +74,51 @@ public final class SwaggerCustomDynamicTreeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("CanSelectParentNodes", this.canSelectParentNodes);
+        jsonWriter.writeBooleanField("CanSelectLeafNodes", this.canSelectLeafNodes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicTreeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicTreeSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicTreeSettings.
+     */
+    public static SwaggerCustomDynamicTreeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicTreeSettings deserializedSwaggerCustomDynamicTreeSettings
+                = new SwaggerCustomDynamicTreeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("CanSelectParentNodes".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeSettings.canSelectParentNodes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("CanSelectLeafNodes".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeSettings.canSelectLeafNodes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicTreeSettings;
+        });
     }
 }

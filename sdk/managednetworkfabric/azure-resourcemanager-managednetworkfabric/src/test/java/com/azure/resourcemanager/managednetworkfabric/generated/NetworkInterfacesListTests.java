@@ -13,29 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfacesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfacesList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"qdseipnquwzxhrp\",\"connectedTo\":\"odlhkfktl\",\"interfaceType\":\"Data\",\"ipv4Address\":\"objopnou\",\"ipv6Address\":\"qezkqxs\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"gfcvcewbwq\"},\"id\":\"dgsjsat\",\"name\":\"rncmazdfsqxh\",\"type\":\"qmr\"},{\"properties\":{\"physicalIdentifier\":\"parn\",\"connectedTo\":\"grszrbwtdrcwg\",\"interfaceType\":\"Management\",\"ipv4Address\":\"xzlh\",\"ipv6Address\":\"ix\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"zjrmhpfywvyld\"},\"id\":\"pzfzxsoxinunjlz\",\"name\":\"drocqsxytq\",\"type\":\"tcmiwd\"},{\"properties\":{\"physicalIdentifier\":\"svnmeylajamcajy\",\"connectedTo\":\"tpzcr\",\"interfaceType\":\"Management\",\"ipv4Address\":\"leyn\",\"ipv6Address\":\"nhkigg\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"annotation\":\"hvubhgzphetxdqc\"},\"id\":\"yctajqz\",\"name\":\"vale\",\"type\":\"xb\"},{\"properties\":{\"physicalIdentifier\":\"i\",\"connectedTo\":\"sd\",\"interfaceType\":\"Management\",\"ipv4Address\":\"sbfpzvoikvntwcz\",\"ipv6Address\":\"wushlcxpbl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"annotation\":\"p\"},\"id\":\"kissaidqzsaa\",\"name\":\"qdsgptotxj\",\"type\":\"fiafc\"}],\"nextLink\":\"r\"}")
-                .toObject(NetworkInterfacesList.class);
-        Assertions.assertEquals("gfcvcewbwq", model.value().get(0).annotation());
-        Assertions.assertEquals("r", model.nextLink());
+        NetworkInterfacesList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"nwyytfv\",\"connectedTo\":\"tfjikffffgkuh\",\"interfaceType\":\"Data\",\"ipv4Address\":\"vuldbkkejjk\",\"ipv6Address\":\"gawgazmxjqi\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Disabled\",\"annotation\":\"bcmlza\"},\"id\":\"zbhur\",\"name\":\"olk\",\"type\":\"lirh\"},{\"properties\":{\"physicalIdentifier\":\"ojusuzgfjzcva\",\"connectedTo\":\"oialahfxwccokdx\",\"interfaceType\":\"Management\",\"ipv4Address\":\"kczynuhhoqeqsh\",\"ipv6Address\":\"ljqkxyrqolnthbb\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"annotation\":\"wdrnzkj\"},\"id\":\"fceyjn\",\"name\":\"jmlfuyfjbp\",\"type\":\"iddhlrufzc\"},{\"properties\":{\"physicalIdentifier\":\"jmqrfuiocuselq\",\"connectedTo\":\"sazrhxuddqmdtff\",\"interfaceType\":\"Management\",\"ipv4Address\":\"rkkhmwdmdlgy\",\"ipv6Address\":\"xokwtjawhvagnqfq\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"annotation\":\"yolcaymjchtvsnv\"},\"id\":\"qdnzyza\",\"name\":\"atuwqkokbc\",\"type\":\"othymgobl\"},{\"properties\":{\"physicalIdentifier\":\"snwgwimaa\",\"connectedTo\":\"akhtmhobcyanrfvq\",\"interfaceType\":\"Data\",\"ipv4Address\":\"gvoogxkfna\",\"ipv6Address\":\"qymhcctopuow\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"annotation\":\"yhquhc\"},\"id\":\"gx\",\"name\":\"hajpxecxqnwhsc\",\"type\":\"zawmvgxsmp\"}],\"nextLink\":\"pwirfljfewxqouo\"}")
+            .toObject(NetworkInterfacesList.class);
+        Assertions.assertEquals("bcmlza", model.value().get(0).annotation());
+        Assertions.assertEquals("pwirfljfewxqouo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfacesList model =
-            new NetworkInterfacesList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkInterfaceInner().withAnnotation("gfcvcewbwq"),
-                            new NetworkInterfaceInner().withAnnotation("zjrmhpfywvyld"),
-                            new NetworkInterfaceInner().withAnnotation("hvubhgzphetxdqc"),
-                            new NetworkInterfaceInner().withAnnotation("p")))
-                .withNextLink("r");
+        NetworkInterfacesList model
+            = new NetworkInterfacesList().withValue(Arrays.asList(new NetworkInterfaceInner().withAnnotation("bcmlza"),
+                new NetworkInterfaceInner().withAnnotation("wdrnzkj"),
+                new NetworkInterfaceInner().withAnnotation("yolcaymjchtvsnv"),
+                new NetworkInterfaceInner().withAnnotation("yhquhc"))).withNextLink("pwirfljfewxqouo");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacesList.class);
-        Assertions.assertEquals("gfcvcewbwq", model.value().get(0).annotation());
-        Assertions.assertEquals("r", model.nextLink());
+        Assertions.assertEquals("bcmlza", model.value().get(0).annotation());
+        Assertions.assertEquals("pwirfljfewxqouo", model.nextLink());
     }
 }

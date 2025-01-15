@@ -12,13 +12,24 @@ import java.io.File;
 /** An immutable representation of an host name SSL binding. */
 @Fluent
 public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, ChildResource<WebAppBase> {
-    /** @return the SSL type */
+    /**
+     * Gets the SSL type.
+     *
+     * @return the SSL type
+     */
     SslState sslState();
 
-    /** @return the virtual IP address assigned to the host name if IP based SSL is enabled */
+    /**
+     * Gets the virtual IP address assigned to the host name.
+     *
+     * @return the virtual IP address assigned to the host name if IP based SSL is enabled */
     String virtualIp();
 
-    /** @return the SSL cert thumbprint. */
+    /**
+     * Gets the SSL cert thumbprint.
+     *
+     * @return the SSL cert thumbprint.
+     */
     String thumbprint();
 
     /**
@@ -26,13 +37,9 @@ public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, Chi
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithHostname<ParentT>,
-            DefinitionStages.WithCertificate<ParentT>,
-            DefinitionStages.WithKeyVault<ParentT>,
-            DefinitionStages.WithSslType<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithHostname<ParentT>,
+        DefinitionStages.WithCertificate<ParentT>, DefinitionStages.WithKeyVault<ParentT>,
+        DefinitionStages.WithSslType<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of hostname SSL binding definition stages applicable as part of a web app creation. */
@@ -164,12 +171,9 @@ public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, Chi
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithHostname<ParentT>,
-            UpdateDefinitionStages.WithCertificate<ParentT>,
-            UpdateDefinitionStages.WithKeyVault<ParentT>,
-            UpdateDefinitionStages.WithSslType<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithHostname<ParentT>,
+        UpdateDefinitionStages.WithCertificate<ParentT>, UpdateDefinitionStages.WithKeyVault<ParentT>,
+        UpdateDefinitionStages.WithSslType<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of hostname SSL binding definition stages applicable as part of a web app update. */

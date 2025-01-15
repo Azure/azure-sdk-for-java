@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessInformationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessInformationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"id\":\"jbuiggru\",\"principalId\":\"zfv\",\"enabled\":false},\"id\":\"jthoivsdwsngkr\",\"name\":\"ihscjvakmhzbhw\",\"type\":\"hf\"},{\"properties\":{\"id\":\"hbnnxemv\",\"principalId\":\"u\",\"enabled\":false},\"id\":\"otauratnicppfzsc\",\"name\":\"efyrletndqlmfdgg\",\"type\":\"bbuypwovvvsflee\"}],\"count\":3505461673266872304,\"nextLink\":\"yrehjuqwv\"}")
-                .toObject(AccessInformationCollection.class);
+        AccessInformationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"id\":\"jbuiggru\",\"principalId\":\"zfv\",\"enabled\":false},\"id\":\"jthoivsdwsngkr\",\"name\":\"ihscjvakmhzbhw\",\"type\":\"hf\"},{\"properties\":{\"id\":\"hbnnxemv\",\"principalId\":\"u\",\"enabled\":false},\"id\":\"otauratnicppfzsc\",\"name\":\"efyrletndqlmfdgg\",\"type\":\"bbuypwovvvsflee\"}],\"count\":3505461673266872304,\"nextLink\":\"yrehjuqwv\"}")
+            .toObject(AccessInformationCollection.class);
         Assertions.assertEquals(3505461673266872304L, model.count());
     }
 

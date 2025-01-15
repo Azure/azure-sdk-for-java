@@ -6,74 +6,67 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
+import com.azure.resourcemanager.peering.models.DirectPeeringType;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.PeeringLocation;
 import com.azure.resourcemanager.peering.models.PeeringLocationsDirectPeeringType;
 import com.azure.resourcemanager.peering.models.PeeringLocationsKind;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeeringLocationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"kind\":\"Direct\",\"properties\":{\"direct\":{\"peeringFacilities\":[{\"address\":\"twvogvbbe\",\"directPeeringType\":\"Edge\",\"peeringDBFacilityId\":764265895,\"peeringDBFacilityLink\":\"qmoa\"},{\"address\":\"fgmjzrwrdgrt\",\"directPeeringType\":\"Voice\",\"peeringDBFacilityId\":130436359,\"peeringDBFacilityLink\":\"zkopb\"},{\"address\":\"nrfdw\",\"directPeeringType\":\"Edge\",\"peeringDBFacilityId\":1542145375,\"peeringDBFacilityLink\":\"iuiefozbhdmsm\"}],\"bandwidthOffers\":[{\"offerName\":\"hoftr\",\"valueInMbps\":1041593228},{\"offerName\":\"u\",\"valueInMbps\":674060065}]},\"exchange\":{\"peeringFacilities\":[{\"exchangeName\":\"lfaoqzpiyylhaln\",\"bandwidthInMbps\":324184633,\"microsoftIPv4Address\":\"csphkaiv\",\"microsoftIPv6Address\":\"tqscywug\",\"facilityIPv4Prefix\":\"oluhczbwemh\",\"facilityIPv6Prefix\":\"rsbrgzdwm\",\"peeringDBFacilityId\":1592939681,\"peeringDBFacilityLink\":\"pqwd\"},{\"exchangeName\":\"gicccnxqhuex\",\"bandwidthInMbps\":1362682825,\"microsoftIPv4Address\":\"lstvlzywe\",\"microsoftIPv6Address\":\"zrncsdt\",\"facilityIPv4Prefix\":\"u\",\"facilityIPv6Prefix\":\"ypbsfgytguslfead\",\"peeringDBFacilityId\":358703588,\"peeringDBFacilityLink\":\"ukyhejhzis\"},{\"exchangeName\":\"fpel\",\"bandwidthInMbps\":129297763,\"microsoftIPv4Address\":\"vk\",\"microsoftIPv6Address\":\"pqvujzraehtwdwrf\",\"facilityIPv4Prefix\":\"wib\",\"facilityIPv6Prefix\":\"cdl\",\"peeringDBFacilityId\":1538697515,\"peeringDBFacilityLink\":\"fwpracstwi\"},{\"exchangeName\":\"khevxccedc\",\"bandwidthInMbps\":502101574,\"microsoftIPv4Address\":\"yodnwzxltj\",\"microsoftIPv6Address\":\"nhltiugcxn\",\"facilityIPv4Prefix\":\"vwxqibyqunyo\",\"facilityIPv6Prefix\":\"wlmdjrkv\",\"peeringDBFacilityId\":185014481,\"peeringDBFacilityLink\":\"fvpdbo\"}]},\"peeringLocation\":\"cizsjqlhkrribdei\",\"country\":\"ipqkghvxndzwm\",\"azureRegion\":\"efajpj\"},\"id\":\"rwkq\",\"name\":\"yhgbijtjivfx\",\"type\":\"sjabibs\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"kind\":\"Direct\",\"properties\":{\"direct\":{\"peeringFacilities\":[],\"bandwidthOffers\":[]},\"exchange\":{\"peeringFacilities\":[]},\"peeringLocation\":\"wggxkallat\",\"country\":\"lwuip\",\"azureRegion\":\"cjzkzivgvvcna\"},\"id\":\"rhyrnxxmueed\",\"name\":\"drd\",\"type\":\"stkwqqtch\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PeeringLocation> response =
-            manager
-                .peeringLocations()
-                .list(
-                    PeeringLocationsKind.EXCHANGE,
-                    PeeringLocationsDirectPeeringType.IX,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<PeeringLocation> response = manager.peeringLocations()
+            .list(PeeringLocationsKind.EXCHANGE, PeeringLocationsDirectPeeringType.INTERNAL,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(Kind.DIRECT, response.iterator().next().kind());
-        Assertions.assertEquals("wggxkallat", response.iterator().next().peeringLocation());
-        Assertions.assertEquals("lwuip", response.iterator().next().country());
-        Assertions.assertEquals("cjzkzivgvvcna", response.iterator().next().azureRegion());
+        Assertions.assertEquals("twvogvbbe", response.iterator().next().direct().peeringFacilities().get(0).address());
+        Assertions.assertEquals(DirectPeeringType.EDGE,
+            response.iterator().next().direct().peeringFacilities().get(0).directPeeringType());
+        Assertions.assertEquals(764265895,
+            response.iterator().next().direct().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("qmoa",
+            response.iterator().next().direct().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("hoftr", response.iterator().next().direct().bandwidthOffers().get(0).offerName());
+        Assertions.assertEquals(1041593228, response.iterator().next().direct().bandwidthOffers().get(0).valueInMbps());
+        Assertions.assertEquals("lfaoqzpiyylhaln",
+            response.iterator().next().exchange().peeringFacilities().get(0).exchangeName());
+        Assertions.assertEquals(324184633,
+            response.iterator().next().exchange().peeringFacilities().get(0).bandwidthInMbps());
+        Assertions.assertEquals("csphkaiv",
+            response.iterator().next().exchange().peeringFacilities().get(0).microsoftIPv4Address());
+        Assertions.assertEquals("tqscywug",
+            response.iterator().next().exchange().peeringFacilities().get(0).microsoftIPv6Address());
+        Assertions.assertEquals("oluhczbwemh",
+            response.iterator().next().exchange().peeringFacilities().get(0).facilityIPv4Prefix());
+        Assertions.assertEquals("rsbrgzdwm",
+            response.iterator().next().exchange().peeringFacilities().get(0).facilityIPv6Prefix());
+        Assertions.assertEquals(1592939681,
+            response.iterator().next().exchange().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("pqwd",
+            response.iterator().next().exchange().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("cizsjqlhkrribdei", response.iterator().next().peeringLocation());
+        Assertions.assertEquals("ipqkghvxndzwm", response.iterator().next().country());
+        Assertions.assertEquals("efajpj", response.iterator().next().azureRegion());
     }
 }

@@ -23,8 +23,8 @@ public final class TransferCallResult extends ResultWithEventHandling<TransferCa
     private final String operationContext;
 
     static {
-        TransferCallResponseConstructorProxy.setAccessor(
-            new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
+        TransferCallResponseConstructorProxy
+            .setAccessor(new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
                 @Override
                 public TransferCallResult create(TransferCallResponseInternal internalHeaders) {
                     return new TransferCallResult(internalHeaders);
@@ -66,13 +66,18 @@ public final class TransferCallResult extends ResultWithEventHandling<TransferCa
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class), timeout)
-            ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class))
+            : eventProcessor.waitForEventProcessorAsync(
+                event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class),
+                timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override

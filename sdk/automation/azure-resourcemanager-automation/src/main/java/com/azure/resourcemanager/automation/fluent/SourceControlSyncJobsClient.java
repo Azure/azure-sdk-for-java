@@ -14,37 +14,53 @@ import com.azure.resourcemanager.automation.fluent.models.SourceControlSyncJobIn
 import com.azure.resourcemanager.automation.models.SourceControlSyncJobCreateParameters;
 import java.util.UUID;
 
-/** An instance of this class provides access to all the operations defined in SourceControlSyncJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SourceControlSyncJobsClient.
+ */
 public interface SourceControlSyncJobsClient {
     /**
      * Creates the sync job for a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param parameters The parameters supplied to the create source control sync job operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
+     * @return definition of the source control sync job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlSyncJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        SourceControlSyncJobCreateParameters parameters);
+    Response<SourceControlSyncJobInner> createWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, SourceControlSyncJobCreateParameters parameters,
+        Context context);
 
     /**
      * Creates the sync job for a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @param sourceControlSyncJobId The source control sync job id.
      * @param parameters The parameters supplied to the create source control sync job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SourceControlSyncJobInner create(String resourceGroupName, String automationAccountName, String sourceControlName,
+        UUID sourceControlSyncJobId, SourceControlSyncJobCreateParameters parameters);
+
+    /**
+     * Retrieve the source control sync job identified by job id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,17 +68,12 @@ public interface SourceControlSyncJobsClient {
      * @return definition of the source control sync job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SourceControlSyncJobInner> createWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        SourceControlSyncJobCreateParameters parameters,
-        Context context);
+    Response<SourceControlSyncJobByIdInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, Context context);
 
     /**
      * Retrieve the source control sync job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -73,49 +84,28 @@ public interface SourceControlSyncJobsClient {
      * @return definition of the source control sync job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlSyncJobByIdInner get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
-
-    /**
-     * Retrieve the source control sync job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SourceControlSyncJobByIdInner> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        Context context);
+    SourceControlSyncJobByIdInner get(String resourceGroupName, String automationAccountName, String sourceControlName,
+        UUID sourceControlSyncJobId);
 
     /**
      * Retrieve a list of source control sync jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync jobs operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source control sync jobs operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SourceControlSyncJobInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String sourceControlName);
+    PagedIterable<SourceControlSyncJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String sourceControlName);
 
     /**
      * Retrieve a list of source control sync jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -124,14 +114,10 @@ public interface SourceControlSyncJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync jobs operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source control sync jobs operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SourceControlSyncJobInner> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        String filter,
-        Context context);
+    PagedIterable<SourceControlSyncJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String sourceControlName, String filter, Context context);
 }

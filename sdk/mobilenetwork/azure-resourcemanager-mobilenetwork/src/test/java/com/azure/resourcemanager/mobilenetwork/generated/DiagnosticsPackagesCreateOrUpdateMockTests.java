@@ -20,7 +20,7 @@ public final class DiagnosticsPackagesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Error\",\"reason\":\"lhuytxzvtznap\"},\"id\":\"annovvoxczytpr\",\"name\":\"nwvroevytlyokrr\",\"type\":\"o\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Collecting\",\"reason\":\"snsqowxwcoml\"},\"id\":\"ytwvczcswkacve\",\"name\":\"yfdvlvhbwrnfxtgd\",\"type\":\"pqthehnmnaoya\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DiagnosticsPackagesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiagnosticsPackage response = manager.diagnosticsPackages()
-            .createOrUpdate("ngnbdxxew", "ninvudbchaqdt", "qecrqctmxx", com.azure.core.util.Context.NONE);
+            .createOrUpdate("gddeimaw", "o", "gkkumuikjcj", com.azure.core.util.Context.NONE);
 
     }
 }

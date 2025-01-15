@@ -11,7 +11,8 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 public final class LinkedEntityPropertiesHelper {
     private static LinkedEntityAccessor accessor;
 
-    private LinkedEntityPropertiesHelper() { }
+    private LinkedEntityPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link LinkedEntity} instance.

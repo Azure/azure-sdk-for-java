@@ -15,9 +15,11 @@ import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.SkuProfile;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateVMProfile;
+import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
 import java.io.IOException;
 
 /**
@@ -91,6 +93,16 @@ public final class VirtualMachineScaleSetUpdateProperties
      * Policy for Resiliency
      */
     private ResiliencyPolicy resiliencyPolicy;
+
+    /*
+     * Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
+     */
+    private ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode;
+
+    /*
+     * Specifies the sku profile for the virtual machine scale set.
+     */
+    private SkuProfile skuProfile;
 
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateProperties class.
@@ -361,6 +373,49 @@ public final class VirtualMachineScaleSetUpdateProperties
     }
 
     /**
+     * Get the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @return the zonalPlatformFaultDomainAlignMode value.
+     */
+    public ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode() {
+        return this.zonalPlatformFaultDomainAlignMode;
+    }
+
+    /**
+     * Set the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @param zonalPlatformFaultDomainAlignMode the zonalPlatformFaultDomainAlignMode value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties
+        withZonalPlatformFaultDomainAlignMode(ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode) {
+        this.zonalPlatformFaultDomainAlignMode = zonalPlatformFaultDomainAlignMode;
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.skuProfile;
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties withSkuProfile(SkuProfile skuProfile) {
+        this.skuProfile = skuProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -390,6 +445,9 @@ public final class VirtualMachineScaleSetUpdateProperties
         if (resiliencyPolicy() != null) {
             resiliencyPolicy().validate();
         }
+        if (skuProfile() != null) {
+            skuProfile().validate();
+        }
     }
 
     /**
@@ -411,6 +469,9 @@ public final class VirtualMachineScaleSetUpdateProperties
         jsonWriter.writeJsonField("priorityMixPolicy", this.priorityMixPolicy);
         jsonWriter.writeJsonField("spotRestorePolicy", this.spotRestorePolicy);
         jsonWriter.writeJsonField("resiliencyPolicy", this.resiliencyPolicy);
+        jsonWriter.writeStringField("zonalPlatformFaultDomainAlignMode",
+            this.zonalPlatformFaultDomainAlignMode == null ? null : this.zonalPlatformFaultDomainAlignMode.toString());
+        jsonWriter.writeJsonField("skuProfile", this.skuProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -464,6 +525,11 @@ public final class VirtualMachineScaleSetUpdateProperties
                 } else if ("resiliencyPolicy".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateProperties.resiliencyPolicy
                         = ResiliencyPolicy.fromJson(reader);
+                } else if ("zonalPlatformFaultDomainAlignMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.zonalPlatformFaultDomainAlignMode
+                        = ZonalPlatformFaultDomainAlignMode.fromString(reader.getString());
+                } else if ("skuProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.skuProfile = SkuProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

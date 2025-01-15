@@ -24,19 +24,29 @@ public final class SourceControlSyncJobsImpl implements SourceControlSyncJobs {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public SourceControlSyncJobsImpl(
-        SourceControlSyncJobsClient innerClient,
+    public SourceControlSyncJobsImpl(SourceControlSyncJobsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SourceControlSyncJobById get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
-        SourceControlSyncJobByIdInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
+    public Response<SourceControlSyncJobById> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, Context context) {
+        Response<SourceControlSyncJobByIdInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SourceControlSyncJobByIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControlSyncJobById get(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId) {
+        SourceControlSyncJobByIdInner inner = this.serviceClient()
+            .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
         if (inner != null) {
             return new SourceControlSyncJobByIdImpl(inner, this.manager());
         } else {
@@ -44,46 +54,18 @@ public final class SourceControlSyncJobsImpl implements SourceControlSyncJobs {
         }
     }
 
-    public Response<SourceControlSyncJobById> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        Context context) {
-        Response<SourceControlSyncJobByIdInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SourceControlSyncJobByIdImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<SourceControlSyncJob> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String sourceControlName) {
+        PagedIterable<SourceControlSyncJobInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, sourceControlName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SourceControlSyncJobImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SourceControlSyncJob> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String sourceControlName) {
-        PagedIterable<SourceControlSyncJobInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, sourceControlName);
-        return Utils.mapPage(inner, inner1 -> new SourceControlSyncJobImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<SourceControlSyncJob> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        String filter,
-        Context context) {
-        PagedIterable<SourceControlSyncJobInner> inner =
-            this
-                .serviceClient()
-                .listByAutomationAccount(resourceGroupName, automationAccountName, sourceControlName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SourceControlSyncJobImpl(inner1, this.manager()));
+    public PagedIterable<SourceControlSyncJob> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String sourceControlName, String filter, Context context) {
+        PagedIterable<SourceControlSyncJobInner> inner = this.serviceClient()
+            .listByAutomationAccount(resourceGroupName, automationAccountName, sourceControlName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SourceControlSyncJobImpl(inner1, this.manager()));
     }
 
     private SourceControlSyncJobsClient serviceClient() {

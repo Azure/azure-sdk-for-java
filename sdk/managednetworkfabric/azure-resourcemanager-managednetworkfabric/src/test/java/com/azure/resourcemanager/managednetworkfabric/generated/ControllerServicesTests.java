@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ControllerServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerServices model =
-            BinaryData
-                .fromString(
-                    "{\"ipv4AddressSpaces\":[\"bhtleberpy\",\"jeknfqnw\",\"j\"],\"ipv6AddressSpaces\":[\"wkdnjrxgkrhwiehy\",\"pnowawonoehrguql\"]}")
-                .toObject(ControllerServices.class);
-        Assertions.assertEquals("bhtleberpy", model.ipv4AddressSpaces().get(0));
-        Assertions.assertEquals("wkdnjrxgkrhwiehy", model.ipv6AddressSpaces().get(0));
+        ControllerServices model = BinaryData.fromString(
+            "{\"ipv4AddressSpaces\":[\"osqkptjqgk\",\"fmmainwhedxkpbq\",\"unt\"],\"ipv6AddressSpaces\":[\"izazz\",\"lw\",\"vydjufbnk\"]}")
+            .toObject(ControllerServices.class);
+        Assertions.assertEquals("osqkptjqgk", model.ipv4AddressSpaces().get(0));
+        Assertions.assertEquals("izazz", model.ipv6AddressSpaces().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerServices model =
-            new ControllerServices()
-                .withIpv4AddressSpaces(Arrays.asList("bhtleberpy", "jeknfqnw", "j"))
-                .withIpv6AddressSpaces(Arrays.asList("wkdnjrxgkrhwiehy", "pnowawonoehrguql"));
+        ControllerServices model
+            = new ControllerServices().withIpv4AddressSpaces(Arrays.asList("osqkptjqgk", "fmmainwhedxkpbq", "unt"))
+                .withIpv6AddressSpaces(Arrays.asList("izazz", "lw", "vydjufbnk"));
         model = BinaryData.fromObject(model).toObject(ControllerServices.class);
-        Assertions.assertEquals("bhtleberpy", model.ipv4AddressSpaces().get(0));
-        Assertions.assertEquals("wkdnjrxgkrhwiehy", model.ipv6AddressSpaces().get(0));
+        Assertions.assertEquals("osqkptjqgk", model.ipv4AddressSpaces().get(0));
+        Assertions.assertEquals("izazz", model.ipv6AddressSpaces().get(0));
     }
 }

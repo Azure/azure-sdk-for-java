@@ -11,8 +11,7 @@ import reactor.core.publisher.Mono;
  * Entry point to features management API.
  */
 @Fluent
-public interface Features extends
-        SupportsListing<Feature> {
+public interface Features extends SupportsListing<Feature> {
     /**
      * Registers a feature in a resource provider.
      *

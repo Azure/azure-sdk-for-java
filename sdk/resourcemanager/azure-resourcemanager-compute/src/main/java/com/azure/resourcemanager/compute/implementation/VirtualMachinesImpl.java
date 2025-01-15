@@ -42,9 +42,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /** The implementation for VirtualMachines. */
-public class VirtualMachinesImpl
-    extends TopLevelModifiableResourcesImpl<
-        VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesClient, ComputeManager>
+public class VirtualMachinesImpl extends
+    TopLevelModifiableResourcesImpl<VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesClient, ComputeManager>
     implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -52,11 +51,8 @@ public class VirtualMachinesImpl
     private final VirtualMachineSizesImpl vmSizes;
     private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
 
-    public VirtualMachinesImpl(
-        ComputeManager computeManager,
-        StorageManager storageManager,
-        NetworkManager networkManager,
-        AuthorizationManager authorizationManager) {
+    public VirtualMachinesImpl(ComputeManager computeManager, StorageManager storageManager,
+        NetworkManager networkManager, AuthorizationManager authorizationManager) {
         super(computeManager.serviceClient().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -147,14 +143,13 @@ public class VirtualMachinesImpl
     }
 
     @Override
-    public Mono<String> captureAsync(
-        String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd) {
+    public Mono<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix,
+        boolean overwriteVhd) {
         VirtualMachineCaptureParameters parameters = new VirtualMachineCaptureParameters();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
-        return this
-            .inner()
+        return this.inner()
             .captureAsync(groupName, name, parameters)
             .map(captureResult -> VirtualMachineImpl.serializeCaptureResult(captureResult, logger));
     }
@@ -170,14 +165,14 @@ public class VirtualMachinesImpl
     }
 
     @Override
-    public RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public RunCommandResult runPowerShellScript(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         return this.runPowerShellScriptAsync(groupName, name, scriptLines, scriptParameters).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runPowerShellScriptAsync(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runPowerShellScriptAsync(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunPowerShellScript");
         inputCommand.withScript(scriptLines);
@@ -186,14 +181,14 @@ public class VirtualMachinesImpl
     }
 
     @Override
-    public RunCommandResult runShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public RunCommandResult runShellScript(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         return this.runShellScriptAsync(groupName, name, scriptLines, scriptParameters).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runShellScriptAsync(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runShellScriptAsync(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunShellScript");
         inputCommand.withScript(scriptLines);
@@ -218,16 +213,10 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(),
-                Function.identity(),
-                Void.class,
-                null,
-                Context.NONE);
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(), Function.identity(),
+            Void.class, null, Context.NONE);
     }
 
     @Override
@@ -237,8 +226,8 @@ public class VirtualMachinesImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
-        return deleteByResourceGroupAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+        return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            forceDeletion);
     }
 
     @Override
@@ -253,22 +242,16 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteById(String id, boolean forceDeletion) {
-        return beginDeleteByResourceGroup(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            forceDeletion);
     }
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
-                Function.identity(),
-                Void.class,
-                null,
-                Context.NONE);
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
+            Function.identity(), Void.class, null, Context.NONE);
     }
 
     @Override
@@ -277,24 +260,27 @@ public class VirtualMachinesImpl
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "removal"})
+    @SuppressWarnings({ "unchecked", "removal" })
     public PagedFlux<VirtualMachine> listByVirtualMachineScaleSetIdAsync(String vmssId) {
         if (CoreUtils.isNullOrEmpty(vmssId)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'vmssId' is required and cannot be null.")));
+            return new PagedFlux<>(
+                () -> Mono.error(new IllegalArgumentException("Parameter 'vmssId' is required and cannot be null.")));
         }
         // Hack in nextLink encoding by using reflection.
         // Replace below hack with "listAsync()" once backend fix "nextLink" encoding issue:
         // https://github.com/Azure/azure-rest-api-specs/issues/25640
         Method listSinglePageAsync;
         try {
-            listSinglePageAsync = inner().getClass().getDeclaredMethod("listByResourceGroupSinglePageAsync", String.class, String.class, ExpandTypeForListVMs.class);
+            listSinglePageAsync = inner().getClass()
+                .getDeclaredMethod("listByResourceGroupSinglePageAsync", String.class, String.class,
+                    ExpandTypeForListVMs.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         Method listNextSinglePageAsync;
         try {
-            listNextSinglePageAsync = inner().getClass().getDeclaredMethod("listNextSinglePageAsync", String.class, Context.class);
+            listNextSinglePageAsync
+                = inner().getClass().getDeclaredMethod("listNextSinglePageAsync", String.class, Context.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -303,24 +289,23 @@ public class VirtualMachinesImpl
             listNextSinglePageAsync.setAccessible(true);
             return null;
         });
-        return wrapPageAsync(new PagedFlux<>(
-            () -> {
-                try {
-                    return (Mono<PagedResponse<VirtualMachineInner>>)
-                        listSinglePageAsync.invoke(inner(), ResourceUtils.groupFromResourceId(vmssId), String.format("'virtualMachineScaleSet/id' eq '%s'", vmssId), null);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            },
-            nextLink -> {
-                try {
-                    return (Mono<PagedResponse<VirtualMachineInner>>)
-                        // encode nextLink
-                        listNextSinglePageAsync.invoke(inner(), ResourceUtils.encodeResourceId(nextLink), Context.NONE);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            }));
+        return wrapPageAsync(new PagedFlux<>(() -> {
+            try {
+                return (Mono<PagedResponse<VirtualMachineInner>>) listSinglePageAsync.invoke(inner(),
+                    ResourceUtils.groupFromResourceId(vmssId),
+                    String.format("'virtualMachineScaleSet/id' eq '%s'", vmssId), null);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }, nextLink -> {
+            try {
+                return (Mono<PagedResponse<VirtualMachineInner>>)
+                // encode nextLink
+                listNextSinglePageAsync.invoke(inner(), ResourceUtils.encodeResourceId(nextLink), Context.NONE);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }));
     }
 
     @Override
@@ -331,8 +316,8 @@ public class VirtualMachinesImpl
     @Override
     public PagedFlux<VirtualMachine> listByVirtualMachineScaleSetAsync(VirtualMachineScaleSet vmss) {
         if (vmss == null) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'vmss' is required and cannot be null.")));
+            return new PagedFlux<>(
+                () -> Mono.error(new IllegalArgumentException("Parameter 'vmss' is required and cannot be null.")));
         }
         return listByVirtualMachineScaleSetIdAsync(vmss.id());
     }
@@ -352,8 +337,8 @@ public class VirtualMachinesImpl
         inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
         inner.withNetworkProfile(new NetworkProfile().withNetworkInterfaces(new ArrayList<>()));
-        return new VirtualMachineImpl(
-            name, inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
+        return new VirtualMachineImpl(name, inner, this.manager(), this.storageManager, this.networkManager,
+            this.authorizationManager);
     }
 
     @Override
@@ -361,12 +346,7 @@ public class VirtualMachinesImpl
         if (virtualMachineInner == null) {
             return null;
         }
-        return new VirtualMachineImpl(
-            virtualMachineInner.name(),
-            virtualMachineInner,
-            this.manager(),
-            this.storageManager,
-            this.networkManager,
-            this.authorizationManager);
+        return new VirtualMachineImpl(virtualMachineInner.name(), virtualMachineInner, this.manager(),
+            this.storageManager, this.networkManager, this.authorizationManager);
     }
 }

@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryStatisticInner;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatisticsInput;
 
-/** An instance of this class provides access to all the operations defined in TopQueryStatisticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TopQueryStatisticsClient.
+ */
 public interface TopQueryStatisticsClient {
     /**
      * Retrieve the query statistic for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
@@ -27,12 +29,12 @@ public interface TopQueryStatisticsClient {
      * @return represents a Query Statistic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryStatisticInner> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context);
+    Response<QueryStatisticInner> getWithResponse(String resourceGroupName, String serverName, String queryStatisticId,
+        Context context);
 
     /**
      * Retrieve the query statistic for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
@@ -46,7 +48,7 @@ public interface TopQueryStatisticsClient {
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving top query statistics.
@@ -56,12 +58,12 @@ public interface TopQueryStatisticsClient {
      * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters);
+    PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters);
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving top query statistics.
@@ -72,6 +74,6 @@ public interface TopQueryStatisticsClient {
      * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context);
+    PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context);
 }

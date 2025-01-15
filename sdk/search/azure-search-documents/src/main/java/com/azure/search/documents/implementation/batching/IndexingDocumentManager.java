@@ -77,8 +77,8 @@ final class IndexingDocumentManager<T> {
 
         try {
             for (IndexAction<T> action : actions) {
-                this.actions.addLast(
-                    new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
+                this.actions
+                    .addLast(new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
 
                 if (onActionAddedConsumer != null) {
                     onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));

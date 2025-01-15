@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.RecommendationActionsResultList;
 public final class RecommendationActionsResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationActionsResultList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"advisorName\":\"aqtdoqmcbx\",\"sessionId\":\"vxysl\",\"actionId\":675840078,\"createdTime\":\"2021-05-16T19:49:18Z\",\"expirationTime\":\"2021-06-21T07:49:07Z\",\"reason\":\"lyt\",\"recommendationType\":\"lmpewwwfbkr\",\"details\":{}},\"id\":\"nsvs\",\"name\":\"q\",\"type\":\"ohxcrsbfova\"}],\"nextLink\":\"ruvw\"}")
-                .toObject(RecommendationActionsResultList.class);
+        RecommendationActionsResultList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"advisorName\":\"lxkvu\",\"sessionId\":\"hzovawjvzunlut\",\"actionId\":44966714,\"createdTime\":\"2021-12-09T15:55:09Z\",\"expirationTime\":\"2021-01-27T13:07:29Z\",\"reason\":\"peilpjzuaejxdu\",\"recommendationType\":\"skzbb\",\"details\":{\"bsjyofdx\":\"umveekgpwozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"}},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"},{\"properties\":{\"advisorName\":\"znelixhnrztfolh\",\"sessionId\":\"xknalaulppg\",\"actionId\":1987785731,\"createdTime\":\"2021-08-03T06:29:07Z\",\"expirationTime\":\"2021-05-17T10:18:50Z\",\"reason\":\"yiropu\",\"recommendationType\":\"igvpgylg\",\"details\":{\"c\":\"txmedj\",\"gktrmgucnapkte\":\"lynqwwncwzzh\",\"pfqbuaceopzf\":\"ellwptfdy\",\"lzdahzxctobgbkdm\":\"rhhuaopppcqeqx\"}},\"id\":\"izpost\",\"name\":\"grcfb\",\"type\":\"nrmfqjhhk\"},{\"properties\":{\"advisorName\":\"vjymjhxxjyngud\",\"sessionId\":\"krtswbxqz\",\"actionId\":668834645,\"createdTime\":\"2021-01-16T06:43:01Z\",\"expirationTime\":\"2021-04-01T03:47:56Z\",\"reason\":\"j\",\"recommendationType\":\"xxivetv\",\"details\":{\"wvxysl\":\"aqtdoqmcbx\",\"ytkblmpew\":\"bhsfxob\",\"shqjohxcrsbf\":\"wfbkrvrns\",\"sqfsubcgjbirxb\":\"vasrruvwb\"}},\"id\":\"ybsrfbjfdtwss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"},{\"properties\":{\"advisorName\":\"pmqtaru\",\"sessionId\":\"jmkcjhwqytj\",\"actionId\":778428037,\"createdTime\":\"2021-03-24T15:48:33Z\",\"expirationTime\":\"2021-05-26T03:48:15Z\",\"reason\":\"gdrjervnaenqpe\",\"recommendationType\":\"ndoygmifthnzdnd\",\"details\":{\"ynduha\":\"nayqi\",\"bgycduiertgccym\":\"hqlkthumaqo\",\"lqlfm\":\"aolps\"}},\"id\":\"dnbbglzps\",\"name\":\"iydmcwyhzdxs\",\"type\":\"adbzmnvdfznud\"}],\"nextLink\":\"dvxzbncblylpst\"}")
+            .toObject(RecommendationActionsResultList.class);
     }
 
     @org.junit.jupiter.api.Test

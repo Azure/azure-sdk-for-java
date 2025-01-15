@@ -6,21 +6,32 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List of the Sentinel onboarding states. */
+/**
+ * List of the Sentinel onboarding states.
+ */
 @Fluent
-public final class SentinelOnboardingStatesListInner {
+public final class SentinelOnboardingStatesListInner implements JsonSerializable<SentinelOnboardingStatesListInner> {
     /*
      * Array of Sentinel onboarding states
      */
-    @JsonProperty(value = "value", required = true)
     private List<SentinelOnboardingStateInner> value;
 
     /**
+     * Creates an instance of SentinelOnboardingStatesListInner class.
+     */
+    public SentinelOnboardingStatesListInner() {
+    }
+
+    /**
      * Get the value property: Array of Sentinel onboarding states.
-     *
+     * 
      * @return the value value.
      */
     public List<SentinelOnboardingStateInner> value() {
@@ -29,7 +40,7 @@ public final class SentinelOnboardingStatesListInner {
 
     /**
      * Set the value property: Array of Sentinel onboarding states.
-     *
+     * 
      * @param value the value value to set.
      * @return the SentinelOnboardingStatesListInner object itself.
      */
@@ -40,19 +51,58 @@ public final class SentinelOnboardingStatesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SentinelOnboardingStatesListInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SentinelOnboardingStatesListInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SentinelOnboardingStatesListInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SentinelOnboardingStatesListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SentinelOnboardingStatesListInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SentinelOnboardingStatesListInner.
+     */
+    public static SentinelOnboardingStatesListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SentinelOnboardingStatesListInner deserializedSentinelOnboardingStatesListInner
+                = new SentinelOnboardingStatesListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SentinelOnboardingStateInner> value
+                        = reader.readArray(reader1 -> SentinelOnboardingStateInner.fromJson(reader1));
+                    deserializedSentinelOnboardingStatesListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSentinelOnboardingStatesListInner;
+        });
+    }
 }

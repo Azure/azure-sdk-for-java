@@ -13,32 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class IpPrefixRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpPrefixRule model =
-            BinaryData
-                .fromString(
-                    "{\"action\":\"Deny\",\"sequenceNumber\":9177404831605341592,\"networkPrefix\":\"hkhg\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"wwkpphefsb\"}")
-                .toObject(IpPrefixRule.class);
+        IpPrefixRule model = BinaryData.fromString(
+            "{\"action\":\"Deny\",\"sequenceNumber\":667258597321052143,\"networkPrefix\":\"apx\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"jjk\"}")
+            .toObject(IpPrefixRule.class);
         Assertions.assertEquals(CommunityActionTypes.DENY, model.action());
-        Assertions.assertEquals(9177404831605341592L, model.sequenceNumber());
-        Assertions.assertEquals("hkhg", model.networkPrefix());
-        Assertions.assertEquals(Condition.GREATER_THAN_OR_EQUAL_TO, model.condition());
-        Assertions.assertEquals("wwkpphefsb", model.subnetMaskLength());
+        Assertions.assertEquals(667258597321052143L, model.sequenceNumber());
+        Assertions.assertEquals("apx", model.networkPrefix());
+        Assertions.assertEquals(Condition.EQUAL_TO, model.condition());
+        Assertions.assertEquals("jjk", model.subnetMaskLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPrefixRule model =
-            new IpPrefixRule()
-                .withAction(CommunityActionTypes.DENY)
-                .withSequenceNumber(9177404831605341592L)
-                .withNetworkPrefix("hkhg")
-                .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
-                .withSubnetMaskLength("wwkpphefsb");
+        IpPrefixRule model = new IpPrefixRule().withAction(CommunityActionTypes.DENY)
+            .withSequenceNumber(667258597321052143L)
+            .withNetworkPrefix("apx")
+            .withCondition(Condition.EQUAL_TO)
+            .withSubnetMaskLength("jjk");
         model = BinaryData.fromObject(model).toObject(IpPrefixRule.class);
         Assertions.assertEquals(CommunityActionTypes.DENY, model.action());
-        Assertions.assertEquals(9177404831605341592L, model.sequenceNumber());
-        Assertions.assertEquals("hkhg", model.networkPrefix());
-        Assertions.assertEquals(Condition.GREATER_THAN_OR_EQUAL_TO, model.condition());
-        Assertions.assertEquals("wwkpphefsb", model.subnetMaskLength());
+        Assertions.assertEquals(667258597321052143L, model.sequenceNumber());
+        Assertions.assertEquals("apx", model.networkPrefix());
+        Assertions.assertEquals(Condition.EQUAL_TO, model.condition());
+        Assertions.assertEquals("jjk", model.subnetMaskLength());
     }
 }

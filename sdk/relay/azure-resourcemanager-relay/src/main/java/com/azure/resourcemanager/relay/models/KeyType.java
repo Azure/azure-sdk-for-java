@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.relay.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for KeyType. */
+/**
+ * The access key to regenerate.
+ */
 public enum KeyType {
-    /** Enum value PrimaryKey. */
+    /**
+     * Enum value PrimaryKey.
+     */
     PRIMARY_KEY("PrimaryKey"),
 
-    /** Enum value SecondaryKey. */
+    /**
+     * Enum value SecondaryKey.
+     */
     SECONDARY_KEY("SecondaryKey");
 
-    /** The actual serialized value for a KeyType instance. */
+    /**
+     * The actual serialized value for a KeyType instance.
+     */
     private final String value;
 
     KeyType(String value) {
@@ -24,12 +29,14 @@ public enum KeyType {
 
     /**
      * Parses a serialized value to a KeyType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KeyType object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyType[] items = KeyType.values();
         for (KeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum KeyType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

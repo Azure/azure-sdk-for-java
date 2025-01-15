@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class IpRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpRange model =
-            BinaryData
-                .fromString("{\"name\":\"pzbchck\",\"address\":\"zqioxiysuii\",\"subnetPrefixLength\":1822288960}")
+        IpRange model
+            = BinaryData.fromString("{\"name\":\"qkgh\",\"address\":\"ndzwmkrefa\",\"subnetPrefixLength\":1083309662}")
                 .toObject(IpRange.class);
-        Assertions.assertEquals("pzbchck", model.name());
-        Assertions.assertEquals("zqioxiysuii", model.address());
-        Assertions.assertEquals(1822288960, model.subnetPrefixLength());
+        Assertions.assertEquals("qkgh", model.name());
+        Assertions.assertEquals("ndzwmkrefa", model.address());
+        Assertions.assertEquals(1083309662, model.subnetPrefixLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpRange model = new IpRange().withName("pzbchck").withAddress("zqioxiysuii").withSubnetPrefixLength(1822288960);
+        IpRange model = new IpRange().withName("qkgh").withAddress("ndzwmkrefa").withSubnetPrefixLength(1083309662);
         model = BinaryData.fromObject(model).toObject(IpRange.class);
-        Assertions.assertEquals("pzbchck", model.name());
-        Assertions.assertEquals("zqioxiysuii", model.address());
-        Assertions.assertEquals(1822288960, model.subnetPrefixLength());
+        Assertions.assertEquals("qkgh", model.name());
+        Assertions.assertEquals("ndzwmkrefa", model.address());
+        Assertions.assertEquals(1083309662, model.subnetPrefixLength());
     }
 }

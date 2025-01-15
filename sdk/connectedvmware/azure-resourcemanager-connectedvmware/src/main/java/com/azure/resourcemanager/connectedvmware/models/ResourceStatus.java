@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The resource status information. */
+/**
+ * The resource status information.
+ */
 @Immutable
-public final class ResourceStatus {
+public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     /*
      * The type of the condition.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Status of the condition.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The reason for the condition's status.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /*
      * A human readable message indicating details about the status.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Severity with which to treat failures of this type of condition.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * The last update time for this condition.
      */
-    @JsonProperty(value = "lastUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedAt;
 
-    /** Creates an instance of ResourceStatus class. */
+    /**
+     * Creates an instance of ResourceStatus class.
+     */
     public ResourceStatus() {
     }
 
     /**
      * Get the type property: The type of the condition.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -62,7 +65,7 @@ public final class ResourceStatus {
 
     /**
      * Get the status property: Status of the condition.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -71,7 +74,7 @@ public final class ResourceStatus {
 
     /**
      * Get the reason property: The reason for the condition's status.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -80,7 +83,7 @@ public final class ResourceStatus {
 
     /**
      * Get the message property: A human readable message indicating details about the status.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -89,7 +92,7 @@ public final class ResourceStatus {
 
     /**
      * Get the severity property: Severity with which to treat failures of this type of condition.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -98,7 +101,7 @@ public final class ResourceStatus {
 
     /**
      * Get the lastUpdatedAt property: The last update time for this condition.
-     *
+     * 
      * @return the lastUpdatedAt value.
      */
     public OffsetDateTime lastUpdatedAt() {
@@ -107,9 +110,55 @@ public final class ResourceStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceStatus.
+     */
+    public static ResourceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceStatus deserializedResourceStatus = new ResourceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedResourceStatus.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedResourceStatus.status = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedResourceStatus.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedResourceStatus.message = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedResourceStatus.severity = reader.getString();
+                } else if ("lastUpdatedAt".equals(fieldName)) {
+                    deserializedResourceStatus.lastUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceStatus;
+        });
     }
 }

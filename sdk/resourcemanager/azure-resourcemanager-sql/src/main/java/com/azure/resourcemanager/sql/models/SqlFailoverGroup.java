@@ -15,38 +15,70 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Failover Group. */
 @Fluent
-public interface SqlFailoverGroup
-    extends Resource,
-        HasInnerModel<FailoverGroupInner>,
-        HasResourceGroup,
-        Refreshable<SqlFailoverGroup>,
-        Updatable<SqlFailoverGroup.Update> {
+public interface SqlFailoverGroup extends Resource, HasInnerModel<FailoverGroupInner>, HasResourceGroup,
+    Refreshable<SqlFailoverGroup>, Updatable<SqlFailoverGroup.Update> {
 
-    /** @return name of the SQL Server to which this Failover Group belongs */
+    /**
+     * Gets the name of the SQL Server to which this Failover Group belongs.
+     *
+     * @return name of the SQL Server to which this Failover Group belongs
+     */
     String sqlServerName();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the failover policy of the read-write endpoint for the failover group */
+    /**
+     * Gets the failover policy of the read-write endpoint for the failover group.
+     *
+     * @return the failover policy of the read-write endpoint for the failover group
+     */
     ReadWriteEndpointFailoverPolicy readWriteEndpointPolicy();
 
-    /** @return the grace period before failover with data loss is attempted for the read-write endpoint */
+    /**
+     * Gets the grace period before failover with data loss is attempted for the read-write endpoint.
+     *
+     * @return the grace period before failover with data loss is attempted for the read-write endpoint
+     */
     int readWriteEndpointDataLossGracePeriodMinutes();
 
-    /** @return the failover policy of the read-only endpoint for the failover group */
+    /**
+     * Gets the failover policy of the read-only endpoint for the failover group.
+     *
+     * @return the failover policy of the read-only endpoint for the failover group
+     */
     ReadOnlyEndpointFailoverPolicy readOnlyEndpointPolicy();
 
-    /** @return the local replication role of the failover group instance */
+    /**
+     * Gets the local replication role of the failover group instance.
+     *
+     * @return the local replication role of the failover group instance
+     */
     FailoverGroupReplicationRole replicationRole();
 
-    /** @return the replication state of the failover group instance */
+    /**
+     * Gets the replication state of the failover group instance.
+     *
+     * @return the replication state of the failover group instance
+     */
     String replicationState();
 
-    /** @return the list of partner server information for the failover group */
+    /**
+     * Gets the list of partner server information for the failover group.
+     *
+     * @return the list of partner server information for the failover group
+     */
     List<PartnerInfo> partnerServers();
 
-    /** @return the list of database IDs in the failover group */
+    /**
+     * Gets the list of database IDs in the failover group.
+     *
+     * @return the list of database IDs in the failover group
+     */
     List<String> databases();
 
     /** Deletes the Failover Group. */
@@ -60,12 +92,9 @@ public interface SqlFailoverGroup
     Mono<Void> deleteAsync();
 
     /** The template for a SQL Failover Group update operation, containing all the settings that can be modified. */
-    interface Update
-        extends SqlFailoverGroup.UpdateStages.WithReadWriteEndpointPolicy,
-            SqlFailoverGroup.UpdateStages.WithReadOnlyEndpointPolicy,
-            SqlFailoverGroup.UpdateStages.WithDatabase,
-            Resource.UpdateWithTags<SqlFailoverGroup.Update>,
-            Appliable<SqlFailoverGroup> {
+    interface Update extends SqlFailoverGroup.UpdateStages.WithReadWriteEndpointPolicy,
+        SqlFailoverGroup.UpdateStages.WithReadOnlyEndpointPolicy, SqlFailoverGroup.UpdateStages.WithDatabase,
+        Resource.UpdateWithTags<SqlFailoverGroup.Update>, Appliable<SqlFailoverGroup> {
     }
 
     /** Grouping of all the SQL Virtual Network Rule update stages. */
@@ -79,8 +108,8 @@ public interface SqlFailoverGroup
              *     read-write endpoint
              * @return the next stage of the definition
              */
-            SqlFailoverGroup.Update withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(
-                int gracePeriodInMinutes);
+            SqlFailoverGroup.Update
+                withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(int gracePeriodInMinutes);
 
             /**
              * Sets the SQL Failover Group read-write endpoint failover policy as "Manual".

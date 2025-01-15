@@ -5,27 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Allocation state.
- *
- * <p>Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There
- * are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is
- * created and when no operations are being performed on the compute to change the number of compute nodes. resizing -
- * Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the compute.
+ * 
+ * Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are
+ * no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is created
+ * and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates
+ * that the compute is resizing; that is, compute nodes are being added to or removed from the compute.
  */
 public final class AllocationState extends ExpandableStringEnum<AllocationState> {
-    /** Static value Steady for AllocationState. */
+    /**
+     * Static value Steady for AllocationState.
+     */
     public static final AllocationState STEADY = fromString("Steady");
 
-    /** Static value Resizing for AllocationState. */
+    /**
+     * Static value Resizing for AllocationState.
+     */
     public static final AllocationState RESIZING = fromString("Resizing");
 
     /**
      * Creates a new instance of AllocationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +37,17 @@ public final class AllocationState extends ExpandableStringEnum<AllocationState>
 
     /**
      * Creates or finds a AllocationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AllocationState.
      */
-    @JsonCreator
     public static AllocationState fromString(String name) {
         return fromString(name, AllocationState.class);
     }
 
     /**
      * Gets known AllocationState values.
-     *
+     * 
      * @return known AllocationState values.
      */
     public static Collection<AllocationState> values() {

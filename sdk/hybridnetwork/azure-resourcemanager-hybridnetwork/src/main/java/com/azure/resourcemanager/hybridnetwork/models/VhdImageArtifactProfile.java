@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Vhd artifact profile.
  */
 @Fluent
-public final class VhdImageArtifactProfile {
+public final class VhdImageArtifactProfile implements JsonSerializable<VhdImageArtifactProfile> {
     /*
      * Vhd name.
      */
-    @JsonProperty(value = "vhdName")
     private String vhdName;
 
     /*
      * Vhd version.
      */
-    @JsonProperty(value = "vhdVersion")
     private String vhdVersion;
 
     /**
@@ -76,5 +78,44 @@ public final class VhdImageArtifactProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vhdName", this.vhdName);
+        jsonWriter.writeStringField("vhdVersion", this.vhdVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VhdImageArtifactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VhdImageArtifactProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VhdImageArtifactProfile.
+     */
+    public static VhdImageArtifactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VhdImageArtifactProfile deserializedVhdImageArtifactProfile = new VhdImageArtifactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vhdName".equals(fieldName)) {
+                    deserializedVhdImageArtifactProfile.vhdName = reader.getString();
+                } else if ("vhdVersion".equals(fieldName)) {
+                    deserializedVhdImageArtifactProfile.vhdVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVhdImageArtifactProfile;
+        });
     }
 }

@@ -25,7 +25,8 @@ public abstract class CallResult {
      */
     private final CallConnectionAsync callConnectionAsync;
 
-    CallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    CallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         this.callConnectionProperties = callConnectionProperties;
         this.callConnection = callConnection;
         this.callConnectionAsync = callConnectionAsync;

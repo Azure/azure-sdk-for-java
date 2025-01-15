@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.VMGuestPatchClassificationWindows;
 import com.azure.resourcemanager.compute.models.VMGuestPatchRebootSetting;
+import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.WindowsParameters;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class VirtualMachinesInstallPatchesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_InstallPatches.json
      */
     /**

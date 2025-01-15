@@ -17,15 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to virtual network management API in Azure. */
 @Fluent()
-public interface Networks
-    extends SupportsCreating<Network.DefinitionStages.Blank>,
-        SupportsListing<Network>,
-        SupportsListingByResourceGroup<Network>,
-        SupportsGettingByResourceGroup<Network>,
-        SupportsGettingById<Network>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<Network>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface Networks extends SupportsCreating<Network.DefinitionStages.Blank>, SupportsListing<Network>,
+    SupportsListingByResourceGroup<Network>, SupportsGettingByResourceGroup<Network>, SupportsGettingById<Network>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<Network>, SupportsBatchDeletion,
+    HasManager<NetworkManager> {
 }

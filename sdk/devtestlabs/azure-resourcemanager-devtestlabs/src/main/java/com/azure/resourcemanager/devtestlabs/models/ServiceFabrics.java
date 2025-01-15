@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServiceFabrics. */
+/**
+ * Resource collection API of ServiceFabrics.
+ */
 public interface ServiceFabrics {
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -25,7 +27,7 @@ public interface ServiceFabrics {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -39,19 +41,12 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServiceFabric> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ServiceFabric> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -63,12 +58,12 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service fabric along with {@link Response}.
      */
-    Response<ServiceFabric> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<ServiceFabric> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -82,7 +77,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -95,7 +90,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -109,7 +104,7 @@ public interface ServiceFabrics {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -120,12 +115,12 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedules applicable to a virtual machine along with {@link Response}.
      */
-    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(String resourceGroupName, String labName,
+        String username, String name, Context context);
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -139,7 +134,7 @@ public interface ServiceFabrics {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -152,7 +147,7 @@ public interface ServiceFabrics {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -166,7 +161,7 @@ public interface ServiceFabrics {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -179,7 +174,7 @@ public interface ServiceFabrics {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -193,7 +188,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,7 +199,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
      * @param context The context to associate with this operation.
@@ -217,7 +212,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,7 +222,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +233,7 @@ public interface ServiceFabrics {
 
     /**
      * Begins definition for a new ServiceFabric resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ServiceFabric definition.
      */

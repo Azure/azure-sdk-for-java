@@ -6,8 +6,11 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,140 +18,120 @@ import java.util.Map;
  * Cluster profile.
  */
 @Fluent
-public final class ClusterProfile {
+public final class ClusterProfile implements JsonSerializable<ClusterProfile> {
     /*
      * Version with 3/4 part.
      */
-    @JsonProperty(value = "clusterVersion", required = true)
     private String clusterVersion;
 
     /*
      * Version with three part.
      */
-    @JsonProperty(value = "ossVersion", required = true)
     private String ossVersion;
 
     /*
      * Component list of this cluster type and version.
      */
-    @JsonProperty(value = "components", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClusterComponentsItem> components;
+
+    /*
+     * This is deprecated. Please use managed identity profile instead.
+     */
+    private IdentityProfile identityProfile;
 
     /*
      * This property is required by Trino, Spark and Flink cluster but is optional for Kafka cluster.
      */
-    @JsonProperty(value = "identityProfile")
-    private IdentityProfile identityProfile;
+    private ManagedIdentityProfile managedIdentityProfile;
 
     /*
      * Authorization profile with details of AAD user Ids and group Ids authorized for data plane access.
      */
-    @JsonProperty(value = "authorizationProfile", required = true)
     private AuthorizationProfile authorizationProfile;
 
     /*
      * The cluster secret profile.
      */
-    @JsonProperty(value = "secretsProfile")
     private SecretsProfile secretsProfile;
 
     /*
      * The service configs profiles.
      */
-    @JsonProperty(value = "serviceConfigsProfiles")
     private List<ClusterServiceConfigsProfile> serviceConfigsProfiles;
 
     /*
      * Cluster connectivity profile.
      */
-    @JsonProperty(value = "connectivityProfile", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectivityProfile connectivityProfile;
 
     /*
      * Cluster access profile.
      */
-    @JsonProperty(value = "clusterAccessProfile")
     private ClusterAccessProfile clusterAccessProfile;
 
     /*
      * Cluster log analytics profile to enable or disable OMS agent for cluster.
      */
-    @JsonProperty(value = "logAnalyticsProfile")
     private ClusterLogAnalyticsProfile logAnalyticsProfile;
 
     /*
      * Cluster Prometheus profile.
      */
-    @JsonProperty(value = "prometheusProfile")
     private ClusterPrometheusProfile prometheusProfile;
 
     /*
      * Ssh profile for the cluster.
      */
-    @JsonProperty(value = "sshProfile")
     private SshProfile sshProfile;
 
     /*
-     * This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with
-     * Autoscale.
+     * This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with Autoscale.
      */
-    @JsonProperty(value = "autoscaleProfile")
     private AutoscaleProfile autoscaleProfile;
 
     /*
      * Cluster Ranger plugin profile.
      */
-    @JsonProperty(value = "rangerPluginProfile")
     private ClusterRangerPluginProfile rangerPluginProfile;
 
     /*
      * The Kafka cluster profile.
      */
-    @JsonProperty(value = "kafkaProfile")
     private KafkaProfile kafkaProfile;
 
     /*
      * Trino Cluster profile.
      */
-    @JsonProperty(value = "trinoProfile")
     private TrinoProfile trinoProfile;
 
     /*
      * LLAP cluster profile.
      */
-    @JsonProperty(value = "llapProfile")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> llapProfile;
 
     /*
      * The Flink cluster profile.
      */
-    @JsonProperty(value = "flinkProfile")
     private FlinkProfile flinkProfile;
 
     /*
      * The spark cluster profile.
      */
-    @JsonProperty(value = "sparkProfile")
     private SparkProfile sparkProfile;
 
     /*
      * The ranger cluster profile.
      */
-    @JsonProperty(value = "rangerProfile")
     private RangerProfile rangerProfile;
 
     /*
      * Stub cluster profile.
      */
-    @JsonProperty(value = "stubProfile")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> stubProfile;
 
     /*
      * The script action profile list.
      */
-    @JsonProperty(value = "scriptActionProfiles")
     private List<ScriptActionProfile> scriptActionProfiles;
 
     /**
@@ -207,8 +190,7 @@ public final class ClusterProfile {
     }
 
     /**
-     * Get the identityProfile property: This property is required by Trino, Spark and Flink cluster but is optional
-     * for Kafka cluster.
+     * Get the identityProfile property: This is deprecated. Please use managed identity profile instead.
      * 
      * @return the identityProfile value.
      */
@@ -217,14 +199,35 @@ public final class ClusterProfile {
     }
 
     /**
-     * Set the identityProfile property: This property is required by Trino, Spark and Flink cluster but is optional
-     * for Kafka cluster.
+     * Set the identityProfile property: This is deprecated. Please use managed identity profile instead.
      * 
      * @param identityProfile the identityProfile value to set.
      * @return the ClusterProfile object itself.
      */
     public ClusterProfile withIdentityProfile(IdentityProfile identityProfile) {
         this.identityProfile = identityProfile;
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityProfile property: This property is required by Trino, Spark and Flink cluster but is
+     * optional for Kafka cluster.
+     * 
+     * @return the managedIdentityProfile value.
+     */
+    public ManagedIdentityProfile managedIdentityProfile() {
+        return this.managedIdentityProfile;
+    }
+
+    /**
+     * Set the managedIdentityProfile property: This property is required by Trino, Spark and Flink cluster but is
+     * optional for Kafka cluster.
+     * 
+     * @param managedIdentityProfile the managedIdentityProfile value to set.
+     * @return the ClusterProfile object itself.
+     */
+    public ClusterProfile withManagedIdentityProfile(ManagedIdentityProfile managedIdentityProfile) {
+        this.managedIdentityProfile = managedIdentityProfile;
         return this;
     }
 
@@ -588,12 +591,12 @@ public final class ClusterProfile {
      */
     public void validate() {
         if (clusterVersion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property clusterVersion in model ClusterProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property clusterVersion in model ClusterProfile"));
         }
         if (ossVersion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ossVersion in model ClusterProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ossVersion in model ClusterProfile"));
         }
         if (components() != null) {
             components().forEach(e -> e.validate());
@@ -601,9 +604,13 @@ public final class ClusterProfile {
         if (identityProfile() != null) {
             identityProfile().validate();
         }
+        if (managedIdentityProfile() != null) {
+            managedIdentityProfile().validate();
+        }
         if (authorizationProfile() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property authorizationProfile in model ClusterProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authorizationProfile in model ClusterProfile"));
         } else {
             authorizationProfile().validate();
         }
@@ -655,4 +662,115 @@ public final class ClusterProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterVersion", this.clusterVersion);
+        jsonWriter.writeStringField("ossVersion", this.ossVersion);
+        jsonWriter.writeJsonField("authorizationProfile", this.authorizationProfile);
+        jsonWriter.writeJsonField("identityProfile", this.identityProfile);
+        jsonWriter.writeJsonField("managedIdentityProfile", this.managedIdentityProfile);
+        jsonWriter.writeJsonField("secretsProfile", this.secretsProfile);
+        jsonWriter.writeArrayField("serviceConfigsProfiles", this.serviceConfigsProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("clusterAccessProfile", this.clusterAccessProfile);
+        jsonWriter.writeJsonField("logAnalyticsProfile", this.logAnalyticsProfile);
+        jsonWriter.writeJsonField("prometheusProfile", this.prometheusProfile);
+        jsonWriter.writeJsonField("sshProfile", this.sshProfile);
+        jsonWriter.writeJsonField("autoscaleProfile", this.autoscaleProfile);
+        jsonWriter.writeJsonField("rangerPluginProfile", this.rangerPluginProfile);
+        jsonWriter.writeJsonField("kafkaProfile", this.kafkaProfile);
+        jsonWriter.writeJsonField("trinoProfile", this.trinoProfile);
+        jsonWriter.writeMapField("llapProfile", this.llapProfile, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("flinkProfile", this.flinkProfile);
+        jsonWriter.writeJsonField("sparkProfile", this.sparkProfile);
+        jsonWriter.writeJsonField("rangerProfile", this.rangerProfile);
+        jsonWriter.writeMapField("stubProfile", this.stubProfile, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("scriptActionProfiles", this.scriptActionProfiles,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterProfile.
+     */
+    public static ClusterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProfile deserializedClusterProfile = new ClusterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterVersion".equals(fieldName)) {
+                    deserializedClusterProfile.clusterVersion = reader.getString();
+                } else if ("ossVersion".equals(fieldName)) {
+                    deserializedClusterProfile.ossVersion = reader.getString();
+                } else if ("authorizationProfile".equals(fieldName)) {
+                    deserializedClusterProfile.authorizationProfile = AuthorizationProfile.fromJson(reader);
+                } else if ("components".equals(fieldName)) {
+                    List<ClusterComponentsItem> components
+                        = reader.readArray(reader1 -> ClusterComponentsItem.fromJson(reader1));
+                    deserializedClusterProfile.components = components;
+                } else if ("identityProfile".equals(fieldName)) {
+                    deserializedClusterProfile.identityProfile = IdentityProfile.fromJson(reader);
+                } else if ("managedIdentityProfile".equals(fieldName)) {
+                    deserializedClusterProfile.managedIdentityProfile = ManagedIdentityProfile.fromJson(reader);
+                } else if ("secretsProfile".equals(fieldName)) {
+                    deserializedClusterProfile.secretsProfile = SecretsProfile.fromJson(reader);
+                } else if ("serviceConfigsProfiles".equals(fieldName)) {
+                    List<ClusterServiceConfigsProfile> serviceConfigsProfiles
+                        = reader.readArray(reader1 -> ClusterServiceConfigsProfile.fromJson(reader1));
+                    deserializedClusterProfile.serviceConfigsProfiles = serviceConfigsProfiles;
+                } else if ("connectivityProfile".equals(fieldName)) {
+                    deserializedClusterProfile.connectivityProfile = ConnectivityProfile.fromJson(reader);
+                } else if ("clusterAccessProfile".equals(fieldName)) {
+                    deserializedClusterProfile.clusterAccessProfile = ClusterAccessProfile.fromJson(reader);
+                } else if ("logAnalyticsProfile".equals(fieldName)) {
+                    deserializedClusterProfile.logAnalyticsProfile = ClusterLogAnalyticsProfile.fromJson(reader);
+                } else if ("prometheusProfile".equals(fieldName)) {
+                    deserializedClusterProfile.prometheusProfile = ClusterPrometheusProfile.fromJson(reader);
+                } else if ("sshProfile".equals(fieldName)) {
+                    deserializedClusterProfile.sshProfile = SshProfile.fromJson(reader);
+                } else if ("autoscaleProfile".equals(fieldName)) {
+                    deserializedClusterProfile.autoscaleProfile = AutoscaleProfile.fromJson(reader);
+                } else if ("rangerPluginProfile".equals(fieldName)) {
+                    deserializedClusterProfile.rangerPluginProfile = ClusterRangerPluginProfile.fromJson(reader);
+                } else if ("kafkaProfile".equals(fieldName)) {
+                    deserializedClusterProfile.kafkaProfile = KafkaProfile.fromJson(reader);
+                } else if ("trinoProfile".equals(fieldName)) {
+                    deserializedClusterProfile.trinoProfile = TrinoProfile.fromJson(reader);
+                } else if ("llapProfile".equals(fieldName)) {
+                    Map<String, Object> llapProfile = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedClusterProfile.llapProfile = llapProfile;
+                } else if ("flinkProfile".equals(fieldName)) {
+                    deserializedClusterProfile.flinkProfile = FlinkProfile.fromJson(reader);
+                } else if ("sparkProfile".equals(fieldName)) {
+                    deserializedClusterProfile.sparkProfile = SparkProfile.fromJson(reader);
+                } else if ("rangerProfile".equals(fieldName)) {
+                    deserializedClusterProfile.rangerProfile = RangerProfile.fromJson(reader);
+                } else if ("stubProfile".equals(fieldName)) {
+                    Map<String, Object> stubProfile = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedClusterProfile.stubProfile = stubProfile;
+                } else if ("scriptActionProfiles".equals(fieldName)) {
+                    List<ScriptActionProfile> scriptActionProfiles
+                        = reader.readArray(reader1 -> ScriptActionProfile.fromJson(reader1));
+                    deserializedClusterProfile.scriptActionProfiles = scriptActionProfiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProfile;
+        });
+    }
 }

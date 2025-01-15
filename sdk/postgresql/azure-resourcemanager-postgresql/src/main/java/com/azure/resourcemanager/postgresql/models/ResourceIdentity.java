@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/**
+ * Azure Active Directory identity configuration for a resource.
+ */
 @Fluent
-public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
+public final class ResourceIdentity implements JsonSerializable<ResourceIdentity> {
     /*
      * The Azure Active Directory principal id.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
-     * The identity type. Set this to 'SystemAssigned' in order to
-     * automatically create and assign an Azure Active Directory principal for
-     * the resource.
+     * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+     * Directory principal for the resource.
      */
-    @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
      * The Azure Active Directory tenant id.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /**
+     * Creates an instance of ResourceIdentity class.
+     */
+    public ResourceIdentity() {
+    }
+
+    /**
      * Get the principalId property: The Azure Active Directory principal id.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -47,7 +51,7 @@ public class ResourceIdentity {
     /**
      * Get the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
      * assign an Azure Active Directory principal for the resource.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -57,7 +61,7 @@ public class ResourceIdentity {
     /**
      * Set the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
      * assign an Azure Active Directory principal for the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -68,7 +72,7 @@ public class ResourceIdentity {
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -77,9 +81,51 @@ public class ResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceIdentity.
+     */
+    public static ResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceIdentity deserializedResourceIdentity = new ResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedResourceIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceIdentity.type = IdentityType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedResourceIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceIdentity;
+        });
     }
 }

@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for DataTransferServiceResource.
+ * Properties for Create or Update request for DataTransferServiceResource.
  */
 @Fluent
 public final class DataTransferServiceResourceCreateUpdateParameters extends ServiceResourceCreateUpdateProperties {
@@ -61,7 +61,6 @@ public final class DataTransferServiceResourceCreateUpdateParameters extends Ser
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

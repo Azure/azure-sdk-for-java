@@ -53,8 +53,8 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
     }
 
     /**
-     * Get the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period
-     * value. This timespan is applied in addition to any that are specified in the query expression.
+     * Get the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period value.
+     * This timespan is applied in addition to any that are specified in the query expression.
      * 
      * @return the timespan value.
      */
@@ -63,8 +63,8 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
     }
 
     /**
-     * Set the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period
-     * value. This timespan is applied in addition to any that are specified in the query expression.
+     * Set the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period value.
+     * This timespan is applied in addition to any that are specified in the query expression.
      * 
      * @param timespan the timespan value to set.
      * @return the QueryBody object itself.
@@ -94,6 +94,9 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

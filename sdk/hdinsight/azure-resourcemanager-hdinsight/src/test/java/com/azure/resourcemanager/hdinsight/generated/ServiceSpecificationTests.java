@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"metricSpecifications\":[{\"name\":\"vxilcbt\",\"displayName\":\"hnze\",\"displayDescription\":\"xtjjfzqlqhycav\",\"unit\":\"ggxdb\",\"aggregationType\":\"smieknlra\",\"supportedAggregationTypes\":[\"awiuagyd\",\"qfby\",\"yr\",\"giagtcojo\"],\"supportedTimeGrainTypes\":[\"ogfnzjvusf\",\"ld\",\"ozuxylfsbtkadpys\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"tgkbugrjqctojc\",\"sourceMdmNamespace\":\"sofieypefojyqd\",\"metricFilterPattern\":\"u\",\"fillGapWithZero\":false,\"category\":\"lcwkhihihlhz\",\"resourceIdDimensionNameOverride\":\"qtz\",\"isInternal\":true,\"delegateMetricNameOverride\":\"nowc\",\"dimensions\":[{\"name\":\"mvec\",\"displayName\":\"txmwoteyow\",\"internalName\":\"uqovekqvgqouwif\",\"toBeExportedForShoebox\":false},{\"name\":\"wyivqikf\",\"displayName\":\"vhrfsphuagrt\",\"internalName\":\"kteusqczk\",\"toBeExportedForShoebox\":false},{\"name\":\"xubyjaffmmfblcqc\",\"displayName\":\"bgq\",\"internalName\":\"rtalmet\",\"toBeExportedForShoebox\":false},{\"name\":\"dslqxihhrmooizqs\",\"displayName\":\"pxiutc\",\"internalName\":\"pzhyr\",\"toBeExportedForShoebox\":true}]}]}")
-                .toObject(ServiceSpecification.class);
+        ServiceSpecification model = BinaryData.fromString(
+            "{\"metricSpecifications\":[{\"name\":\"vxilcbt\",\"displayName\":\"hnze\",\"displayDescription\":\"xtjjfzqlqhycav\",\"unit\":\"ggxdb\",\"aggregationType\":\"smieknlra\",\"supportedAggregationTypes\":[\"awiuagyd\",\"qfby\",\"yr\",\"giagtcojo\"],\"supportedTimeGrainTypes\":[\"ogfnzjvusf\",\"ld\",\"ozuxylfsbtkadpys\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"tgkbugrjqctojc\",\"sourceMdmNamespace\":\"sofieypefojyqd\",\"metricFilterPattern\":\"u\",\"fillGapWithZero\":false,\"category\":\"lcwkhihihlhz\",\"resourceIdDimensionNameOverride\":\"qtz\",\"isInternal\":true,\"delegateMetricNameOverride\":\"nowc\",\"dimensions\":[{\"name\":\"mvec\",\"displayName\":\"txmwoteyow\",\"internalName\":\"uqovekqvgqouwif\",\"toBeExportedForShoebox\":false},{\"name\":\"wyivqikf\",\"displayName\":\"vhrfsphuagrt\",\"internalName\":\"kteusqczk\",\"toBeExportedForShoebox\":false},{\"name\":\"xubyjaffmmfblcqc\",\"displayName\":\"bgq\",\"internalName\":\"rtalmet\",\"toBeExportedForShoebox\":false},{\"name\":\"dslqxihhrmooizqs\",\"displayName\":\"pxiutc\",\"internalName\":\"pzhyr\",\"toBeExportedForShoebox\":true}]}]}")
+            .toObject(ServiceSpecification.class);
         Assertions.assertEquals("vxilcbt", model.metricSpecifications().get(0).name());
         Assertions.assertEquals("hnze", model.metricSpecifications().get(0).displayName());
         Assertions.assertEquals("xtjjfzqlqhycav", model.metricSpecifications().get(0).displayDescription());
@@ -37,59 +35,48 @@ public final class ServiceSpecificationTests {
         Assertions.assertEquals("nowc", model.metricSpecifications().get(0).delegateMetricNameOverride());
         Assertions.assertEquals("mvec", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("txmwoteyow", model.metricSpecifications().get(0).dimensions().get(0).displayName());
-        Assertions
-            .assertEquals("uqovekqvgqouwif", model.metricSpecifications().get(0).dimensions().get(0).internalName());
-        Assertions
-            .assertEquals(false, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());
+        Assertions.assertEquals("uqovekqvgqouwif",
+            model.metricSpecifications().get(0).dimensions().get(0).internalName());
+        Assertions.assertEquals(false,
+            model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceSpecification model =
-            new ServiceSpecification()
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new MetricSpecifications()
-                                .withName("vxilcbt")
-                                .withDisplayName("hnze")
-                                .withDisplayDescription("xtjjfzqlqhycav")
-                                .withUnit("ggxdb")
-                                .withAggregationType("smieknlra")
-                                .withSupportedAggregationTypes(Arrays.asList("awiuagyd", "qfby", "yr", "giagtcojo"))
-                                .withSupportedTimeGrainTypes(Arrays.asList("ogfnzjvusf", "ld", "ozuxylfsbtkadpys"))
-                                .withEnableRegionalMdmAccount(true)
-                                .withSourceMdmAccount("tgkbugrjqctojc")
-                                .withSourceMdmNamespace("sofieypefojyqd")
-                                .withMetricFilterPattern("u")
-                                .withFillGapWithZero(false)
-                                .withCategory("lcwkhihihlhz")
-                                .withResourceIdDimensionNameOverride("qtz")
-                                .withIsInternal(true)
-                                .withDelegateMetricNameOverride("nowc")
-                                .withDimensions(
-                                    Arrays
-                                        .asList(
-                                            new Dimension()
-                                                .withName("mvec")
-                                                .withDisplayName("txmwoteyow")
-                                                .withInternalName("uqovekqvgqouwif")
-                                                .withToBeExportedForShoebox(false),
-                                            new Dimension()
-                                                .withName("wyivqikf")
-                                                .withDisplayName("vhrfsphuagrt")
-                                                .withInternalName("kteusqczk")
-                                                .withToBeExportedForShoebox(false),
-                                            new Dimension()
-                                                .withName("xubyjaffmmfblcqc")
-                                                .withDisplayName("bgq")
-                                                .withInternalName("rtalmet")
-                                                .withToBeExportedForShoebox(false),
-                                            new Dimension()
-                                                .withName("dslqxihhrmooizqs")
-                                                .withDisplayName("pxiutc")
-                                                .withInternalName("pzhyr")
-                                                .withToBeExportedForShoebox(true)))));
+        ServiceSpecification model = new ServiceSpecification()
+            .withMetricSpecifications(Arrays.asList(new MetricSpecifications().withName("vxilcbt")
+                .withDisplayName("hnze")
+                .withDisplayDescription("xtjjfzqlqhycav")
+                .withUnit("ggxdb")
+                .withAggregationType("smieknlra")
+                .withSupportedAggregationTypes(Arrays.asList("awiuagyd", "qfby", "yr", "giagtcojo"))
+                .withSupportedTimeGrainTypes(Arrays.asList("ogfnzjvusf", "ld", "ozuxylfsbtkadpys"))
+                .withEnableRegionalMdmAccount(true)
+                .withSourceMdmAccount("tgkbugrjqctojc")
+                .withSourceMdmNamespace("sofieypefojyqd")
+                .withMetricFilterPattern("u")
+                .withFillGapWithZero(false)
+                .withCategory("lcwkhihihlhz")
+                .withResourceIdDimensionNameOverride("qtz")
+                .withIsInternal(true)
+                .withDelegateMetricNameOverride("nowc")
+                .withDimensions(Arrays.asList(
+                    new Dimension().withName("mvec")
+                        .withDisplayName("txmwoteyow")
+                        .withInternalName("uqovekqvgqouwif")
+                        .withToBeExportedForShoebox(false),
+                    new Dimension().withName("wyivqikf")
+                        .withDisplayName("vhrfsphuagrt")
+                        .withInternalName("kteusqczk")
+                        .withToBeExportedForShoebox(false),
+                    new Dimension().withName("xubyjaffmmfblcqc")
+                        .withDisplayName("bgq")
+                        .withInternalName("rtalmet")
+                        .withToBeExportedForShoebox(false),
+                    new Dimension().withName("dslqxihhrmooizqs")
+                        .withDisplayName("pxiutc")
+                        .withInternalName("pzhyr")
+                        .withToBeExportedForShoebox(true)))));
         model = BinaryData.fromObject(model).toObject(ServiceSpecification.class);
         Assertions.assertEquals("vxilcbt", model.metricSpecifications().get(0).name());
         Assertions.assertEquals("hnze", model.metricSpecifications().get(0).displayName());
@@ -109,9 +96,9 @@ public final class ServiceSpecificationTests {
         Assertions.assertEquals("nowc", model.metricSpecifications().get(0).delegateMetricNameOverride());
         Assertions.assertEquals("mvec", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("txmwoteyow", model.metricSpecifications().get(0).dimensions().get(0).displayName());
-        Assertions
-            .assertEquals("uqovekqvgqouwif", model.metricSpecifications().get(0).dimensions().get(0).internalName());
-        Assertions
-            .assertEquals(false, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());
+        Assertions.assertEquals("uqovekqvgqouwif",
+            model.metricSpecifications().get(0).dimensions().get(0).internalName());
+        Assertions.assertEquals(false,
+            model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());
     }
 }

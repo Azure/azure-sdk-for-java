@@ -25,23 +25,28 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunOperationsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunOperationsClient.
+ */
 public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowRunOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowRunOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunOperationsClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(WorkflowRunOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowRunOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,27 +57,20 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
     public interface WorkflowRunOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowRunInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowRunInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -83,19 +81,15 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
      * @return an operation for a run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowRunInner>> getWithResponseAsync(
-        String resourceGroupName, String workflowName, String runName, String operationId) {
+    private Mono<Response<WorkflowRunInner>> getWithResponseAsync(String resourceGroupName, String workflowName,
+        String runName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,25 +106,14 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workflowName, runName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -142,19 +125,15 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
      * @return an operation for a run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowRunInner>> getWithResponseAsync(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context) {
+    private Mono<Response<WorkflowRunInner>> getWithResponseAsync(String resourceGroupName, String workflowName,
+        String runName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,22 +150,13 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workflowName,
+            runName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -197,15 +167,15 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
      * @return an operation for a run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkflowRunInner> getAsync(
-        String resourceGroupName, String workflowName, String runName, String operationId) {
+    private Mono<WorkflowRunInner> getAsync(String resourceGroupName, String workflowName, String runName,
+        String operationId) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -217,14 +187,14 @@ public final class WorkflowRunOperationsClientImpl implements WorkflowRunOperati
      * @return an operation for a run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowRunInner> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context) {
+    public Response<WorkflowRunInner> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, operationId, context).block();
     }
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

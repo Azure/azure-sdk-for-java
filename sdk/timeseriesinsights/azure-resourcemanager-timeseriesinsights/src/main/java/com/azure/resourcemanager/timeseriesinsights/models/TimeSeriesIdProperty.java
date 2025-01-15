@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The structure of the property that a time series id can have. An environment can have multiple such properties. */
+/**
+ * The structure of the property that a time series id can have. An environment can have multiple such properties.
+ */
 @Fluent
-public final class TimeSeriesIdProperty {
+public final class TimeSeriesIdProperty implements JsonSerializable<TimeSeriesIdProperty> {
     /*
      * The name of the property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the property.
      */
-    @JsonProperty(value = "type")
     private PropertyType type;
 
-    /** Creates an instance of TimeSeriesIdProperty class. */
+    /**
+     * Creates an instance of TimeSeriesIdProperty class.
+     */
     public TimeSeriesIdProperty() {
     }
 
     /**
      * Get the name property: The name of the property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class TimeSeriesIdProperty {
 
     /**
      * Set the name property: The name of the property.
-     *
+     * 
      * @param name the name value to set.
      * @return the TimeSeriesIdProperty object itself.
      */
@@ -48,7 +54,7 @@ public final class TimeSeriesIdProperty {
 
     /**
      * Get the type property: The type of the property.
-     *
+     * 
      * @return the type value.
      */
     public PropertyType type() {
@@ -57,7 +63,7 @@ public final class TimeSeriesIdProperty {
 
     /**
      * Set the type property: The type of the property.
-     *
+     * 
      * @param type the type value to set.
      * @return the TimeSeriesIdProperty object itself.
      */
@@ -68,9 +74,48 @@ public final class TimeSeriesIdProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeSeriesIdProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeSeriesIdProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimeSeriesIdProperty.
+     */
+    public static TimeSeriesIdProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeSeriesIdProperty deserializedTimeSeriesIdProperty = new TimeSeriesIdProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTimeSeriesIdProperty.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTimeSeriesIdProperty.type = PropertyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeSeriesIdProperty;
+        });
     }
 }

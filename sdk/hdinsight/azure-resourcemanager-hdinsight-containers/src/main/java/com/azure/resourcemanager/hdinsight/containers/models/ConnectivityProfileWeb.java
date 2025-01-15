@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Web connectivity endpoint details.
@@ -43,5 +47,45 @@ public final class ConnectivityProfileWeb extends WebConnectivityEndpoint {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fqdn", fqdn());
+        jsonWriter.writeStringField("privateFqdn", privateFqdn());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityProfileWeb from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityProfileWeb if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityProfileWeb.
+     */
+    public static ConnectivityProfileWeb fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityProfileWeb deserializedConnectivityProfileWeb = new ConnectivityProfileWeb();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fqdn".equals(fieldName)) {
+                    deserializedConnectivityProfileWeb.withFqdn(reader.getString());
+                } else if ("privateFqdn".equals(fieldName)) {
+                    deserializedConnectivityProfileWeb.withPrivateFqdn(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityProfileWeb;
+        });
     }
 }

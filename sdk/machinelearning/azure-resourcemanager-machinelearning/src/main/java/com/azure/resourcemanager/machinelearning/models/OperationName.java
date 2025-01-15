@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of the last operation. */
+/**
+ * Name of the last operation.
+ */
 public final class OperationName extends ExpandableStringEnum<OperationName> {
-    /** Static value Create for OperationName. */
+    /**
+     * Static value Create for OperationName.
+     */
     public static final OperationName CREATE = fromString("Create");
 
-    /** Static value Start for OperationName. */
+    /**
+     * Static value Start for OperationName.
+     */
     public static final OperationName START = fromString("Start");
 
-    /** Static value Stop for OperationName. */
+    /**
+     * Static value Stop for OperationName.
+     */
     public static final OperationName STOP = fromString("Stop");
 
-    /** Static value Restart for OperationName. */
+    /**
+     * Static value Restart for OperationName.
+     */
     public static final OperationName RESTART = fromString("Restart");
 
-    /** Static value Reimage for OperationName. */
+    /**
+     * Static value Reimage for OperationName.
+     */
     public static final OperationName REIMAGE = fromString("Reimage");
 
-    /** Static value Delete for OperationName. */
+    /**
+     * Static value Delete for OperationName.
+     */
     public static final OperationName DELETE = fromString("Delete");
 
     /**
      * Creates a new instance of OperationName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class OperationName extends ExpandableStringEnum<OperationName> {
 
     /**
      * Creates or finds a OperationName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationName.
      */
-    @JsonCreator
     public static OperationName fromString(String name) {
         return fromString(name, OperationName.class);
     }
 
     /**
      * Gets known OperationName values.
-     *
+     * 
      * @return known OperationName values.
      */
     public static Collection<OperationName> values() {

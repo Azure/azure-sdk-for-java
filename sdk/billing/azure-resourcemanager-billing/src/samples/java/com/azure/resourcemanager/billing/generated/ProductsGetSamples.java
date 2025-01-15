@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Products Get. */
+/**
+ * Samples for Products Get.
+ */
 public final class ProductsGetSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/Product.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsGet.json
      */
     /**
-     * Sample code: Product.
-     *
+     * Sample code: ProductsGet.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void product(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.products().getWithResponse("{billingAccountName}", "{productName}", com.azure.core.util.Context.NONE);
+    public static void productsGet(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.products()
+            .getWithResponse("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "11111111-1111-1111-1111-111111111111", com.azure.core.util.Context.NONE);
     }
 }

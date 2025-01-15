@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.springappdiscovery.fluent.models.SpringbootsitesModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The springbootsites list resource definition.
  */
 @Fluent
-public final class SpringbootsitesListResult {
+public final class SpringbootsitesListResult implements JsonSerializable<SpringbootsitesListResult> {
     /*
      * The springbootsites list.
      */
-    @JsonProperty(value = "value")
     private List<SpringbootsitesModelInner> value;
 
     /*
      * The link used to get the next page of springbootsites resources list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class SpringbootsitesListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpringbootsitesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpringbootsitesListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpringbootsitesListResult.
+     */
+    public static SpringbootsitesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpringbootsitesListResult deserializedSpringbootsitesListResult = new SpringbootsitesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SpringbootsitesModelInner> value
+                        = reader.readArray(reader1 -> SpringbootsitesModelInner.fromJson(reader1));
+                    deserializedSpringbootsitesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSpringbootsitesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpringbootsitesListResult;
+        });
     }
 }

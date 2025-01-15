@@ -10,14 +10,14 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 @Fluent
 public interface SqlVirtualNetworkRuleOperations
     extends SupportsCreating<SqlVirtualNetworkRuleOperations.DefinitionStages.WithSqlServer>,
-        SqlChildrenOperations<SqlVirtualNetworkRule> {
+    SqlChildrenOperations<SqlVirtualNetworkRule> {
 
     /** Container interface for all the definitions that need to be implemented. */
     interface SqlVirtualNetworkRuleOperationsDefinition
         extends SqlVirtualNetworkRuleOperations.DefinitionStages.WithSqlServer,
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet,
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithServiceEndpoint,
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithCreate {
+        SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet,
+        SqlVirtualNetworkRuleOperations.DefinitionStages.WithServiceEndpoint,
+        SqlVirtualNetworkRuleOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Virtual Network Rule definition stages. */
@@ -31,8 +31,8 @@ public interface SqlVirtualNetworkRuleOperations
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet withExistingSqlServer(String resourceGroupName,
+                String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Virtual Network Rule.
@@ -60,8 +60,8 @@ public interface SqlVirtualNetworkRuleOperations
              * @param subnetName the name of the subnet within the virtual network to be used
              * @return The next stage of the definition.
              */
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithServiceEndpoint withSubnet(
-                String networkId, String subnetName);
+            SqlVirtualNetworkRuleOperations.DefinitionStages.WithServiceEndpoint withSubnet(String networkId,
+                String subnetName);
         }
 
         /**
@@ -79,6 +79,7 @@ public interface SqlVirtualNetworkRuleOperations
              */
             SqlVirtualNetworkRuleOperations.DefinitionStages.WithCreate ignoreMissingSqlServiceEndpoint();
         }
+
         /** The final stage of the SQL Virtual Network Rule definition. */
         interface WithCreate extends Creatable<SqlVirtualNetworkRule> {
         }

@@ -5,33 +5,35 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The transfer call to participant request. */
 @Fluent
-public final class TransferToParticipantRequestInternal {
+public final class TransferToParticipantRequestInternal
+    implements JsonSerializable<TransferToParticipantRequestInternal> {
     /*
      * The identity of the target where call should be transferred to.
      */
-    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The caller ID of the transferee when transferring to PSTN.
      */
-    @JsonProperty(value = "transfereeCallerId")
     private PhoneNumberIdentifierModel transfereeCallerId;
 
     /*
      * The user to user information.
      */
-    @JsonProperty(value = "userToUserInformation")
     private String userToUserInformation;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -112,5 +114,48 @@ public final class TransferToParticipantRequestInternal {
     public TransferToParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("targetParticipant", targetParticipant)
+            .writeJsonField("transfereeCallerId", transfereeCallerId)
+            .writeStringField("userToUserInformation", userToUserInformation)
+            .writeStringField("operationContext", operationContext)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link TransferToParticipantRequestInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link TransferToParticipantRequestInternal}, or null if the {@link JsonReader} was
+     * pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static TransferToParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetParticipant".equals(fieldName)) {
+                    request.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("transfereeCallerId".equals(fieldName)) {
+                    request.transfereeCallerId = PhoneNumberIdentifierModel.fromJson(reader);
+                } else if ("userToUserInformation".equals(fieldName)) {
+                    request.userToUserInformation = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    request.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return request;
+        });
     }
 }

@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Disconnected\",\"description\":\"v\",\"actionsRequired\":\"qi\"}")
+        PrivateLinkServiceConnectionState model
+            = BinaryData.fromString("{\"status\":\"Approved\",\"description\":\"ntuji\",\"actionsRequired\":\"jed\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("v", model.description());
-        Assertions.assertEquals("qi", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("ntuji", model.description());
+        Assertions.assertEquals("jed", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                .withDescription("v")
-                .withActionsRequired("qi");
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                .withDescription("ntuji")
+                .withActionsRequired("jed");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("v", model.description());
-        Assertions.assertEquals("qi", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("ntuji", model.description());
+        Assertions.assertEquals("jed", model.actionsRequired());
     }
 }

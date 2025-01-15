@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"vorbalkjnbk\",\"vendorOsVersion\":\"h\",\"vendorFirmwareVersion\":\"tqstqkqsygxiyne\",\"isDefault\":\"False\"}")
-                .toObject(SupportedVersionProperties.class);
-        Assertions.assertEquals("vorbalkjnbk", model.version());
-        Assertions.assertEquals("h", model.vendorOsVersion());
-        Assertions.assertEquals("tqstqkqsygxiyne", model.vendorFirmwareVersion());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isDefault());
+        SupportedVersionProperties model = BinaryData.fromString(
+            "{\"version\":\"gouarhwvixqq\",\"vendorOsVersion\":\"ljky\",\"vendorFirmwareVersion\":\"jrclrvtzq\",\"isDefault\":\"True\"}")
+            .toObject(SupportedVersionProperties.class);
+        Assertions.assertEquals("gouarhwvixqq", model.version());
+        Assertions.assertEquals("ljky", model.vendorOsVersion());
+        Assertions.assertEquals("jrclrvtzq", model.vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.isDefault());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedVersionProperties model =
-            new SupportedVersionProperties()
-                .withVersion("vorbalkjnbk")
-                .withVendorOsVersion("h")
-                .withVendorFirmwareVersion("tqstqkqsygxiyne")
-                .withIsDefault(BooleanEnumProperty.FALSE);
+        SupportedVersionProperties model = new SupportedVersionProperties().withVersion("gouarhwvixqq")
+            .withVendorOsVersion("ljky")
+            .withVendorFirmwareVersion("jrclrvtzq")
+            .withIsDefault(BooleanEnumProperty.TRUE);
         model = BinaryData.fromObject(model).toObject(SupportedVersionProperties.class);
-        Assertions.assertEquals("vorbalkjnbk", model.version());
-        Assertions.assertEquals("h", model.vendorOsVersion());
-        Assertions.assertEquals("tqstqkqsygxiyne", model.vendorFirmwareVersion());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isDefault());
+        Assertions.assertEquals("gouarhwvixqq", model.version());
+        Assertions.assertEquals("ljky", model.vendorOsVersion());
+        Assertions.assertEquals("jrclrvtzq", model.vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.isDefault());
     }
 }

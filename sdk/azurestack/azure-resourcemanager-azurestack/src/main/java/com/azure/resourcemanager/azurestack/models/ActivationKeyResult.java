@@ -6,18 +6,20 @@ package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.resourcemanager.azurestack.fluent.models.ActivationKeyResultInner;
 
-/** An immutable client-side representation of ActivationKeyResult. */
+/**
+ * An immutable client-side representation of ActivationKeyResult.
+ */
 public interface ActivationKeyResult {
     /**
      * Gets the activationKey property: Azure Stack activation key.
-     *
+     * 
      * @return the activationKey value.
      */
     String activationKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ActivationKeyResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ActivationKeyResultInner innerModel();

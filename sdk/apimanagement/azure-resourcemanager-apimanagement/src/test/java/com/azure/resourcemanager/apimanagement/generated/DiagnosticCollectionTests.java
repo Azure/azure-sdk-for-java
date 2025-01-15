@@ -23,11 +23,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"gbrt\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":93.37595227963747},\"frontend\":{\"request\":{\"headers\":[\"ajlfnthiqfyu\",\"t\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"vnwsw\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"wwgzwxjlmecvog\",\"gzyvnee\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"tmoqqtlffhzb\",\"rkjjjavfqnvhnq\",\"ewdogiyetesy\",\"vidbztjhqtfb\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"None\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":true},\"id\":\"hpsprkzyaupiac\",\"name\":\"xnafbw\",\"type\":\"ro\"}],\"count\":2370793182601058410,\"nextLink\":\"vmaonurjt\"}")
-                .toObject(DiagnosticCollection.class);
+        DiagnosticCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"gbrt\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":93.37595227963747},\"frontend\":{\"request\":{\"headers\":[\"ajlfnthiqfyu\",\"t\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"vnwsw\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"wwgzwxjlmecvog\",\"gzyvnee\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"tmoqqtlffhzb\",\"rkjjjavfqnvhnq\",\"ewdogiyetesy\",\"vidbztjhqtfb\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"None\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":true},\"id\":\"hpsprkzyaupiac\",\"name\":\"xnafbw\",\"type\":\"ro\"}],\"count\":2370793182601058410,\"nextLink\":\"vmaonurjt\"}")
+            .toObject(DiagnosticCollection.class);
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, model.value().get(0).alwaysLog());
         Assertions.assertEquals("gbrt", model.value().get(0).loggerId());
         Assertions.assertEquals(SamplingType.FIXED, model.value().get(0).sampling().samplingType());
@@ -47,55 +45,33 @@ public final class DiagnosticCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticCollection model =
-            new DiagnosticCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DiagnosticContractInner()
-                                .withAlwaysLog(AlwaysLog.ALL_ERRORS)
-                                .withLoggerId("gbrt")
-                                .withSampling(
-                                    new SamplingSettings()
-                                        .withSamplingType(SamplingType.FIXED)
-                                        .withPercentage(93.37595227963747D))
-                                .withFrontend(
-                                    new PipelineDiagnosticSettings()
-                                        .withRequest(
-                                            new HttpMessageDiagnostic()
-                                                .withHeaders(Arrays.asList("ajlfnthiqfyu", "t"))
-                                                .withBody(new BodyDiagnosticSettings())
-                                                .withDataMasking(new DataMasking()))
-                                        .withResponse(
-                                            new HttpMessageDiagnostic()
-                                                .withHeaders(Arrays.asList("vnwsw"))
-                                                .withBody(new BodyDiagnosticSettings())
-                                                .withDataMasking(new DataMasking())))
-                                .withBackend(
-                                    new PipelineDiagnosticSettings()
-                                        .withRequest(
-                                            new HttpMessageDiagnostic()
-                                                .withHeaders(Arrays.asList("wwgzwxjlmecvog", "gzyvnee"))
-                                                .withBody(new BodyDiagnosticSettings())
-                                                .withDataMasking(new DataMasking()))
-                                        .withResponse(
-                                            new HttpMessageDiagnostic()
-                                                .withHeaders(
-                                                    Arrays
-                                                        .asList(
-                                                            "tmoqqtlffhzb",
-                                                            "rkjjjavfqnvhnq",
-                                                            "ewdogiyetesy",
-                                                            "vidbztjhqtfb"))
-                                                .withBody(new BodyDiagnosticSettings())
-                                                .withDataMasking(new DataMasking())))
-                                .withLogClientIp(false)
-                                .withHttpCorrelationProtocol(HttpCorrelationProtocol.NONE)
-                                .withVerbosity(Verbosity.VERBOSE)
-                                .withOperationNameFormat(OperationNameFormat.URL)
-                                .withMetrics(true)))
-                .withCount(2370793182601058410L)
-                .withNextLink("vmaonurjt");
+        DiagnosticCollection model = new DiagnosticCollection()
+            .withValue(Arrays.asList(new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                .withLoggerId("gbrt")
+                .withSampling(
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(93.37595227963747D))
+                .withFrontend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("ajlfnthiqfyu", "t"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("vnwsw"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withBackend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("wwgzwxjlmecvog", "gzyvnee"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic()
+                        .withHeaders(Arrays.asList("tmoqqtlffhzb", "rkjjjavfqnvhnq", "ewdogiyetesy", "vidbztjhqtfb"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withLogClientIp(false)
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.NONE)
+                .withVerbosity(Verbosity.VERBOSE)
+                .withOperationNameFormat(OperationNameFormat.URL)
+                .withMetrics(true)))
+            .withCount(2370793182601058410L)
+            .withNextLink("vmaonurjt");
         model = BinaryData.fromObject(model).toObject(DiagnosticCollection.class);
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, model.value().get(0).alwaysLog());
         Assertions.assertEquals("gbrt", model.value().get(0).loggerId());

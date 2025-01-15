@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 
-/** An instance of this class provides access to all the operations defined in LiveOutputsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LiveOutputsClient.
+ */
 public interface LiveOutputsClient {
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -34,9 +36,9 @@ public interface LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -47,14 +49,14 @@ public interface LiveOutputsClient {
      * @return liveOutputListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveOutputInner> list(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveOutputInner> list(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -66,14 +68,14 @@ public interface LiveOutputsClient {
      * @return a live output along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveOutputInner> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    Response<LiveOutputInner> getWithResponse(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, Context context);
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -88,9 +90,9 @@ public interface LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -102,18 +104,14 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of the Live Output.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters);
+    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, LiveOutputInner parameters);
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -126,19 +124,14 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of the Live Output.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters,
-        Context context);
+    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, LiveOutputInner parameters, Context context);
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -150,18 +143,14 @@ public interface LiveOutputsClient {
      * @return the Live Output.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
+    LiveOutputInner create(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
         LiveOutputInner parameters);
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -174,19 +163,14 @@ public interface LiveOutputsClient {
      * @return the Live Output.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters,
-        Context context);
+    LiveOutputInner create(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
+        LiveOutputInner parameters, Context context);
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -197,14 +181,14 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName);
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -216,14 +200,14 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, Context context);
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -237,9 +221,9 @@ public interface LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -250,14 +234,14 @@ public interface LiveOutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
+        Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -268,14 +252,14 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResultInner> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -289,9 +273,9 @@ public interface LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -304,19 +288,14 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveOutputInner> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        String operationId,
-        Context context);
+    Response<LiveOutputInner> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -328,6 +307,6 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId);
+    LiveOutputInner operationLocation(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, String operationId);
 }

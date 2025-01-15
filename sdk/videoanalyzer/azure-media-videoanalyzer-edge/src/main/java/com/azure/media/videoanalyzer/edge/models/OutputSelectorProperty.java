@@ -5,26 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutputSelectorProperty. */
+/**
+ * The property of the data stream to be used as the selection criteria.
+ */
 public final class OutputSelectorProperty extends ExpandableStringEnum<OutputSelectorProperty> {
-    /** Static value mediaType for OutputSelectorProperty. */
+    /**
+     * The stream's MIME type or subtype: audio, video or application.
+     */
     public static final OutputSelectorProperty MEDIA_TYPE = fromString("mediaType");
 
     /**
+     * Creates a new instance of OutputSelectorProperty value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OutputSelectorProperty() {
+    }
+
+    /**
      * Creates or finds a OutputSelectorProperty from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OutputSelectorProperty.
      */
-    @JsonCreator
     public static OutputSelectorProperty fromString(String name) {
         return fromString(name, OutputSelectorProperty.class);
     }
 
-    /** @return known OutputSelectorProperty values. */
+    /**
+     * Gets known OutputSelectorProperty values.
+     * 
+     * @return known OutputSelectorProperty values.
+     */
     public static Collection<OutputSelectorProperty> values() {
         return values(OutputSelectorProperty.class);
     }

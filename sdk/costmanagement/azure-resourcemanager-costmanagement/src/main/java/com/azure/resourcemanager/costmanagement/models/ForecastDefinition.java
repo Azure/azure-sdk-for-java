@@ -6,54 +6,56 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a forecast. */
+/**
+ * The definition of a forecast.
+ */
 @Fluent
-public final class ForecastDefinition {
+public final class ForecastDefinition implements JsonSerializable<ForecastDefinition> {
     /*
      * The type of the forecast.
      */
-    @JsonProperty(value = "type", required = true)
     private ForecastType type;
 
     /*
      * The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
      */
-    @JsonProperty(value = "timeframe", required = true)
     private ForecastTimeframe timeframe;
 
     /*
      * Has time period for pulling data for the forecast.
      */
-    @JsonProperty(value = "timePeriod")
     private ForecastTimePeriod timePeriod;
 
     /*
      * Has definition for data in this forecast.
      */
-    @JsonProperty(value = "dataset", required = true)
     private ForecastDataset dataset;
 
     /*
      * A boolean determining if actualCost will be included.
      */
-    @JsonProperty(value = "includeActualCost")
     private Boolean includeActualCost;
 
     /*
      * A boolean determining if FreshPartialCost will be included.
      */
-    @JsonProperty(value = "includeFreshPartialCost")
     private Boolean includeFreshPartialCost;
 
-    /** Creates an instance of ForecastDefinition class. */
+    /**
+     * Creates an instance of ForecastDefinition class.
+     */
     public ForecastDefinition() {
     }
 
     /**
      * Get the type property: The type of the forecast.
-     *
+     * 
      * @return the type value.
      */
     public ForecastType type() {
@@ -62,7 +64,7 @@ public final class ForecastDefinition {
 
     /**
      * Set the type property: The type of the forecast.
-     *
+     * 
      * @param type the type value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -74,7 +76,7 @@ public final class ForecastDefinition {
     /**
      * Get the timeframe property: The time frame for pulling data for the forecast. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @return the timeframe value.
      */
     public ForecastTimeframe timeframe() {
@@ -84,7 +86,7 @@ public final class ForecastDefinition {
     /**
      * Set the timeframe property: The time frame for pulling data for the forecast. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @param timeframe the timeframe value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -95,7 +97,7 @@ public final class ForecastDefinition {
 
     /**
      * Get the timePeriod property: Has time period for pulling data for the forecast.
-     *
+     * 
      * @return the timePeriod value.
      */
     public ForecastTimePeriod timePeriod() {
@@ -104,7 +106,7 @@ public final class ForecastDefinition {
 
     /**
      * Set the timePeriod property: Has time period for pulling data for the forecast.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -115,7 +117,7 @@ public final class ForecastDefinition {
 
     /**
      * Get the dataset property: Has definition for data in this forecast.
-     *
+     * 
      * @return the dataset value.
      */
     public ForecastDataset dataset() {
@@ -124,7 +126,7 @@ public final class ForecastDefinition {
 
     /**
      * Set the dataset property: Has definition for data in this forecast.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -135,7 +137,7 @@ public final class ForecastDefinition {
 
     /**
      * Get the includeActualCost property: A boolean determining if actualCost will be included.
-     *
+     * 
      * @return the includeActualCost value.
      */
     public Boolean includeActualCost() {
@@ -144,7 +146,7 @@ public final class ForecastDefinition {
 
     /**
      * Set the includeActualCost property: A boolean determining if actualCost will be included.
-     *
+     * 
      * @param includeActualCost the includeActualCost value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -155,7 +157,7 @@ public final class ForecastDefinition {
 
     /**
      * Get the includeFreshPartialCost property: A boolean determining if FreshPartialCost will be included.
-     *
+     * 
      * @return the includeFreshPartialCost value.
      */
     public Boolean includeFreshPartialCost() {
@@ -164,7 +166,7 @@ public final class ForecastDefinition {
 
     /**
      * Set the includeFreshPartialCost property: A boolean determining if FreshPartialCost will be included.
-     *
+     * 
      * @param includeFreshPartialCost the includeFreshPartialCost value to set.
      * @return the ForecastDefinition object itself.
      */
@@ -175,31 +177,80 @@ public final class ForecastDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ForecastDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ForecastDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeframe in model ForecastDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeframe in model ForecastDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();
         }
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
         } else {
             dataset().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForecastDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("timeframe", this.timeframe == null ? null : this.timeframe.toString());
+        jsonWriter.writeJsonField("dataset", this.dataset);
+        jsonWriter.writeJsonField("timePeriod", this.timePeriod);
+        jsonWriter.writeBooleanField("includeActualCost", this.includeActualCost);
+        jsonWriter.writeBooleanField("includeFreshPartialCost", this.includeFreshPartialCost);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForecastDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForecastDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForecastDefinition.
+     */
+    public static ForecastDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForecastDefinition deserializedForecastDefinition = new ForecastDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedForecastDefinition.type = ForecastType.fromString(reader.getString());
+                } else if ("timeframe".equals(fieldName)) {
+                    deserializedForecastDefinition.timeframe = ForecastTimeframe.fromString(reader.getString());
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedForecastDefinition.dataset = ForecastDataset.fromJson(reader);
+                } else if ("timePeriod".equals(fieldName)) {
+                    deserializedForecastDefinition.timePeriod = ForecastTimePeriod.fromJson(reader);
+                } else if ("includeActualCost".equals(fieldName)) {
+                    deserializedForecastDefinition.includeActualCost = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeFreshPartialCost".equals(fieldName)) {
+                    deserializedForecastDefinition.includeFreshPartialCost = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForecastDefinition;
+        });
+    }
 }

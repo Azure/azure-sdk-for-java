@@ -8,91 +8,81 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Queries. */
+/**
+ * Resource collection API of Queries.
+ */
 public interface Queries {
     /**
      * Gets a list of Queries defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName);
 
     /**
      * Gets a list of Queries defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param top Maximum items returned in page.
      * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     *     return the query information.
+     * return the query information.
      * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> list(
-        String resourceGroupName,
-        String queryPackName,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName, Long top,
+        Boolean includeBody, String skipToken, Context context);
 
     /**
      * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> search(
-        String resourceGroupName,
-        String queryPackName,
+    PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties);
 
     /**
      * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
      * @param top Maximum items returned in page.
      * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     *     return the query information.
+     * return the query information.
      * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> search(
-        String resourceGroupName,
-        String queryPackName,
-        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
+        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
+        String skipToken, Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param id The id of a specific query defined in the Log Analytics QueryPack.
@@ -102,12 +92,12 @@ public interface Queries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Log Analytics Query defined within a Log Analytics QueryPack along with {@link Response}.
      */
-    Response<LogAnalyticsQueryPackQuery> getWithResponse(
-        String resourceGroupName, String queryPackName, String id, Context context);
+    Response<LogAnalyticsQueryPackQuery> getWithResponse(String resourceGroupName, String queryPackName, String id,
+        Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param id The id of a specific query defined in the Log Analytics QueryPack.
@@ -120,7 +110,7 @@ public interface Queries {
 
     /**
      * Deletes a specific Query defined within an Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param id The id of a specific query defined in the Log Analytics QueryPack.
@@ -134,7 +124,7 @@ public interface Queries {
 
     /**
      * Deletes a specific Query defined within an Log Analytics QueryPack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param queryPackName The name of the Log Analytics QueryPack resource.
      * @param id The id of a specific query defined in the Log Analytics QueryPack.
@@ -146,7 +136,7 @@ public interface Queries {
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,7 +147,7 @@ public interface Queries {
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +159,7 @@ public interface Queries {
 
     /**
      * Deletes a specific Query defined within an Log Analytics QueryPack.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +169,7 @@ public interface Queries {
 
     /**
      * Deletes a specific Query defined within an Log Analytics QueryPack.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +181,7 @@ public interface Queries {
 
     /**
      * Begins definition for a new LogAnalyticsQueryPackQuery resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LogAnalyticsQueryPackQuery definition.
      */

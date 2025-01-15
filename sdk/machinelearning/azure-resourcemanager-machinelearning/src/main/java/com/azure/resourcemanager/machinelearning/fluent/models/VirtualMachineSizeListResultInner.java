@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSize;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Virtual Machine size operation response. */
+/**
+ * The List Virtual Machine size operation response.
+ */
 @Fluent
-public final class VirtualMachineSizeListResultInner {
+public final class VirtualMachineSizeListResultInner implements JsonSerializable<VirtualMachineSizeListResultInner> {
     /*
      * The list of virtual machine sizes supported by AmlCompute.
      */
-    @JsonProperty(value = "value")
     private List<VirtualMachineSize> value;
 
-    /** Creates an instance of VirtualMachineSizeListResultInner class. */
+    /**
+     * Creates an instance of VirtualMachineSizeListResultInner class.
+     */
     public VirtualMachineSizeListResultInner() {
     }
 
     /**
      * Get the value property: The list of virtual machine sizes supported by AmlCompute.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineSize> value() {
@@ -33,7 +40,7 @@ public final class VirtualMachineSizeListResultInner {
 
     /**
      * Set the value property: The list of virtual machine sizes supported by AmlCompute.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineSizeListResultInner object itself.
      */
@@ -44,12 +51,50 @@ public final class VirtualMachineSizeListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSizeListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSizeListResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSizeListResultInner.
+     */
+    public static VirtualMachineSizeListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSizeListResultInner deserializedVirtualMachineSizeListResultInner
+                = new VirtualMachineSizeListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineSize> value = reader.readArray(reader1 -> VirtualMachineSize.fromJson(reader1));
+                    deserializedVirtualMachineSizeListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSizeListResultInner;
+        });
     }
 }

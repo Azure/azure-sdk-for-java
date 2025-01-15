@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configure your SQL virtual machine to be able to connect to the Azure Key Vault service. */
+/**
+ * Configure your SQL virtual machine to be able to connect to the Azure Key Vault service.
+ */
 @Fluent
-public final class KeyVaultCredentialSettings {
+public final class KeyVaultCredentialSettings implements JsonSerializable<KeyVaultCredentialSettings> {
     /*
      * Enable or disable key vault credential setting.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * Credential name.
      */
-    @JsonProperty(value = "credentialName")
     private String credentialName;
 
     /*
      * Azure Key Vault url.
      */
-    @JsonProperty(value = "azureKeyVaultUrl")
     private String azureKeyVaultUrl;
 
     /*
      * Service principal name to access key vault.
      */
-    @JsonProperty(value = "servicePrincipalName")
     private String servicePrincipalName;
 
     /*
      * Service principal name secret to access key vault.
      */
-    @JsonProperty(value = "servicePrincipalSecret")
     private String servicePrincipalSecret;
 
-    /** Creates an instance of KeyVaultCredentialSettings class. */
+    /**
+     * Creates an instance of KeyVaultCredentialSettings class.
+     */
     public KeyVaultCredentialSettings() {
     }
 
     /**
      * Get the enable property: Enable or disable key vault credential setting.
-     *
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -55,7 +58,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Set the enable property: Enable or disable key vault credential setting.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the KeyVaultCredentialSettings object itself.
      */
@@ -66,7 +69,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Get the credentialName property: Credential name.
-     *
+     * 
      * @return the credentialName value.
      */
     public String credentialName() {
@@ -75,7 +78,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Set the credentialName property: Credential name.
-     *
+     * 
      * @param credentialName the credentialName value to set.
      * @return the KeyVaultCredentialSettings object itself.
      */
@@ -86,7 +89,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Get the azureKeyVaultUrl property: Azure Key Vault url.
-     *
+     * 
      * @return the azureKeyVaultUrl value.
      */
     public String azureKeyVaultUrl() {
@@ -95,7 +98,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Set the azureKeyVaultUrl property: Azure Key Vault url.
-     *
+     * 
      * @param azureKeyVaultUrl the azureKeyVaultUrl value to set.
      * @return the KeyVaultCredentialSettings object itself.
      */
@@ -106,7 +109,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Get the servicePrincipalName property: Service principal name to access key vault.
-     *
+     * 
      * @return the servicePrincipalName value.
      */
     public String servicePrincipalName() {
@@ -115,7 +118,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Set the servicePrincipalName property: Service principal name to access key vault.
-     *
+     * 
      * @param servicePrincipalName the servicePrincipalName value to set.
      * @return the KeyVaultCredentialSettings object itself.
      */
@@ -126,7 +129,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Get the servicePrincipalSecret property: Service principal name secret to access key vault.
-     *
+     * 
      * @return the servicePrincipalSecret value.
      */
     public String servicePrincipalSecret() {
@@ -135,7 +138,7 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Set the servicePrincipalSecret property: Service principal name secret to access key vault.
-     *
+     * 
      * @param servicePrincipalSecret the servicePrincipalSecret value to set.
      * @return the KeyVaultCredentialSettings object itself.
      */
@@ -146,9 +149,57 @@ public final class KeyVaultCredentialSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeStringField("credentialName", this.credentialName);
+        jsonWriter.writeStringField("azureKeyVaultUrl", this.azureKeyVaultUrl);
+        jsonWriter.writeStringField("servicePrincipalName", this.servicePrincipalName);
+        jsonWriter.writeStringField("servicePrincipalSecret", this.servicePrincipalSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultCredentialSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultCredentialSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultCredentialSettings.
+     */
+    public static KeyVaultCredentialSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultCredentialSettings deserializedKeyVaultCredentialSettings = new KeyVaultCredentialSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedKeyVaultCredentialSettings.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("credentialName".equals(fieldName)) {
+                    deserializedKeyVaultCredentialSettings.credentialName = reader.getString();
+                } else if ("azureKeyVaultUrl".equals(fieldName)) {
+                    deserializedKeyVaultCredentialSettings.azureKeyVaultUrl = reader.getString();
+                } else if ("servicePrincipalName".equals(fieldName)) {
+                    deserializedKeyVaultCredentialSettings.servicePrincipalName = reader.getString();
+                } else if ("servicePrincipalSecret".equals(fieldName)) {
+                    deserializedKeyVaultCredentialSettings.servicePrincipalSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultCredentialSettings;
+        });
     }
 }

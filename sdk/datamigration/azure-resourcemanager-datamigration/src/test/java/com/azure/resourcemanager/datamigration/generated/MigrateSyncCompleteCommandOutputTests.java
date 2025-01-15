@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSyncCompleteCommand
 public final class MigrateSyncCompleteCommandOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSyncCompleteCommandOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"mdajv\",\"errors\":[{\"message\":\"unqecanoae\",\"actionableMessage\":\"fhyhltrpmopjmcma\",\"filePath\":\"okth\",\"lineNumber\":\"iuaod\",\"hResult\":2105680522,\"stackTrace\":\"kvxod\"},{\"message\":\"ozmyzydagfu\",\"actionableMessage\":\"bezy\",\"filePath\":\"okktwhrdxw\",\"lineNumber\":\"wqsmbsur\",\"hResult\":1524544291,\"stackTrace\":\"o\"},{\"message\":\"ocfs\",\"actionableMessage\":\"s\",\"filePath\":\"ddystkiiuxhqy\",\"lineNumber\":\"xorrqnb\",\"hResult\":1747091504,\"stackTrace\":\"vyifqrvkdvjsl\"},{\"message\":\"mvvd\",\"actionableMessage\":\"atkpnp\",\"filePath\":\"exxbczwtr\",\"lineNumber\":\"iqzbq\",\"hResult\":1378529430,\"stackTrace\":\"vmyokacspkwl\"}]}")
-                .toObject(MigrateSyncCompleteCommandOutput.class);
+        MigrateSyncCompleteCommandOutput model = BinaryData.fromString(
+            "{\"id\":\"drabhjybige\",\"errors\":[{\"message\":\"bowsk\",\"actionableMessage\":\"yktz\",\"filePath\":\"u\",\"lineNumber\":\"wgqyw\",\"hResult\":1211142115,\"stackTrace\":\"vynhzgpphrcg\"},{\"message\":\"cocpecfvmmcoofsx\",\"actionableMessage\":\"evgbmqjq\",\"filePath\":\"c\",\"lineNumber\":\"mivkwlzuvcc\",\"hResult\":1704525857,\"stackTrace\":\"nbacfi\"}]}")
+            .toObject(MigrateSyncCompleteCommandOutput.class);
     }
 
     @org.junit.jupiter.api.Test

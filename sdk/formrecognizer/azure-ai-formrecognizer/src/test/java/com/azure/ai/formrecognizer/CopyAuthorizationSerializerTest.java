@@ -26,8 +26,8 @@ public class CopyAuthorizationSerializerTest {
      */
     @Test
     public void fromJson() {
-        CopyAuthorization copyAuthorization = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION,
-            EXPIRES_ON);
+        CopyAuthorization copyAuthorization
+            = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION, EXPIRES_ON);
         String copyAuthorizationString = copyAuthorization.toJson();
 
         assertTrue(copyAuthorizationString.contains(MODEL_ID));
@@ -48,8 +48,8 @@ public class CopyAuthorizationSerializerTest {
      */
     @Test
     public void toJson() {
-        CopyAuthorization copyAuthorization = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION,
-            EXPIRES_ON);
+        CopyAuthorization copyAuthorization
+            = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION, EXPIRES_ON);
         String copyAuthorizationString = copyAuthorization.toJson();
         assertEquals(EXPECTED_JSON_STRING, copyAuthorizationString);
     }

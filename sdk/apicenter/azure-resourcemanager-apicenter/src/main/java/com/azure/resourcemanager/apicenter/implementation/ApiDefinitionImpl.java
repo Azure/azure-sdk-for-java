@@ -72,7 +72,8 @@ public final class ApiDefinitionImpl implements ApiDefinition, ApiDefinition.Def
     }
 
     public ApiDefinition create() {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions()
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName,
                 definitionName, this.innerModel(), Context.NONE)
             .getValue();
@@ -80,7 +81,8 @@ public final class ApiDefinitionImpl implements ApiDefinition, ApiDefinition.Def
     }
 
     public ApiDefinition create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions()
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName,
                 definitionName, this.innerModel(), context)
             .getValue();
@@ -98,7 +100,8 @@ public final class ApiDefinitionImpl implements ApiDefinition, ApiDefinition.Def
     }
 
     public ApiDefinition apply() {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions()
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName,
                 definitionName, this.innerModel(), Context.NONE)
             .getValue();
@@ -106,7 +109,8 @@ public final class ApiDefinitionImpl implements ApiDefinition, ApiDefinition.Def
     }
 
     public ApiDefinition apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions()
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName,
                 definitionName, this.innerModel(), context)
             .getValue();
@@ -126,35 +130,44 @@ public final class ApiDefinitionImpl implements ApiDefinition, ApiDefinition.Def
     }
 
     public ApiDefinition refresh() {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions().getWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, versionName, definitionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiDefinition refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApiDefinitions().getWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, versionName, definitionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiDefinitions()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context)
+            .getValue();
         return this;
     }
 
     public ApiSpecExportResult exportSpecification() {
-        return serviceManager.apiDefinitions().exportSpecification(resourceGroupName, serviceName, workspaceName,
-            apiName, versionName, definitionName);
+        return serviceManager.apiDefinitions()
+            .exportSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName);
     }
 
     public ApiSpecExportResult exportSpecification(Context context) {
-        return serviceManager.apiDefinitions().exportSpecification(resourceGroupName, serviceName, workspaceName,
-            apiName, versionName, definitionName, context);
+        return serviceManager.apiDefinitions()
+            .exportSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context);
     }
 
     public void importSpecification(ApiSpecImportRequest body) {
-        serviceManager.apiDefinitions().importSpecification(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, definitionName, body);
+        serviceManager.apiDefinitions()
+            .importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                body);
     }
 
     public void importSpecification(ApiSpecImportRequest body, Context context) {
-        serviceManager.apiDefinitions().importSpecification(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, definitionName, body, context);
+        serviceManager.apiDefinitions()
+            .importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                body, context);
     }
 
     public ApiDefinitionImpl withProperties(ApiDefinitionProperties properties) {

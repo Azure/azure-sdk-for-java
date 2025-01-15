@@ -40,7 +40,7 @@ public class AzureMysqlAuthenticationPlugin implements AuthenticationPlugin<Nati
     }
 
     AzureMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate,
-                                   Protocol<NativePacketPayload> protocol) {
+        Protocol<NativePacketPayload> protocol) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
         this.protocol = protocol;
     }
@@ -72,8 +72,7 @@ public class AzureMysqlAuthenticationPlugin implements AuthenticationPlugin<Nati
     }
 
     @Override
-    public boolean nextAuthenticationStep(NativePacketPayload fromServer,
-                                          List<NativePacketPayload> toServer) {
+    public boolean nextAuthenticationStep(NativePacketPayload fromServer, List<NativePacketPayload> toServer) {
 
         /*
          * See com.mysql.cj.protocol.a.authentication.MysqlClearPasswordPlugin
@@ -87,10 +86,8 @@ public class AzureMysqlAuthenticationPlugin implements AuthenticationPlugin<Nati
             if (protocol.getSocketConnection().isSSLEstablished()) {
                 try {
                     String password = azureAuthenticationTemplate.getTokenAsPassword();
-                    byte[] content = password.getBytes(
-                        protocol.getServerSession()
-                            .getCharsetSettings()
-                            .getPasswordCharacterEncoding());
+                    byte[] content = password
+                        .getBytes(protocol.getServerSession().getCharsetSettings().getPasswordCharacterEncoding());
                     response = new NativePacketPayload(content);
                     response.setPosition(response.getPayloadLength());
                     response.writeInteger(NativeConstants.IntegerDataType.INT1, 0);

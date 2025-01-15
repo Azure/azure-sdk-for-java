@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SecretFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretFragment model =
-            BinaryData.fromString("{\"tags\":{\"qgqqihedsvqwthmk\":\"tpvopvpbdb\"}}").toObject(SecretFragment.class);
+        SecretFragment model
+            = BinaryData.fromString("{\"tags\":{\"qgqqihedsvqwthmk\":\"tpvopvpbdb\"}}").toObject(SecretFragment.class);
         Assertions.assertEquals("tpvopvpbdb", model.tags().get("qgqqihedsvqwthmk"));
     }
 

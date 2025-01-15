@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = InsightsClientBuilder.class, isAsync = true)
 public final class InsightsAsyncClient {
-    @Generated private final InsightsImpl serviceClient;
+    @Generated
+    private final InsightsImpl serviceClient;
 
     /**
      * Initializes an instance of InsightsAsyncClient class.
@@ -72,16 +73,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId,
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(
-                jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String modelId,
+        String resourceType, String resourceId, String insightId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, modelId, resourceType, resourceId,
+            insightId, requestOptions);
     }
 
     /**
@@ -117,8 +112,8 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -200,10 +195,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByPartyIdModelIdAndResource(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
-        return this.serviceClient.listByPartyIdModelIdAndResourceAsync(
-                partyId, modelId, resourceType, resourceId, requestOptions);
+    public PagedFlux<BinaryData> listByPartyIdModelIdAndResource(String partyId, String modelId, String resourceType,
+        String resourceId, RequestOptions requestOptions) {
+        return this.serviceClient.listByPartyIdModelIdAndResourceAsync(partyId, modelId, resourceType, resourceId,
+            requestOptions);
     }
 
     /**
@@ -291,16 +286,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightId, insightData, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, BinaryData insightData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId,
+            insightData, requestOptions);
     }
 
     /**
@@ -355,15 +344,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId,
+            requestOptions);
     }
 
     /**
@@ -384,14 +368,9 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId,
+            requestOptions);
     }
 }

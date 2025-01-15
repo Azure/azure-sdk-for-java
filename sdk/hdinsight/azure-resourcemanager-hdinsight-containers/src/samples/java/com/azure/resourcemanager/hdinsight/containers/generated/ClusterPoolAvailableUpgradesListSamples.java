@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 public final class ClusterPoolAvailableUpgradesListSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * ListClusterPoolAvailableUpgrades.json
      */
     /**
@@ -20,7 +20,7 @@ public final class ClusterPoolAvailableUpgradesListSamples {
      */
     public static void getClusterPoolAvailableUpgrade(
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusterPoolAvailableUpgrades().list("hiloResourcegroup", "clusterpool1",
-            com.azure.core.util.Context.NONE);
+        manager.clusterPoolAvailableUpgrades()
+            .list("hiloResourcegroup", "clusterpool1", com.azure.core.util.Context.NONE);
     }
 }

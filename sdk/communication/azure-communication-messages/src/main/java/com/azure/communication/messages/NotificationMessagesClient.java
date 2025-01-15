@@ -50,19 +50,22 @@ public final class NotificationMessagesClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
-     *     kind: String(text/image/template) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     receipts (Required): [
      *          (Required){
@@ -71,7 +74,8 @@ public final class NotificationMessagesClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -91,9 +95,11 @@ public final class NotificationMessagesClient {
      * Download the Media payload from a User to Business message.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

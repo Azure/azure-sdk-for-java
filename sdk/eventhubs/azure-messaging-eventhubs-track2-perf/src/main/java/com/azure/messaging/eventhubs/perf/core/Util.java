@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Util {
 
-    public static Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend, byte[] eventDatabytes) {
-        final CreateBatchOptions options = partitionId != null
-            ? new CreateBatchOptions().setPartitionId(partitionId)
-            : new CreateBatchOptions();
+    public static Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, String partitionId,
+        int totalMessagesToSend, byte[] eventDatabytes) {
+        final CreateBatchOptions options
+            = partitionId != null ? new CreateBatchOptions().setPartitionId(partitionId) : new CreateBatchOptions();
 
         final AtomicLong eventsToSend = new AtomicLong(totalMessagesToSend);
         final AtomicLong totalEvents = new AtomicLong(0);
@@ -24,28 +24,32 @@ public class Util {
             partitionMono = client.getPartitionIds()
                 .flatMap(partId -> client.getPartitionProperties(partId))
                 .map(partitionProperties -> {
-                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
+                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber()
+                        - partitionProperties.getBeginningSequenceNumber());
                     return Mono.empty();
-                }).then();
+                })
+                .then();
         } else {
-            partitionMono = client.getPartitionProperties(partitionId)
-                .map(partitionProperties -> {
-                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
-                    return Mono.empty();
-                }).then();
+            partitionMono = client.getPartitionProperties(partitionId).map(partitionProperties -> {
+                totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber()
+                    - partitionProperties.getBeginningSequenceNumber());
+                return Mono.empty();
+            }).then();
         }
         return partitionMono.then(Mono.defer(() -> {
             if (totalEvents.get() < totalMessagesToSend) {
                 eventsToSend.set(totalMessagesToSend - totalEvents.get());
-                return client.createBatch(options)
-                    .flatMap(batch -> {
-                        EventData event = createEvent(eventDatabytes);
-                        while (batch.tryAdd(event)) {
-                            eventsToSend.getAndDecrement();
-                        }
-                        return client.send(batch);
-                    }).repeat(() -> eventsToSend.get() > 0).then()
-                    .doFinally(signal -> System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
+                return client.createBatch(options).flatMap(batch -> {
+                    EventData event = createEvent(eventDatabytes);
+                    while (batch.tryAdd(event)) {
+                        eventsToSend.getAndDecrement();
+                    }
+                    return client.send(batch);
+                })
+                    .repeat(() -> eventsToSend.get() > 0)
+                    .then()
+                    .doFinally(
+                        signal -> System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
             } else {
                 return Mono.empty();
             }
@@ -68,6 +72,5 @@ public class Util {
             .toString();
         return generatedString;
     }
-
 
 }

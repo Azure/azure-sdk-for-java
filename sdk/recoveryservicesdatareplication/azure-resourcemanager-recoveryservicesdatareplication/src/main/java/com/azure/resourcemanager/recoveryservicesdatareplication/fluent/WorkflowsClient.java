@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.WorkflowModelInner;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public interface WorkflowsClient {
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -28,14 +30,14 @@ public interface WorkflowsClient {
      * @return the details of the job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, Context context);
+    Response<WorkflowModelInner> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        Context context);
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -49,9 +51,9 @@ public interface WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,9 +66,9 @@ public interface WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -78,6 +80,6 @@ public interface WorkflowsClient {
      * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowModelInner> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<WorkflowModelInner> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

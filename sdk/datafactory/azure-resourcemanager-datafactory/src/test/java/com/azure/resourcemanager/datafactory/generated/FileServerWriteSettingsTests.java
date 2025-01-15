@@ -13,19 +13,19 @@ public final class FileServerWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"datactjneibhztlzb\",\"disableMetricsCollection\":\"datayvjispkgkhvpvbz\",\"copyBehavior\":\"dataovhxstxs\",\"metadata\":[{\"name\":\"datavsd\",\"value\":\"datashhcdlsowyhxwh\"},{\"name\":\"datafgtwxmj\",\"value\":\"datazfi\"},{\"name\":\"datamwmce\",\"value\":\"datachrfm\"},{\"name\":\"datajxxwzdwmjurtno\",\"value\":\"dataiohdxyuk\"}],\"\":{\"izefajgble\":\"datafwykrpojenpsff\",\"cevfbiekydk\":\"dataxpeuahvxfn\",\"yrvdszrizpej\":\"datadkzfkneck\",\"mhzcicitykzy\":\"datayrzzxqtcgs\"}}")
+            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"dataeegzhhfnaqc\",\"disableMetricsCollection\":\"datapcklowuthfwphn\",\"copyBehavior\":\"datalbljehw\",\"metadata\":[{\"name\":\"dataofneaqahz\",\"value\":\"datanapxhtqwsd\"},{\"name\":\"dataaovubfl\",\"value\":\"datakeub\"},{\"name\":\"dataibuabpvdwhvn\",\"value\":\"databu\"},{\"name\":\"datadkqo\",\"value\":\"dataukvink\"}],\"\":{\"fhdyasklmy\":\"datazqbo\",\"awljatvfddq\":\"datahclxwede\"}}")
             .toObject(FileServerWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datactjneibhztlzb")
-            .withDisableMetricsCollection("datayvjispkgkhvpvbz")
-            .withCopyBehavior("dataovhxstxs")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datavsd").withValue("datashhcdlsowyhxwh"),
-                new MetadataItem().withName("datafgtwxmj").withValue("datazfi"),
-                new MetadataItem().withName("datamwmce").withValue("datachrfm"),
-                new MetadataItem().withName("datajxxwzdwmjurtno").withValue("dataiohdxyuk")));
+        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("dataeegzhhfnaqc")
+            .withDisableMetricsCollection("datapcklowuthfwphn")
+            .withCopyBehavior("datalbljehw")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("dataofneaqahz").withValue("datanapxhtqwsd"),
+                new MetadataItem().withName("dataaovubfl").withValue("datakeub"),
+                new MetadataItem().withName("dataibuabpvdwhvn").withValue("databu"),
+                new MetadataItem().withName("datadkqo").withValue("dataukvink")));
         model = BinaryData.fromObject(model).toObject(FileServerWriteSettings.class);
     }
 }

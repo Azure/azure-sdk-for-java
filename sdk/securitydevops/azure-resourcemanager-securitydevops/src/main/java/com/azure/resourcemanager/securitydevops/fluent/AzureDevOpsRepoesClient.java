@@ -40,8 +40,8 @@ public interface AzureDevOpsRepoesClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureDevOpsRepoInner> listByConnector(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    PagedIterable<AzureDevOpsRepoInner> listByConnector(String resourceGroupName, String azureDevOpsConnectorName,
+        Context context);
 
     /**
      * The list operation.
@@ -56,11 +56,8 @@ public interface AzureDevOpsRepoesClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureDevOpsRepoInner> list(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName);
+    PagedIterable<AzureDevOpsRepoInner> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName);
 
     /**
      * The list operation.
@@ -76,12 +73,8 @@ public interface AzureDevOpsRepoesClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureDevOpsRepoInner> list(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        Context context);
+    PagedIterable<AzureDevOpsRepoInner> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -98,13 +91,8 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureDevOpsRepoInner> getWithResponse(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        Context context);
+    Response<AzureDevOpsRepoInner> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, String azureDevOpsRepoName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -120,12 +108,8 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsRepoInner get(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName);
+    AzureDevOpsRepoInner get(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
+        String azureDevOpsProjectName, String azureDevOpsRepoName);
 
     /**
      * Updates an Azure DevOps Repo.
@@ -142,13 +126,9 @@ public interface AzureDevOpsRepoesClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        AzureDevOpsRepoInner azureDevOpsRepo);
+    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, String azureDevOpsProjectName,
+        String azureDevOpsRepoName, AzureDevOpsRepoInner azureDevOpsRepo);
 
     /**
      * Updates an Azure DevOps Repo.
@@ -166,14 +146,9 @@ public interface AzureDevOpsRepoesClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        AzureDevOpsRepoInner azureDevOpsRepo,
-        Context context);
+    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, String azureDevOpsProjectName,
+        String azureDevOpsRepoName, AzureDevOpsRepoInner azureDevOpsRepo, Context context);
 
     /**
      * Updates an Azure DevOps Repo.
@@ -190,12 +165,8 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsRepoInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
+    AzureDevOpsRepoInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, String azureDevOpsRepoName,
         AzureDevOpsRepoInner azureDevOpsRepo);
 
     /**
@@ -214,14 +185,9 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsRepoInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        AzureDevOpsRepoInner azureDevOpsRepo,
-        Context context);
+    AzureDevOpsRepoInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, String azureDevOpsRepoName,
+        AzureDevOpsRepoInner azureDevOpsRepo, Context context);
 
     /**
      * Update monitored AzureDevOps Project details.
@@ -237,11 +203,8 @@ public interface AzureDevOpsRepoesClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
+    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, String azureDevOpsProjectName,
         String azureDevOpsRepoName);
 
     /**
@@ -260,14 +223,9 @@ public interface AzureDevOpsRepoesClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        AzureDevOpsRepoInner azureDevOpsRepo,
-        Context context);
+    SyncPoller<PollResult<AzureDevOpsRepoInner>, AzureDevOpsRepoInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, String azureDevOpsProjectName,
+        String azureDevOpsRepoName, AzureDevOpsRepoInner azureDevOpsRepo, Context context);
 
     /**
      * Update monitored AzureDevOps Project details.
@@ -283,12 +241,8 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsRepoInner update(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName);
+    AzureDevOpsRepoInner update(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
+        String azureDevOpsProjectName, String azureDevOpsRepoName);
 
     /**
      * Update monitored AzureDevOps Project details.
@@ -306,12 +260,7 @@ public interface AzureDevOpsRepoesClient {
      * @return azure DevOps Repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsRepoInner update(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        AzureDevOpsRepoInner azureDevOpsRepo,
+    AzureDevOpsRepoInner update(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
+        String azureDevOpsProjectName, String azureDevOpsRepoName, AzureDevOpsRepoInner azureDevOpsRepo,
         Context context);
 }

@@ -4,10 +4,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
@@ -25,7 +23,6 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,8 +45,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class FileShareTestHelper {
-
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
+
+    static String getRandomString(int size) {
+        byte[] array = new byte[size];
+        ThreadLocalRandom.current().nextBytes(array);
+
+        return new String(array);
+    }
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         ShareErrorCode errMessage) {
@@ -99,44 +102,6 @@ public class FileShareTestHelper {
 
     protected static InputStream getInputStream(byte[] data) {
         return new ByteArrayInputStream(data);
-    }
-
-    protected static byte[] getRandomBuffer(int length) {
-        final byte[] buff = new byte[length];
-        ThreadLocalRandom.current().nextBytes(buff);
-        return buff;
-    }
-
-    protected static File getRandomFile(int size) throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
-
-        if (size > Constants.MB) {
-            int mbWrites = size / Constants.MB;
-            int remainder = size % Constants.MB;
-
-            for (int i = 0; i < mbWrites; i++) {
-                fos.write(getRandomBuffer(Constants.MB));
-            }
-
-            if (remainder > 0) {
-                fos.write(getRandomBuffer(remainder));
-            }
-        } else {
-            fos.write(getRandomBuffer(size));
-        }
-
-        fos.close();
-        return file;
-    }
-
-    protected static boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
-    }
-
-    protected static ByteBuffer getRandomByteBuffer(int length) {
-        return ByteBuffer.wrap(FileShareTestHelper.getRandomBuffer(length));
     }
 
     protected static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {
@@ -222,8 +187,9 @@ public class FileShareTestHelper {
             if (expected.getProperties() == null) {
                 return actual.getProperties() == null;
             } else {
-                if (includeDeleted && (expected.getProperties().getDeletedTime() == null
-                    ^ actual.getProperties().getDeletedTime() == null)) {
+                if (includeDeleted
+                    && (expected.getProperties().getDeletedTime() == null
+                        ^ actual.getProperties().getDeletedTime() == null)) {
                     return false;
                 }
                 return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota());
@@ -248,7 +214,6 @@ public class FileShareTestHelper {
         return randomFile.getPath();
     }
 
-
     protected static void deleteFileIfExists(String folder, String fileName) throws IOException {
         // Clean up all temporary generated files
         File dir = new File(folder);
@@ -270,25 +235,31 @@ public class FileShareTestHelper {
         }
     }
 
-
-//    protected static byte[] getBytes(InputStream is) {
-//        ByteArrayOutputStream answer = new ByteArrayOutputStream();
-//        // reading the content of the stream within a byte buffer
-//        byte[] byteBuffer = new byte[8192];
-//        int nbByteRead /* = 0*/;
-//        try (is) {
-//            while ((nbByteRead = is.read(byteBuffer)) != -1) {
-//                // appends buffer
-//                answer.write(byteBuffer, 0, nbByteRead);
-//            }
-//        } catch (IOException e) {
-//            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-//        }
-//        return answer.toByteArray();
-//    }
+    //    protected static byte[] getBytes(InputStream is) {
+    //        ByteArrayOutputStream answer = new ByteArrayOutputStream();
+    //        // reading the content of the stream within a byte buffer
+    //        byte[] byteBuffer = new byte[8192];
+    //        int nbByteRead /* = 0*/;
+    //        try (is) {
+    //            while ((nbByteRead = is.read(byteBuffer)) != -1) {
+    //                // appends buffer
+    //                answer.write(byteBuffer, 0, nbByteRead);
+    //            }
+    //        } catch (IOException e) {
+    //            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+    //        }
+    //        return answer.toByteArray();
+    //    }
 
     protected static boolean isAllWhitespace(String input) {
-        return input.matches("\\s*");
+        int length = input.length();
+        for (int i = 0; i < length; i++) {
+            if (!Character.isWhitespace(input.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -333,12 +304,8 @@ public class FileShareTestHelper {
     }
 
     protected static Stream<Arguments> startCopyWithCopySourceFileErrorSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false),
-            Arguments.of(false, true, false, false),
-            Arguments.of(false, false, true, false),
-            Arguments.of(false, false, false, true)
-        );
+        return Stream.of(Arguments.of(true, false, false, false), Arguments.of(false, true, false, false),
+            Arguments.of(false, false, true, false), Arguments.of(false, false, false, true));
     }
 
     protected static Stream<Arguments> listRangesDiffSupplier() {
@@ -350,43 +317,34 @@ public class FileShareTestHelper {
             Arguments.of(FileShareTestHelper.createFileRanges(), FileShareTestHelper.createFileRanges(0, 511),
                 FileShareTestHelper.createFileRanges(), FileShareTestHelper.createClearRanges(0, 511)),
             Arguments.of(FileShareTestHelper.createFileRanges(0, 511), FileShareTestHelper.createFileRanges(512, 1023),
-                FileShareTestHelper.createFileRanges(0, 511),
-                FileShareTestHelper.createClearRanges(512, 1023)),
+                FileShareTestHelper.createFileRanges(0, 511), FileShareTestHelper.createClearRanges(512, 1023)),
             Arguments.of(FileShareTestHelper.createFileRanges(0, 511, 1024, 1535),
                 FileShareTestHelper.createFileRanges(512, 1023, 1536, 2047),
                 FileShareTestHelper.createFileRanges(0, 511, 1024, 1535),
-                FileShareTestHelper.createClearRanges(512, 1023, 1536, 2047))
-        );
+                FileShareTestHelper.createClearRanges(512, 1023, 1536, 2047)));
     }
 
     protected static Stream<Arguments> listFilesAndDirectoriesSupplier() {
-        return Stream.of(
-            Arguments.of(new String[]{"a", "b", "c"}, new String[]{"d", "e"}),
-            Arguments.of(new String[]{"a", "c", "e"}, new String[]{"b", "d"}));
+        return Stream.of(Arguments.of(new String[] { "a", "b", "c" }, new String[] { "d", "e" }),
+            Arguments.of(new String[] { "a", "c", "e" }, new String[] { "b", "d" }));
     }
 
     protected static Stream<Arguments> startCopyArgumentsSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false, PermissionCopyModeType.OVERRIDE),
+        return Stream.of(Arguments.of(true, false, false, false, PermissionCopyModeType.OVERRIDE),
             Arguments.of(false, true, false, false, PermissionCopyModeType.OVERRIDE),
             Arguments.of(false, false, true, false, PermissionCopyModeType.SOURCE),
             Arguments.of(false, false, false, true, PermissionCopyModeType.SOURCE));
     }
 
     protected static Stream<Arguments> getPropertiesPremiumSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
+        return Stream.of(Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
             Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH),
             Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
-        );
+            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH));
     }
 
     protected static Stream<Arguments> getStatisticsSupplier() {
-        return Stream.of(
-            Arguments.of(0, 0),
-            Arguments.of(Constants.KB, 1),
-            Arguments.of(Constants.GB, 1),
+        return Stream.of(Arguments.of(0, 0), Arguments.of(Constants.KB, 1), Arguments.of(Constants.GB, 1),
             Arguments.of((long) 3 * Constants.GB, 3));
     }
 
@@ -396,7 +354,8 @@ public class FileShareTestHelper {
     }
 
     protected static Stream<Arguments> createFileMaxOverloadInvalidArgsSupplier() {
-        return Stream.of(Arguments.of("testfile:", 1024, null, Collections.singletonMap("testmetadata", "value"),
+        return Stream.of(
+            Arguments.of("testfile:", 1024, null, Collections.singletonMap("testmetadata", "value"),
                 ShareErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("fileName", -1, null, Collections.singletonMap("testmetadata", "value"),
                 ShareErrorCode.OUT_OF_RANGE_INPUT),
@@ -414,9 +373,7 @@ public class FileShareTestHelper {
     }
 
     protected static Stream<Arguments> filePermissionFormatSupplier() {
-        return Stream.of(
-            Arguments.of(FilePermissionFormat.SDDL),
-            Arguments.of(FilePermissionFormat.BINARY),
+        return Stream.of(Arguments.of(FilePermissionFormat.SDDL), Arguments.of(FilePermissionFormat.BINARY),
             Arguments.of((Object) null));
     }
 }

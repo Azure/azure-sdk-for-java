@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -71,6 +71,11 @@ public final class BlobsDownloadHeaders {
     private String xMsEncryptionKeySha256;
 
     /*
+     * The x-ms-structured-body property.
+     */
+    private String xMsStructuredBody;
+
+    /*
      * The x-ms-blob-type property.
      */
     private BlobType xMsBlobType;
@@ -79,6 +84,11 @@ public final class BlobsDownloadHeaders {
      * The x-ms-immutability-policy-mode property.
      */
     private String xMsImmutabilityPolicyMode;
+
+    /*
+     * The x-ms-structured-content-length property.
+     */
+    private Long xMsStructuredContentLength;
 
     /*
      * The Content-Encoding property.
@@ -260,10 +270,15 @@ public final class BlobsDownloadHeaders {
     private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
         = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_BLOB_TYPE = HttpHeaderName.fromString("x-ms-blob-type");
 
     private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE
         = HttpHeaderName.fromString("x-ms-immutability-policy-mode");
+
+    private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-structured-content-length");
 
     private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION
         = HttpHeaderName.fromString("x-ms-copy-status-description");
@@ -342,11 +357,16 @@ public final class BlobsDownloadHeaders {
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         String xMsBlobType = rawHeaders.getValue(X_MS_BLOB_TYPE);
         if (xMsBlobType != null) {
             this.xMsBlobType = BlobType.fromString(xMsBlobType);
         }
         this.xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
+        String xMsStructuredContentLength = rawHeaders.getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
+        if (xMsStructuredContentLength != null) {
+            this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
+        }
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
         String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
@@ -423,8 +443,8 @@ public final class BlobsDownloadHeaders {
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
-        Map<String, String> xMsOrHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();
@@ -629,6 +649,26 @@ public final class BlobsDownloadHeaders {
     }
 
     /**
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @return the xMsStructuredBody value.
+     */
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
+    }
+
+    /**
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
+        return this;
+    }
+
+    /**
      * Get the xMsBlobType property: The x-ms-blob-type property.
      * 
      * @return the xMsBlobType value.
@@ -665,6 +705,26 @@ public final class BlobsDownloadHeaders {
      */
     public BlobsDownloadHeaders setXMsImmutabilityPolicyMode(String xMsImmutabilityPolicyMode) {
         this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredContentLength property: The x-ms-structured-content-length property.
+     * 
+     * @return the xMsStructuredContentLength value.
+     */
+    public Long getXMsStructuredContentLength() {
+        return this.xMsStructuredContentLength;
+    }
+
+    /**
+     * Set the xMsStructuredContentLength property: The x-ms-structured-content-length property.
+     * 
+     * @param xMsStructuredContentLength the xMsStructuredContentLength value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
+        this.xMsStructuredContentLength = xMsStructuredContentLength;
         return this;
     }
 

@@ -89,22 +89,18 @@ public final class PrivateLinkHubImpl implements PrivateLinkHub, PrivateLinkHub.
     }
 
     public PrivateLinkHub create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .createOrUpdateWithResponse(resourceGroupName, privateLinkHubName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .createOrUpdateWithResponse(resourceGroupName, privateLinkHubName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateLinkHub create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .createOrUpdateWithResponse(resourceGroupName, privateLinkHubName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .createOrUpdateWithResponse(resourceGroupName, privateLinkHubName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -120,50 +116,42 @@ public final class PrivateLinkHubImpl implements PrivateLinkHub, PrivateLinkHub.
     }
 
     public PrivateLinkHub apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .updateWithResponse(resourceGroupName, privateLinkHubName, updatePrivateLinkHubPatchInfo, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .updateWithResponse(resourceGroupName, privateLinkHubName, updatePrivateLinkHubPatchInfo, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateLinkHub apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .updateWithResponse(resourceGroupName, privateLinkHubName, updatePrivateLinkHubPatchInfo, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .updateWithResponse(resourceGroupName, privateLinkHubName, updatePrivateLinkHubPatchInfo, context)
+            .getValue();
         return this;
     }
 
-    PrivateLinkHubImpl(
-        PrivateLinkHubInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    PrivateLinkHubImpl(PrivateLinkHubInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateLinkHubName = Utils.getValueFromIdByName(innerObject.id(), "privateLinkHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinkHubs");
     }
 
     public PrivateLinkHub refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .getByResourceGroupWithResponse(resourceGroupName, privateLinkHubName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .getByResourceGroupWithResponse(resourceGroupName, privateLinkHubName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateLinkHub refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkHubs()
-                .getByResourceGroupWithResponse(resourceGroupName, privateLinkHubName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkHubs()
+            .getByResourceGroupWithResponse(resourceGroupName, privateLinkHubName, context)
+            .getValue();
         return this;
     }
 

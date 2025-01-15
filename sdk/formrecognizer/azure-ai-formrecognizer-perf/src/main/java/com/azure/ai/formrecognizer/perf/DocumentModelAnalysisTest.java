@@ -28,10 +28,9 @@ public class DocumentModelAnalysisTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        AnalyzeResult analyzedResult =
-            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt",
-                    URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
-                .getFinalResult();
+        AnalyzeResult analyzedResult = documentAnalysisClient
+            .beginAnalyzeDocumentFromUrl("prebuilt-receipt", URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
+            .getFinalResult();
         assert analyzedResult.getPages() != null;
         assert analyzedResult.getModelId() == "prebuilt-receipt";
     }
@@ -39,16 +38,15 @@ public class DocumentModelAnalysisTest extends ServiceTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return documentAnalysisAsyncClient
-            .beginAnalyzeDocumentFromUrl("prebuilt-receipt",
-                URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
+            .beginAnalyzeDocumentFromUrl("prebuilt-receipt", URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
                     return Mono.empty();
                 } else {
-                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + pollResponse.getStatus()));
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                 }
             });
     }

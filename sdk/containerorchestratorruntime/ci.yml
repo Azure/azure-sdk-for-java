@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerorchestratorruntime/ci.yml
+      - sdk/containerorchestratorruntime/azure-resourcemanager-containerorchestratorruntime/
+    exclude:
+      - sdk/containerorchestratorruntime/pom.xml
+      - sdk/containerorchestratorruntime/azure-resourcemanager-containerorchestratorruntime/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerorchestratorruntime/ci.yml
+      - sdk/containerorchestratorruntime/azure-resourcemanager-containerorchestratorruntime/
+    exclude:
+      - sdk/containerorchestratorruntime/pom.xml
+      - sdk/containerorchestratorruntime/azure-resourcemanager-containerorchestratorruntime/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerorchestratorruntime
+    displayName: azure-resourcemanager-containerorchestratorruntime
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerorchestratorruntime
+    Artifacts:
+      - name: azure-resourcemanager-containerorchestratorruntime
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerorchestratorruntime
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerorchestratorruntime }}

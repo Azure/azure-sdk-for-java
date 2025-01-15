@@ -17,7 +17,7 @@ import java.util.Map;
 public final class CapacityReservationGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
      */
     /**

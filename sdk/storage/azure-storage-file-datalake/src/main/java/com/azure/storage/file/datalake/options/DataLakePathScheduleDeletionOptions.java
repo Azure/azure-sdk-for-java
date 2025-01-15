@@ -14,7 +14,6 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public class DataLakePathScheduleDeletionOptions {
-
     private final OffsetDateTime expiresOn;
     private final Duration timeToExpire;
 
@@ -40,6 +39,8 @@ public class DataLakePathScheduleDeletionOptions {
     }
 
     /**
+     * Gets the expiry date.
+     *
      * @return the expiry date.
      */
     public OffsetDateTime getExpiresOn() {
@@ -47,6 +48,8 @@ public class DataLakePathScheduleDeletionOptions {
     }
 
     /**
+     * Gets the time to expire.
+     *
      * @return the time to expire.
      */
     public Duration getTimeToExpire() {

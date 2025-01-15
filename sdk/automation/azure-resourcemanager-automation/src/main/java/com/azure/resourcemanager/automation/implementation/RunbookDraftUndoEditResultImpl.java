@@ -13,8 +13,7 @@ public final class RunbookDraftUndoEditResultImpl implements RunbookDraftUndoEdi
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    RunbookDraftUndoEditResultImpl(
-        RunbookDraftUndoEditResultInner innerObject,
+    RunbookDraftUndoEditResultImpl(RunbookDraftUndoEditResultInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

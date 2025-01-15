@@ -5,67 +5,68 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a restorable dropped Sql pool. */
+/**
+ * The properties of a restorable dropped Sql pool.
+ */
 @Immutable
-public final class RestorableDroppedSqlPoolProperties {
+public final class RestorableDroppedSqlPoolProperties implements JsonSerializable<RestorableDroppedSqlPoolProperties> {
     /*
      * The name of the database
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * The edition of the database
      */
-    @JsonProperty(value = "edition", access = JsonProperty.Access.WRITE_ONLY)
     private String edition;
 
     /*
      * The max size in bytes of the database
      */
-    @JsonProperty(value = "maxSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
     private String maxSizeBytes;
 
     /*
      * The service level objective name of the database
      */
-    @JsonProperty(value = "serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
 
     /*
      * The elastic pool name of the database
      */
-    @JsonProperty(value = "elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
 
     /*
      * The creation date of the database (ISO8601 format)
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The deletion date of the database (ISO8601 format)
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionDate;
 
     /*
      * The earliest restore date of the database (ISO8601 format)
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
-    /** Creates an instance of RestorableDroppedSqlPoolProperties class. */
+    /**
+     * Creates an instance of RestorableDroppedSqlPoolProperties class.
+     */
     public RestorableDroppedSqlPoolProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -74,7 +75,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the edition property: The edition of the database.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
@@ -83,7 +84,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the maxSizeBytes property: The max size in bytes of the database.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -92,7 +93,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the serviceLevelObjective property: The service level objective name of the database.
-     *
+     * 
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -101,7 +102,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the elasticPoolName property: The elastic pool name of the database.
-     *
+     * 
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -110,7 +111,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -119,7 +120,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -128,7 +129,7 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -137,9 +138,62 @@ public final class RestorableDroppedSqlPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedSqlPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedSqlPoolProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDroppedSqlPoolProperties.
+     */
+    public static RestorableDroppedSqlPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedSqlPoolProperties deserializedRestorableDroppedSqlPoolProperties
+                = new RestorableDroppedSqlPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.databaseName = reader.getString();
+                } else if ("edition".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.edition = reader.getString();
+                } else if ("maxSizeBytes".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.maxSizeBytes = reader.getString();
+                } else if ("serviceLevelObjective".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.serviceLevelObjective = reader.getString();
+                } else if ("elasticPoolName".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.elasticPoolName = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedRestorableDroppedSqlPoolProperties.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedSqlPoolProperties;
+        });
     }
 }

@@ -71,8 +71,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(2)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Response<BinaryData> response = getLoadTestRunClient()
-            .createOrUpdateAppComponentsWithResponse(newTestRunId, body, null);
+        Response<BinaryData> response
+            = getLoadTestRunClient().createOrUpdateAppComponentsWithResponse(newTestRunId, body, null);
 
         assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
@@ -81,8 +81,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(3)
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
-        Response<BinaryData> response = getLoadTestRunClient()
-            .createOrUpdateServerMetricsConfigWithResponse(newTestRunId, body, null);
+        Response<BinaryData> response
+            = getLoadTestRunClient().createOrUpdateServerMetricsConfigWithResponse(newTestRunId, body, null);
 
         assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
@@ -92,8 +92,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(4)
     public void getTestRunFile() {
-        Response<BinaryData> response = getLoadTestRunClient()
-            .getTestRunFileWithResponse(newTestRunId, uploadJmxFileName, null);
+        Response<BinaryData> response
+            = getLoadTestRunClient().getTestRunFileWithResponse(newTestRunId, uploadJmxFileName, null);
 
         try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
             Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
@@ -135,11 +135,11 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
 
             assertTrue(components.containsKey(defaultAppComponentResourceId));
 
-            Map<String, Object> appComponentResource =
-                (Map<String, Object>) components.get(defaultAppComponentResourceId);
+            Map<String, Object> appComponentResource
+                = (Map<String, Object>) components.get(defaultAppComponentResourceId);
 
-            assertTrue(defaultAppComponentResourceId
-                .equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
+            assertTrue(
+                defaultAppComponentResourceId.equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
         } catch (IOException e) {
             fail("Encountered exception while reading app components", e);
         }
@@ -159,8 +159,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
 
             assertTrue(components.containsKey(defaultServerMetricId));
 
-            Map<String, Object> appComponentResource =
-                (Map<String, Object>) components.get(defaultServerMetricId);
+            Map<String, Object> appComponentResource = (Map<String, Object>) components.get(defaultServerMetricId);
 
             assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
         } catch (IOException e) {
@@ -198,8 +197,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(9)
     public void listMetricDefinitions() {
-        Response<BinaryData> response = getLoadTestRunClient()
-            .getMetricDefinitionsWithResponse(newTestRunId, "LoadTestRunMetrics", null);
+        Response<BinaryData> response
+            = getLoadTestRunClient().getMetricDefinitionsWithResponse(newTestRunId, "LoadTestRunMetrics", null);
 
         try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
             Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
@@ -239,8 +238,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         }
 
         String timespan = startDateTime + "/" + endDateTime;
-        PagedIterable<BinaryData> metricsResponse = getLoadTestRunClient()
-            .listMetrics(newTestRunId, "VirtualUsers", "LoadTestRunMetrics", timespan, null);
+        PagedIterable<BinaryData> metricsResponse
+            = getLoadTestRunClient().listMetrics(newTestRunId, "VirtualUsers", "LoadTestRunMetrics", timespan, null);
         boolean valid = metricsResponse.stream().anyMatch(metricsBinary -> {
             AtomicBoolean found = new AtomicBoolean(false);
 

@@ -16,13 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for App Service plan management API. */
 @Fluent
-public interface AppServicePlans
-    extends SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<AppServicePlan>,
-        SupportsListing<AppServicePlan>,
-        SupportsGettingByResourceGroup<AppServicePlan>,
-        SupportsGettingById<AppServicePlan>,
-        SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager> {
+public interface AppServicePlans extends SupportsCreating<AppServicePlan.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<AppServicePlan>, SupportsListing<AppServicePlan>,
+    SupportsGettingByResourceGroup<AppServicePlan>, SupportsGettingById<AppServicePlan>,
+    SupportsDeletingByResourceGroup, HasManager<AppServiceManager> {
 }

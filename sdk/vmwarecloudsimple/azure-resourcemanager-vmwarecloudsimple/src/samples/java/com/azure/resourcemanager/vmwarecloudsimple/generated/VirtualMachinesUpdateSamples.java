@@ -8,26 +8,29 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachine;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachines Update. */
+/**
+ * Samples for VirtualMachines Update.
+ */
 public final class VirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/PatchVirtualMachine.json
+     * x-ms-original-file:
+     * specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/
+     * PatchVirtualMachine.json
      */
     /**
      * Sample code: PatchVirtualMachine.
-     *
+     * 
      * @param manager Entry point to VMwareCloudSimpleManager.
      */
-    public static void patchVirtualMachine(
-        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
-        VirtualMachine resource =
-            manager
-                .virtualMachines()
-                .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachine", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        patchVirtualMachine(com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
+        VirtualMachine resource = manager.virtualMachines()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachine", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("myTag", "tagValue")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

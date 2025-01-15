@@ -14,11 +14,13 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlan
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ScalingPlanPersonalSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScalingPlanPersonalSchedulesClient.
+ */
 public interface ScalingPlanPersonalSchedulesClient {
     /**
      * Get a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -28,12 +30,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return a ScalingPlanPersonalSchedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanPersonalScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    Mono<Response<ScalingPlanPersonalScheduleInner>> getWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName);
 
     /**
      * Get a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -43,12 +45,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return a ScalingPlanPersonalSchedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScalingPlanPersonalScheduleInner> getAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    Mono<ScalingPlanPersonalScheduleInner> getAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName);
 
     /**
      * Get a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -59,12 +61,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return a ScalingPlanPersonalSchedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanPersonalScheduleInner> getWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context);
+    Response<ScalingPlanPersonalScheduleInner> getWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, Context context);
 
     /**
      * Get a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -74,12 +76,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return a ScalingPlanPersonalSchedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScalingPlanPersonalScheduleInner get(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    ScalingPlanPersonalScheduleInner get(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName);
 
     /**
      * Create or update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -88,18 +90,15 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanPersonalScheduleInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalScheduleInner scalingPlanSchedule);
+    Mono<Response<ScalingPlanPersonalScheduleInner>> createWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule);
 
     /**
      * Create or update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -110,15 +109,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScalingPlanPersonalScheduleInner> createAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalScheduleInner scalingPlanSchedule);
+    Mono<ScalingPlanPersonalScheduleInner> createAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule);
 
     /**
      * Create or update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -130,16 +126,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanPersonalScheduleInner> createWithResponse(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalScheduleInner scalingPlanSchedule,
-        Context context);
+    Response<ScalingPlanPersonalScheduleInner> createWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule, Context context);
 
     /**
      * Create or update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -150,15 +142,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScalingPlanPersonalScheduleInner create(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalScheduleInner scalingPlanSchedule);
+    ScalingPlanPersonalScheduleInner create(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPersonalScheduleInner scalingPlanSchedule);
 
     /**
      * Remove a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -168,12 +157,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName);
 
     /**
      * Remove a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -187,7 +176,7 @@ public interface ScalingPlanPersonalSchedulesClient {
 
     /**
      * Remove a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -198,12 +187,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName,
+        Context context);
 
     /**
      * Remove a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -216,7 +205,7 @@ public interface ScalingPlanPersonalSchedulesClient {
 
     /**
      * Update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -225,18 +214,15 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanPersonalScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalSchedulePatch scalingPlanSchedule);
+    Mono<Response<ScalingPlanPersonalScheduleInner>> updateWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPersonalSchedulePatch scalingPlanSchedule);
 
     /**
      * Update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -246,12 +232,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScalingPlanPersonalScheduleInner> updateAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    Mono<ScalingPlanPersonalScheduleInner> updateAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName);
 
     /**
      * Update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -263,16 +249,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanPersonalScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPersonalSchedulePatch scalingPlanSchedule,
-        Context context);
+    Response<ScalingPlanPersonalScheduleInner> updateWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPersonalSchedulePatch scalingPlanSchedule, Context context);
 
     /**
      * Update a ScalingPlanPersonalSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -282,12 +264,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return represents a ScalingPlanPersonalSchedule definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScalingPlanPersonalScheduleInner update(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName);
+    ScalingPlanPersonalScheduleInner update(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName);
 
     /**
      * List ScalingPlanPersonalSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -299,12 +281,12 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return scalingPlanPersonalScheduleList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ScalingPlanPersonalScheduleInner> listAsync(
-        String resourceGroupName, String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip);
+    PagedFlux<ScalingPlanPersonalScheduleInner> listAsync(String resourceGroupName, String scalingPlanName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip);
 
     /**
      * List ScalingPlanPersonalSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +299,7 @@ public interface ScalingPlanPersonalSchedulesClient {
 
     /**
      * List ScalingPlanPersonalSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +312,7 @@ public interface ScalingPlanPersonalSchedulesClient {
 
     /**
      * List ScalingPlanPersonalSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -343,11 +325,6 @@ public interface ScalingPlanPersonalSchedulesClient {
      * @return scalingPlanPersonalScheduleList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScalingPlanPersonalScheduleInner> list(
-        String resourceGroupName,
-        String scalingPlanName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<ScalingPlanPersonalScheduleInner> list(String resourceGroupName, String scalingPlanName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 }

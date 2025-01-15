@@ -8,43 +8,54 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Schema for MSIX Package properties. */
+/**
+ * Schema for MSIX Package properties.
+ */
 @Fluent
 public final class MsixPackageInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Detailed properties for MSIX Package
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private MsixPackageProperties innerProperties = new MsixPackageProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * Detailed properties for MSIX Package
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
-    private MsixPackageProperties innerProperties = new MsixPackageProperties();
+    private String type;
 
-    /** Creates an instance of MsixPackageInner class. */
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MsixPackageInner class.
+     */
     public MsixPackageInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for MSIX Package.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MsixPackageProperties innerProperties() {
@@ -52,8 +63,47 @@ public final class MsixPackageInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @return the imagePath value.
      */
     public String imagePath() {
@@ -62,7 +112,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @param imagePath the imagePath value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -76,7 +126,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -85,7 +135,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -100,7 +150,7 @@ public final class MsixPackageInner extends ProxyResource {
     /**
      * Get the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @return the packageFamilyName value.
      */
     public String packageFamilyName() {
@@ -110,7 +160,7 @@ public final class MsixPackageInner extends ProxyResource {
     /**
      * Set the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @param packageFamilyName the packageFamilyName value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -124,7 +174,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -133,7 +183,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -147,7 +197,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @return the packageRelativePath value.
      */
     public String packageRelativePath() {
@@ -156,7 +206,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @param packageRelativePath the packageRelativePath value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -170,7 +220,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @return the isRegularRegistration value.
      */
     public Boolean isRegularRegistration() {
@@ -179,7 +229,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @param isRegularRegistration the isRegularRegistration value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -193,7 +243,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -202,7 +252,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -216,7 +266,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @return the packageDependencies value.
      */
     public List<MsixPackageDependencies> packageDependencies() {
@@ -225,7 +275,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @param packageDependencies the packageDependencies value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -238,8 +288,8 @@ public final class MsixPackageInner extends ProxyResource {
     }
 
     /**
-     * Get the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Get the version property: Package version found in the appxmanifest.xml.
+     * 
      * @return the version value.
      */
     public String version() {
@@ -247,8 +297,8 @@ public final class MsixPackageInner extends ProxyResource {
     }
 
     /**
-     * Set the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Set the version property: Package version found in the appxmanifest.xml.
+     * 
      * @param version the version value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -262,7 +312,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public OffsetDateTime lastUpdated() {
@@ -271,7 +321,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -285,7 +335,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Get the packageApplications property: List of package applications.
-     *
+     * 
      * @return the packageApplications value.
      */
     public List<MsixPackageApplications> packageApplications() {
@@ -294,7 +344,7 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Set the packageApplications property: List of package applications.
-     *
+     * 
      * @param packageApplications the packageApplications value to set.
      * @return the MsixPackageInner object itself.
      */
@@ -308,19 +358,63 @@ public final class MsixPackageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MsixPackageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model MsixPackageInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MsixPackageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MsixPackageInner.
+     */
+    public static MsixPackageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackageInner deserializedMsixPackageInner = new MsixPackageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMsixPackageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMsixPackageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMsixPackageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMsixPackageInner.innerProperties = MsixPackageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMsixPackageInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackageInner;
+        });
+    }
 }

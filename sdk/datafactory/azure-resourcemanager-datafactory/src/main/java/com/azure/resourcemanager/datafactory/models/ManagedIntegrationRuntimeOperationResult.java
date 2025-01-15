@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,47 +20,41 @@ import java.util.Map;
  * Properties of managed integration runtime operation result.
  */
 @Fluent
-public final class ManagedIntegrationRuntimeOperationResult {
+public final class ManagedIntegrationRuntimeOperationResult
+    implements JsonSerializable<ManagedIntegrationRuntimeOperationResult> {
     /*
      * The operation type. Could be start or stop.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The operation result.
      */
-    @JsonProperty(value = "result", access = JsonProperty.Access.WRITE_ONLY)
     private String result;
 
     /*
      * The error code.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
     /*
      * Managed integration runtime error parameters.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> parameters;
 
     /*
      * The activity id for the operation request.
      */
-    @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;
 
     /*
      * Properties of managed integration runtime operation result.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -126,7 +122,6 @@ public final class ManagedIntegrationRuntimeOperationResult {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -142,19 +137,70 @@ public final class ManagedIntegrationRuntimeOperationResult {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntimeOperationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntimeOperationResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntimeOperationResult.
+     */
+    public static ManagedIntegrationRuntimeOperationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntimeOperationResult deserializedManagedIntegrationRuntimeOperationResult
+                = new ManagedIntegrationRuntimeOperationResult();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeOperationResult.type = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeOperationResult.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("result".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeOperationResult.result = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeOperationResult.errorCode = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<String> parameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedIntegrationRuntimeOperationResult.parameters = parameters;
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeOperationResult.activityId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedManagedIntegrationRuntimeOperationResult.additionalProperties = additionalProperties;
+
+            return deserializedManagedIntegrationRuntimeOperationResult;
+        });
     }
 }

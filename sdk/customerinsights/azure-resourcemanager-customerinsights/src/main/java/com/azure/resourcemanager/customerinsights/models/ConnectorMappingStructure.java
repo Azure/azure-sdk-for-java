@@ -6,42 +6,46 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connector mapping property structure. */
+/**
+ * Connector mapping property structure.
+ */
 @Fluent
-public final class ConnectorMappingStructure {
+public final class ConnectorMappingStructure implements JsonSerializable<ConnectorMappingStructure> {
     /*
      * The property name of the mapping entity.
      */
-    @JsonProperty(value = "propertyName", required = true)
     private String propertyName;
 
     /*
      * The column name of the import file.
      */
-    @JsonProperty(value = "columnName", required = true)
     private String columnName;
 
     /*
      * Custom format specifier for input parsing.
      */
-    @JsonProperty(value = "customFormatSpecifier")
     private String customFormatSpecifier;
 
     /*
      * Indicates if the column is encrypted.
      */
-    @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
-    /** Creates an instance of ConnectorMappingStructure class. */
+    /**
+     * Creates an instance of ConnectorMappingStructure class.
+     */
     public ConnectorMappingStructure() {
     }
 
     /**
      * Get the propertyName property: The property name of the mapping entity.
-     *
+     * 
      * @return the propertyName value.
      */
     public String propertyName() {
@@ -50,7 +54,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Set the propertyName property: The property name of the mapping entity.
-     *
+     * 
      * @param propertyName the propertyName value to set.
      * @return the ConnectorMappingStructure object itself.
      */
@@ -61,7 +65,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Get the columnName property: The column name of the import file.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -70,7 +74,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Set the columnName property: The column name of the import file.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the ConnectorMappingStructure object itself.
      */
@@ -81,7 +85,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Get the customFormatSpecifier property: Custom format specifier for input parsing.
-     *
+     * 
      * @return the customFormatSpecifier value.
      */
     public String customFormatSpecifier() {
@@ -90,7 +94,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Set the customFormatSpecifier property: Custom format specifier for input parsing.
-     *
+     * 
      * @param customFormatSpecifier the customFormatSpecifier value to set.
      * @return the ConnectorMappingStructure object itself.
      */
@@ -101,7 +105,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Get the isEncrypted property: Indicates if the column is encrypted.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -110,7 +114,7 @@ public final class ConnectorMappingStructure {
 
     /**
      * Set the isEncrypted property: Indicates if the column is encrypted.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the ConnectorMappingStructure object itself.
      */
@@ -121,23 +125,67 @@ public final class ConnectorMappingStructure {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (propertyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property propertyName in model ConnectorMappingStructure"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property propertyName in model ConnectorMappingStructure"));
         }
         if (columnName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property columnName in model ConnectorMappingStructure"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property columnName in model ConnectorMappingStructure"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingStructure.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName);
+        jsonWriter.writeStringField("columnName", this.columnName);
+        jsonWriter.writeStringField("customFormatSpecifier", this.customFormatSpecifier);
+        jsonWriter.writeBooleanField("isEncrypted", this.isEncrypted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingStructure from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingStructure if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMappingStructure.
+     */
+    public static ConnectorMappingStructure fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingStructure deserializedConnectorMappingStructure = new ConnectorMappingStructure();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedConnectorMappingStructure.propertyName = reader.getString();
+                } else if ("columnName".equals(fieldName)) {
+                    deserializedConnectorMappingStructure.columnName = reader.getString();
+                } else if ("customFormatSpecifier".equals(fieldName)) {
+                    deserializedConnectorMappingStructure.customFormatSpecifier = reader.getString();
+                } else if ("isEncrypted".equals(fieldName)) {
+                    deserializedConnectorMappingStructure.isEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingStructure;
+        });
+    }
 }

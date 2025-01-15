@@ -14,7 +14,8 @@ import java.util.List;
 /** The List Aml user feature operation response. */
 @Immutable
 public final class ListAmlUserFeatureResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListAmlUserFeatureResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListAmlUserFeatureResult.class);
 
     /*
      * The list of AML user facing features.

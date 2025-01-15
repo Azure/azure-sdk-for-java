@@ -20,8 +20,9 @@ public final class VaultSettingCreationInputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSettingCreationInputProperties model = new VaultSettingCreationInputProperties()
-            .withMigrationSolutionId("yxp").withVmwareToAzureProviderType("tweialwvskbuhzac");
+        VaultSettingCreationInputProperties model
+            = new VaultSettingCreationInputProperties().withMigrationSolutionId("yxp")
+                .withVmwareToAzureProviderType("tweialwvskbuhzac");
         model = BinaryData.fromObject(model).toObject(VaultSettingCreationInputProperties.class);
         Assertions.assertEquals("yxp", model.migrationSolutionId());
         Assertions.assertEquals("tweialwvskbuhzac", model.vmwareToAzureProviderType());

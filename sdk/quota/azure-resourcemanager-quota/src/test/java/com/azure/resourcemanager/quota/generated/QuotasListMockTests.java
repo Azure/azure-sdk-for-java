@@ -22,7 +22,7 @@ public final class QuotasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"mkycgra\",\"name\":{\"value\":\"uetae\",\"localizedValue\":\"ruvdmov\"},\"resourceType\":\"zlxwabmqoefkifr\",\"quotaPeriod\":\"puqujmqlgkfbtn\",\"isQuotaApplicable\":false,\"properties\":\"datan\"},\"id\":\"bjcntujitc\",\"name\":\"ed\",\"type\":\"twwaezkojvdcpzf\"}]}";
+            = "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"qntorudsgsahmkyc\",\"name\":{\"value\":\"uwjuetaeburuvdmo\",\"localizedValue\":\"mz\"},\"resourceType\":\"wabm\",\"quotaPeriod\":\"efkifr\",\"isQuotaApplicable\":true,\"properties\":\"dataqujmqlgkf\"},\"id\":\"tndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class QuotasListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CurrentQuotaLimitBase> response
-            = manager.quotas().list("aznqntoru", com.azure.core.util.Context.NONE);
+            = manager.quotas().list("gdknnqv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uetae", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("zlxwabmqoefkifr", response.iterator().next().properties().resourceType());
+        Assertions.assertEquals("uwjuetaeburuvdmo", response.iterator().next().properties().name().value());
+        Assertions.assertEquals("wabm", response.iterator().next().properties().resourceType());
     }
 }

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionI
 public final class EnabledSubscriptionIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnabledSubscriptionIdInner model =
-            BinaryData.fromString("{\"subscriptionId\":\"kwy\"}").toObject(EnabledSubscriptionIdInner.class);
+        EnabledSubscriptionIdInner model = BinaryData.fromString("{\"subscriptionId\":\"fygxgispemvtzfk\"}")
+            .toObject(EnabledSubscriptionIdInner.class);
     }
 
     @org.junit.jupiter.api.Test

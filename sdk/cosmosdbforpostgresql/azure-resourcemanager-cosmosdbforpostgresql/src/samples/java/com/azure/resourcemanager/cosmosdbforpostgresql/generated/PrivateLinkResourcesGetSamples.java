@@ -20,7 +20,7 @@ public final class PrivateLinkResourcesGetSamples {
      */
     public static void getsAPrivateLinkResourceForCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateLinkResources().getWithResponse("TestGroup", "testcluster", "plr",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .getWithResponse("TestGroup", "testcluster", "plr", com.azure.core.util.Context.NONE);
     }
 }

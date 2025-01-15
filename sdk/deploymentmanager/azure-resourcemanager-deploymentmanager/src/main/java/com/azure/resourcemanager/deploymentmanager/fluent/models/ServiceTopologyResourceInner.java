@@ -78,10 +78,8 @@ public final class ServiceTopologyResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ServiceTopologyResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ServiceTopologyResourceInner"));
         } else {
             innerProperties().validate();
         }

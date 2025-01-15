@@ -22,7 +22,8 @@ public class ConfidentialLedgerEnvironment {
     }
 
     public static String getConfidentialLedgerIdentityUrl() {
-        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_IDENTITY_URL", "https://identity.confidential-ledger.core.azure.com");
+        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_IDENTITY_URL",
+            "https://identity.confidential-ledger.core.azure.com");
     }
 
     public static String getConfidentialLedgerAdminOid() {

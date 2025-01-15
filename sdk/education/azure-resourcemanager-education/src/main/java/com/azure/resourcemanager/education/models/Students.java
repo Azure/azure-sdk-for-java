@@ -9,49 +9,47 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.StudentDetailsInner;
 
-/** Resource collection API of Students. */
+/**
+ * Resource collection API of Students.
+ */
 public interface Students {
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<StudentDetails> list(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
-    PagedIterable<StudentDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDeleted,
-        Context context);
+    PagedIterable<StudentDetails> list(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        Boolean includeDeleted, Context context);
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,34 +57,30 @@ public interface Students {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific student in the specified lab by student alias along with {@link Response}.
      */
-    Response<StudentDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context);
+    Response<StudentDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context);
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific student in the specified lab by student alias.
      */
-    StudentDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias);
+    StudentDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias);
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,19 +88,15 @@ public interface Students {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context);
+    Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias, Context context);
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,10 +107,10 @@ public interface Students {
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @param context The context to associate with this operation.
@@ -129,21 +119,16 @@ public interface Students {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student details along with {@link Response}.
      */
-    Response<StudentDetails> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters,
-        Context context);
+    Response<StudentDetails> createOrUpdateWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, StudentDetailsInner parameters, Context context);
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,10 +136,6 @@ public interface Students {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student details.
      */
-    StudentDetails createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters);
+    StudentDetails createOrUpdate(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias, StudentDetailsInner parameters);
 }

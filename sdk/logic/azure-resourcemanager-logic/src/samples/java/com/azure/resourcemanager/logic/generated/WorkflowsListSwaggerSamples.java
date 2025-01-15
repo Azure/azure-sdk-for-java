@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.logic.generated;
 
-/** Samples for Workflows ListSwagger. */
+/**
+ * Samples for Workflows ListSwagger.
+ */
 public final class WorkflowsListSwaggerSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ListSwagger.json
+     * x-ms-original-file:
+     * specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ListSwagger.json
      */
     /**
      * Sample code: Get the swagger for a workflow.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void getTheSwaggerForAWorkflow(com.azure.resourcemanager.logic.LogicManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .listSwaggerWithResponse("testResourceGroup", "testWorkflowName", com.azure.core.util.Context.NONE);
     }
 }

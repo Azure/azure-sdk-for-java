@@ -45,7 +45,7 @@ public class SampleCaptionImageFileAsync {
         }
 
         // BEGIN: create-async-client-snippet
-        // Create an asynchronous Image Analysis client.
+        // Create an asynchronous client using API key authentication.
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))

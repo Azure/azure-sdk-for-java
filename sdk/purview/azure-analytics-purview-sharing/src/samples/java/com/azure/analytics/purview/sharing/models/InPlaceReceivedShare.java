@@ -4,120 +4,37 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.time.OffsetDateTime;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * An InPlace received share kind.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "shareKind")
-@JsonTypeName("InPlace")
-@JsonFlatten
 @Fluent
-public class InPlaceReceivedShare extends ReceivedShare {
+public final class InPlaceReceivedShare extends ReceivedShare {
     /*
-     * Location of the shared Asset.
+     * Defines the supported types for share.
      */
-    @JsonProperty(value = "properties.assetLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String assetLocation;
+    private ShareKind shareKind = ShareKind.IN_PLACE_SHARE_KIND;
 
     /*
-     * The types of asset.
+     * Properties of in place received share.
      */
-    @JsonProperty(value = "properties.assetStoreKind")
-    private StoreKind assetStoreKind;
+    private InPlaceReceivedShareProperties properties;
 
     /*
-     * Time at which the received share was created. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
+     * Type of the resource.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    private String type;
 
     /*
-     * Received Share Name
+     * The unique id of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The expiration date of the received share. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
-     */
-    @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Email of the user/receiver who received the sent share invitation
-     */
-    @JsonProperty(value = "properties.receiverEmail", access = JsonProperty.Access.WRITE_ONLY)
-    private String receiverEmail;
-
-    /*
-     * Name of the user/receiver who received the sent share invitation
-     */
-    @JsonProperty(value = "properties.receiverName", access = JsonProperty.Access.WRITE_ONLY)
-    private String receiverName;
-
-    /*
-     * Tenant name of the user/receiver who received the sent share invitation
-     */
-    @JsonProperty(value = "properties.receiverTenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String receiverTenantName;
-
-    /*
-     * Email of the sender who created the sent share invitation
-     */
-    @JsonProperty(value = "properties.senderEmail", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderEmail;
-
-    /*
-     * Name of the sender who created the sent share invitation
-     */
-    @JsonProperty(value = "properties.senderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderName;
-
-    /*
-     * Tenant name of the sender who created the sent share invitation
-     */
-    @JsonProperty(value = "properties.senderTenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderTenantName;
-
-    /*
-     * Share description.
-     */
-    @JsonProperty(value = "properties.sentShareDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String sentShareDescription;
-
-    /*
-     * Time at which the sent share was shared. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
-     */
-    @JsonProperty(value = "properties.sharedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime sharedAt;
-
-    /*
-     * Share status.
-     */
-    @JsonProperty(value = "properties.shareStatus")
-    private ShareStatus shareStatus;
-
-    /*
-     * Holds details on the destination of the mapped artifact
-     */
-    @JsonProperty(value = "properties.sink")
-    private Sink sink;
-
-    /*
-     * State of the resource
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
+    private String id;
 
     /**
      * Creates an instance of InPlaceReceivedShare class.
@@ -126,193 +43,96 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the assetLocation property: Location of the shared Asset.
-     * 
-     * @return the assetLocation value.
+     * Get the shareKind property: Defines the supported types for share.
+     *
+     * @return the shareKind value.
      */
-    public String getAssetLocation() {
-        return this.assetLocation;
+    @Override
+    public ShareKind getShareKind() {
+        return this.shareKind;
     }
 
     /**
-     * Get the assetStoreKind property: The types of asset.
-     * 
-     * @return the assetStoreKind value.
+     * Get the properties property: Properties of in place received share.
+     *
+     * @return the properties value.
      */
-    public StoreKind getAssetStoreKind() {
-        return this.assetStoreKind;
+    public InPlaceReceivedShareProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the assetStoreKind property: The types of asset.
-     * 
-     * @param assetStoreKind the assetStoreKind value to set.
+     * Set the properties property: Properties of in place received share.
+     *
+     * @param properties the properties value to set.
      * @return the InPlaceReceivedShare object itself.
      */
-    public InPlaceReceivedShare setAssetStoreKind(StoreKind assetStoreKind) {
-        this.assetStoreKind = assetStoreKind;
+    public InPlaceReceivedShare setProperties(InPlaceReceivedShareProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the createdAt property: Time at which the received share was created. Represented in the standard date-time
-     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the createdAt value.
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
      */
-    public OffsetDateTime getCreatedAt() {
-        return this.createdAt;
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Get the displayName property: Received Share Name.
-     * 
-     * @return the displayName value.
+     * Get the id property: The unique id of the resource.
+     *
+     * @return the id value.
      */
-    public String getDisplayName() {
-        return this.displayName;
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Set the displayName property: Received Share Name.
-     * 
-     * @param displayName the displayName value to set.
-     * @return the InPlaceReceivedShare object itself.
+     * {@inheritDoc}
      */
-    public InPlaceReceivedShare setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("shareKind", this.shareKind == null ? null : this.shareKind.toString());
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the expirationDate property: The expiration date of the received share. Represented in the standard
-     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the expirationDate value.
+     * Reads an instance of InPlaceReceivedShare from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InPlaceReceivedShare if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InPlaceReceivedShare.
      */
-    public OffsetDateTime getExpirationDate() {
-        return this.expirationDate;
-    }
+    public static InPlaceReceivedShare fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InPlaceReceivedShare deserializedInPlaceReceivedShare = new InPlaceReceivedShare();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    /**
-     * Get the receiverEmail property: Email of the user/receiver who received the sent share invitation.
-     * 
-     * @return the receiverEmail value.
-     */
-    public String getReceiverEmail() {
-        return this.receiverEmail;
-    }
+                if ("id".equals(fieldName)) {
+                    deserializedInPlaceReceivedShare.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInPlaceReceivedShare.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInPlaceReceivedShare.properties = InPlaceReceivedShareProperties.fromJson(reader);
+                } else if ("shareKind".equals(fieldName)) {
+                    deserializedInPlaceReceivedShare.shareKind = ShareKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-    /**
-     * Get the receiverName property: Name of the user/receiver who received the sent share invitation.
-     * 
-     * @return the receiverName value.
-     */
-    public String getReceiverName() {
-        return this.receiverName;
-    }
-
-    /**
-     * Get the receiverTenantName property: Tenant name of the user/receiver who received the sent share invitation.
-     * 
-     * @return the receiverTenantName value.
-     */
-    public String getReceiverTenantName() {
-        return this.receiverTenantName;
-    }
-
-    /**
-     * Get the senderEmail property: Email of the sender who created the sent share invitation.
-     * 
-     * @return the senderEmail value.
-     */
-    public String getSenderEmail() {
-        return this.senderEmail;
-    }
-
-    /**
-     * Get the senderName property: Name of the sender who created the sent share invitation.
-     * 
-     * @return the senderName value.
-     */
-    public String getSenderName() {
-        return this.senderName;
-    }
-
-    /**
-     * Get the senderTenantName property: Tenant name of the sender who created the sent share invitation.
-     * 
-     * @return the senderTenantName value.
-     */
-    public String getSenderTenantName() {
-        return this.senderTenantName;
-    }
-
-    /**
-     * Get the sentShareDescription property: Share description.
-     * 
-     * @return the sentShareDescription value.
-     */
-    public String getSentShareDescription() {
-        return this.sentShareDescription;
-    }
-
-    /**
-     * Get the sharedAt property: Time at which the sent share was shared. Represented in the standard date-time format
-     * as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the sharedAt value.
-     */
-    public OffsetDateTime getSharedAt() {
-        return this.sharedAt;
-    }
-
-    /**
-     * Get the shareStatus property: Share status.
-     * 
-     * @return the shareStatus value.
-     */
-    public ShareStatus getShareStatus() {
-        return this.shareStatus;
-    }
-
-    /**
-     * Set the shareStatus property: Share status.
-     * 
-     * @param shareStatus the shareStatus value to set.
-     * @return the InPlaceReceivedShare object itself.
-     */
-    public InPlaceReceivedShare setShareStatus(ShareStatus shareStatus) {
-        this.shareStatus = shareStatus;
-        return this;
-    }
-
-    /**
-     * Get the sink property: Holds details on the destination of the mapped artifact.
-     * 
-     * @return the sink value.
-     */
-    public Sink getSink() {
-        return this.sink;
-    }
-
-    /**
-     * Set the sink property: Holds details on the destination of the mapped artifact.
-     * 
-     * @param sink the sink value to set.
-     * @return the InPlaceReceivedShare object itself.
-     */
-    public InPlaceReceivedShare setSink(Sink sink) {
-        this.sink = sink;
-        return this;
-    }
-
-    /**
-     * Get the state property: State of the resource.
-     * 
-     * @return the state value.
-     */
-    public State getState() {
-        return this.state;
+            return deserializedInPlaceReceivedShare;
+        });
     }
 }

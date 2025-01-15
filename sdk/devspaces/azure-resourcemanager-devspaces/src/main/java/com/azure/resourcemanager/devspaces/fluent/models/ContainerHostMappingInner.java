@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container host mapping object specifying the Container host resource ID and its associated Controller resource. */
+/**
+ * Container host mapping object specifying the Container host resource ID and its associated Controller resource.
+ */
 @Fluent
-public final class ContainerHostMappingInner {
+public final class ContainerHostMappingInner implements JsonSerializable<ContainerHostMappingInner> {
     /*
      * ARM ID of the Container Host resource
      */
-    @JsonProperty(value = "containerHostResourceId")
     private String containerHostResourceId;
 
     /*
      * ARM ID of the mapped Controller resource
      */
-    @JsonProperty(value = "mappedControllerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String mappedControllerResourceId;
 
-    /** Creates an instance of ContainerHostMappingInner class. */
+    /**
+     * Creates an instance of ContainerHostMappingInner class.
+     */
     public ContainerHostMappingInner() {
     }
 
     /**
      * Get the containerHostResourceId property: ARM ID of the Container Host resource.
-     *
+     * 
      * @return the containerHostResourceId value.
      */
     public String containerHostResourceId() {
@@ -37,7 +43,7 @@ public final class ContainerHostMappingInner {
 
     /**
      * Set the containerHostResourceId property: ARM ID of the Container Host resource.
-     *
+     * 
      * @param containerHostResourceId the containerHostResourceId value to set.
      * @return the ContainerHostMappingInner object itself.
      */
@@ -48,7 +54,7 @@ public final class ContainerHostMappingInner {
 
     /**
      * Get the mappedControllerResourceId property: ARM ID of the mapped Controller resource.
-     *
+     * 
      * @return the mappedControllerResourceId value.
      */
     public String mappedControllerResourceId() {
@@ -57,9 +63,47 @@ public final class ContainerHostMappingInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerHostResourceId", this.containerHostResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerHostMappingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerHostMappingInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerHostMappingInner.
+     */
+    public static ContainerHostMappingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerHostMappingInner deserializedContainerHostMappingInner = new ContainerHostMappingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerHostResourceId".equals(fieldName)) {
+                    deserializedContainerHostMappingInner.containerHostResourceId = reader.getString();
+                } else if ("mappedControllerResourceId".equals(fieldName)) {
+                    deserializedContainerHostMappingInner.mappedControllerResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerHostMappingInner;
+        });
     }
 }

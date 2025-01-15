@@ -6,27 +6,40 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ApplyRecoveryPoint input specific to InMageRcm provider.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class InMageRcmApplyRecoveryPointInput extends ApplyRecoveryPointProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The recovery point Id.
      */
-    @JsonProperty(value = "recoveryPointId", required = true)
     private String recoveryPointId;
 
     /**
      * Creates an instance of InMageRcmApplyRecoveryPointInput class.
      */
     public InMageRcmApplyRecoveryPointInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -56,12 +69,53 @@ public final class InMageRcmApplyRecoveryPointInput extends ApplyRecoveryPointPr
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointId in model InMageRcmApplyRecoveryPointInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointId in model InMageRcmApplyRecoveryPointInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmApplyRecoveryPointInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmApplyRecoveryPointInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmApplyRecoveryPointInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmApplyRecoveryPointInput.
+     */
+    public static InMageRcmApplyRecoveryPointInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmApplyRecoveryPointInput deserializedInMageRcmApplyRecoveryPointInput
+                = new InMageRcmApplyRecoveryPointInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointId".equals(fieldName)) {
+                    deserializedInMageRcmApplyRecoveryPointInput.recoveryPointId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmApplyRecoveryPointInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmApplyRecoveryPointInput;
+        });
+    }
 }

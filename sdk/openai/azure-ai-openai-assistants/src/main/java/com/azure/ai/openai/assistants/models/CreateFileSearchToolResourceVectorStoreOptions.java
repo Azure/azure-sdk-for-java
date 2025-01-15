@@ -35,16 +35,6 @@ public final class CreateFileSearchToolResourceVectorStoreOptions
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of CreateFileSearchToolResourceVectorStoreOptions class.
-     *
-     * @param fileIds the fileIds value to set.
-     */
-    @Generated
-    public CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds) {
-        this.fileIds = fileIds;
-    }
-
-    /**
      * Get the fileIds property: A list of file IDs to add to the vector store. There can be a maximum of 10000 files in
      * a vector store.
      *
@@ -89,6 +79,7 @@ public final class CreateFileSearchToolResourceVectorStoreOptions
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("chunking_strategy", this.chunkingStrategy);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -106,12 +97,15 @@ public final class CreateFileSearchToolResourceVectorStoreOptions
     public static CreateFileSearchToolResourceVectorStoreOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> fileIds = null;
+            VectorStoreChunkingStrategyRequest chunkingStrategy = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("file_ids".equals(fieldName)) {
                     fileIds = reader.readArray(reader1 -> reader1.getString());
+                } else if ("chunking_strategy".equals(fieldName)) {
+                    chunkingStrategy = VectorStoreChunkingStrategyRequest.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
@@ -119,9 +113,49 @@ public final class CreateFileSearchToolResourceVectorStoreOptions
                 }
             }
             CreateFileSearchToolResourceVectorStoreOptions deserializedCreateFileSearchToolResourceVectorStoreOptions
-                = new CreateFileSearchToolResourceVectorStoreOptions(fileIds);
+                = new CreateFileSearchToolResourceVectorStoreOptions(fileIds, chunkingStrategy);
             deserializedCreateFileSearchToolResourceVectorStoreOptions.metadata = metadata;
             return deserializedCreateFileSearchToolResourceVectorStoreOptions;
         });
+    }
+
+    /*
+     * The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy.
+     */
+    @Generated
+    private final VectorStoreChunkingStrategyRequest chunkingStrategy;
+
+    /**
+     * Creates an instance of CreateFileSearchToolResourceVectorStoreOptions class.
+     *
+     * @param fileIds the fileIds value to set.
+     */
+    public CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds) {
+        this.fileIds = fileIds;
+        this.chunkingStrategy = null;
+    }
+
+    /**
+     * Creates an instance of CreateFileSearchToolResourceVectorStoreOptions class.
+     *
+     * @param fileIds the fileIds value to set.
+     * @param chunkingStrategy the chunkingStrategy value to set.
+     */
+    @Generated
+    public CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds,
+        VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        this.fileIds = fileIds;
+        this.chunkingStrategy = chunkingStrategy;
+    }
+
+    /**
+     * Get the chunkingStrategy property: The chunking strategy used to chunk the file(s). If not set, will use the
+     * `auto` strategy.
+     *
+     * @return the chunkingStrategy value.
+     */
+    @Generated
+    public VectorStoreChunkingStrategyRequest getChunkingStrategy() {
+        return this.chunkingStrategy;
     }
 }

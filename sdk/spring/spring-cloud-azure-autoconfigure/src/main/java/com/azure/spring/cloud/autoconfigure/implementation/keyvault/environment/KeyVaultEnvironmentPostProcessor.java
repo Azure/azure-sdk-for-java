@@ -3,20 +3,23 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
-import org.springframework.boot.logging.DeferredLog;
+import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -24,7 +27,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
@@ -45,20 +50,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private final Log logger;
 
+    private final ConfigurableBootstrapContext bootstrapContext;
 
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
-     * @param logger The logger used in this class.
+     * @param loggerFactory The logger factory to get the logger.
+     * @param bootstrapContext The bootstrap context.
      */
-    public KeyVaultEnvironmentPostProcessor(Log logger) {
-        this.logger = logger;
-    }
-
-    /**
-     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with a new {@link DeferredLog}.
-     */
-    public KeyVaultEnvironmentPostProcessor() {
-        this.logger = new DeferredLog();
+    public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory, ConfigurableBootstrapContext bootstrapContext) {
+        this.logger = loggerFactory.getLog(getClass());
+        this.bootstrapContext = bootstrapContext;
     }
 
     /**
@@ -86,6 +87,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         }
 
         final List<AzureKeyVaultPropertySourceProperties> propertiesList = secretProperties.getPropertySources();
+
+        checkDuplicatePropertySourceNames(propertiesList);
+
         List<KeyVaultPropertySource> keyVaultPropertySources = buildKeyVaultPropertySourceList(propertiesList);
         final MutablePropertySources propertySources = environment.getPropertySources();
         // reverse iterate order making sure smaller index has higher priority.
@@ -97,6 +101,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             } else {
                 propertySources.addFirst(propertySource);
             }
+        }
+    }
+
+    private void checkDuplicatePropertySourceNames(List<AzureKeyVaultPropertySourceProperties> propertiesList) {
+        List<String> sourceNames = propertiesList.stream()
+                                                 .map(AzureKeyVaultPropertySourceProperties::getName)
+                                                 .toList();
+        Set<String> deduplicatedSourceNames = new HashSet<>(sourceNames);
+        if (propertiesList.size() != deduplicatedSourceNames.size()) {
+            throw new IllegalStateException("Duplicate property source name found: " + sourceNames);
         }
     }
 
@@ -121,14 +135,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private KeyVaultPropertySource buildKeyVaultPropertySource(
             AzureKeyVaultPropertySourceProperties properties) {
         try {
-            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
-                    buildSecretClient(properties),
-                    properties.getRefreshInterval(),
-                    properties.getSecretKeys(),
-                    properties.isCaseSensitive());
-            return new KeyVaultPropertySource(properties.getName(), keyVaultOperation);
+            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(buildSecretClient(properties));
+            return new KeyVaultPropertySource(
+                properties.getName(),
+                properties.getRefreshInterval(),
+                keyVaultOperation,
+                properties.getSecretKeys(),
+                properties.isCaseSensitive());
         } catch (final Exception exception) {
-            throw new IllegalStateException("Failed to configure KeyVault property source", exception);
+            throw new IllegalStateException("Failed to configure KeyVault property source '" + properties.getName() + "'", exception);
         }
     }
 
@@ -155,6 +170,17 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
         SecretClientBuilderFactory factory = new SecretClientBuilderFactory(secretProperties);
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
+
+        if (bootstrapContext != null && bootstrapContext.isRegistered(TokenCredential.class)) {
+            // If TokenCredential is registered in bootstrap context, use it to build SecretClient.
+            // This will ignore the credential properties configured
+            TokenCredential registerCredential = bootstrapContext.get(TokenCredential.class);
+            logger.debug(registerCredential.getClass().getSimpleName() + " is registered in bootstrap context, use it to build SecretClient.");
+            factory.setTokenCredentialResolver(
+                new AzureTokenCredentialResolver(ignored -> registerCredential)
+            );
+        }
+
         return factory.build().buildClient();
     }
 

@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Lists the service impacting events that may be affecting the health of the resource. */
+/**
+ * Lists the service impacting events that may be affecting the health of the resource.
+ */
 @Fluent
-public final class ServiceImpactingEvent {
+public final class ServiceImpactingEvent implements JsonSerializable<ServiceImpactingEvent> {
     /*
      * Timestamp for when the event started.
      */
-    @JsonProperty(value = "eventStartTime")
     private OffsetDateTime eventStartTime;
 
     /*
      * Timestamp for when event was submitted/detected.
      */
-    @JsonProperty(value = "eventStatusLastModifiedTime")
     private OffsetDateTime eventStatusLastModifiedTime;
 
     /*
      * Correlation id for the event
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Status of the service impacting event.
      */
-    @JsonProperty(value = "status")
     private ServiceImpactingEventStatus status;
 
     /*
      * Properties of the service impacting event.
      */
-    @JsonProperty(value = "incidentProperties")
     private ServiceImpactingEventIncidentProperties incidentProperties;
 
-    /** Creates an instance of ServiceImpactingEvent class. */
+    /**
+     * Creates an instance of ServiceImpactingEvent class.
+     */
     public ServiceImpactingEvent() {
     }
 
     /**
      * Get the eventStartTime property: Timestamp for when the event started.
-     *
+     * 
      * @return the eventStartTime value.
      */
     public OffsetDateTime eventStartTime() {
@@ -56,7 +61,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Set the eventStartTime property: Timestamp for when the event started.
-     *
+     * 
      * @param eventStartTime the eventStartTime value to set.
      * @return the ServiceImpactingEvent object itself.
      */
@@ -67,7 +72,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Get the eventStatusLastModifiedTime property: Timestamp for when event was submitted/detected.
-     *
+     * 
      * @return the eventStatusLastModifiedTime value.
      */
     public OffsetDateTime eventStatusLastModifiedTime() {
@@ -76,7 +81,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Set the eventStatusLastModifiedTime property: Timestamp for when event was submitted/detected.
-     *
+     * 
      * @param eventStatusLastModifiedTime the eventStatusLastModifiedTime value to set.
      * @return the ServiceImpactingEvent object itself.
      */
@@ -87,7 +92,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Get the correlationId property: Correlation id for the event.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -96,7 +101,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Set the correlationId property: Correlation id for the event.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the ServiceImpactingEvent object itself.
      */
@@ -107,7 +112,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Get the status property: Status of the service impacting event.
-     *
+     * 
      * @return the status value.
      */
     public ServiceImpactingEventStatus status() {
@@ -116,7 +121,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Set the status property: Status of the service impacting event.
-     *
+     * 
      * @param status the status value to set.
      * @return the ServiceImpactingEvent object itself.
      */
@@ -127,7 +132,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Get the incidentProperties property: Properties of the service impacting event.
-     *
+     * 
      * @return the incidentProperties value.
      */
     public ServiceImpactingEventIncidentProperties incidentProperties() {
@@ -136,7 +141,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Set the incidentProperties property: Properties of the service impacting event.
-     *
+     * 
      * @param incidentProperties the incidentProperties value to set.
      * @return the ServiceImpactingEvent object itself.
      */
@@ -147,7 +152,7 @@ public final class ServiceImpactingEvent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -157,5 +162,60 @@ public final class ServiceImpactingEvent {
         if (incidentProperties() != null) {
             incidentProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventStartTime",
+            this.eventStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventStartTime));
+        jsonWriter.writeStringField("eventStatusLastModifiedTime",
+            this.eventStatusLastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventStatusLastModifiedTime));
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeJsonField("incidentProperties", this.incidentProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceImpactingEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceImpactingEvent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceImpactingEvent.
+     */
+    public static ServiceImpactingEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceImpactingEvent deserializedServiceImpactingEvent = new ServiceImpactingEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventStartTime".equals(fieldName)) {
+                    deserializedServiceImpactingEvent.eventStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventStatusLastModifiedTime".equals(fieldName)) {
+                    deserializedServiceImpactingEvent.eventStatusLastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedServiceImpactingEvent.correlationId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedServiceImpactingEvent.status = ServiceImpactingEventStatus.fromJson(reader);
+                } else if ("incidentProperties".equals(fieldName)) {
+                    deserializedServiceImpactingEvent.incidentProperties
+                        = ServiceImpactingEventIncidentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceImpactingEvent;
+        });
     }
 }

@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dgwdslfhot\",\"display\":{\"provider\":\"cynpwlbjnp\",\"resource\":\"cftadeh\",\"operation\":\"ltyfsop\",\"description\":\"suesnzw\"}}")
-                .toObject(OperationInner.class);
-        Assertions.assertEquals("dgwdslfhot", model.name());
-        Assertions.assertEquals("cynpwlbjnp", model.provider());
-        Assertions.assertEquals("cftadeh", model.resource());
-        Assertions.assertEquals("ltyfsop", model.operation());
-        Assertions.assertEquals("suesnzw", model.description());
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"x\",\"display\":{\"provider\":\"izuckyfihrfidfvz\",\"resource\":\"zuhtymwisdkfthwx\",\"operation\":\"t\",\"description\":\"waopvkmijcmmxd\"}}")
+            .toObject(OperationInner.class);
+        Assertions.assertEquals("x", model.name());
+        Assertions.assertEquals("izuckyfihrfidfvz", model.provider());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.resource());
+        Assertions.assertEquals("t", model.operation());
+        Assertions.assertEquals("waopvkmijcmmxd", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("dgwdslfhot")
-                .withProvider("cynpwlbjnp")
-                .withResource("cftadeh")
-                .withOperation("ltyfsop")
-                .withDescription("suesnzw");
+        OperationInner model = new OperationInner().withName("x")
+            .withProvider("izuckyfihrfidfvz")
+            .withResource("zuhtymwisdkfthwx")
+            .withOperation("t")
+            .withDescription("waopvkmijcmmxd");
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("dgwdslfhot", model.name());
-        Assertions.assertEquals("cynpwlbjnp", model.provider());
-        Assertions.assertEquals("cftadeh", model.resource());
-        Assertions.assertEquals("ltyfsop", model.operation());
-        Assertions.assertEquals("suesnzw", model.description());
+        Assertions.assertEquals("x", model.name());
+        Assertions.assertEquals("izuckyfihrfidfvz", model.provider());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.resource());
+        Assertions.assertEquals("t", model.operation());
+        Assertions.assertEquals("waopvkmijcmmxd", model.description());
     }
 }

@@ -15,46 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"rxwburv\",\"name\":\"xxjnspydptk\",\"type\":\"nkoukn\",\"properties\":{\"groupId\":\"udwtiukbl\",\"provisioningState\":\"Succeeded\",\"ipConfigurations\":[{\"id\":\"ocipazyxoeg\",\"name\":\"kgjn\",\"type\":\"ucgygevqz\",\"properties\":{\"provisioningState\":\"Succeeded\",\"primary\":false,\"privateIPAddress\":\"p\",\"privateIPAllocationMethod\":\"dynamic\",\"subnet\":{\"id\":\"qjsdpydnfyhxdeo\"}}}]}}")
-                .toObject(PrivateLinkConfiguration.class);
+        PrivateLinkConfiguration model = BinaryData.fromString(
+            "{\"id\":\"rxwburv\",\"name\":\"xxjnspydptk\",\"type\":\"nkoukn\",\"properties\":{\"groupId\":\"udwtiukbl\",\"provisioningState\":\"Succeeded\",\"ipConfigurations\":[{\"id\":\"ocipazyxoeg\",\"name\":\"kgjn\",\"type\":\"ucgygevqz\",\"properties\":{\"provisioningState\":\"Succeeded\",\"primary\":false,\"privateIPAddress\":\"p\",\"privateIPAllocationMethod\":\"dynamic\",\"subnet\":{\"id\":\"qjsdpydnfyhxdeo\"}}}]}}")
+            .toObject(PrivateLinkConfiguration.class);
         Assertions.assertEquals("xxjnspydptk", model.name());
         Assertions.assertEquals("udwtiukbl", model.groupId());
         Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
         Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions
-            .assertEquals(
-                PrivateIpAllocationMethod.DYNAMIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
         Assertions.assertEquals("qjsdpydnfyhxdeo", model.ipConfigurations().get(0).subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkConfiguration model =
-            new PrivateLinkConfiguration()
-                .withName("xxjnspydptk")
-                .withGroupId("udwtiukbl")
-                .withIpConfigurations(
-                    Arrays
-                        .asList(
-                            new IpConfiguration()
-                                .withName("kgjn")
-                                .withPrimary(false)
-                                .withPrivateIpAddress("p")
-                                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.DYNAMIC)
-                                .withSubnet(new ResourceId().withId("qjsdpydnfyhxdeo"))));
+        PrivateLinkConfiguration model = new PrivateLinkConfiguration().withName("xxjnspydptk")
+            .withGroupId("udwtiukbl")
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withName("kgjn")
+                .withPrimary(false)
+                .withPrivateIpAddress("p")
+                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.DYNAMIC)
+                .withSubnet(new ResourceId().withId("qjsdpydnfyhxdeo"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkConfiguration.class);
         Assertions.assertEquals("xxjnspydptk", model.name());
         Assertions.assertEquals("udwtiukbl", model.groupId());
         Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
         Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions
-            .assertEquals(
-                PrivateIpAllocationMethod.DYNAMIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
         Assertions.assertEquals("qjsdpydnfyhxdeo", model.ipConfigurations().get(0).subnet().id());
     }
 }

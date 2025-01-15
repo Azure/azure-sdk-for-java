@@ -6,39 +6,44 @@ package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The information about the resource that will be evaluated. */
+/**
+ * The information about the resource that will be evaluated.
+ */
 @Fluent
-public final class CheckRestrictionsResourceDetails {
+public final class CheckRestrictionsResourceDetails implements JsonSerializable<CheckRestrictionsResourceDetails> {
     /*
      * The resource content. This should include whatever properties are already known and can be a partial set of all
      * resource properties.
      */
-    @JsonProperty(value = "resourceContent", required = true)
     private Object resourceContent;
 
     /*
      * The api-version of the resource content.
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
-     * The scope where the resource is being created. For example, if the resource is a child resource this would be
-     * the parent resource's resource ID.
+     * The scope where the resource is being created. For example, if the resource is a child resource this would be the
+     * parent resource's resource ID.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
-    /** Creates an instance of CheckRestrictionsResourceDetails class. */
+    /**
+     * Creates an instance of CheckRestrictionsResourceDetails class.
+     */
     public CheckRestrictionsResourceDetails() {
     }
 
     /**
      * Get the resourceContent property: The resource content. This should include whatever properties are already known
      * and can be a partial set of all resource properties.
-     *
+     * 
      * @return the resourceContent value.
      */
     public Object resourceContent() {
@@ -48,7 +53,7 @@ public final class CheckRestrictionsResourceDetails {
     /**
      * Set the resourceContent property: The resource content. This should include whatever properties are already known
      * and can be a partial set of all resource properties.
-     *
+     * 
      * @param resourceContent the resourceContent value to set.
      * @return the CheckRestrictionsResourceDetails object itself.
      */
@@ -59,7 +64,7 @@ public final class CheckRestrictionsResourceDetails {
 
     /**
      * Get the apiVersion property: The api-version of the resource content.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -68,7 +73,7 @@ public final class CheckRestrictionsResourceDetails {
 
     /**
      * Set the apiVersion property: The api-version of the resource content.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the CheckRestrictionsResourceDetails object itself.
      */
@@ -80,7 +85,7 @@ public final class CheckRestrictionsResourceDetails {
     /**
      * Get the scope property: The scope where the resource is being created. For example, if the resource is a child
      * resource this would be the parent resource's resource ID.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -90,7 +95,7 @@ public final class CheckRestrictionsResourceDetails {
     /**
      * Set the scope property: The scope where the resource is being created. For example, if the resource is a child
      * resource this would be the parent resource's resource ID.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CheckRestrictionsResourceDetails object itself.
      */
@@ -101,17 +106,60 @@ public final class CheckRestrictionsResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceContent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceContent in model CheckRestrictionsResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceContent in model CheckRestrictionsResourceDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckRestrictionsResourceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("resourceContent", this.resourceContent);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckRestrictionsResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckRestrictionsResourceDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckRestrictionsResourceDetails.
+     */
+    public static CheckRestrictionsResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckRestrictionsResourceDetails deserializedCheckRestrictionsResourceDetails
+                = new CheckRestrictionsResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceContent".equals(fieldName)) {
+                    deserializedCheckRestrictionsResourceDetails.resourceContent = reader.readUntyped();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedCheckRestrictionsResourceDetails.apiVersion = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedCheckRestrictionsResourceDetails.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckRestrictionsResourceDetails;
+        });
+    }
 }

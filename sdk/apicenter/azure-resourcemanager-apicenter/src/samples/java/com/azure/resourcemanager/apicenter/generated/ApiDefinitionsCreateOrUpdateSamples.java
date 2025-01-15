@@ -18,7 +18,9 @@ public final class ApiDefinitionsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().define("openapi")
-            .withExistingVersion("contoso-resources", "contoso", "default", "openapi", "2023-01-01").create();
+        manager.apiDefinitions()
+            .define("openapi")
+            .withExistingVersion("contoso-resources", "contoso", "default", "openapi", "2023-01-01")
+            .create();
     }
 }

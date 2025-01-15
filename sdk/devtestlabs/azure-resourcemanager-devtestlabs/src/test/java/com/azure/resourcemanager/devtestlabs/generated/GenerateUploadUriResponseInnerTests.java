@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateUploadUriResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateUploadUriResponseInner model =
-            BinaryData.fromString("{\"uploadUri\":\"ela\"}").toObject(GenerateUploadUriResponseInner.class);
+        GenerateUploadUriResponseInner model
+            = BinaryData.fromString("{\"uploadUri\":\"ela\"}").toObject(GenerateUploadUriResponseInner.class);
         Assertions.assertEquals("ela", model.uploadUri());
     }
 

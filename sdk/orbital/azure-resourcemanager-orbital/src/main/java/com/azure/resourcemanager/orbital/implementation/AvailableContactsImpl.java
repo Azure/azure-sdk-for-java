@@ -14,8 +14,8 @@ public final class AvailableContactsImpl implements AvailableContacts {
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    AvailableContactsImpl(
-        AvailableContactsInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    AvailableContactsImpl(AvailableContactsInner innerObject,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

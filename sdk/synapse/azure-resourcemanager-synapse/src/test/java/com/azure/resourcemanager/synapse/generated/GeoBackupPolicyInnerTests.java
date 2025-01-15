@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GeoBackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GeoBackupPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"sd\"},\"kind\":\"ouwaboekqvkeln\",\"location\":\"vbxwyjsflhh\",\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}")
-                .toObject(GeoBackupPolicyInner.class);
+        GeoBackupPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"kokwbqplhlvnu\"},\"kind\":\"pzlrphw\",\"location\":\"oldweyuqdu\",\"id\":\"vmnnrw\",\"name\":\"biorktal\",\"type\":\"wjhhgdnhxmsivf\"}")
+            .toObject(GeoBackupPolicyInner.class);
         Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.state());
     }
 

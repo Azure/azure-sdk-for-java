@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
      * @param name a name to look for.
      * @return the corresponding EncryptionType.
      */
-    @JsonCreator
     public static EncryptionType fromString(String name) {
         return fromString(name, EncryptionType.class);
     }

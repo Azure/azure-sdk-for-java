@@ -6,36 +6,36 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An error response from the Batch service.
  */
 @Fluent
-public final class DeleteCertificateError {
+public final class DeleteCertificateError implements JsonSerializable<DeleteCertificateError> {
     /*
      * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
-    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * A message describing the error, intended to be suitable for display in a user interface.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The target of the particular error. For example, the name of the property in error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * A list of additional details about the error.
      */
-    @JsonProperty(value = "details")
     private List<DeleteCertificateError> details;
 
     /**
@@ -135,12 +135,12 @@ public final class DeleteCertificateError {
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property code in model DeleteCertificateError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model DeleteCertificateError"));
         }
         if (message() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property message in model DeleteCertificateError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property message in model DeleteCertificateError"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());
@@ -148,4 +148,52 @@ public final class DeleteCertificateError {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeleteCertificateError.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteCertificateError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteCertificateError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeleteCertificateError.
+     */
+    public static DeleteCertificateError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteCertificateError deserializedDeleteCertificateError = new DeleteCertificateError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedDeleteCertificateError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedDeleteCertificateError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedDeleteCertificateError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<DeleteCertificateError> details
+                        = reader.readArray(reader1 -> DeleteCertificateError.fromJson(reader1));
+                    deserializedDeleteCertificateError.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteCertificateError;
+        });
+    }
 }

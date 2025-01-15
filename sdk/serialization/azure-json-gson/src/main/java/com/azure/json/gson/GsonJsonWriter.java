@@ -58,6 +58,7 @@ public final class GsonJsonWriter extends JsonWriter {
         return new GsonJsonWriter(json, options);
     }
 
+    @SuppressWarnings("deprecation")
     private GsonJsonWriter(Writer writer, JsonOptions options) {
         this.writer = new com.google.gson.stream.JsonWriter(writer);
         this.writer.setLenient(options.isNonNumericNumbersSupported());

@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List Clusters operation. */
 @Immutable
 public final class ClusterListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
 
     /*
      * The collection of returned Clusters.

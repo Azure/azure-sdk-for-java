@@ -27,22 +27,28 @@ import com.azure.resourcemanager.azurestack.fluent.models.DeploymentLicenseRespo
 import com.azure.resourcemanager.azurestack.models.DeploymentLicenseRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentLicensesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentLicensesClient.
+ */
 public final class DeploymentLicensesClientImpl implements DeploymentLicensesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeploymentLicensesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureStackManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentLicensesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeploymentLicensesClientImpl(AzureStackManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DeploymentLicensesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DeploymentLicensesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,114 +59,87 @@ public final class DeploymentLicensesClientImpl implements DeploymentLicensesCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureStackManagement")
     public interface DeploymentLicensesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureStack/generateDeploymentLicense")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentLicenseResponseInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<DeploymentLicenseResponseInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DeploymentLicenseRequest deploymentLicenseRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a license that can be used to deploy an Azure Stack device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentLicenseResponseInner>> createWithResponseAsync(
-        DeploymentLicenseRequest deploymentLicenseRequest) {
+    private Mono<Response<DeploymentLicenseResponseInner>>
+        createWithResponseAsync(DeploymentLicenseRequest deploymentLicenseRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (deploymentLicenseRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter deploymentLicenseRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter deploymentLicenseRequest is required and cannot be null."));
         } else {
             deploymentLicenseRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            deploymentLicenseRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), deploymentLicenseRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a license that can be used to deploy an Azure Stack device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentLicenseResponseInner>> createWithResponseAsync(
-        DeploymentLicenseRequest deploymentLicenseRequest, Context context) {
+    private Mono<Response<DeploymentLicenseResponseInner>>
+        createWithResponseAsync(DeploymentLicenseRequest deploymentLicenseRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (deploymentLicenseRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter deploymentLicenseRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter deploymentLicenseRequest is required and cannot be null."));
         } else {
             deploymentLicenseRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                deploymentLicenseRequest,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            deploymentLicenseRequest, accept, context);
     }
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -174,7 +153,7 @@ public final class DeploymentLicensesClientImpl implements DeploymentLicensesCli
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,14 +162,14 @@ public final class DeploymentLicensesClientImpl implements DeploymentLicensesCli
      * @return a license that can be used to deploy an Azure Stack device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentLicenseResponseInner> createWithResponse(
-        DeploymentLicenseRequest deploymentLicenseRequest, Context context) {
+    public Response<DeploymentLicenseResponseInner>
+        createWithResponse(DeploymentLicenseRequest deploymentLicenseRequest, Context context) {
         return createWithResponseAsync(deploymentLicenseRequest, context).block();
     }
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

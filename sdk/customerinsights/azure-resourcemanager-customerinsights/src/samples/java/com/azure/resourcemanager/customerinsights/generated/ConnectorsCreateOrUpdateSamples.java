@@ -11,37 +11,36 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Connectors CreateOrUpdate. */
+/**
+ * Samples for Connectors CreateOrUpdate.
+ */
 public final class ConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/ConnectorsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * ConnectorsCreateOrUpdate.json
      */
     /**
      * Sample code: Connectors_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void connectorsCreateOrUpdate(
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) throws IOException {
-        manager
-            .connectors()
+        manager.connectors()
             .define("testConnector")
             .withExistingHub("TestHubRG", "sdkTestHub")
             .withConnectorType(ConnectorTypes.AZURE_BLOB)
             .withDisplayName("testConnector")
             .withDescription("Test connector")
-            .withConnectorProperties(
-                mapOf(
-                    "connectionKeyVaultUrl",
-                    SerializerFactory
-                        .createDefaultManagementSerializerAdapter()
-                        .deserialize(
-                            "{\"organizationId\":\"XXX\",\"organizationUrl\":\"https://XXX.crmlivetie.com/\"}",
-                            Object.class,
-                            SerializerEncoding.JSON)))
+            .withConnectorProperties(mapOf("connectionKeyVaultUrl",
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"organizationId\":\"XXX\",\"organizationUrl\":\"https://XXX.crmlivetie.com/\"}",
+                        Object.class, SerializerEncoding.JSON)))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

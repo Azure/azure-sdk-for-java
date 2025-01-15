@@ -7,46 +7,67 @@ package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResourceKind;
 import com.azure.resourcemanager.timeseriesinsights.models.Gen1EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.Gen2EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * An environment is a set of time-series data available for query, and is the top level Azure Time Series Insights
  * resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EnvironmentResourceInner.class)
-@JsonTypeName("EnvironmentResource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Gen1", value = Gen1EnvironmentResource.class),
-    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentResource.class)
-})
 @Fluent
 public class EnvironmentResourceInner extends Resource {
+    /*
+     * The kind of the environment.
+     */
+    private EnvironmentResourceKind kind = EnvironmentResourceKind.fromString("EnvironmentResource");
+
     /*
      * The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1 environments the sku
      * determines the capacity of the environment, the ingress rate, and the billing rate.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
-    /** Creates an instance of EnvironmentResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EnvironmentResourceInner class.
+     */
     public EnvironmentResourceInner() {
+    }
+
+    /**
+     * Get the kind property: The kind of the environment.
+     * 
+     * @return the kind value.
+     */
+    public EnvironmentResourceKind kind() {
+        return this.kind;
     }
 
     /**
      * Get the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
      * environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -56,7 +77,7 @@ public class EnvironmentResourceInner extends Resource {
     /**
      * Set the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
      * environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the EnvironmentResourceInner object itself.
      */
@@ -65,14 +86,48 @@ public class EnvironmentResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -81,18 +136,97 @@ public class EnvironmentResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model EnvironmentResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model EnvironmentResourceInner"));
         } else {
             sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentResourceInner.
+     */
+    public static EnvironmentResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Gen1".equals(discriminatorValue)) {
+                    return Gen1EnvironmentResource.fromJson(readerToUse.reset());
+                } else if ("Gen2".equals(discriminatorValue)) {
+                    return Gen2EnvironmentResource.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EnvironmentResourceInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentResourceInner deserializedEnvironmentResourceInner = new EnvironmentResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnvironmentResourceInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEnvironmentResourceInner.kind = EnvironmentResourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentResourceInner;
+        });
+    }
 }

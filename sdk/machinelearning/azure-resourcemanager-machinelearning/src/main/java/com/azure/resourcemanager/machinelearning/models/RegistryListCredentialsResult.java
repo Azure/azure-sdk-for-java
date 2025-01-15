@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The RegistryListCredentialsResult model. */
+/**
+ * The RegistryListCredentialsResult model.
+ */
 @Fluent
-public final class RegistryListCredentialsResult {
+public final class RegistryListCredentialsResult implements JsonSerializable<RegistryListCredentialsResult> {
     /*
      * The location property.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The username property.
      */
-    @JsonProperty(value = "username", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
     /*
      * The passwords property.
      */
-    @JsonProperty(value = "passwords")
     private List<Password> passwords;
 
-    /** Creates an instance of RegistryListCredentialsResult class. */
+    /**
+     * Creates an instance of RegistryListCredentialsResult class.
+     */
     public RegistryListCredentialsResult() {
     }
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -44,7 +49,7 @@ public final class RegistryListCredentialsResult {
 
     /**
      * Get the username property: The username property.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -53,7 +58,7 @@ public final class RegistryListCredentialsResult {
 
     /**
      * Get the passwords property: The passwords property.
-     *
+     * 
      * @return the passwords value.
      */
     public List<Password> passwords() {
@@ -62,7 +67,7 @@ public final class RegistryListCredentialsResult {
 
     /**
      * Set the passwords property: The passwords property.
-     *
+     * 
      * @param passwords the passwords value to set.
      * @return the RegistryListCredentialsResult object itself.
      */
@@ -73,12 +78,54 @@ public final class RegistryListCredentialsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (passwords() != null) {
             passwords().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("passwords", this.passwords, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryListCredentialsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryListCredentialsResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryListCredentialsResult.
+     */
+    public static RegistryListCredentialsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryListCredentialsResult deserializedRegistryListCredentialsResult
+                = new RegistryListCredentialsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedRegistryListCredentialsResult.location = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedRegistryListCredentialsResult.username = reader.getString();
+                } else if ("passwords".equals(fieldName)) {
+                    List<Password> passwords = reader.readArray(reader1 -> Password.fromJson(reader1));
+                    deserializedRegistryListCredentialsResult.passwords = passwords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryListCredentialsResult;
+        });
     }
 }

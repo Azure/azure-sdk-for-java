@@ -23,10 +23,11 @@ public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
      */
     public static void
         testMigrateCleanup(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().testMigrateCleanup("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1",
-            new TestMigrateCleanupInput()
-                .withProperties(new TestMigrateCleanupInputProperties().withComments("Test Failover Cleanup")),
-            com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .testMigrateCleanup("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1",
+                "virtualmachine1",
+                new TestMigrateCleanupInput()
+                    .withProperties(new TestMigrateCleanupInputProperties().withComments("Test Failover Cleanup")),
+                com.azure.core.util.Context.NONE);
     }
 }

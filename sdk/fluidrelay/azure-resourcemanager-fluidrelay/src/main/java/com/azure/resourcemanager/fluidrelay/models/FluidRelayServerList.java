@@ -6,28 +6,38 @@ package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.fluent.models.FluidRelayServerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged response. */
+/**
+ * Paged response.
+ */
 @Fluent
-public final class FluidRelayServerList {
+public final class FluidRelayServerList implements JsonSerializable<FluidRelayServerList> {
     /*
      * A sequence of FluidRelay servers.
      */
-    @JsonProperty(value = "value", required = true)
     private List<FluidRelayServerInner> value;
 
     /*
      * A link to the next page of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of FluidRelayServerList class.
+     */
+    public FluidRelayServerList() {
+    }
+
+    /**
      * Get the value property: A sequence of FluidRelay servers.
-     *
+     * 
      * @return the value value.
      */
     public List<FluidRelayServerInner> value() {
@@ -36,7 +46,7 @@ public final class FluidRelayServerList {
 
     /**
      * Set the value property: A sequence of FluidRelay servers.
-     *
+     * 
      * @param value the value value to set.
      * @return the FluidRelayServerList object itself.
      */
@@ -47,7 +57,7 @@ public final class FluidRelayServerList {
 
     /**
      * Get the nextLink property: A link to the next page of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,7 +66,7 @@ public final class FluidRelayServerList {
 
     /**
      * Set the nextLink property: A link to the next page of results, if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FluidRelayServerList object itself.
      */
@@ -67,18 +77,59 @@ public final class FluidRelayServerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model FluidRelayServerList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model FluidRelayServerList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FluidRelayServerList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FluidRelayServerList.
+     */
+    public static FluidRelayServerList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerList deserializedFluidRelayServerList = new FluidRelayServerList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FluidRelayServerInner> value
+                        = reader.readArray(reader1 -> FluidRelayServerInner.fromJson(reader1));
+                    deserializedFluidRelayServerList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFluidRelayServerList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerList;
+        });
+    }
 }

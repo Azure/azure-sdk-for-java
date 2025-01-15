@@ -80,6 +80,9 @@ public final class MediaLiveEventEncoderConnectedEventData
         return this.encoderPort;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

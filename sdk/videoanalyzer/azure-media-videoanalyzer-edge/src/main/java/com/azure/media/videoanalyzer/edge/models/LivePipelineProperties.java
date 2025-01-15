@@ -5,46 +5,51 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Live pipeline properties. */
+/**
+ * Live pipeline properties.
+ */
 @Fluent
-public final class LivePipelineProperties {
+public final class LivePipelineProperties implements JsonSerializable<LivePipelineProperties> {
     /*
      * An optional description of the live pipeline.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The reference to an existing pipeline topology defined for real-time
-     * content processing. When activated, this live pipeline will process
-     * content according to the pipeline topology definition.
+     * The reference to an existing pipeline topology defined for real-time content processing. When activated, this
+     * live pipeline will process content according to the pipeline topology definition.
      */
-    @JsonProperty(value = "topologyName")
     private String topologyName;
 
     /*
-     * List of the instance level parameter values for the user-defined
-     * topology parameters. A pipeline can only define or override parameters
-     * values for parameters which have been declared in the referenced
-     * topology. Topology parameters without a default value must be defined.
-     * Topology parameters with a default value can be optionally be
+     * List of the instance level parameter values for the user-defined topology parameters. A pipeline can only define
+     * or override parameters values for parameters which have been declared in the referenced topology. Topology
+     * parameters without a default value must be defined. Topology parameters with a default value can be optionally be
      * overridden.
      */
-    @JsonProperty(value = "parameters")
     private List<ParameterDefinition> parameters;
 
     /*
      * Current pipeline state (read-only).
      */
-    @JsonProperty(value = "state")
     private LivePipelineState state;
 
     /**
+     * Creates an instance of LivePipelineProperties class.
+     */
+    public LivePipelineProperties() {
+    }
+
+    /**
      * Get the description property: An optional description of the live pipeline.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -53,7 +58,7 @@ public final class LivePipelineProperties {
 
     /**
      * Set the description property: An optional description of the live pipeline.
-     *
+     * 
      * @param description the description value to set.
      * @return the LivePipelineProperties object itself.
      */
@@ -66,7 +71,7 @@ public final class LivePipelineProperties {
      * Get the topologyName property: The reference to an existing pipeline topology defined for real-time content
      * processing. When activated, this live pipeline will process content according to the pipeline topology
      * definition.
-     *
+     * 
      * @return the topologyName value.
      */
     public String getTopologyName() {
@@ -77,7 +82,7 @@ public final class LivePipelineProperties {
      * Set the topologyName property: The reference to an existing pipeline topology defined for real-time content
      * processing. When activated, this live pipeline will process content according to the pipeline topology
      * definition.
-     *
+     * 
      * @param topologyName the topologyName value to set.
      * @return the LivePipelineProperties object itself.
      */
@@ -91,7 +96,7 @@ public final class LivePipelineProperties {
      * parameters. A pipeline can only define or override parameters values for parameters which have been declared in
      * the referenced topology. Topology parameters without a default value must be defined. Topology parameters with a
      * default value can be optionally be overridden.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ParameterDefinition> getParameters() {
@@ -103,7 +108,7 @@ public final class LivePipelineProperties {
      * parameters. A pipeline can only define or override parameters values for parameters which have been declared in
      * the referenced topology. Topology parameters without a default value must be defined. Topology parameters with a
      * default value can be optionally be overridden.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the LivePipelineProperties object itself.
      */
@@ -114,7 +119,7 @@ public final class LivePipelineProperties {
 
     /**
      * Get the state property: Current pipeline state (read-only).
-     *
+     * 
      * @return the state value.
      */
     public LivePipelineState getState() {
@@ -123,12 +128,59 @@ public final class LivePipelineProperties {
 
     /**
      * Set the state property: Current pipeline state (read-only).
-     *
+     * 
      * @param state the state value to set.
      * @return the LivePipelineProperties object itself.
      */
     public LivePipelineProperties setState(LivePipelineState state) {
         this.state = state;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("topologyName", this.topologyName);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivePipelineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivePipelineProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LivePipelineProperties.
+     */
+    public static LivePipelineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LivePipelineProperties deserializedLivePipelineProperties = new LivePipelineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedLivePipelineProperties.description = reader.getString();
+                } else if ("topologyName".equals(fieldName)) {
+                    deserializedLivePipelineProperties.topologyName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ParameterDefinition> parameters
+                        = reader.readArray(reader1 -> ParameterDefinition.fromJson(reader1));
+                    deserializedLivePipelineProperties.parameters = parameters;
+                } else if ("state".equals(fieldName)) {
+                    deserializedLivePipelineProperties.state = LivePipelineState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLivePipelineProperties;
+        });
     }
 }

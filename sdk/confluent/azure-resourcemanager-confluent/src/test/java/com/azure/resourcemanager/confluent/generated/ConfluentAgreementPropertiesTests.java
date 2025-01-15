@@ -28,9 +28,13 @@ public final class ConfluentAgreementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfluentAgreementProperties model = new ConfluentAgreementProperties().withPublisher("fwvuk")
-            .withProduct("audccsnhs").withPlan("nyejhkryhtnap").withLicenseTextLink("wlokjyem")
-            .withPrivacyPolicyLink("vnipjox").withRetrieveDatetime(OffsetDateTime.parse("2020-12-27T04:20:57Z"))
-            .withSignature("hgejspodma").withAccepted(false);
+            .withProduct("audccsnhs")
+            .withPlan("nyejhkryhtnap")
+            .withLicenseTextLink("wlokjyem")
+            .withPrivacyPolicyLink("vnipjox")
+            .withRetrieveDatetime(OffsetDateTime.parse("2020-12-27T04:20:57Z"))
+            .withSignature("hgejspodma")
+            .withAccepted(false);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementProperties.class);
         Assertions.assertEquals("fwvuk", model.publisher());
         Assertions.assertEquals("audccsnhs", model.product());

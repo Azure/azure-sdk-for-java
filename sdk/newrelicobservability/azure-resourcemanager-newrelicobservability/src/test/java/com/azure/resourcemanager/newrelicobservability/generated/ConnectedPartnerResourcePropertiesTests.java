@@ -22,8 +22,11 @@ public final class ConnectedPartnerResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedPartnerResourceProperties model = new ConnectedPartnerResourceProperties()
-            .withAccountName("agfuaxbezyiu").withAccountId("ktwh").withAzureResourceId("xw").withLocation("wqsmbsur");
+        ConnectedPartnerResourceProperties model
+            = new ConnectedPartnerResourceProperties().withAccountName("agfuaxbezyiu")
+                .withAccountId("ktwh")
+                .withAzureResourceId("xw")
+                .withLocation("wqsmbsur");
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourceProperties.class);
         Assertions.assertEquals("agfuaxbezyiu", model.accountName());
         Assertions.assertEquals("ktwh", model.accountId());

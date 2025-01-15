@@ -72,7 +72,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @PathParam("runtimeView") String runtimeView, @HeaderParam("accept") String accept, Context context);
+            @PathParam("runtimeView") String runtimeView, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews")
@@ -83,7 +83,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -91,7 +91,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolRuntimeViewResourceListResult>> listByStandbyPoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

@@ -45,21 +45,10 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     protected SqlServerManager sqlServerManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -83,7 +72,8 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     }
 
     protected VirtualMachine ensureVM(Region region, ResourceGroup resourceGroup, String vmName, String addressSpace) {
-        return computeManager.virtualMachines().define(vmName)
+        return computeManager.virtualMachines()
+            .define(vmName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withNewPrimaryNetwork(addressSpace)
@@ -96,8 +86,7 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     }
 
     protected Vault ensureVault(Region region, String rgName) {
-        return keyVaultManager
-            .vaults()
+        return keyVaultManager.vaults()
             .define(generateRandomResourceName("jmonitorvt", 18))
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -108,8 +97,7 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     protected SqlElasticPool ensureElasticPoolWithWhiteSpace(Region region, String rgName) {
         String sqlServerName = generateRandomResourceName("JMonitorSql-", 18);
 
-        SqlServer sqlServer = sqlServerManager
-            .sqlServers()
+        SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -118,10 +106,7 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
             .create();
 
         // white space in pool name
-        SqlElasticPool pool = sqlServer.elasticPools()
-            .define("name with space")
-            .withBasicPool()
-            .create();
+        SqlElasticPool pool = sqlServer.elasticPools().define("name with space").withBasicPool().create();
         return pool;
     }
 }

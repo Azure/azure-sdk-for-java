@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicTreeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicTreeSettings model =
-            BinaryData
-                .fromString("{\"CanSelectParentNodes\":false,\"CanSelectLeafNodes\":false}")
+        SwaggerCustomDynamicTreeSettings model
+            = BinaryData.fromString("{\"CanSelectParentNodes\":true,\"CanSelectLeafNodes\":false}")
                 .toObject(SwaggerCustomDynamicTreeSettings.class);
-        Assertions.assertEquals(false, model.canSelectParentNodes());
+        Assertions.assertEquals(true, model.canSelectParentNodes());
         Assertions.assertEquals(false, model.canSelectLeafNodes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicTreeSettings model =
-            new SwaggerCustomDynamicTreeSettings().withCanSelectParentNodes(false).withCanSelectLeafNodes(false);
+        SwaggerCustomDynamicTreeSettings model
+            = new SwaggerCustomDynamicTreeSettings().withCanSelectParentNodes(true).withCanSelectLeafNodes(false);
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicTreeSettings.class);
-        Assertions.assertEquals(false, model.canSelectParentNodes());
+        Assertions.assertEquals(true, model.canSelectParentNodes());
         Assertions.assertEquals(false, model.canSelectLeafNodes());
     }
 }

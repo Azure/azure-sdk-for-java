@@ -29,7 +29,6 @@ final class PollingUtils {
             Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
             validationStatus = jsonTree.get("validationStatus").toString();
-            fileType = jsonTree.get("fileType").toString();
         } catch (IOException e) {
             throw new RuntimeException("Encountered exception while retrieving validation status", e);
         }
@@ -42,22 +41,22 @@ final class PollingUtils {
                 lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 break;
+
             case "VALIDATION_FAILURE":
                 lroStatus = LongRunningOperationStatus.FAILED;
 
                 break;
+
             case "VALIDATION_INITIATED":
                 lroStatus = LongRunningOperationStatus.IN_PROGRESS;
 
                 break;
+
             case "NOT_VALIDATED":
-                if ("JMX_FILE".equalsIgnoreCase(fileType)) {
-                    lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                } else {
-                    lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                }
+                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 break;
+
             default:
                 lroStatus = LongRunningOperationStatus.NOT_STARTED;
 
@@ -85,18 +84,22 @@ final class PollingUtils {
                 lroStatus = LongRunningOperationStatus.NOT_STARTED;
 
                 break;
+
             case "DONE":
                 lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 break;
+
             case "FAILED":
                 lroStatus = LongRunningOperationStatus.FAILED;
 
                 break;
+
             case "CANCELLED":
                 lroStatus = LongRunningOperationStatus.USER_CANCELLED;
 
                 break;
+
             default:
                 lroStatus = LongRunningOperationStatus.IN_PROGRESS;
 

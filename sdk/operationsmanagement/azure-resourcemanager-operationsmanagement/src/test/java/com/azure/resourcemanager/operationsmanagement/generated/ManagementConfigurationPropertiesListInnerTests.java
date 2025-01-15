@@ -7,6 +7,7 @@ package com.azure.resourcemanager.operationsmanagement.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationInner;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner;
+import com.azure.resourcemanager.operationsmanagement.models.ArmTemplateParameter;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurationProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,58 +15,57 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementConfigurationPropertiesListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementConfigurationPropertiesListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"yejhk\",\"properties\":{\"applicationId\":\"tnapczwlokjyemkk\",\"parentResourceType\":\"ni\",\"parameters\":[],\"provisioningState\":\"oxzjnchgejspod\",\"template\":\"dataailzydehojwyahu\"},\"id\":\"inpm\",\"name\":\"njaqwixjspro\",\"type\":\"vcputegj\"},{\"location\":\"mfdatscmdvpj\",\"properties\":{\"applicationId\":\"suuv\",\"parentResourceType\":\"kjozkrwfnd\",\"parameters\":[],\"provisioningState\":\"djpslw\",\"template\":\"datajdpvwryo\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"},{\"location\":\"zevdphlx\",\"properties\":{\"applicationId\":\"thqt\",\"parentResourceType\":\"gqjbpfzfsin\",\"parameters\":[],\"provisioningState\":\"v\",\"template\":\"datacjrwzoxxjtfellu\"},\"id\":\"fziton\",\"name\":\"eqfpj\",\"type\":\"jlxofpdvhpfxxyp\"},{\"location\":\"i\",\"properties\":{\"applicationId\":\"yhuybbkpod\",\"parentResourceType\":\"po\",\"parameters\":[],\"provisioningState\":\"inuvamiheogn\",\"template\":\"datarxzxtheo\"},\"id\":\"usivye\",\"name\":\"cciqihnhungbwjz\",\"type\":\"nfygxgispemvtz\"}]}")
-                .toObject(ManagementConfigurationPropertiesListInner.class);
+        ManagementConfigurationPropertiesListInner model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"yejhk\",\"properties\":{\"applicationId\":\"tnapczwlokjyemkk\",\"parentResourceType\":\"ni\",\"parameters\":[{\"name\":\"xzjnchgejs\",\"value\":\"dmailzydehojw\"},{\"name\":\"huxinpmqnj\",\"value\":\"wixjsprozvcp\"},{\"name\":\"eg\",\"value\":\"wmfdatscmdvpjhul\"},{\"name\":\"uvm\",\"value\":\"ozkrwfndiodjpslw\"}],\"provisioningState\":\"dpvwryoqpsoaccta\",\"template\":\"dataakl\"},\"id\":\"lahbcryff\",\"name\":\"fdosyg\",\"type\":\"xpaojakhmsbz\"},{\"location\":\"crzevdphlx\",\"properties\":{\"applicationId\":\"thqt\",\"parentResourceType\":\"gqjbpfzfsin\",\"parameters\":[{\"name\":\"f\",\"value\":\"rwzoxxjtfelluwf\"},{\"name\":\"tonpe\",\"value\":\"pjkjlxofpdv\"}],\"provisioningState\":\"fxxypininmayhuy\",\"template\":\"databkpodepooginuv\"},\"id\":\"mihe\",\"name\":\"gnarxzxtheo\",\"type\":\"usivye\"},{\"location\":\"ciqihnhung\",\"properties\":{\"applicationId\":\"zrnf\",\"parentResourceType\":\"gxg\",\"parameters\":[{\"name\":\"emv\",\"value\":\"fkufublj\"},{\"name\":\"xqeofjaeqjhqjba\",\"value\":\"msmjqulngsntn\"},{\"name\":\"bkzgcwrwclx\",\"value\":\"rljdouskcqv\"}],\"provisioningState\":\"cr\",\"template\":\"datajdkwtnhxbnjb\"},\"id\":\"ksqrglssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"},{\"location\":\"mgxsab\",\"properties\":{\"applicationId\":\"duuji\",\"parentResourceType\":\"c\",\"parameters\":[{\"name\":\"dzevndhkrw\",\"value\":\"appd\"},{\"name\":\"dkvwrwjfe\",\"value\":\"nhutjeltmrldhugj\"}],\"provisioningState\":\"datqxhocdgeabl\",\"template\":\"dataphut\"},\"id\":\"cndvkaozwyiftyhx\",\"name\":\"urokft\",\"type\":\"xolniwpwcukjfk\"}]}")
+            .toObject(ManagementConfigurationPropertiesListInner.class);
         Assertions.assertEquals("yejhk", model.value().get(0).location());
         Assertions.assertEquals("tnapczwlokjyemkk", model.value().get(0).properties().applicationId());
         Assertions.assertEquals("ni", model.value().get(0).properties().parentResourceType());
+        Assertions.assertEquals("xzjnchgejs", model.value().get(0).properties().parameters().get(0).name());
+        Assertions.assertEquals("dmailzydehojw", model.value().get(0).properties().parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementConfigurationPropertiesListInner model =
-            new ManagementConfigurationPropertiesListInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ManagementConfigurationInner()
-                                .withLocation("yejhk")
-                                .withProperties(
-                                    new ManagementConfigurationProperties()
-                                        .withApplicationId("tnapczwlokjyemkk")
-                                        .withParentResourceType("ni")
-                                        .withParameters(Arrays.asList())
-                                        .withTemplate("dataailzydehojwyahu")),
-                            new ManagementConfigurationInner()
-                                .withLocation("mfdatscmdvpj")
-                                .withProperties(
-                                    new ManagementConfigurationProperties()
-                                        .withApplicationId("suuv")
-                                        .withParentResourceType("kjozkrwfnd")
-                                        .withParameters(Arrays.asList())
-                                        .withTemplate("datajdpvwryo")),
-                            new ManagementConfigurationInner()
-                                .withLocation("zevdphlx")
-                                .withProperties(
-                                    new ManagementConfigurationProperties()
-                                        .withApplicationId("thqt")
-                                        .withParentResourceType("gqjbpfzfsin")
-                                        .withParameters(Arrays.asList())
-                                        .withTemplate("datacjrwzoxxjtfellu")),
-                            new ManagementConfigurationInner()
-                                .withLocation("i")
-                                .withProperties(
-                                    new ManagementConfigurationProperties()
-                                        .withApplicationId("yhuybbkpod")
-                                        .withParentResourceType("po")
-                                        .withParameters(Arrays.asList())
-                                        .withTemplate("datarxzxtheo"))));
+        ManagementConfigurationPropertiesListInner model
+            = new ManagementConfigurationPropertiesListInner()
+                .withValue(Arrays.asList(
+                    new ManagementConfigurationInner().withLocation("yejhk")
+                        .withProperties(new ManagementConfigurationProperties().withApplicationId("tnapczwlokjyemkk")
+                            .withParentResourceType("ni")
+                            .withParameters(Arrays.asList(
+                                new ArmTemplateParameter().withName("xzjnchgejs").withValue("dmailzydehojw"),
+                                new ArmTemplateParameter().withName("huxinpmqnj").withValue("wixjsprozvcp"),
+                                new ArmTemplateParameter().withName("eg").withValue("wmfdatscmdvpjhul"),
+                                new ArmTemplateParameter().withName("uvm").withValue("ozkrwfndiodjpslw")))
+                            .withTemplate("dataakl")),
+                    new ManagementConfigurationInner().withLocation("crzevdphlx")
+                        .withProperties(new ManagementConfigurationProperties().withApplicationId("thqt")
+                            .withParentResourceType("gqjbpfzfsin")
+                            .withParameters(
+                                Arrays.asList(new ArmTemplateParameter().withName("f").withValue("rwzoxxjtfelluwf"),
+                                    new ArmTemplateParameter().withName("tonpe").withValue("pjkjlxofpdv")))
+                            .withTemplate("databkpodepooginuv")),
+                    new ManagementConfigurationInner().withLocation("ciqihnhung")
+                        .withProperties(new ManagementConfigurationProperties().withApplicationId("zrnf")
+                            .withParentResourceType("gxg")
+                            .withParameters(
+                                Arrays.asList(new ArmTemplateParameter().withName("emv").withValue("fkufublj"),
+                                    new ArmTemplateParameter().withName("xqeofjaeqjhqjba").withValue("msmjqulngsntn"),
+                                    new ArmTemplateParameter().withName("bkzgcwrwclx").withValue("rljdouskcqv")))
+                            .withTemplate("datajdkwtnhxbnjb")),
+                    new ManagementConfigurationInner().withLocation("mgxsab")
+                        .withProperties(new ManagementConfigurationProperties().withApplicationId("duuji")
+                            .withParentResourceType("c")
+                            .withParameters(
+                                Arrays.asList(new ArmTemplateParameter().withName("dzevndhkrw").withValue("appd"),
+                                    new ArmTemplateParameter().withName("dkvwrwjfe").withValue("nhutjeltmrldhugj")))
+                            .withTemplate("dataphut"))));
         model = BinaryData.fromObject(model).toObject(ManagementConfigurationPropertiesListInner.class);
         Assertions.assertEquals("yejhk", model.value().get(0).location());
         Assertions.assertEquals("tnapczwlokjyemkk", model.value().get(0).properties().applicationId());
         Assertions.assertEquals("ni", model.value().get(0).properties().parentResourceType());
+        Assertions.assertEquals("xzjnchgejs", model.value().get(0).properties().parameters().get(0).name());
+        Assertions.assertEquals("dmailzydehojw", model.value().get(0).properties().parameters().get(0).value());
     }
 }

@@ -10,26 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.GraphicalRunbookContentInner;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Post operation to serialize or deserialize GraphRunbookContent.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Input data describing the graphical runbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return graphical Runbook Content.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphicalRunbookContentInner convertGraphRunbookContent(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters);
-
-    /**
-     * Post operation to serialize or deserialize GraphRunbookContent.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
@@ -40,9 +27,21 @@ public interface ResourceProvidersClient {
      * @return graphical Runbook Content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GraphicalRunbookContentInner> convertGraphRunbookContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        GraphicalRunbookContentInner parameters,
-        Context context);
+    Response<GraphicalRunbookContentInner> convertGraphRunbookContentWithResponse(String resourceGroupName,
+        String automationAccountName, GraphicalRunbookContentInner parameters, Context context);
+
+    /**
+     * Post operation to serialize or deserialize GraphRunbookContent.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Input data describing the graphical runbook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return graphical Runbook Content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GraphicalRunbookContentInner convertGraphRunbookContent(String resourceGroupName, String automationAccountName,
+        GraphicalRunbookContentInner parameters);
 }

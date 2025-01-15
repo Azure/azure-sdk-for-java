@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -27,6 +28,7 @@ public class CpkAsyncTests extends DataLakeTestBase {
     private CustomerProvidedKey key;
     private DataLakeFileAsyncClient cpkFile;
     private DataLakeDirectoryAsyncClient cpkDirectory;
+
     @BeforeEach
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
@@ -50,98 +52,81 @@ public class CpkAsyncTests extends DataLakeTestBase {
 
     @Test
     public void pathCreate() {
-        StepVerifier.create(cpkDirectory.createWithResponse(null, null, null, null,
-            null))
-            .assertNext(r -> {
-                assertEquals(201, r.getStatusCode());
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(cpkDirectory.createWithResponse(null, null, null, null, null)).assertNext(r -> {
+            assertEquals(201, r.getStatusCode());
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
     public void pathGetProperties() {
-        Mono<Response<PathProperties>> response = cpkFile.create()
-            .then(cpkFile.getPropertiesWithResponse(null));
+        Mono<Response<PathProperties>> response = cpkFile.create().then(cpkFile.getPropertiesWithResponse(null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(200, r.getStatusCode());
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(200, r.getStatusCode());
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
     public void pathSetMetadata() {
         Map<String, String> metadata = Collections.singletonMap("foo", "bar");
 
-        Mono<Response<Void>> response = cpkFile.create()
-            .then(cpkFile.setMetadataWithResponse(metadata, null));
+        Mono<Response<Void>> response = cpkFile.create().then(cpkFile.setMetadataWithResponse(metadata, null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(200, r.getStatusCode());
-                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(200, r.getStatusCode());
+            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            assertEquals(key.getKeySha256(),
+                r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        }).verifyComplete();
     }
 
     @Test
     public void fileRead() {
-        Mono<FileReadAsyncResponse> response = cpkFile.create()
-            .then(cpkFile.readWithResponse(null, null, null, false));
+        Mono<FileReadAsyncResponse> response = cpkFile.create().then(cpkFile.readWithResponse(null, null, null, false));
 
-        StepVerifier.create(response)
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(response).expectNextCount(1).verifyComplete();
     }
 
     @Test
     public void fileAppend() {
         Mono<Response<Void>> response = cpkFile.create()
-            .then(cpkFile.appendWithResponse(DATA.getDefaultFlux(), 0L, DATA.getDefaultDataSizeLong(),
-                (byte[]) null, null));
+            .then(cpkFile.appendWithResponse(DATA.getDefaultFlux(), 0L, DATA.getDefaultDataSizeLong(), (byte[]) null,
+                null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            assertEquals(key.getKeySha256(),
+                r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        }).verifyComplete();
     }
 
     @Test
     public void fileFlush() {
         Mono<Response<PathInfo>> response = cpkFile.create()
             .then(cpkFile.append(DATA.getDefaultBinaryData(), 0))
-            .then(cpkFile.flushWithResponse(DATA.getDefaultDataSizeLong(), true, true,
-                null, null));
+            .then(cpkFile.flushWithResponse(DATA.getDefaultDataSizeLong(), true, true, null, null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
     public void directoryCreateSupDir() {
         Mono<Response<DataLakeDirectoryAsyncClient>> response = cpkDirectory.create()
-            .then(cpkDirectory.createSubdirectoryWithResponse(generatePathName(), null, null,
-                null, null, null));
+            .then(cpkDirectory.createSubdirectoryWithResponse(generatePathName(), null, null, null, null, null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(key.getKeySha256(), r.getValue().getCustomerProvidedKey().getKeySha256());
-                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(key.getKeySha256(), r.getValue().getCustomerProvidedKey().getKeySha256());
+            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            assertEquals(key.getKeySha256(),
+                r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        }).verifyComplete();
     }
 
     @Test
@@ -156,18 +141,16 @@ public class CpkAsyncTests extends DataLakeTestBase {
 
         assertNotEquals(cpkDirectory.getCustomerProvidedKey(), newCpkDirectoryClient.getCustomerProvidedKey());
 
-        DataLakePathAsyncClient newCpkPathClient = ((DataLakePathAsyncClient) cpkFile).getCustomerProvidedKeyAsyncClient(newCpk);
+        DataLakePathAsyncClient newCpkPathClient
+            = ((DataLakePathAsyncClient) cpkFile).getCustomerProvidedKeyAsyncClient(newCpk);
 
         assertNotEquals(cpkFile.getCustomerProvidedKey(), newCpkPathClient.getCustomerProvidedKey());
     }
 
     @Test
     public void existsWithoutCpk() {
-        Mono<Boolean> response = cpkFile.create()
-            .then(cpkFile.getCustomerProvidedKeyAsyncClient(null).exists());
+        Mono<Boolean> response = cpkFile.create().then(cpkFile.getCustomerProvidedKeyAsyncClient(null).exists());
 
-        StepVerifier.create(response)
-            .expectNext(true)
-            .verifyComplete();
+        StepVerifier.create(response).expectNext(true).verifyComplete();
     }
 }

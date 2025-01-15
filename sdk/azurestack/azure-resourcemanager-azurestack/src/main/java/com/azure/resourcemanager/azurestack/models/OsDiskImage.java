@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OS disk image. */
+/**
+ * OS disk image.
+ */
 @Immutable
-public final class OsDiskImage {
+public final class OsDiskImage implements JsonSerializable<OsDiskImage> {
     /*
      * OS operating system type.
      */
-    @JsonProperty(value = "operatingSystem", access = JsonProperty.Access.WRITE_ONLY)
     private OperatingSystem operatingSystem;
 
     /*
      * SAS key for source blob.
      */
-    @JsonProperty(value = "sourceBlobSasUri", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceBlobSasUri;
 
-    /** Creates an instance of OsDiskImage class. */
+    /**
+     * Creates an instance of OsDiskImage class.
+     */
     public OsDiskImage() {
     }
 
     /**
      * Get the operatingSystem property: OS operating system type.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public OperatingSystem operatingSystem() {
@@ -37,7 +43,7 @@ public final class OsDiskImage {
 
     /**
      * Get the sourceBlobSasUri property: SAS key for source blob.
-     *
+     * 
      * @return the sourceBlobSasUri value.
      */
     public String sourceBlobSasUri() {
@@ -46,9 +52,46 @@ public final class OsDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OsDiskImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OsDiskImage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OsDiskImage.
+     */
+    public static OsDiskImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OsDiskImage deserializedOsDiskImage = new OsDiskImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operatingSystem".equals(fieldName)) {
+                    deserializedOsDiskImage.operatingSystem = OperatingSystem.fromString(reader.getString());
+                } else if ("sourceBlobSasUri".equals(fieldName)) {
+                    deserializedOsDiskImage.sourceBlobSasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOsDiskImage;
+        });
     }
 }

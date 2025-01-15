@@ -11,6 +11,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
@@ -271,6 +272,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The MachinesClient object to access its operations.
+     */
+    private final MachinesClient machines;
+
+    /**
+     * Gets the MachinesClient object to access its operations.
+     * 
+     * @return the MachinesClient object.
+     */
+    public MachinesClient getMachines() {
+        return this.machines;
+    }
+
+    /**
      * Initializes an instance of ContainerServiceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -301,5 +316,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.snapshots = new SnapshotsClientImpl(this);
         this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
         this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
+        this.machines = new MachinesClientImpl(this);
     }
 }

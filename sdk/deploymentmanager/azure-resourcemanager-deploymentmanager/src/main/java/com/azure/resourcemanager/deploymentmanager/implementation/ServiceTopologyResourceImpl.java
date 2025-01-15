@@ -76,27 +76,23 @@ public final class ServiceTopologyResourceImpl
     }
 
     public ServiceTopologyResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceTopologyResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ServiceTopologyResourceImpl(
-        String name, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    ServiceTopologyResourceImpl(String name,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = new ServiceTopologyResourceInner();
         this.serviceManager = serviceManager;
         this.serviceTopologyName = name;
@@ -107,27 +103,22 @@ public final class ServiceTopologyResourceImpl
     }
 
     public ServiceTopologyResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceTopologyResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ServiceTopologyResourceImpl(
-        ServiceTopologyResourceInner innerObject,
+    ServiceTopologyResourceImpl(ServiceTopologyResourceInner innerObject,
         com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -136,22 +127,18 @@ public final class ServiceTopologyResourceImpl
     }
 
     public ServiceTopologyResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .getByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceTopologyResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceTopologies()
-                .getByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceTopologies()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, context)
+            .getValue();
         return this;
     }
 

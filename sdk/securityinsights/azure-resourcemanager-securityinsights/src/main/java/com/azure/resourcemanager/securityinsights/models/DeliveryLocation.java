@@ -4,39 +4,58 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The delivery location of this mail message like Inbox, JunkFolder etc. */
+/**
+ * The delivery location of this mail message like Inbox, JunkFolder etc.
+ */
 public enum DeliveryLocation {
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown"),
 
-    /** Enum value Inbox. */
+    /**
+     * Enum value Inbox.
+     */
     INBOX("Inbox"),
 
-    /** Enum value JunkFolder. */
+    /**
+     * Enum value JunkFolder.
+     */
     JUNK_FOLDER("JunkFolder"),
 
-    /** Enum value DeletedFolder. */
+    /**
+     * Enum value DeletedFolder.
+     */
     DELETED_FOLDER("DeletedFolder"),
 
-    /** Enum value Quarantine. */
+    /**
+     * Enum value Quarantine.
+     */
     QUARANTINE("Quarantine"),
 
-    /** Enum value External. */
+    /**
+     * Enum value External.
+     */
     EXTERNAL("External"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Dropped. */
+    /**
+     * Enum value Dropped.
+     */
     DROPPED("Dropped"),
 
-    /** Enum value Forwarded. */
+    /**
+     * Enum value Forwarded.
+     */
     FORWARDED("Forwarded");
 
-    /** The actual serialized value for a DeliveryLocation instance. */
+    /**
+     * The actual serialized value for a DeliveryLocation instance.
+     */
     private final String value;
 
     DeliveryLocation(String value) {
@@ -45,11 +64,10 @@ public enum DeliveryLocation {
 
     /**
      * Parses a serialized value to a DeliveryLocation instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DeliveryLocation object, or null if unable to parse.
      */
-    @JsonCreator
     public static DeliveryLocation fromString(String value) {
         if (value == null) {
             return null;
@@ -63,8 +81,9 @@ public enum DeliveryLocation {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

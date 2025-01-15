@@ -12,37 +12,37 @@ import java.util.Collection;
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**
-     * Static value Succeeded for ProvisioningState.
+     * Resource has been created.
      */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Failed for ProvisioningState.
+     * Resource creation failed.
      */
     public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for ProvisioningState.
+     * Resource creation was canceled.
      */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Provisioning for ProvisioningState.
+     * The resource is being provisioned.
      */
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Updating for ProvisioningState.
+     * The resource is being updated.
      */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
     /**
-     * Static value Deleting for ProvisioningState.
+     * The resource is being deleted.
      */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Static value Accepted for ProvisioningState.
+     * The resource provisioning request has been accepted.
      */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 

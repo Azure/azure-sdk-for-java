@@ -87,16 +87,15 @@ public final class BuilderHelper {
      * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(
-        StorageSharedKeyCredential storageSharedKeyCredential,
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String endpoint,
-        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
-        HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, DataLakeAudience audience, ClientLogger logger) {
+        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
+        ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, DataLakeAudience audience,
+        ClientLogger logger) {
 
-        CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, null, logger);
+        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
+            azureSasCredential, null, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -122,17 +121,17 @@ public final class BuilderHelper {
 
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
-            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+            credentialPolicy = new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            credentialPolicy =  new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
+            credentialPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else {
-            credentialPolicy =  null;
+            credentialPolicy = null;
         }
 
         if (credentialPolicy != null) {
@@ -149,8 +148,7 @@ public final class BuilderHelper {
 
         policies.add(new ScrubEtagPolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
@@ -165,8 +163,8 @@ public final class BuilderHelper {
     public static HttpLogOptions getDefaultHttpLogOptions() {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         DataLakeHeadersAndQueryParameters.getDataLakeHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters().forEach(
-            defaultOptions::addAllowedQueryParamName);
+        DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters()
+            .forEach(defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
     }
 
@@ -206,9 +204,8 @@ public final class BuilderHelper {
      * @return The {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} for the module.
      */
     private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+        return new ResponseValidationPolicyBuilder().addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME)
             .build();
     }
 
@@ -230,8 +227,8 @@ public final class BuilderHelper {
      */
     public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
         if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Using a(n) " + objectName + " requires https"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Using a(n) " + objectName + " requires https"));
         }
     }
 

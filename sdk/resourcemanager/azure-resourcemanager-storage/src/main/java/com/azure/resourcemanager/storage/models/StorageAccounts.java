@@ -19,17 +19,11 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for storage accounts management API. */
 @Fluent
-public interface StorageAccounts
-    extends SupportsListing<StorageAccount>,
-        SupportsCreating<StorageAccount.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<StorageAccount>,
-        SupportsGettingByResourceGroup<StorageAccount>,
-        SupportsGettingById<StorageAccount>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<StorageAccount>,
-        SupportsBatchDeletion,
-        HasManager<StorageManager> {
+public interface StorageAccounts extends SupportsListing<StorageAccount>,
+    SupportsCreating<StorageAccount.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<StorageAccount>, SupportsGettingByResourceGroup<StorageAccount>,
+    SupportsGettingById<StorageAccount>, SupportsDeletingByResourceGroup, SupportsBatchCreation<StorageAccount>,
+    SupportsBatchDeletion, HasManager<StorageManager> {
     /**
      * Checks that account name is valid and is not in use.
      *

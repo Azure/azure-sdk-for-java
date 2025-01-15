@@ -18,14 +18,14 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
+    public Response<Void> mitigateWithResponse(String jobName, String resourceGroupName,
+        MitigateJobRequest mitigateJobRequest, Context context) {
         return this.serviceClient().mitigateWithResponse(jobName, resourceGroupName, mitigateJobRequest, context);
     }
 

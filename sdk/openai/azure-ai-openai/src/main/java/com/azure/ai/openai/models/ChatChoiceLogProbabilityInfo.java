@@ -26,16 +26,6 @@ public final class ChatChoiceLogProbabilityInfo implements JsonSerializable<Chat
     private final List<ChatTokenLogProbabilityResult> content;
 
     /**
-     * Creates an instance of ChatChoiceLogProbabilityInfo class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    private ChatChoiceLogProbabilityInfo(List<ChatTokenLogProbabilityResult> content) {
-        this.content = content;
-    }
-
-    /**
      * Get the content property: The list of log probability information entries for the choice's message content
      * tokens, as requested via the 'logprobs' option.
      *
@@ -54,6 +44,7 @@ public final class ChatChoiceLogProbabilityInfo implements JsonSerializable<Chat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("refusal", this.refusal, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -70,16 +61,50 @@ public final class ChatChoiceLogProbabilityInfo implements JsonSerializable<Chat
     public static ChatChoiceLogProbabilityInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ChatTokenLogProbabilityResult> content = null;
+            List<ChatTokenLogProbabilityResult> refusal = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ChatTokenLogProbabilityResult.fromJson(reader1));
+                } else if ("refusal".equals(fieldName)) {
+                    refusal = reader.readArray(reader1 -> ChatTokenLogProbabilityResult.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ChatChoiceLogProbabilityInfo(content);
+            return new ChatChoiceLogProbabilityInfo(content, refusal);
         });
+    }
+
+    /*
+     * The list of log probability information entries for the choice's message refusal message tokens, as requested via
+     * the 'logprobs' option.
+     */
+    @Generated
+    private final List<ChatTokenLogProbabilityResult> refusal;
+
+    /**
+     * Creates an instance of ChatChoiceLogProbabilityInfo class.
+     *
+     * @param content the content value to set.
+     * @param refusal the refusal value to set.
+     */
+    @Generated
+    private ChatChoiceLogProbabilityInfo(List<ChatTokenLogProbabilityResult> content,
+        List<ChatTokenLogProbabilityResult> refusal) {
+        this.content = content;
+        this.refusal = refusal;
+    }
+
+    /**
+     * Get the refusal property: The list of log probability information entries for the choice's message refusal
+     * message tokens, as requested via the 'logprobs' option.
+     *
+     * @return the refusal value.
+     */
+    @Generated
+    public List<ChatTokenLogProbabilityResult> getRefusal() {
+        return this.refusal;
     }
 }

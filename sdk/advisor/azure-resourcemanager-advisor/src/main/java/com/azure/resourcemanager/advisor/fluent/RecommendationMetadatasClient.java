@@ -11,15 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.advisor.fluent.models.MetadataEntityInner;
 
-/** An instance of this class provides access to all the operations defined in RecommendationMetadatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecommendationMetadatasClient.
+ */
 public interface RecommendationMetadatasClient {
     /**
      * Gets the metadata entity.
-     *
+     * 
      * @param name Name of metadata entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata entity along with {@link Response}.
      */
@@ -28,10 +32,12 @@ public interface RecommendationMetadatasClient {
 
     /**
      * Gets the metadata entity.
-     *
+     * 
      * @param name Name of metadata entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata entity.
      */
@@ -40,7 +46,7 @@ public interface RecommendationMetadatasClient {
 
     /**
      * Gets the list of metadata entities.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of metadata entities as paginated response with {@link PagedIterable}.
@@ -50,7 +56,7 @@ public interface RecommendationMetadatasClient {
 
     /**
      * Gets the list of metadata entities.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

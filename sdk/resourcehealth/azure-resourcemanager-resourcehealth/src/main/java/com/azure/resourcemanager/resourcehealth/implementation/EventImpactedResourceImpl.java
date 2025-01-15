@@ -16,8 +16,7 @@ public final class EventImpactedResourceImpl implements EventImpactedResource {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    EventImpactedResourceImpl(
-        EventImpactedResourceInner innerObject,
+    EventImpactedResourceImpl(EventImpactedResourceInner innerObject,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

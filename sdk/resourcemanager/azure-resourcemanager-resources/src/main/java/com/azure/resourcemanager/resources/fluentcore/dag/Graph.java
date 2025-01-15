@@ -66,6 +66,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets all nodes in the graph.
+     *
      * @return all nodes in the graph.
      */
     public Collection<NodeT> getNodes() {
@@ -142,9 +144,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             }
         }
 
-        throw logger.logExceptionAsError(
-            new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}")
-        );
+        throw logger.logExceptionAsError(new IllegalStateException(
+            "Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}"));
     }
 
     /**

@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsProjectListResponseTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsProjectListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"projectId\":\"muouqfp\",\"orgName\":\"zw\",\"autoDiscovery\":\"Disabled\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}],\"nextLink\":\"dfvzwdzuhty\"}")
-                .toObject(AzureDevOpsProjectListResponse.class);
+        AzureDevOpsProjectListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"projectId\":\"muouqfp\",\"orgName\":\"zw\",\"autoDiscovery\":\"Disabled\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}],\"nextLink\":\"dfvzwdzuhty\"}")
+            .toObject(AzureDevOpsProjectListResponse.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals("muouqfp", model.value().get(0).properties().projectId());
         Assertions.assertEquals("zw", model.value().get(0).properties().orgName());
@@ -31,18 +29,12 @@ public final class AzureDevOpsProjectListResponseTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsProjectListResponse model =
-            new AzureDevOpsProjectListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureDevOpsProjectInner()
-                                .withProperties(
-                                    new AzureDevOpsProjectProperties()
-                                        .withProvisioningState(ProvisioningState.CANCELED)
-                                        .withProjectId("muouqfp")
-                                        .withOrgName("zw")
-                                        .withAutoDiscovery(AutoDiscovery.DISABLED))))
+        AzureDevOpsProjectListResponse model
+            = new AzureDevOpsProjectListResponse().withValue(Arrays.asList(new AzureDevOpsProjectInner()
+                .withProperties(new AzureDevOpsProjectProperties().withProvisioningState(ProvisioningState.CANCELED)
+                    .withProjectId("muouqfp")
+                    .withOrgName("zw")
+                    .withAutoDiscovery(AutoDiscovery.DISABLED))))
                 .withNextLink("dfvzwdzuhty");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsProjectListResponse.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());

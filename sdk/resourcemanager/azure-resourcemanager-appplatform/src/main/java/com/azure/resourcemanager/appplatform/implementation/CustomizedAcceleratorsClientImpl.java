@@ -690,7 +690,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
         CustomizedAcceleratorResourceInner customizedAcceleratorResource) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
             customizedAcceleratorName, customizedAcceleratorResource).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -714,7 +714,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
         CustomizedAcceleratorResourceInner customizedAcceleratorResource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
             customizedAcceleratorName, customizedAcceleratorResource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

@@ -28,24 +28,21 @@ public final class ConfigurationGroupSchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationGroupSchemaListResult model
-            = new ConfigurationGroupSchemaListResult()
-                .withValue(
-                    Arrays.asList(
-                        new ConfigurationGroupSchemaInner().withLocation("mtz")
-                            .withTags(mapOf("bb", "sphrupidgs", "sx", "jhphoyc", "tbmufpo", "obhdxbmtqioqjze", "hwlrx",
-                                "noi"))
-                            .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("xpyb")
-                                .withSchemaDefinition("m")),
-                        new ConfigurationGroupSchemaInner().withLocation("rifkwm")
-                            .withTags(mapOf("psqucmpoyf", "tsizntocipaoua", "knygjofjddeq", "kfo", "upewnwreitjzy",
-                                "rd", "ofcqhsm", "lusarh"))
-                            .withProperties(new ConfigurationGroupSchemaPropertiesFormat()
-                                .withDescription("lhqgnufooojy").withSchemaDefinition("fsqesaagdfmglzlh")),
-                        new ConfigurationGroupSchemaInner().withLocation("a")
-                            .withTags(mapOf("mt", "hmwhfpmrqo", "tijbpzvgnwzsymgl", "kknryrtihf", "yzkohdbihanuf", "uf",
-                                "ifpikxwczby", "fcbjysagithxqha"))
-                            .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("y")
-                                .withSchemaDefinition("nzwuxzd"))));
+            = new ConfigurationGroupSchemaListResult().withValue(Arrays.asList(
+                new ConfigurationGroupSchemaInner().withLocation("mtz")
+                    .withTags(mapOf("bb", "sphrupidgs", "sx", "jhphoyc", "tbmufpo", "obhdxbmtqioqjze", "hwlrx", "noi"))
+                    .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("xpyb")
+                        .withSchemaDefinition("m")),
+                new ConfigurationGroupSchemaInner().withLocation("rifkwm")
+                    .withTags(mapOf("psqucmpoyf", "tsizntocipaoua", "knygjofjddeq", "kfo", "upewnwreitjzy", "rd",
+                        "ofcqhsm", "lusarh"))
+                    .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("lhqgnufooojy")
+                        .withSchemaDefinition("fsqesaagdfmglzlh")),
+                new ConfigurationGroupSchemaInner().withLocation("a")
+                    .withTags(mapOf("mt", "hmwhfpmrqo", "tijbpzvgnwzsymgl", "kknryrtihf", "yzkohdbihanuf", "uf",
+                        "ifpikxwczby", "fcbjysagithxqha"))
+                    .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("y")
+                        .withSchemaDefinition("nzwuxzd"))));
         model = BinaryData.fromObject(model).toObject(ConfigurationGroupSchemaListResult.class);
         Assertions.assertEquals("mtz", model.value().get(0).location());
         Assertions.assertEquals("sphrupidgs", model.value().get(0).tags().get("bb"));

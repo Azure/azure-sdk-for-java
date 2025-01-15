@@ -6,29 +6,36 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Notification preference for a job stage. */
+/**
+ * Notification preference for a job stage.
+ */
 @Fluent
-public final class NotificationPreference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationPreference.class);
-
+public final class NotificationPreference implements JsonSerializable<NotificationPreference> {
     /*
      * Name of the stage.
      */
-    @JsonProperty(value = "stageName", required = true)
     private NotificationStageName stageName;
 
     /*
      * Notification is required or not.
      */
-    @JsonProperty(value = "sendNotification", required = true)
     private boolean sendNotification;
 
     /**
+     * Creates an instance of NotificationPreference class.
+     */
+    public NotificationPreference() {
+    }
+
+    /**
      * Get the stageName property: Name of the stage.
-     *
+     * 
      * @return the stageName value.
      */
     public NotificationStageName stageName() {
@@ -37,7 +44,7 @@ public final class NotificationPreference {
 
     /**
      * Set the stageName property: Name of the stage.
-     *
+     * 
      * @param stageName the stageName value to set.
      * @return the NotificationPreference object itself.
      */
@@ -48,7 +55,7 @@ public final class NotificationPreference {
 
     /**
      * Get the sendNotification property: Notification is required or not.
-     *
+     * 
      * @return the sendNotification value.
      */
     public boolean sendNotification() {
@@ -57,7 +64,7 @@ public final class NotificationPreference {
 
     /**
      * Set the sendNotification property: Notification is required or not.
-     *
+     * 
      * @param sendNotification the sendNotification value to set.
      * @return the NotificationPreference object itself.
      */
@@ -68,15 +75,56 @@ public final class NotificationPreference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (stageName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property stageName in model NotificationPreference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property stageName in model NotificationPreference"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationPreference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
+        jsonWriter.writeBooleanField("sendNotification", this.sendNotification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationPreference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationPreference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationPreference.
+     */
+    public static NotificationPreference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationPreference deserializedNotificationPreference = new NotificationPreference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stageName".equals(fieldName)) {
+                    deserializedNotificationPreference.stageName = NotificationStageName.fromString(reader.getString());
+                } else if ("sendNotification".equals(fieldName)) {
+                    deserializedNotificationPreference.sendNotification = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationPreference;
+        });
     }
 }

@@ -13,13 +13,18 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
  */
 @Fluent
 public class DataLakeFileAppendOptions {
-
     private String leaseId;
     private byte[] contentMd5;
     private Boolean flush;
     private LeaseAction leaseAction;
     private Integer leaseDuration;
     private String proposedLeaseId;
+
+    /**
+     * Creates a new instance of {@link DataLakeFileAppendOptions}.
+     */
+    public DataLakeFileAppendOptions() {
+    }
 
     /**
      * Gets the lease ID to access the file.
@@ -123,6 +128,8 @@ public class DataLakeFileAppendOptions {
     }
 
     /**
+     * Gets the lease duration in seconds.
+     *
      * @return the lease duration in seconds.
      */
     public Integer getLeaseDuration() {

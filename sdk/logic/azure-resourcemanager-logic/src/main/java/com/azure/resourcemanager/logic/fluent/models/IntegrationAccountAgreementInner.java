@@ -7,43 +7,98 @@ package com.azure.resourcemanager.logic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.AgreementContent;
 import com.azure.resourcemanager.logic.models.AgreementType;
 import com.azure.resourcemanager.logic.models.BusinessIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account agreement. */
+/**
+ * The integration account agreement.
+ */
 @Fluent
 public final class IntegrationAccountAgreementInner extends Resource {
     /*
      * The integration account agreement properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationAccountAgreementProperties innerProperties = new IntegrationAccountAgreementProperties();
 
-    /** Creates an instance of IntegrationAccountAgreementInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IntegrationAccountAgreementInner class.
+     */
     public IntegrationAccountAgreementInner() {
     }
 
     /**
      * Get the innerProperties property: The integration account agreement properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IntegrationAccountAgreementProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountAgreementInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountAgreementInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -52,7 +107,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -61,7 +116,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -70,7 +125,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -79,7 +134,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -93,7 +148,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the agreementType property: The agreement type.
-     *
+     * 
      * @return the agreementType value.
      */
     public AgreementType agreementType() {
@@ -102,7 +157,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the agreementType property: The agreement type.
-     *
+     * 
      * @param agreementType the agreementType value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -116,7 +171,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the hostPartner property: The integration account partner that is set as host partner for this agreement.
-     *
+     * 
      * @return the hostPartner value.
      */
     public String hostPartner() {
@@ -125,7 +180,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the hostPartner property: The integration account partner that is set as host partner for this agreement.
-     *
+     * 
      * @param hostPartner the hostPartner value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -139,7 +194,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the guestPartner property: The integration account partner that is set as guest partner for this agreement.
-     *
+     * 
      * @return the guestPartner value.
      */
     public String guestPartner() {
@@ -148,7 +203,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the guestPartner property: The integration account partner that is set as guest partner for this agreement.
-     *
+     * 
      * @param guestPartner the guestPartner value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -162,7 +217,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the hostIdentity property: The business identity of the host partner.
-     *
+     * 
      * @return the hostIdentity value.
      */
     public BusinessIdentity hostIdentity() {
@@ -171,7 +226,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the hostIdentity property: The business identity of the host partner.
-     *
+     * 
      * @param hostIdentity the hostIdentity value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -185,7 +240,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the guestIdentity property: The business identity of the guest partner.
-     *
+     * 
      * @return the guestIdentity value.
      */
     public BusinessIdentity guestIdentity() {
@@ -194,7 +249,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the guestIdentity property: The business identity of the guest partner.
-     *
+     * 
      * @param guestIdentity the guestIdentity value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -208,7 +263,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Get the content property: The agreement content.
-     *
+     * 
      * @return the content value.
      */
     public AgreementContent content() {
@@ -217,7 +272,7 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Set the content property: The agreement content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountAgreementInner object itself.
      */
@@ -231,19 +286,70 @@ public final class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IntegrationAccountAgreementInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountAgreementInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountAgreementInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountAgreementInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountAgreementInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountAgreementInner.
+     */
+    public static IntegrationAccountAgreementInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountAgreementInner deserializedIntegrationAccountAgreementInner
+                = new IntegrationAccountAgreementInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountAgreementInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementInner.innerProperties
+                        = IntegrationAccountAgreementProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountAgreementInner;
+        });
+    }
 }

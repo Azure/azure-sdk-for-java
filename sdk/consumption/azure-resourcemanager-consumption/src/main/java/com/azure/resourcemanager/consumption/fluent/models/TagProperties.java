@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of the tag. */
+/**
+ * The properties of the tag.
+ */
 @Fluent
-public final class TagProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperties.class);
-
+public final class TagProperties implements JsonSerializable<TagProperties> {
     /*
      * A list of Tag.
      */
-    @JsonProperty(value = "tags")
     private List<Tag> tags;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The link (url) to the previous page of results.
      */
-    @JsonProperty(value = "previousLink", access = JsonProperty.Access.WRITE_ONLY)
     private String previousLink;
 
     /**
+     * Creates an instance of TagProperties class.
+     */
+    public TagProperties() {
+    }
+
+    /**
      * Get the tags property: A list of Tag.
-     *
+     * 
      * @return the tags value.
      */
     public List<Tag> tags() {
@@ -45,7 +50,7 @@ public final class TagProperties {
 
     /**
      * Set the tags property: A list of Tag.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class TagProperties {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +70,7 @@ public final class TagProperties {
 
     /**
      * Get the previousLink property: The link (url) to the previous page of results.
-     *
+     * 
      * @return the previousLink value.
      */
     public String previousLink() {
@@ -74,12 +79,53 @@ public final class TagProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tags() != null) {
             tags().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagProperties.
+     */
+    public static TagProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagProperties deserializedTagProperties = new TagProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    List<Tag> tags = reader.readArray(reader1 -> Tag.fromJson(reader1));
+                    deserializedTagProperties.tags = tags;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTagProperties.nextLink = reader.getString();
+                } else if ("previousLink".equals(fieldName)) {
+                    deserializedTagProperties.previousLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagProperties;
+        });
     }
 }

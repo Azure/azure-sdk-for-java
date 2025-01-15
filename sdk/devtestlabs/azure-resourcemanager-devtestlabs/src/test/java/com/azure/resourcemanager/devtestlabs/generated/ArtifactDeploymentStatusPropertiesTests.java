@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactDeploymentStatusPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactDeploymentStatusProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentStatus\":\"bf\",\"artifactsApplied\":1699550993,\"totalArtifacts\":1064887368}")
-                .toObject(ArtifactDeploymentStatusProperties.class);
+        ArtifactDeploymentStatusProperties model = BinaryData
+            .fromString("{\"deploymentStatus\":\"bf\",\"artifactsApplied\":1699550993,\"totalArtifacts\":1064887368}")
+            .toObject(ArtifactDeploymentStatusProperties.class);
         Assertions.assertEquals("bf", model.deploymentStatus());
         Assertions.assertEquals(1699550993, model.artifactsApplied());
         Assertions.assertEquals(1064887368, model.totalArtifacts());
@@ -23,11 +21,9 @@ public final class ArtifactDeploymentStatusPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactDeploymentStatusProperties model =
-            new ArtifactDeploymentStatusProperties()
-                .withDeploymentStatus("bf")
-                .withArtifactsApplied(1699550993)
-                .withTotalArtifacts(1064887368);
+        ArtifactDeploymentStatusProperties model = new ArtifactDeploymentStatusProperties().withDeploymentStatus("bf")
+            .withArtifactsApplied(1699550993)
+            .withTotalArtifacts(1064887368);
         model = BinaryData.fromObject(model).toObject(ArtifactDeploymentStatusProperties.class);
         Assertions.assertEquals("bf", model.deploymentStatus());
         Assertions.assertEquals(1699550993, model.artifactsApplied());

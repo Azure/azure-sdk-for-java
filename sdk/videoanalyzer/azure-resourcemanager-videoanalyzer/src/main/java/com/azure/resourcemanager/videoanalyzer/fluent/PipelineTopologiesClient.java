@@ -44,8 +44,8 @@ public interface PipelineTopologiesClient {
      * @return a collection of PipelineTopology items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PipelineTopologyInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context);
+    PagedIterable<PipelineTopologyInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        Context context);
 
     /**
      * Retrieves a specific pipeline topology by name. If a topology with that name has been previously created, the
@@ -78,8 +78,8 @@ public interface PipelineTopologiesClient {
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineTopologyInner> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context);
+    Response<PipelineTopologyInner> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, Context context);
 
     /**
      * Creates a new pipeline topology or updates an existing one, with the given name. A pipeline topology describes
@@ -98,8 +98,8 @@ public interface PipelineTopologiesClient {
      *     outcome.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineTopologyInner createOrUpdate(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyInner parameters);
+    PipelineTopologyInner createOrUpdate(String resourceGroupName, String accountName, String pipelineTopologyName,
+        PipelineTopologyInner parameters);
 
     /**
      * Creates a new pipeline topology or updates an existing one, with the given name. A pipeline topology describes
@@ -119,12 +119,8 @@ public interface PipelineTopologiesClient {
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineTopologyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyInner parameters,
-        Context context);
+    Response<PipelineTopologyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyInner parameters, Context context);
 
     /**
      * Deletes a pipeline topology with the given name. This method should be called after all instances of the topology
@@ -154,8 +150,8 @@ public interface PipelineTopologiesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineTopologyName,
+        Context context);
 
     /**
      * Updates an existing pipeline topology with the given name. If the associated live pipelines or pipeline jobs are
@@ -173,8 +169,8 @@ public interface PipelineTopologiesClient {
      *     outcome.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineTopologyInner update(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyUpdate parameters);
+    PipelineTopologyInner update(String resourceGroupName, String accountName, String pipelineTopologyName,
+        PipelineTopologyUpdate parameters);
 
     /**
      * Updates an existing pipeline topology with the given name. If the associated live pipelines or pipeline jobs are
@@ -193,10 +189,6 @@ public interface PipelineTopologiesClient {
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineTopologyInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyUpdate parameters,
-        Context context);
+    Response<PipelineTopologyInner> updateWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyUpdate parameters, Context context);
 }

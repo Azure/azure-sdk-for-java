@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class ClusterCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ClusterCreateParameters.class);
 
     /*
      * The size of the virtual machines in the cluster. All nodes in a cluster
@@ -153,8 +154,8 @@ public class ClusterCreateParameters {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the ClusterCreateParameters object itself.
      */
-    public ClusterCreateParameters withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public ClusterCreateParameters
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }

@@ -47,7 +47,8 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
             metadata.put("role", "user");
             metadata.put("name", "John Doe");
             metadata.put("content", "Hello, I'm John Doe.");
-            AssistantThread updatedThread = client.updateThread(assistantThread.getId(), new UpdateAssistantThreadOptions().setMetadata(metadata));
+            AssistantThread updatedThread = client.updateThread(assistantThread.getId(),
+                new UpdateAssistantThreadOptions().setMetadata(metadata));
             assertEquals(threadId, updatedThread.getId());
             assertEquals("user", updatedThread.getMetadata().get("role"));
             assertEquals("John Doe", updatedThread.getMetadata().get("name"));
@@ -66,8 +67,8 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
         client = getAssistantsClient(httpClient);
         createRunRunner(threadCreationOptions -> {
             // Create a thread
-            Response<BinaryData> response = client.createThreadWithResponse(
-                    BinaryData.fromObject(threadCreationOptions), new RequestOptions());
+            Response<BinaryData> response
+                = client.createThreadWithResponse(BinaryData.fromObject(threadCreationOptions), new RequestOptions());
             AssistantThread assistantThread = assertAndGetValueFromResponse(response, AssistantThread.class, 200);
             String threadId = assistantThread.getId();
             assertNotNull(threadId);
@@ -76,7 +77,8 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
 
             // Get a thread
             Response<BinaryData> retrievedThreadResponse = client.getThreadWithResponse(threadId, new RequestOptions());
-            AssistantThread retrievedThread = assertAndGetValueFromResponse(retrievedThreadResponse, AssistantThread.class, 200);
+            AssistantThread retrievedThread
+                = assertAndGetValueFromResponse(retrievedThreadResponse, AssistantThread.class, 200);
             assertEquals(threadId, retrievedThread.getId());
             assertNotNull(retrievedThread.getCreatedAt());
             assertEquals("thread", retrievedThread.getObject());
@@ -88,17 +90,20 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
             metadata.put("content", "Hello, I'm John Doe.");
             Map<String, Object> requestObj = new HashMap<>();
             requestObj.put("metadata", metadata);
-            Response<BinaryData> updateThreadWithResponse = client.updateThreadWithResponse(threadId, BinaryData.fromObject(requestObj),
-                    new RequestOptions());
-            AssistantThread updatedThread = assertAndGetValueFromResponse(updateThreadWithResponse, AssistantThread.class, 200);
+            Response<BinaryData> updateThreadWithResponse
+                = client.updateThreadWithResponse(threadId, BinaryData.fromObject(requestObj), new RequestOptions());
+            AssistantThread updatedThread
+                = assertAndGetValueFromResponse(updateThreadWithResponse, AssistantThread.class, 200);
             assertEquals(threadId, updatedThread.getId());
             assertEquals("user", updatedThread.getMetadata().get("role"));
             assertEquals("John Doe", updatedThread.getMetadata().get("name"));
             assertEquals("Hello, I'm John Doe.", updatedThread.getMetadata().get("content"));
 
             // Delete the created thread
-            Response<BinaryData> deletedThreadWithResponse = client.deleteThreadWithResponse(threadId, new RequestOptions());
-            ThreadDeletionStatus deletionStatus = assertAndGetValueFromResponse(deletedThreadWithResponse, ThreadDeletionStatus.class, 200);
+            Response<BinaryData> deletedThreadWithResponse
+                = client.deleteThreadWithResponse(threadId, new RequestOptions());
+            ThreadDeletionStatus deletionStatus
+                = assertAndGetValueFromResponse(deletedThreadWithResponse, ThreadDeletionStatus.class, 200);
             assertEquals(threadId, deletionStatus.getId());
             assertTrue(deletionStatus.isDeleted());
         });

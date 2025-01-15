@@ -55,8 +55,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @param client the instance of the service client containing this operation class.
      */
     PipelineJobsClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PipelineJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PipelineJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,114 +67,80 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface PipelineJobsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineJobCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineJobCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PipelineJobInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineJobName") String pipelineJobName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PipelineJobInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineJobName") String pipelineJobName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PipelineJobInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineJobInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineJobName") String pipelineJobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineJobName") String pipelineJobName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PipelineJobInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineJobName") String pipelineJobName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PipelineJobUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}/cancel")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineJobInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineJobName") String pipelineJobName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PipelineJobInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineJobName") String pipelineJobName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineJobName") String pipelineJobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineJobInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineJobName") String pipelineJobName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PipelineJobUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineJobs/{pipelineJobName}/cancel")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineJobName") String pipelineJobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineJobCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PipelineJobCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -192,19 +158,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top) {
+    private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,28 +177,10 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PipelineJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<PipelineJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -256,19 +200,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -280,25 +220,10 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -315,10 +240,9 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return a collection of PipelineJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PipelineJobInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
+    private PagedFlux<PipelineJobInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -336,8 +260,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
     private PagedFlux<PipelineJobInner> listAsync(String resourceGroupName, String accountName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -356,10 +279,9 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return a collection of PipelineJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PipelineJobInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, context),
+    private PagedFlux<PipelineJobInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -395,8 +317,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return a collection of PipelineJob items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PipelineJobInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
+    public PagedIterable<PipelineJobInner> list(String resourceGroupName, String accountName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, context));
     }
 
@@ -414,19 +336,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName) {
+    private Mono<Response<PipelineJobInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -441,18 +359,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineJobName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineJobName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -471,19 +379,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    private Mono<Response<PipelineJobInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -498,16 +402,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineJobName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            pipelineJobName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -562,8 +458,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineJobInner> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    public Response<PipelineJobInner> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, pipelineJobName, context).block();
     }
 
@@ -581,19 +477,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobInner parameters) {
+    private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String pipelineJobName, PipelineJobInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,19 +505,9 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineJobName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineJobName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -644,23 +526,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobInner parameters,
-        Context context) {
+    private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String pipelineJobName, PipelineJobInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,17 +554,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineJobName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineJobName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -707,8 +572,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineJobInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobInner parameters) {
+    private Mono<PipelineJobInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -727,8 +592,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineJobInner createOrUpdate(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobInner parameters) {
+    public PipelineJobInner createOrUpdate(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobInner parameters) {
         return createOrUpdateAsync(resourceGroupName, accountName, pipelineJobName, parameters).block();
     }
 
@@ -747,12 +612,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineJobInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobInner parameters,
-        Context context) {
+    public Response<PipelineJobInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters, context)
             .block();
     }
@@ -769,19 +630,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -796,18 +653,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineJobName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineJobName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -824,19 +671,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -851,16 +694,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineJobName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineJobName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -908,8 +743,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, pipelineJobName, context).block();
     }
 
@@ -927,19 +762,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobUpdate parameters) {
+    private Mono<Response<PipelineJobInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -960,18 +791,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineJobName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, pipelineJobName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -990,23 +811,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineJobInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobUpdate parameters,
-        Context context) {
+    private Mono<Response<PipelineJobInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1026,17 +839,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineJobName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineJobName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1053,8 +857,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineJobInner> updateAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobUpdate parameters) {
+    private Mono<PipelineJobInner> updateAsync(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1073,8 +877,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineJobInner update(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobUpdate parameters) {
+    public PipelineJobInner update(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobUpdate parameters) {
         return updateAsync(resourceGroupName, accountName, pipelineJobName, parameters).block();
     }
 
@@ -1093,12 +897,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineJobInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobUpdate parameters,
-        Context context) {
+    public Response<PipelineJobInner> updateWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters, context).block();
     }
 
@@ -1114,19 +914,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1141,18 +937,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineJobName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineJobName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1169,19 +955,15 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1196,16 +978,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineJobName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineJobName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1220,14 +994,12 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String accountName, String pipelineJobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            cancelWithResponseAsync(resourceGroupName, accountName, pipelineJobName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String accountName,
+        String pipelineJobName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = cancelWithResponseAsync(resourceGroupName, accountName, pipelineJobName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1243,14 +1015,13 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            cancelWithResponseAsync(resourceGroupName, accountName, pipelineJobName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = cancelWithResponseAsync(resourceGroupName, accountName, pipelineJobName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1265,8 +1036,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String accountName, String pipelineJobName) {
+    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String accountName,
+        String pipelineJobName) {
         return beginCancelAsync(resourceGroupName, accountName, pipelineJobName).getSyncPoller();
     }
 
@@ -1283,8 +1054,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String accountName,
+        String pipelineJobName, Context context) {
         return beginCancelAsync(resourceGroupName, accountName, pipelineJobName, context).getSyncPoller();
     }
 
@@ -1301,8 +1072,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String accountName, String pipelineJobName) {
-        return beginCancelAsync(resourceGroupName, accountName, pipelineJobName)
-            .last()
+        return beginCancelAsync(resourceGroupName, accountName, pipelineJobName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1319,10 +1089,9 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context) {
-        return beginCancelAsync(resourceGroupName, accountName, pipelineJobName, context)
-            .last()
+    private Mono<Void> cancelAsync(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context) {
+        return beginCancelAsync(resourceGroupName, accountName, pipelineJobName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1373,23 +1142,13 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PipelineJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PipelineJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1410,23 +1169,13 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

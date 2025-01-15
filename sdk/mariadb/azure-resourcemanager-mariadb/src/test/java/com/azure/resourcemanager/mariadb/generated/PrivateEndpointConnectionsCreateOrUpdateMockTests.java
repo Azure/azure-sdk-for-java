@@ -6,75 +6,43 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mariadb.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.mariadb.models.PrivateLinkServiceConnectionStateProperty;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vcpwpgclrc\"},\"privateLinkServiceConnectionState\":{\"status\":\"tso\",\"description\":\"frkenxpmyyefrp\",\"actionsRequired\":\"dnqqskawaoqvmmb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qlkzme\",\"name\":\"nitgvkxlz\",\"type\":\"qdrfegcealzxwhc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"rnysux\"},\"privateLinkServiceConnectionState\":{\"status\":\"rafwgckhocxvdf\",\"description\":\"fwafqrouda\",\"actionsRequired\":\"avehhrvkbunzo\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cdyuibhmfdnbzyd\",\"name\":\"f\",\"type\":\"fcjnaeoisrvhmgor\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("gpmuneqsxvmhfbuz")
+            .withExistingServer("kuqgsjjxundxgket", "zhhzjhfjmhvvmu")
+            .withPrivateEndpoint(new PrivateEndpointProperty().withId("sasbhu"))
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionStateProperty().withStatus("pohyuemslynsqyr")
+                    .withDescription("foobrlttyms"))
+            .create();
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("y")
-                .withExistingServer("auy", "vluwmncsttij")
-                .withPrivateEndpoint(new PrivateEndpointProperty().withId("ekrsgs"))
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty()
-                        .withStatus("dhuzqgnjdgk")
-                        .withDescription("nscliqhzvhxnk"))
-                .create();
-
-        Assertions.assertEquals("rnysux", response.privateEndpoint().id());
-        Assertions.assertEquals("rafwgckhocxvdf", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fwafqrouda", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("vcpwpgclrc", response.privateEndpoint().id());
+        Assertions.assertEquals("tso", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("frkenxpmyyefrp", response.privateLinkServiceConnectionState().description());
     }
 }

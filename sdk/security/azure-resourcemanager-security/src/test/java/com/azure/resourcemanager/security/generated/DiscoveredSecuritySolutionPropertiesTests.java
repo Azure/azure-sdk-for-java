@@ -12,27 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscoveredSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscoveredSecuritySolutionProperties model = BinaryData
-            .fromString(
-                "{\"securityFamily\":\"SaasWaf\",\"offer\":\"gmmuteyxey\",\"publisher\":\"uqi\",\"sku\":\"ijiitns\"}")
+        DiscoveredSecuritySolutionProperties model = BinaryData.fromString(
+            "{\"securityFamily\":\"SaasWaf\",\"offer\":\"gicccnxqhuex\",\"publisher\":\"ktt\",\"sku\":\"stvlzywemhzrnc\"}")
             .toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("gmmuteyxey", model.offer());
-        Assertions.assertEquals("uqi", model.publisher());
-        Assertions.assertEquals("ijiitns", model.sku());
+        Assertions.assertEquals("gicccnxqhuex", model.offer());
+        Assertions.assertEquals("ktt", model.publisher());
+        Assertions.assertEquals("stvlzywemhzrnc", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredSecuritySolutionProperties model
             = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
-                .withOffer("gmmuteyxey")
-                .withPublisher("uqi")
-                .withSku("ijiitns");
+                .withOffer("gicccnxqhuex")
+                .withPublisher("ktt")
+                .withSku("stvlzywemhzrnc");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("gmmuteyxey", model.offer());
-        Assertions.assertEquals("uqi", model.publisher());
-        Assertions.assertEquals("ijiitns", model.sku());
+        Assertions.assertEquals("gicccnxqhuex", model.offer());
+        Assertions.assertEquals("ktt", model.publisher());
+        Assertions.assertEquals("stvlzywemhzrnc", model.sku());
     }
 }

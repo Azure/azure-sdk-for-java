@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Route model = BinaryData.fromString("{\"path\":\"iykzkdncjdx\",\"port\":1933240221}").toObject(Route.class);
-        Assertions.assertEquals("iykzkdncjdx", model.path());
-        Assertions.assertEquals(1933240221, model.port());
+        Route model = BinaryData.fromString("{\"path\":\"eranokqgukkjqnv\",\"port\":2004582271}").toObject(Route.class);
+        Assertions.assertEquals("eranokqgukkjqnv", model.path());
+        Assertions.assertEquals(2004582271, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Route model = new Route().withPath("iykzkdncjdx").withPort(1933240221);
+        Route model = new Route().withPath("eranokqgukkjqnv").withPort(2004582271);
         model = BinaryData.fromObject(model).toObject(Route.class);
-        Assertions.assertEquals("iykzkdncjdx", model.path());
-        Assertions.assertEquals(1933240221, model.port());
+        Assertions.assertEquals("eranokqgukkjqnv", model.path());
+        Assertions.assertEquals(2004582271, model.port());
     }
 }

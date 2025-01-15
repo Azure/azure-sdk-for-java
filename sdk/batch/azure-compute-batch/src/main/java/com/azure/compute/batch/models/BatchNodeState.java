@@ -131,4 +131,16 @@ public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
      */
     @Generated
     public static final BatchNodeState UPGRADING_OS = fromString("upgradingos");
+
+    /**
+     * The Compute Node is deallocated.
+     */
+    @Generated
+    public static final BatchNodeState DEALLOCATED = fromString("deallocated");
+
+    /**
+     * The Compute Node is deallocating.
+     */
+    @Generated
+    public static final BatchNodeState DEALLOCATING = fromString("deallocating");
 }

@@ -36,9 +36,8 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
         }
 
         // Setup the service client
-        SecretClientBuilder builder = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new DefaultAzureCredentialBuilder().build());
+        SecretClientBuilder builder
+            = new SecretClientBuilder().vaultUrl(vaultUrl).credential(new DefaultAzureCredentialBuilder().build());
 
         configureClientBuilder(builder);
 
@@ -46,17 +45,15 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
         secretAsyncClient = builder.buildAsyncClient();
     }
 
-    protected Mono<Void> deleteAndPurgeSecretsAsync(String ... names) {
-        return Flux
-            .fromArray(names)
+    protected Mono<Void> deleteAndPurgeSecretsAsync(String... names) {
+        return Flux.fromArray(names)
             .flatMap(name -> secretAsyncClient.beginDeleteSecret(name).last())
             .map(asyncPollResponse -> asyncPollResponse.getValue())
             .flatMap(deletedSecret -> {
                 String recoveryId = deletedSecret.getRecoveryId();
                 if (recoveryId != null && !recoveryId.isEmpty()) {
                     return secretAsyncClient.purgeDeletedSecret(deletedSecret.getName());
-                }
-                else {
+                } else {
                     return Mono.empty();
                 }
             })

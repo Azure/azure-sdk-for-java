@@ -24,13 +24,9 @@ public class PurviewScanningClientTestBase extends TestProxyTestBase {
     PurviewScanningClientBuilder builderSetUp() {
         PurviewScanningClientBuilder builder = new PurviewScanningClientBuilder();
         if (interceptorManager.isPlaybackMode()) {
-            builder
-                .httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            builder.httpClient(interceptorManager.getPlaybackClient()).credential(new MockTokenCredential());
         } else {
-            builder
-                .httpClient(HttpClient.createDefault())
-                .credential(new DefaultAzureCredentialBuilder().build());
+            builder.httpClient(HttpClient.createDefault()).credential(new DefaultAzureCredentialBuilder().build());
         }
 
         if (interceptorManager.isRecordMode()) {

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.hybridkubernetes.models;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResultsInner;
 import java.util.List;
 
-/** An immutable client-side representation of CredentialResults. */
+/**
+ * An immutable client-side representation of CredentialResults.
+ */
 public interface CredentialResults {
     /**
      * Gets the hybridConnectionConfig property: Contains the REP (rendezvous endpoint) and “Sender” access token.
-     *
+     * 
      * @return the hybridConnectionConfig value.
      */
     HybridConnectionConfig hybridConnectionConfig();
 
     /**
      * Gets the kubeconfigs property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     List<CredentialResult> kubeconfigs();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     CredentialResultsInner innerModel();

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-/** Samples for ScalingPlanPooledSchedules List. */
+/**
+ * Samples for ScalingPlanPooledSchedules List.
+ */
 public final class ScalingPlanPooledSchedulesListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_List.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ScalingPlanPooledSchedule_List.json
      */
     /**
      * Sample code: ScalingPlanPooledSchedules_List.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void scalingPlanPooledSchedulesList(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .scalingPlanPooledSchedules()
+        manager.scalingPlanPooledSchedules()
             .list("resourceGroup1", "scalingPlan1", 10, true, 0, com.azure.core.util.Context.NONE);
     }
 }

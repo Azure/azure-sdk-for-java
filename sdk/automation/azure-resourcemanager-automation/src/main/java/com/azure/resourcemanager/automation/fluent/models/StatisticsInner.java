@@ -5,45 +5,53 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the statistic. */
+/**
+ * Definition of the statistic.
+ */
 @Immutable
-public final class StatisticsInner {
+public final class StatisticsInner implements JsonSerializable<StatisticsInner> {
     /*
      * Gets the property value of the statistic.
      */
-    @JsonProperty(value = "counterProperty", access = JsonProperty.Access.WRITE_ONLY)
     private String counterProperty;
 
     /*
      * Gets the value of the statistic.
      */
-    @JsonProperty(value = "counterValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long counterValue;
 
     /*
      * Gets the startTime of the statistic.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the endTime of the statistic.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets the id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
+     * Creates an instance of StatisticsInner class.
+     */
+    public StatisticsInner() {
+    }
+
+    /**
      * Get the counterProperty property: Gets the property value of the statistic.
-     *
+     * 
      * @return the counterProperty value.
      */
     public String counterProperty() {
@@ -52,7 +60,7 @@ public final class StatisticsInner {
 
     /**
      * Get the counterValue property: Gets the value of the statistic.
-     *
+     * 
      * @return the counterValue value.
      */
     public Long counterValue() {
@@ -61,7 +69,7 @@ public final class StatisticsInner {
 
     /**
      * Get the startTime property: Gets the startTime of the statistic.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -70,7 +78,7 @@ public final class StatisticsInner {
 
     /**
      * Get the endTime property: Gets the endTime of the statistic.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -79,7 +87,7 @@ public final class StatisticsInner {
 
     /**
      * Get the id property: Gets the id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -88,9 +96,54 @@ public final class StatisticsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatisticsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatisticsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatisticsInner.
+     */
+    public static StatisticsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatisticsInner deserializedStatisticsInner = new StatisticsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("counterProperty".equals(fieldName)) {
+                    deserializedStatisticsInner.counterProperty = reader.getString();
+                } else if ("counterValue".equals(fieldName)) {
+                    deserializedStatisticsInner.counterValue = reader.getNullable(JsonReader::getLong);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedStatisticsInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedStatisticsInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("id".equals(fieldName)) {
+                    deserializedStatisticsInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatisticsInner;
+        });
     }
 }

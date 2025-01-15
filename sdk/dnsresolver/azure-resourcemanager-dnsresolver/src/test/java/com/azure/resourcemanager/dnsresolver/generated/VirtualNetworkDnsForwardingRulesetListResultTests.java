@@ -4,29 +4,37 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkDnsForwardingRulesetInner;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkDnsForwardingRulesetListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkDnsForwardingRulesetListResultTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkDnsForwardingRulesetListResult model =
-            BinaryData
-                .fromString("{\"value\":[{\"id\":\"frzpwvlqdqgb\",\"properties\":{}}],\"nextLink\":\"ihkaetcktvfc\"}")
-                .toObject(VirtualNetworkDnsForwardingRulesetListResult.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.value().get(0).id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkDnsForwardingRulesetListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"xnkjzkdesl\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"pwiyig\"}}},{\"id\":\"pkdwzbai\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"a\"}}},{\"id\":\"nyqupedeojnabck\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"xpsiebtfhvpes\"}}},{\"id\":\"skrdqmhjj\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"dwkyzxuu\"}}}],\"nextLink\":\"ncwscwsvlxoto\"}")
+            .toObject(VirtualNetworkDnsForwardingRulesetListResult.class);
+        Assertions.assertEquals("xnkjzkdesl", model.value().get(0).id());
+        Assertions.assertEquals("pwiyig", model.value().get(0).virtualNetworkLink().id());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkDnsForwardingRulesetListResult model =
-            new VirtualNetworkDnsForwardingRulesetListResult()
-                .withValue(Arrays.asList(new VirtualNetworkDnsForwardingRulesetInner().withId("frzpwvlqdqgb")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkDnsForwardingRulesetListResult model
+            = new VirtualNetworkDnsForwardingRulesetListResult().withValue(Arrays.asList(
+                new VirtualNetworkDnsForwardingRulesetInner().withId("xnkjzkdesl")
+                    .withVirtualNetworkLink(new SubResource().withId("pwiyig")),
+                new VirtualNetworkDnsForwardingRulesetInner().withId("pkdwzbai")
+                    .withVirtualNetworkLink(new SubResource().withId("a")),
+                new VirtualNetworkDnsForwardingRulesetInner().withId("nyqupedeojnabck")
+                    .withVirtualNetworkLink(new SubResource().withId("xpsiebtfhvpes")),
+                new VirtualNetworkDnsForwardingRulesetInner().withId("skrdqmhjj")
+                    .withVirtualNetworkLink(new SubResource().withId("dwkyzxuu"))));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkDnsForwardingRulesetListResult.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.value().get(0).id());
+        Assertions.assertEquals("xnkjzkdesl", model.value().get(0).id());
+        Assertions.assertEquals("pwiyig", model.value().get(0).virtualNetworkLink().id());
     }
 }

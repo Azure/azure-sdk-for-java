@@ -17,9 +17,8 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
-public final class PolicyDefinitionsImpl
-        extends ReadableWrappersImpl<PolicyDefinition, PolicyDefinitionImpl, PolicyDefinitionInner>
-        implements PolicyDefinitions {
+public final class PolicyDefinitionsImpl extends
+    ReadableWrappersImpl<PolicyDefinition, PolicyDefinitionImpl, PolicyDefinitionInner> implements PolicyDefinitions {
     private final PolicyDefinitionsClient client;
 
     /**
@@ -43,8 +42,7 @@ public final class PolicyDefinitionsImpl
 
     @Override
     public Mono<PolicyDefinition> getByNameAsync(String name) {
-        return client.getAsync(name)
-                .map(this::wrapModel);
+        return client.getAsync(name).map(this::wrapModel);
     }
 
     @Override
@@ -63,10 +61,8 @@ public final class PolicyDefinitionsImpl
     }
 
     protected PolicyDefinitionImpl wrapModel(String name) {
-        return new PolicyDefinitionImpl(
-                name,
-                new PolicyDefinitionInner().withPolicyType(PolicyType.NOT_SPECIFIED).withDisplayName(name),
-                client);
+        return new PolicyDefinitionImpl(name,
+            new PolicyDefinitionInner().withPolicyType(PolicyType.NOT_SPECIFIED).withDisplayName(name), client);
     }
 
     @Override

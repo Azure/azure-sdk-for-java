@@ -5,40 +5,50 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recurrence object. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "recurrenceType",
-    defaultImpl = Recurrence.class)
-@JsonTypeName("Recurrence")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Daily", value = DailyRecurrence.class),
-    @JsonSubTypes.Type(name = "Weekly", value = WeeklyRecurrence.class),
-    @JsonSubTypes.Type(name = "Monthly", value = MonthlyRecurrence.class)
-})
+/**
+ * Recurrence object.
+ */
 @Fluent
-public class Recurrence {
+public class Recurrence implements JsonSerializable<Recurrence> {
+    /*
+     * Specifies when the recurrence should be applied.
+     */
+    private RecurrenceType recurrenceType = RecurrenceType.fromString("Recurrence");
+
     /*
      * Start time for recurrence.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * End time for recurrence.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /**
+     * Creates an instance of Recurrence class.
+     */
+    public Recurrence() {
+    }
+
+    /**
+     * Get the recurrenceType property: Specifies when the recurrence should be applied.
+     * 
+     * @return the recurrenceType value.
+     */
+    public RecurrenceType recurrenceType() {
+        return this.recurrenceType;
+    }
+
+    /**
      * Get the startTime property: Start time for recurrence.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -47,7 +57,7 @@ public class Recurrence {
 
     /**
      * Set the startTime property: Start time for recurrence.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Recurrence object itself.
      */
@@ -58,7 +68,7 @@ public class Recurrence {
 
     /**
      * Get the endTime property: End time for recurrence.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -67,7 +77,7 @@ public class Recurrence {
 
     /**
      * Set the endTime property: End time for recurrence.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the Recurrence object itself.
      */
@@ -78,9 +88,81 @@ public class Recurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recurrenceType",
+            this.recurrenceType == null ? null : this.recurrenceType.toString());
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Recurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Recurrence if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Recurrence.
+     */
+    public static Recurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("recurrenceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Daily".equals(discriminatorValue)) {
+                    return DailyRecurrence.fromJson(readerToUse.reset());
+                } else if ("Weekly".equals(discriminatorValue)) {
+                    return WeeklyRecurrence.fromJson(readerToUse.reset());
+                } else if ("Monthly".equals(discriminatorValue)) {
+                    return MonthlyRecurrence.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Recurrence fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Recurrence deserializedRecurrence = new Recurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recurrenceType".equals(fieldName)) {
+                    deserializedRecurrence.recurrenceType = RecurrenceType.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRecurrence.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRecurrence.endTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrence;
+        });
     }
 }

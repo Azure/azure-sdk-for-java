@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorePointProperties;
 public final class RestorePointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorePointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-02-06T06:59:31Z\",\"restorePointCreationDate\":\"2021-09-18T13:17Z\",\"restorePointLabel\":\"qp\"}")
-                .toObject(RestorePointProperties.class);
+        RestorePointProperties model = BinaryData.fromString(
+            "{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-05-29T05:18:31Z\",\"restorePointCreationDate\":\"2021-10-06T22:19:27Z\",\"restorePointLabel\":\"isavok\"}")
+            .toObject(RestorePointProperties.class);
     }
 
     @org.junit.jupiter.api.Test

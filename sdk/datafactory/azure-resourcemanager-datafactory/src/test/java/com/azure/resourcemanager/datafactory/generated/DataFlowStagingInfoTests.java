@@ -15,19 +15,22 @@ public final class DataFlowStagingInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowStagingInfo model = BinaryData.fromString(
-            "{\"linkedService\":{\"referenceName\":\"cpzgpxtiv\",\"parameters\":{\"n\":\"datanidibgqjxg\",\"kqmhhaowjr\":\"datahgovfgp\"}},\"folderPath\":\"datavuporqzdfuydzv\"}")
+            "{\"linkedService\":{\"referenceName\":\"ovmribiattg\",\"parameters\":{\"swvxwlmzqwmv\":\"datacfotangcfhnykzcu\",\"uqudtcvclxyn\":\"dataxnjmxm\",\"dugneiknp\":\"datadkvgfabuiyjibuzp\"}},\"folderPath\":\"dataxgjiuqh\"}")
             .toObject(DataFlowStagingInfo.class);
-        Assertions.assertEquals("cpzgpxtiv", model.linkedService().referenceName());
+        Assertions.assertEquals("ovmribiattg", model.linkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowStagingInfo model = new DataFlowStagingInfo()
-            .withLinkedService(new LinkedServiceReference().withReferenceName("cpzgpxtiv")
-                .withParameters(mapOf("n", "datanidibgqjxg", "kqmhhaowjr", "datahgovfgp")))
-            .withFolderPath("datavuporqzdfuydzv");
+        DataFlowStagingInfo model
+            = new DataFlowStagingInfo()
+                .withLinkedService(
+                    new LinkedServiceReference().withReferenceName("ovmribiattg")
+                        .withParameters(mapOf("swvxwlmzqwmv", "datacfotangcfhnykzcu", "uqudtcvclxyn", "dataxnjmxm",
+                            "dugneiknp", "datadkvgfabuiyjibuzp")))
+                .withFolderPath("dataxgjiuqh");
         model = BinaryData.fromObject(model).toObject(DataFlowStagingInfo.class);
-        Assertions.assertEquals("cpzgpxtiv", model.linkedService().referenceName());
+        Assertions.assertEquals("ovmribiattg", model.linkedService().referenceName());
     }
 
     // Use "Map.of" if available

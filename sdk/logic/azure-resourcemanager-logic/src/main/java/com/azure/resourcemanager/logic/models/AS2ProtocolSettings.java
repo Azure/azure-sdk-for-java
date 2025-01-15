@@ -6,60 +6,61 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement protocol settings. */
+/**
+ * The AS2 agreement protocol settings.
+ */
 @Fluent
-public final class AS2ProtocolSettings {
+public final class AS2ProtocolSettings implements JsonSerializable<AS2ProtocolSettings> {
     /*
      * The message connection settings.
      */
-    @JsonProperty(value = "messageConnectionSettings", required = true)
     private AS2MessageConnectionSettings messageConnectionSettings;
 
     /*
      * The acknowledgement connection settings.
      */
-    @JsonProperty(value = "acknowledgementConnectionSettings", required = true)
     private AS2AcknowledgementConnectionSettings acknowledgementConnectionSettings;
 
     /*
      * The MDN settings.
      */
-    @JsonProperty(value = "mdnSettings", required = true)
     private AS2MdnSettings mdnSettings;
 
     /*
      * The security settings.
      */
-    @JsonProperty(value = "securitySettings", required = true)
     private AS2SecuritySettings securitySettings;
 
     /*
      * The validation settings.
      */
-    @JsonProperty(value = "validationSettings", required = true)
     private AS2ValidationSettings validationSettings;
 
     /*
      * The envelope settings.
      */
-    @JsonProperty(value = "envelopeSettings", required = true)
     private AS2EnvelopeSettings envelopeSettings;
 
     /*
      * The error settings.
      */
-    @JsonProperty(value = "errorSettings", required = true)
     private AS2ErrorSettings errorSettings;
 
-    /** Creates an instance of AS2ProtocolSettings class. */
+    /**
+     * Creates an instance of AS2ProtocolSettings class.
+     */
     public AS2ProtocolSettings() {
     }
 
     /**
      * Get the messageConnectionSettings property: The message connection settings.
-     *
+     * 
      * @return the messageConnectionSettings value.
      */
     public AS2MessageConnectionSettings messageConnectionSettings() {
@@ -68,7 +69,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the messageConnectionSettings property: The message connection settings.
-     *
+     * 
      * @param messageConnectionSettings the messageConnectionSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -79,7 +80,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Get the acknowledgementConnectionSettings property: The acknowledgement connection settings.
-     *
+     * 
      * @return the acknowledgementConnectionSettings value.
      */
     public AS2AcknowledgementConnectionSettings acknowledgementConnectionSettings() {
@@ -88,19 +89,19 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the acknowledgementConnectionSettings property: The acknowledgement connection settings.
-     *
+     * 
      * @param acknowledgementConnectionSettings the acknowledgementConnectionSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
-    public AS2ProtocolSettings withAcknowledgementConnectionSettings(
-        AS2AcknowledgementConnectionSettings acknowledgementConnectionSettings) {
+    public AS2ProtocolSettings
+        withAcknowledgementConnectionSettings(AS2AcknowledgementConnectionSettings acknowledgementConnectionSettings) {
         this.acknowledgementConnectionSettings = acknowledgementConnectionSettings;
         return this;
     }
 
     /**
      * Get the mdnSettings property: The MDN settings.
-     *
+     * 
      * @return the mdnSettings value.
      */
     public AS2MdnSettings mdnSettings() {
@@ -109,7 +110,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the mdnSettings property: The MDN settings.
-     *
+     * 
      * @param mdnSettings the mdnSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -120,7 +121,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Get the securitySettings property: The security settings.
-     *
+     * 
      * @return the securitySettings value.
      */
     public AS2SecuritySettings securitySettings() {
@@ -129,7 +130,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the securitySettings property: The security settings.
-     *
+     * 
      * @param securitySettings the securitySettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -140,7 +141,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Get the validationSettings property: The validation settings.
-     *
+     * 
      * @return the validationSettings value.
      */
     public AS2ValidationSettings validationSettings() {
@@ -149,7 +150,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the validationSettings property: The validation settings.
-     *
+     * 
      * @param validationSettings the validationSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -160,7 +161,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Get the envelopeSettings property: The envelope settings.
-     *
+     * 
      * @return the envelopeSettings value.
      */
     public AS2EnvelopeSettings envelopeSettings() {
@@ -169,7 +170,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the envelopeSettings property: The envelope settings.
-     *
+     * 
      * @param envelopeSettings the envelopeSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -180,7 +181,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Get the errorSettings property: The error settings.
-     *
+     * 
      * @return the errorSettings value.
      */
     public AS2ErrorSettings errorSettings() {
@@ -189,7 +190,7 @@ public final class AS2ProtocolSettings {
 
     /**
      * Set the errorSettings property: The error settings.
-     *
+     * 
      * @param errorSettings the errorSettings value to set.
      * @return the AS2ProtocolSettings object itself.
      */
@@ -200,66 +201,117 @@ public final class AS2ProtocolSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageConnectionSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageConnectionSettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageConnectionSettings in model AS2ProtocolSettings"));
         } else {
             messageConnectionSettings().validate();
         }
         if (acknowledgementConnectionSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property acknowledgementConnectionSettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property acknowledgementConnectionSettings in model AS2ProtocolSettings"));
         } else {
             acknowledgementConnectionSettings().validate();
         }
         if (mdnSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property mdnSettings in model AS2ProtocolSettings"));
         } else {
             mdnSettings().validate();
         }
         if (securitySettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securitySettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securitySettings in model AS2ProtocolSettings"));
         } else {
             securitySettings().validate();
         }
         if (validationSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property validationSettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property validationSettings in model AS2ProtocolSettings"));
         } else {
             validationSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property envelopeSettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property envelopeSettings in model AS2ProtocolSettings"));
         } else {
             envelopeSettings().validate();
         }
         if (errorSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property errorSettings in model AS2ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorSettings in model AS2ProtocolSettings"));
         } else {
             errorSettings().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AS2ProtocolSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("messageConnectionSettings", this.messageConnectionSettings);
+        jsonWriter.writeJsonField("acknowledgementConnectionSettings", this.acknowledgementConnectionSettings);
+        jsonWriter.writeJsonField("mdnSettings", this.mdnSettings);
+        jsonWriter.writeJsonField("securitySettings", this.securitySettings);
+        jsonWriter.writeJsonField("validationSettings", this.validationSettings);
+        jsonWriter.writeJsonField("envelopeSettings", this.envelopeSettings);
+        jsonWriter.writeJsonField("errorSettings", this.errorSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2ProtocolSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2ProtocolSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2ProtocolSettings.
+     */
+    public static AS2ProtocolSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2ProtocolSettings deserializedAS2ProtocolSettings = new AS2ProtocolSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageConnectionSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.messageConnectionSettings
+                        = AS2MessageConnectionSettings.fromJson(reader);
+                } else if ("acknowledgementConnectionSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.acknowledgementConnectionSettings
+                        = AS2AcknowledgementConnectionSettings.fromJson(reader);
+                } else if ("mdnSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.mdnSettings = AS2MdnSettings.fromJson(reader);
+                } else if ("securitySettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.securitySettings = AS2SecuritySettings.fromJson(reader);
+                } else if ("validationSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.validationSettings = AS2ValidationSettings.fromJson(reader);
+                } else if ("envelopeSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.envelopeSettings = AS2EnvelopeSettings.fromJson(reader);
+                } else if ("errorSettings".equals(fieldName)) {
+                    deserializedAS2ProtocolSettings.errorSettings = AS2ErrorSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2ProtocolSettings;
+        });
+    }
 }

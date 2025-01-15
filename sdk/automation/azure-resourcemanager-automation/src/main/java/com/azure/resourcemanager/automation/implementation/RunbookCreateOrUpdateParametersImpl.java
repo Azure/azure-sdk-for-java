@@ -18,8 +18,7 @@ public final class RunbookCreateOrUpdateParametersImpl implements RunbookCreateO
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    RunbookCreateOrUpdateParametersImpl(
-        RunbookCreateOrUpdateParametersInner innerObject,
+    RunbookCreateOrUpdateParametersImpl(RunbookCreateOrUpdateParametersInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

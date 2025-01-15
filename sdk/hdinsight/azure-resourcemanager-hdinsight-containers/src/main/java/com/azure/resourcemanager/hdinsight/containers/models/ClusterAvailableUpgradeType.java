@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -23,6 +22,11 @@ public final class ClusterAvailableUpgradeType extends ExpandableStringEnum<Clus
     public static final ClusterAvailableUpgradeType HOTFIX_UPGRADE = fromString("HotfixUpgrade");
 
     /**
+     * Static value PatchVersionUpgrade for ClusterAvailableUpgradeType.
+     */
+    public static final ClusterAvailableUpgradeType PATCH_VERSION_UPGRADE = fromString("PatchVersionUpgrade");
+
+    /**
      * Creates a new instance of ClusterAvailableUpgradeType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -37,7 +41,6 @@ public final class ClusterAvailableUpgradeType extends ExpandableStringEnum<Clus
      * @param name a name to look for.
      * @return the corresponding ClusterAvailableUpgradeType.
      */
-    @JsonCreator
     public static ClusterAvailableUpgradeType fromString(String name) {
         return fromString(name, ClusterAvailableUpgradeType.class);
     }

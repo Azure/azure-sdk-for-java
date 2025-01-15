@@ -49,11 +49,6 @@ public interface UsageAggregatesClient {
      * @return the Get UsageAggregates operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageAggregationInner> list(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context);
+    PagedIterable<UsageAggregationInner> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context);
 }

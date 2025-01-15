@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = DevicesClientBuilder.class, isAsync = true)
 public final class DevicesAsyncClient {
-    @Generated private final DevicesImpl serviceClient;
+    @Generated
+    private final DevicesImpl serviceClient;
 
     /**
      * Initializes an instance of DevicesAsyncClient class.
@@ -180,10 +181,10 @@ public final class DevicesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String sensorPartnerId, String deviceId, BinaryData deviceDetails, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                sensorPartnerId, deviceId, deviceDetails, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String sensorPartnerId, String deviceId,
+        BinaryData deviceDetails, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(sensorPartnerId, deviceId, deviceDetails,
+            requestOptions);
     }
 
     /**
@@ -230,8 +231,8 @@ public final class DevicesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String sensorPartnerId, String deviceId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String sensorPartnerId, String deviceId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(sensorPartnerId, deviceId, requestOptions);
     }
 
@@ -249,8 +250,8 @@ public final class DevicesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String sensorPartnerId, String deviceId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String sensorPartnerId, String deviceId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(sensorPartnerId, deviceId, requestOptions);
     }
 }

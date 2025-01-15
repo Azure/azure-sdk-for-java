@@ -12,9 +12,8 @@ import com.azure.resourcemanager.containerservice.models.NetworkPluginMode;
 import com.azure.resourcemanager.containerservice.models.NetworkPolicy;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
-public class KubernetesClusterNetworkProfileImpl
-    implements KubernetesCluster.DefinitionStages.NetworkProfileDefinition<
-        KubernetesCluster.DefinitionStages.WithCreate> {
+public class KubernetesClusterNetworkProfileImpl implements
+    KubernetesCluster.DefinitionStages.NetworkProfileDefinition<KubernetesCluster.DefinitionStages.WithCreate> {
 
     KubernetesClusterImpl parentKubernetesCluster;
 

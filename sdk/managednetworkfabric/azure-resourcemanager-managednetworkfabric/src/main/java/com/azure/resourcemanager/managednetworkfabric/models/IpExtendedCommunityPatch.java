@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCommunityPatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The IP Extended Communities patch resource definition. */
+/**
+ * The IP Extended Communities patch resource definition.
+ */
 @Fluent
 public final class IpExtendedCommunityPatch extends TagsUpdate {
     /*
      * IP Extended Community patchable properties.
      */
-    @JsonProperty(value = "properties")
     private IpExtendedCommunityPatchProperties innerProperties;
 
-    /** Creates an instance of IpExtendedCommunityPatch class. */
+    /**
+     * Creates an instance of IpExtendedCommunityPatch class.
+     */
     public IpExtendedCommunityPatch() {
     }
 
     /**
      * Get the innerProperties property: IP Extended Community patchable properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpExtendedCommunityPatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpExtendedCommunityPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -50,7 +58,7 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the IpExtendedCommunityPatch object itself.
      */
@@ -64,7 +72,7 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
 
     /**
      * Get the ipExtendedCommunityRules property: List of IP Extended Community Rules.
-     *
+     * 
      * @return the ipExtendedCommunityRules value.
      */
     public List<IpExtendedCommunityRule> ipExtendedCommunityRules() {
@@ -73,12 +81,12 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
 
     /**
      * Set the ipExtendedCommunityRules property: List of IP Extended Community Rules.
-     *
+     * 
      * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
      * @return the IpExtendedCommunityPatch object itself.
      */
-    public IpExtendedCommunityPatch withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityPatch
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IpExtendedCommunityPatchProperties();
         }
@@ -88,14 +96,54 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpExtendedCommunityPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpExtendedCommunityPatch if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpExtendedCommunityPatch.
+     */
+    public static IpExtendedCommunityPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpExtendedCommunityPatch deserializedIpExtendedCommunityPatch = new IpExtendedCommunityPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIpExtendedCommunityPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIpExtendedCommunityPatch.innerProperties
+                        = IpExtendedCommunityPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpExtendedCommunityPatch;
+        });
     }
 }

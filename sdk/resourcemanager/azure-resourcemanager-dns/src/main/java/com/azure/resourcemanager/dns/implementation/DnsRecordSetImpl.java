@@ -27,10 +27,8 @@ import java.util.Map;
 
 /** Implementation of DnsRecordSet. */
 class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone>
-    implements DnsRecordSet,
-        DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
-        DnsRecordSet.UpdateDefinition<DnsZone.Update>,
-        DnsRecordSet.UpdateCombined {
+    implements DnsRecordSet, DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
+    DnsRecordSet.UpdateDefinition<DnsZone.Update>, DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
     protected final String type;
     private final ETagState etagState = new ETagState();
@@ -38,18 +36,16 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
     protected DnsRecordSetImpl(String name, String type, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, parent, innerModel);
         this.type = type;
-        this.recordSetRemoveInfo =
-            new RecordSetInner()
-                .withARecords(new ArrayList<>())
-                .withAaaaRecords(new ArrayList<>())
-                .withCaaRecords(new ArrayList<>())
-                .withCnameRecord(new CnameRecord())
-                .withMxRecords(new ArrayList<>())
-                .withNsRecords(new ArrayList<>())
-                .withPtrRecords(new ArrayList<>())
-                .withSrvRecords(new ArrayList<>())
-                .withTxtRecords(new ArrayList<>())
-                .withMetadata(new LinkedHashMap<>());
+        this.recordSetRemoveInfo = new RecordSetInner().withARecords(new ArrayList<>())
+            .withAaaaRecords(new ArrayList<>())
+            .withCaaRecords(new ArrayList<>())
+            .withCnameRecord(new CnameRecord())
+            .withMxRecords(new ArrayList<>())
+            .withNsRecords(new ArrayList<>())
+            .withPtrRecords(new ArrayList<>())
+            .withSrvRecords(new ArrayList<>())
+            .withTxtRecords(new ArrayList<>())
+            .withMetadata(new LinkedHashMap<>());
     }
 
     @Override
@@ -127,9 +123,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withoutMailExchange(String mailExchangeHostName, int priority) {
-        this
-            .recordSetRemoveInfo
-            .mxRecords()
+        this.recordSetRemoveInfo.mxRecords()
             .add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
@@ -172,8 +166,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        this
-            .innerModel()
+        this.innerModel()
             .srvRecords()
             .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
@@ -181,9 +174,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withoutRecord(String target, int port, int priority, int weight) {
-        this
-            .recordSetRemoveInfo
-            .srvRecords()
+        this.recordSetRemoveInfo.srvRecords()
             .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
@@ -295,8 +286,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public Mono<DnsRecordSet> updateResourceAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -307,17 +297,13 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponseAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.recordType(),
-                this.etagState.ifMatchValueOnDelete()).then();
+            .deleteWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                this.recordType(), this.etagState.ifMatchValueOnDelete())
+            .then();
     }
 
     @Override
@@ -332,8 +318,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     protected Mono<RecordSetInner> getInnerAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -342,25 +327,18 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     private Mono<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final DnsRecordSetImpl self = this;
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponseAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.recordType(),
-                resource,
-                etagState.ifMatchValueOnUpdate(resource.etag()),
+            .createOrUpdateWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                this.recordType(), resource, etagState.ifMatchValueOnUpdate(resource.etag()),
                 etagState.ifNonMatchValueOnCreate())
-            .map(
-                recordSetInner -> {
-                    setInner(recordSetInner.getValue());
-                    self.etagState.clear();
-                    return self;
-                });
+            .map(recordSetInner -> {
+                setInner(recordSetInner.getValue());
+                self.etagState.clear();
+                return self;
+            });
     }
 
     private RecordSetInner prepare(RecordSetInner resource) {

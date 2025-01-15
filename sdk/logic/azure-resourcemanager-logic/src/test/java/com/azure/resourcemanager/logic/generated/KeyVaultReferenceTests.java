@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class KeyVaultReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KeyVaultReference model =
-            BinaryData
-                .fromString("{\"id\":\"dxrbuukzcle\",\"name\":\"hmlwpaztzpo\",\"type\":\"cckwyfzqwhxxbu\"}")
+        KeyVaultReference model
+            = BinaryData.fromString("{\"id\":\"id\",\"name\":\"qfkuvscxkdmli\",\"type\":\"vibrxkpmloazuruo\"}")
                 .toObject(KeyVaultReference.class);
-        Assertions.assertEquals("dxrbuukzcle", model.id());
+        Assertions.assertEquals("id", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyVaultReference model = new KeyVaultReference().withId("dxrbuukzcle");
+        KeyVaultReference model = new KeyVaultReference().withId("id");
         model = BinaryData.fromObject(model).toObject(KeyVaultReference.class);
-        Assertions.assertEquals("dxrbuukzcle", model.id());
+        Assertions.assertEquals("id", model.id());
     }
 }

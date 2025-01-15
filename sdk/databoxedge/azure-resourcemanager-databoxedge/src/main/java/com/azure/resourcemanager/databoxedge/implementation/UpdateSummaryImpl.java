@@ -17,8 +17,8 @@ public final class UpdateSummaryImpl implements UpdateSummary {
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    UpdateSummaryImpl(
-        UpdateSummaryInner innerObject, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    UpdateSummaryImpl(UpdateSummaryInner innerObject,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

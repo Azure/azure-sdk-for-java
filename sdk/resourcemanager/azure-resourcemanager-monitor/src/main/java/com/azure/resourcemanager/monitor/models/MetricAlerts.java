@@ -17,14 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Metric Alert management API. */
 @Fluent
-public interface MetricAlerts
-    extends SupportsCreating<MetricAlert.DefinitionStages.Blank>,
-        SupportsListing<MetricAlert>,
-        SupportsListingByResourceGroup<MetricAlert>,
-        SupportsGettingById<MetricAlert>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<MetricAlert>,
-        SupportsBatchDeletion,
-        HasManager<MonitorManager> {
+public interface MetricAlerts extends SupportsCreating<MetricAlert.DefinitionStages.Blank>,
+    SupportsListing<MetricAlert>, SupportsListingByResourceGroup<MetricAlert>, SupportsGettingById<MetricAlert>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<MetricAlert>, SupportsBatchDeletion,
+    HasManager<MonitorManager> {
 }
