@@ -98,6 +98,16 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
+    public UnmodifiableList<URI> getThinClientReadEndpoints() {
+        // readonly
+        return this.locationCache.getThinClientReadEndpoints();
+    }
+
+    public UnmodifiableList<URI> getThinClientWriteEndpoints() {
+        //readonly
+        return this.locationCache.getThinClientWriteEndpoints();
+    }
+
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(request);
@@ -328,8 +338,10 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
-                                    this::getDatabaseAccountAsync);
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(
+                                this.defaultEndpoint,
+                                new ArrayList<>(this.getEffectivePreferredRegions()),
+                                this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
                                 logger.info("db account retrieved {}", dbAccount);

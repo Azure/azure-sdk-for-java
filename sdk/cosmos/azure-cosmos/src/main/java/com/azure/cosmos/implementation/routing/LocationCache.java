@@ -544,6 +544,8 @@ public class LocationCache {
     private void updateLocationCache(
             Iterable<DatabaseAccountLocation> writeLocations,
             Iterable<DatabaseAccountLocation> readLocations,
+            Iterable<DatabaseAccountLocation> thinClientWriteLocations,
+            Iterable<DatabaseAccountLocation> thinClientReadLocations,
             UnmodifiableList<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
