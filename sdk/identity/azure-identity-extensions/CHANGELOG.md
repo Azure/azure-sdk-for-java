@@ -196,6 +196,14 @@
 
 - Improve the performance of DefaultTokenCredentialProvider's `get()` method.
 
+## 1.2.0-beta.1 (2023-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
+
 ## 1.2.0-beta.1 (2023-02-06)
 
 ### Other Changes
