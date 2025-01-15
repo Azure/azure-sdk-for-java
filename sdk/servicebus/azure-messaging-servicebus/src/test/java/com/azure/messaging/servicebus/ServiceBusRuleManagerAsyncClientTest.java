@@ -93,8 +93,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
             = new ReactorConnectionCache<>(() -> connection, connectionOptions.getFullyQualifiedNamespace(),
                 ENTITY_PATH, new FixedAmqpRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE,
-            new ConnectionCacheWrapper(connectionCache), onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionCache, onClientClose);
 
     }
 

@@ -4,18 +4,19 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -44,7 +45,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -231,7 +231,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
-    private final AmqpRetryPolicy retryPolicy;
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
@@ -247,24 +246,23 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ConnectionCacheWrapper connectionCacheWrapper, AmqpRetryOptions retryOptions,
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, AmqpRetryOptions retryOptions,
         ServiceBusSenderInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
         String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
-        Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
-        this.connectionProcessor = connectionCacheWrapper.getConnection();
-        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
+        Objects.requireNonNull(connectionCache, "'connectionCache' cannot be null.");
+        this.connectionProcessor = connectionCache.get().cast(ServiceBusAmqpConnection.class);
+        this.fullyQualifiedNamespace = connectionCache.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.tracer = instrumentation.getTracer();
-        this.retryPolicy = getRetryPolicy(retryOptions);
         this.entityType = entityType;
         this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
         this.identifier = identifier;
-        this.isV2 = connectionCacheWrapper.isV2();
+        this.isV2 = true;
     }
 
     /**

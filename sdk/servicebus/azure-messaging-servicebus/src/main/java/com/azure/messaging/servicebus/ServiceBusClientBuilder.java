@@ -1211,11 +1211,11 @@ public final class ServiceBusClientBuilder
          */
         // Build Sender-Client.
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             final Meter meter = createMeter(clientOptions);
             // Sender Client (async|sync).
-            connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = getOrCreateConnectionCache(messageSerializer, meter);
             onClientClose = ServiceBusClientBuilder.this::onClientClose;
             final MessagingEntityType entityType
                 = validateEntityPaths(connectionStringEntityName, topicName, queueName);
@@ -1250,9 +1250,9 @@ public final class ServiceBusClientBuilder
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(
-                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
+                createTracer(clientOptions), meter, connectionCache.getFullyQualifiedNamespace(), entityName);
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionCacheWrapper, retryOptions,
+            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionCache, retryOptions,
                 instrumentation, messageSerializer, onClientClose, null, clientIdentifier);
         }
 
@@ -1806,24 +1806,24 @@ public final class ServiceBusClientBuilder
                 clientIdentifier = UUID.randomUUID().toString();
             }
             final Meter meter = createMeter(clientOptions);
-            final ConnectionCacheWrapper connectionCacheWrapper
-                = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = getOrCreateConnectionCache(messageSerializer, meter);
 
             // For session enabled ServiceBusProcessorClient, the session acquire should be retried if broker timeout
             // due to no session (see the type ServiceBusSessionAcquirer).
             final boolean timeoutRetryDisabled = false;
             final ServiceBusSessionAcquirer sessionAcquirer
                 = new ServiceBusSessionAcquirer(logger, clientIdentifier, entityPath, entityType, receiveMode,
-                    retryOptions.getTryTimeout(), timeoutRetryDisabled, connectionCacheWrapper);
+                    retryOptions.getTryTimeout(), timeoutRetryDisabled, connectionCache);
 
-            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
-                subscriptionName, ReceiverKind.PROCESSOR);
+            final ServiceBusReceiverInstrumentation instrumentation
+                = new ServiceBusReceiverInstrumentation(createTracer(clientOptions), meter,
+                    connectionCache.getFullyQualifiedNamespace(), entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final Runnable onTerminate = ServiceBusClientBuilder.this::onClientClose;
 
-            return new SessionsMessagePump(clientIdentifier, connectionCacheWrapper.getFullyQualifiedNamespace(),
-                entityPath, receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout,
+            return new SessionsMessagePump(clientIdentifier, connectionCache.getFullyQualifiedNamespace(), entityPath,
+                receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout,
                 maxConcurrentSessions, concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
                 retryPolicy, processMessage, processError, onTerminate);
         }
@@ -1891,9 +1891,9 @@ public final class ServiceBusClientBuilder
             }
 
             final Meter meter = createMeter(clientOptions);
-            final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = getOrCreateConnectionCache(messageSerializer, meter);
             onClientClose = ServiceBusClientBuilder.this::onClientClose;
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
@@ -1913,11 +1913,11 @@ public final class ServiceBusClientBuilder
             final boolean timeoutRetryDisabled = isForSyncMode;
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
+                createTracer(clientOptions), meter, connectionCache.getFullyQualifiedNamespace(), entityPath,
                 subscriptionName, ReceiverKind.ASYNC_RECEIVER);
-            return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
-                onClientClose, clientIdentifier, timeoutRetryDisabled);
+            return new ServiceBusSessionReceiverAsyncClient(connectionCache.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionCache, instrumentation, messageSerializer, onClientClose,
+                clientIdentifier, timeoutRetryDisabled);
         }
     }
 
@@ -2465,18 +2465,16 @@ public final class ServiceBusClientBuilder
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ConnectionCacheWrapper connectionCacheWrapper;
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
             final Runnable onClientClose;
             final Meter meter = createMeter(clientOptions);
             if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
                 // "Non-Session" Sync Receiver-Client.
-                connectionCacheWrapper
-                    = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+                connectionCache = getOrCreateConnectionCache(messageSerializer, meter);
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             } else {
                 // "Non-Session" Async[Reactor|Processor] Receiver-Client.
-                connectionCacheWrapper
-                    = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+                connectionCache = getOrCreateConnectionCache(messageSerializer, meter);
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final ReceiverOptions receiverOptions
@@ -2494,10 +2492,10 @@ public final class ServiceBusClientBuilder
 
             final ServiceBusReceiverInstrumentation instrumentation
                 = new ServiceBusReceiverInstrumentation(createTracer(clientOptions), meter,
-                    connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
-            return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
-                instrumentation, messageSerializer, onClientClose, clientIdentifier);
+                    connectionCache.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
+            return new ServiceBusReceiverAsyncClient(connectionCache.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionCache, ServiceBusConstants.OPERATION_TIMEOUT, instrumentation,
+                messageSerializer, onClientClose, clientIdentifier);
         }
     }
 
@@ -2553,14 +2551,14 @@ public final class ServiceBusClientBuilder
         public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName, null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName, null);
-            final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             final Meter meter = createMeter(clientOptions);
             // RuleManager Client (async|sync).
-            connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = getOrCreateConnectionCache(messageSerializer, meter);
             onClientClose = ServiceBusClientBuilder.this::onClientClose;
 
-            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionCacheWrapper, onClientClose);
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionCache, onClientClose);
         }
 
         /**
