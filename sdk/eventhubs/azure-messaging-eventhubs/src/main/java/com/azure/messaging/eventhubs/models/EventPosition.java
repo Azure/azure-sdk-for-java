@@ -49,9 +49,15 @@ public final class EventPosition {
     private EventPosition(final boolean isInclusive, final String offsetString, final Long sequenceNumber,
         final Instant enqueuedDateTime, final Integer replicationSegment) {
         this.offsetString = offsetString;
-        this.offset = offsetString != null && !offsetString.isEmpty()
-            ? Long.valueOf(offsetString)
-            : null;
+
+        Long parsed;
+        try {
+            parsed = offsetString != null && !offsetString.isEmpty() ? Long.valueOf(offsetString) : null;
+        } catch (NumberFormatException e) {
+            parsed = null;
+        }
+
+        this.offset = parsed;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
@@ -271,8 +277,9 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]", offsetString,
-            sequenceNumber, enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null", isInclusive);
+        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
+            offsetString, sequenceNumber, enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
+            isInclusive);
     }
 
     @Override
