@@ -113,7 +113,6 @@ public class Http2ConnectionConfig {
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String toDiagnosticsString() {
         return String.format("(enabled:%s, maxc:%s, minc:%s, maxs:%s)",
             isEnabled(),
