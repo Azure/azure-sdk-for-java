@@ -114,7 +114,9 @@ class BootstrapperImpl implements Bootstrapper {
             .flatMap(lease -> {
 
                     if (lease != null) {
-                        return Mono.error(new IllegalStateException(""));
+                        // todo: modify error message
+                        // error out if there is a pre-existing pk-range based lease left behind LatestVersion process
+                        return Mono.error(new IllegalStateException("Use handleLatestVersionChanges or handleChanges"));
                     } else {
                         return Mono.empty();
                     }
