@@ -175,7 +175,6 @@ import java.util.function.Consumer;
  * @see ServiceBusSessionProcessorClientBuilder
  */
 public final class ServiceBusProcessorClient implements AutoCloseable {
-    private final ServiceBusProcessorClientOptions processorOptions;
     private final String queueName;
     private final String topicName;
     private final String subscriptionName;
@@ -199,11 +198,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         Objects.requireNonNull(sessionReceiverBuilder, "'sessionReceiverBuilder' cannot be null");
         Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         Objects.requireNonNull(processError, "'processError' cannot be null");
-        this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
+        Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
+        final int concurrencyPerSession = processorOptions.getMaxConcurrentCalls();
         this.processor
             = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
     }
@@ -225,13 +224,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         Objects.requireNonNull(processError, "'processError' cannot be null");
-        this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
+        Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        final int concurrency = this.processorOptions.getMaxConcurrentCalls();
-        final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
+        final int concurrency = processorOptions.getMaxConcurrentCalls();
+        final boolean enableAutoDisposition = !processorOptions.isDisableAutoComplete();
         this.processor = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
             enableAutoDisposition);
     }
