@@ -1211,12 +1211,11 @@ public final class ServiceBusClientBuilder
          */
         // Build Sender-Client.
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final Runnable onClientClose;
+            // Sender for async and to back sync client.
             final Meter meter = createMeter(clientOptions);
-            // Sender Client (async|sync).
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
                 = getOrCreateConnectionCache(messageSerializer, meter);
-            onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
             final MessagingEntityType entityType
                 = validateEntityPaths(connectionStringEntityName, topicName, queueName);
 
@@ -1820,12 +1819,12 @@ public final class ServiceBusClientBuilder
                 = new ServiceBusReceiverInstrumentation(createTracer(clientOptions), meter,
                     connectionCache.getFullyQualifiedNamespace(), entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
-            final Runnable onTerminate = ServiceBusClientBuilder.this::onClientClose;
+            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
 
             return new SessionsMessagePump(clientIdentifier, connectionCache.getFullyQualifiedNamespace(), entityPath,
                 receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout,
                 maxConcurrentSessions, concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
-                retryPolicy, processMessage, processError, onTerminate);
+                retryPolicy, processMessage, processError, onClientClose);
         }
 
         /**
@@ -1891,10 +1890,9 @@ public final class ServiceBusClientBuilder
             }
 
             final Meter meter = createMeter(clientOptions);
-            final Runnable onClientClose;
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
                 = getOrCreateConnectionCache(messageSerializer, meter);
-            onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
@@ -2465,18 +2463,10 @@ public final class ServiceBusClientBuilder
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
-            final Runnable onClientClose;
             final Meter meter = createMeter(clientOptions);
-            if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
-                // "Non-Session" Sync Receiver-Client.
-                connectionCache = getOrCreateConnectionCache(messageSerializer, meter);
-                onClientClose = ServiceBusClientBuilder.this::onClientClose;
-            } else {
-                // "Non-Session" Async[Reactor|Processor] Receiver-Client.
-                connectionCache = getOrCreateConnectionCache(messageSerializer, meter);
-                onClientClose = ServiceBusClientBuilder.this::onClientClose;
-            }
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = getOrCreateConnectionCache(messageSerializer, meter);
+            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
             final ReceiverOptions receiverOptions
                 = createNonSessionOptions(receiveMode, prefetchCount, maxAutoLockRenewDuration, enableAutoComplete);
 
@@ -2551,13 +2541,11 @@ public final class ServiceBusClientBuilder
         public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName, null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName, null);
-            final Runnable onClientClose;
             final Meter meter = createMeter(clientOptions);
             // RuleManager Client (async|sync).
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
                 = getOrCreateConnectionCache(messageSerializer, meter);
-            onClientClose = ServiceBusClientBuilder.this::onClientClose;
-
+            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
             return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionCache, onClientClose);
         }
 
