@@ -3,7 +3,7 @@
 
 package io.clientcore.core.util.union;
 
-import io.clientcore.core.util.ParameterizedTypeImpl;
+import io.clientcore.core.util.GenericParameterizedType;
 import io.clientcore.core.util.Union;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 public class GenericModelType {
     // We specify that the Union type can be one of three types: List<String>, List<Integer>, or List<Float>.
     private Union prop1 = Union.ofTypes(
-        new ParameterizedTypeImpl(List.class, String.class),
-        new ParameterizedTypeImpl(List.class, Integer.class),
-        new ParameterizedTypeImpl(List.class, Float.class));
+        new GenericParameterizedType(List.class, String.class),
+        new GenericParameterizedType(List.class, Integer.class),
+        new GenericParameterizedType(List.class, Float.class));
 
     // we give access to the Union type, so that the value can be modified and retrieved.
     public Union getProp1() {

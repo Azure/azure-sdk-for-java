@@ -3,7 +3,7 @@
 
 package io.clientcore.core.util.union.codesnippets;
 
-import io.clientcore.core.util.ParameterizedTypeImpl;
+import io.clientcore.core.util.GenericParameterizedType;
 import io.clientcore.core.util.Union;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +23,8 @@ public class UnionJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType
         Union unionCollections = Union.ofTypes(
-            new ParameterizedTypeImpl(List.class, String.class),
-            new ParameterizedTypeImpl(List.class, Integer.class));
+            new GenericParameterizedType(List.class, String.class),
+            new GenericParameterizedType(List.class, Integer.class));
         // END: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType
     }
 

@@ -5,6 +5,7 @@ package io.clientcore.core.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
@@ -33,15 +34,18 @@ public class UnionTests {
     private static final float[] FLOAT_ARRAY_VALUE = { 1.1f, 2.2f, 3.3f };
     private static final double[] DOUBLE_ARRAY_VALUE = { 1.1d, 2.2d, 3.3d };
 
-    private static final ParameterizedTypeImpl LIST_OF_STRING_TYPE
-        = new ParameterizedTypeImpl(List.class, String.class);
-    private static final ParameterizedTypeImpl LIST_OF_INTEGER_TYPE
-        = new ParameterizedTypeImpl(List.class, Integer.class);
-    private static final ParameterizedTypeImpl LIST_OF_LONG_TYPE = new ParameterizedTypeImpl(List.class, Long.class);
-    private static final ParameterizedTypeImpl LIST_OF_FLOAT_TYPE = new ParameterizedTypeImpl(List.class, Float.class);
-    private static final ParameterizedTypeImpl LIST_OF_DOUBLE_TYPE
-        = new ParameterizedTypeImpl(List.class, Double.class);
-    private static final ParameterizedTypeImpl SET_OF_STRING_TYPE = new ParameterizedTypeImpl(Set.class, String.class);
+    private static final GenericParameterizedType LIST_OF_STRING_TYPE
+        = new GenericParameterizedType(List.class, String.class);
+    private static final GenericParameterizedType LIST_OF_INTEGER_TYPE
+        = new GenericParameterizedType(List.class, Integer.class);
+    private static final GenericParameterizedType LIST_OF_LONG_TYPE
+        = new GenericParameterizedType(List.class, Long.class);
+    private static final GenericParameterizedType LIST_OF_FLOAT_TYPE
+        = new GenericParameterizedType(List.class, Float.class);
+    private static final GenericParameterizedType LIST_OF_DOUBLE_TYPE
+        = new GenericParameterizedType(List.class, Double.class);
+    private static final GenericParameterizedType SET_OF_STRING_TYPE
+        = new GenericParameterizedType(Set.class, String.class);
 
     private static final List<String> LIST_OF_STRING_VALUE = List.of("Hello", "world", "!");
     private static final List<Integer> LIST_OF_INTEGER_VALUE = List.of(1, 2, 3);
@@ -294,6 +298,12 @@ public class UnionTests {
 
     // Additional tests
     @Test
+    void createUnionWithNullTypes() {
+        assertThrows(IllegalArgumentException.class, () -> Union.ofTypes((Type) null));
+        assertThrows(IllegalArgumentException.class, () -> Union.ofTypes(String.class, null, int.class));
+    }
+
+    @Test
     void setAndGetValueWithNull() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
 
@@ -320,8 +330,8 @@ public class UnionTests {
 
     @Test
     void setAndGetValueWithNestedParameterizedType() {
-        ParameterizedTypeImpl listOfListOfString
-            = new ParameterizedTypeImpl(List.class, new ParameterizedTypeImpl(List.class, String.class));
+        GenericParameterizedType listOfListOfString
+            = new GenericParameterizedType(List.class, new GenericParameterizedType(List.class, String.class));
         Union union = Union.ofTypes(listOfListOfString);
 
         List<List<String>> nestedList = List.of(LIST_OF_STRING_VALUE);
@@ -345,8 +355,8 @@ public class UnionTests {
 
     @Test
     void setAndGetValueWithDeeplyNestedParameterizedType() {
-        ParameterizedTypeImpl listOfListOfListOfString
-            = new ParameterizedTypeImpl(List.class, new ParameterizedTypeImpl(List.class, LIST_OF_STRING_TYPE));
+        GenericParameterizedType listOfListOfListOfString
+            = new GenericParameterizedType(List.class, new GenericParameterizedType(List.class, LIST_OF_STRING_TYPE));
         Union union = Union.ofTypes(listOfListOfListOfString);
 
         List<List<List<String>>> deeplyNestedList = List.of(List.of(LIST_OF_STRING_VALUE));

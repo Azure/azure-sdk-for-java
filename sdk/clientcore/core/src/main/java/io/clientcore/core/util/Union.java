@@ -37,8 +37,8 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  * <pre>
  * Union unionCollections = Union.ofTypes&#40;
- *     new ParameterizedTypeImpl&#40;List.class, String.class&#41;,
- *     new ParameterizedTypeImpl&#40;List.class, Integer.class&#41;&#41;;
+ *     new GenericParameterizedType&#40;List.class, String.class&#41;,
+ *     new GenericParameterizedType&#40;List.class, Integer.class&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  *
@@ -79,8 +79,19 @@ public final class Union {
     private Type currentType;
 
     private Union(Type... types) {
+        if (types == null || types.length == 0) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("types cannot be null or empty"));
+        }
+
         ArrayList<Type> typeCopy = new ArrayList<>(types.length);
-        Collections.addAll(typeCopy, types);
+        for (int i = 0; i < types.length; i++) {
+            if (types[i] == null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("types cannot contain null values: null value in index " + i));
+            }
+
+            typeCopy.add(types[i]);
+        }
         this.types = typeCopy;
     }
 
@@ -150,6 +161,10 @@ public final class Union {
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue(Class<T> clazz) {
+        if (clazz == currentType) {
+            return (T) value;
+        }
+
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
@@ -169,7 +184,7 @@ public final class Union {
      * @param <T> The expected type of the value.
      */
     public <T> T getValue(Class<T> clazz, Class<?>... genericTypes) {
-        return getValue(new ParameterizedTypeImpl(clazz, genericTypes));
+        return getValue(new GenericParameterizedType(clazz, genericTypes));
     }
 
     /**
@@ -182,6 +197,10 @@ public final class Union {
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue(ParameterizedType type) {
+        if (type == currentType) {
+            return (T) value;
+        }
+
         if (isInstanceOfType(value, type)) {
             return (T) value;
         }
@@ -198,6 +217,11 @@ public final class Union {
      */
     @SuppressWarnings("unchecked")
     public <T> boolean tryConsume(Consumer<T> consumer, Class<T> clazz) {
+        if (clazz == currentType) {
+            consumer.accept((T) value);
+            return true;
+        }
+
         if (isInstanceOfType(value, clazz)) {
             consumer.accept(clazz.cast(value));
             return true;
@@ -221,7 +245,7 @@ public final class Union {
      * @param <T> The value type expected by the consumer.
      */
     public <T> boolean tryConsume(Consumer<T> consumer, Class<T> clazz, Class<?>... genericTypes) {
-        return tryConsume(consumer, new ParameterizedTypeImpl(clazz, genericTypes));
+        return tryConsume(consumer, new GenericParameterizedType(clazz, genericTypes));
     }
 
     /**
@@ -234,6 +258,11 @@ public final class Union {
      */
     @SuppressWarnings("unchecked")
     public <T> boolean tryConsume(Consumer<T> consumer, ParameterizedType type) {
+        if (type == currentType) {
+            consumer.accept((T) value);
+            return true;
+        }
+
         if (isInstanceOfType(value, type)) {
             consumer.accept((T) value);
             return true;
@@ -251,7 +280,7 @@ public final class Union {
     private boolean isInstanceOfType(Object value, Type type) {
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
-            if (pType.getRawType() instanceof Class<?> rawType && rawType.isInstance(value)) {
+            if (pType.getRawType()instanceof Class<?> rawType && rawType.isInstance(value)) {
                 Type[] actualTypeArguments = pType.getActualTypeArguments();
                 if (value instanceof Collection<?> collection) {
                     return collection.stream()
